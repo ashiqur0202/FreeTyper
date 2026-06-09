@@ -31,6 +31,11 @@ export function useTypingEngine(options: TypingEngineOptions) {
   const currentIndexRef = useRef(0);
   const timedRef = useRef(timed);
 
+  // Keep ref in sync when timed prop changes
+  useEffect(() => {
+    timedRef.current = timed ?? 0;
+  }, [timed]);
+
   // Timer loop using rAF
   useEffect(() => {
     if (!isRunning || isComplete) return;
@@ -135,6 +140,41 @@ export function useTypingEngine(options: TypingEngineOptions) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chars, onStart, onKeyStats, finishTest]);
 
+  const handleBackspace = useCallback(() => {
+    if (isCompleteRef.current) return;
+    // Can't go back before the start
+    const idx = currentIndexRef.current;
+    if (idx <= 0) return;
+
+    const prevIdx = idx - 1;
+
+    // If the previous char was incorrect, undo the error count
+    setChars((prev) => {
+      const next = [...prev];
+      // Revert the previous character back to current
+      const prevStatus = next[prevIdx].status;
+      next[prevIdx] = { ...next[prevIdx], status: 'current' };
+
+      // If it was incorrect, remove the error
+      if (prevStatus === 'incorrect') {
+        incorrectCountRef.current = Math.max(0, incorrectCountRef.current - 1);
+        setErrors((errs) => errs.filter((e) => e !== prevIdx));
+      } else if (prevStatus === 'correct') {
+        correctCountRef.current = Math.max(0, correctCountRef.current - 1);
+      }
+
+      // The current position becomes pending again (if it wasn't already current)
+      if (idx < next.length && next[idx].status === 'current') {
+        next[idx] = { ...next[idx], status: 'pending' };
+      }
+
+      return next;
+    });
+
+    currentIndexRef.current = prevIdx;
+    setCurrentIndex(prevIdx);
+  }, [chars]);
+
   const restart = useCallback(() => {
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
 
@@ -184,6 +224,7 @@ export function useTypingEngine(options: TypingEngineOptions) {
     incorrectCount: incorrectCountRef.current,
     restart,
     handleInput,
+    handleBackspace,
   };
 }
 
