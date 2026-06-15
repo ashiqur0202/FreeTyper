@@ -34,7 +34,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       description: tool.description,
     },
     alternates: {
-      canonical: `${siteConfig.url}/${tool.id}`,
+      // The speed test's canonical home is `/` (the home page owns this content);
+      // point this duplicate route there to avoid cannibalization.
+      canonical:
+        slug === 'typing-speed-test'
+          ? siteConfig.url
+          : `${siteConfig.url}/${tool.id}`,
     },
   };
 }

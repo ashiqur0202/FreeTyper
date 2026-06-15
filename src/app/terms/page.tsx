@@ -2,7 +2,7 @@ import { siteConfig } from '@/config/site';
 
 export default function TermsPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="px-8 py-12 sm:px-10 lg:px-12">
       <h1 className="text-3xl font-bold text-white">Terms of Service</h1>
       <p className="mt-2 text-sm text-gray-500">Last updated: June 2026</p>
 

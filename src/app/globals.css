@@ -130,6 +130,58 @@ a:hover { color: var(--color-accent); }
 /* Selection */
 ::selection { background: var(--color-accent-bg); color: var(--color-accent); }
 
+/* ===== Blog Article Styles ===== */
+.blog-article { max-width: none; color: var(--color-text); line-height: 1.8; font-size: 1.05rem; }
+.blog-article h2 {
+  font-size: 1.75rem; font-weight: 700; color: var(--color-text-bright);
+  margin-top: 2.5rem; margin-bottom: 1rem; padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-surface-border);
+}
+.blog-article h3 {
+  font-size: 1.3rem; font-weight: 600; color: var(--color-text-bright);
+  margin-top: 2rem; margin-bottom: 0.75rem;
+}
+.blog-article p { margin-bottom: 1.25rem; }
+.blog-article a { color: var(--color-accent); text-decoration: none; }
+.blog-article a:hover { text-decoration: underline; }
+.blog-article strong { color: var(--color-text-bright); font-weight: 600; }
+.blog-article em { color: var(--color-accent); font-style: italic; }
+.blog-article code {
+  background: var(--color-surface-raised); color: var(--color-accent);
+  padding: 0.15em 0.4em; border-radius: 4px; font-size: 0.9em;
+}
+.blog-article ul, .blog-article ol { margin: 1rem 0 1.25rem 1.5rem; }
+.blog-article ul { list-style: disc; }
+.blog-article ol { list-style: decimal; }
+.blog-article li { margin-bottom: 0.5rem; padding-left: 0.25rem; }
+.blog-article li::marker { color: var(--color-accent); }
+.blog-article blockquote {
+  border-left: 3px solid var(--color-accent); margin: 1.5rem 0; padding: 0.75rem 1.25rem;
+  background: var(--color-accent-bg); border-radius: 0 8px 8px 0;
+  color: var(--color-text); font-style: italic;
+}
+.blog-article blockquote p:last-child { margin-bottom: 0; }
+.blog-article blockquote strong { color: var(--color-accent); }
+.blog-article table {
+  width: 100%; border-collapse: collapse; margin: 1.5rem 0;
+  font-size: 0.9rem; border-radius: 8px; overflow: hidden;
+}
+.blog-article thead { background: var(--color-surface-raised); }
+.blog-article th {
+  text-align: left; padding: 0.75rem 1rem; color: var(--color-text-bright);
+  font-weight: 600; border-bottom: 2px solid var(--color-surface-border);
+}
+.blog-article td {
+  padding: 0.65rem 1rem; border-bottom: 1px solid var(--color-surface-border);
+  color: var(--color-text);
+}
+.blog-article tr:hover td { background: var(--color-accent-bg); }
+.blog-article hr {
+  border: none; border-top: 1px solid var(--color-surface-border);
+  margin: 2rem 0;
+}
+.blog-article img { border-radius: 8px; margin: 1.5rem 0; }
+
 /* ===== Result Card Animations ===== */
 @keyframes resultAppear {
   from { opacity: 0; transform: translateY(20px) scale(0.95); }

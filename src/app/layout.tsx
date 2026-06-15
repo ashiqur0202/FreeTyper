@@ -31,6 +31,9 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.author }],
   creator: siteConfig.author,
   metadataBase: new URL(siteConfig.url),
+  verification: {
+    google: '7QAFCmfXImiyrOrEwKlk7SsRaoXaJopD8k5c6Xbv5lc',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -95,9 +98,9 @@ export default function RootLayout({
           </SettingsProvider>
         </SidebarProvider>
 
-        {/* Google Analytics — replace G-XXXXXXXXXX with your GA4 ID */}
+        {/* Google Analytics — GA4 ID: G-QC5509TVSF */}
         <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX`}
+          src={`https://www.googletagmanager.com/gtag/js?id=G-QC5509TVSF`}
           strategy="afterInteractive"
         />
         <Script id="ga-init" strategy="afterInteractive">
@@ -105,7 +108,7 @@ export default function RootLayout({
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-XXXXXXXXXX');
+            gtag('config', 'G-QC5509TVSF');
           `}
         </Script>
 

@@ -7,7 +7,7 @@ interface ToolPageContentProps {
 
 export default function ToolPageContent({ tool, children }: ToolPageContentProps) {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+    <div className="px-8 py-12 sm:px-10 lg:px-12">
       {children}
     </div>
   );

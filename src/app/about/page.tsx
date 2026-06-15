@@ -3,7 +3,7 @@ import { Keyboard } from 'lucide-react';
 
 export default function AboutPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="px-8 py-12 sm:px-10 lg:px-12">
       <div className="flex items-center gap-3 mb-8">
         <Keyboard className="h-8 w-8 text-amber-500" />
         <h1 className="text-3xl font-bold text-white">About {siteConfig.name}</h1>

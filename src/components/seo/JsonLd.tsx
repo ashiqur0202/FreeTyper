@@ -75,3 +75,23 @@ export function faqSchema(faqs: { question: string; answer: string }[]) {
     })),
   };
 }
+
+export function howToSchema(
+  steps: { name: string; text: string }[],
+  opts?: { name?: string; description?: string }
+) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: opts?.name ?? 'How to Take the Typing Speed Test',
+    description:
+      opts?.description ??
+      'Take the FreeTyper typing speed test and find your WPM and accuracy in under 60 seconds.',
+    step: steps.map((step, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: step.name,
+      text: step.text,
+    })),
+  };
+}

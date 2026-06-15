@@ -49,7 +49,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   if (!content) notFound();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="px-8 py-12 sm:px-10 lg:px-12">
       {/* Breadcrumbs */}
       <nav className="mb-6 flex items-center gap-1 text-sm text-gray-500">
         <Link href="/" className="hover:text-amber-400">Home</Link>

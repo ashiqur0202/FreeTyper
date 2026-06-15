@@ -1,1 +1,1 @@
-export const articleContent: Record<string, string> = {};
+export { articleContent } from './articles/index';

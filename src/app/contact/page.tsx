@@ -2,7 +2,7 @@ import { Mail } from 'lucide-react';
 
 export default function ContactPage() {
   return (
-    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+    <div className="px-8 py-12 sm:px-10 lg:px-12">
       <h1 className="text-lg font-medium text-text-bright">Contact</h1>
       <div className="mt-6 space-y-4 leading-relaxed">
         <p className="text-sm text-text-dim">

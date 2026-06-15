@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Footer() {
   return (
     <footer className="border-t border-surface-border">
-      <div className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
+      <div className="flex items-center justify-between px-8 py-4 sm:px-10 lg:px-12">
         <div className="flex items-center gap-3">
           {/* Mini logo mark */}
           <div className="flex h-5 w-5 items-center justify-center rounded border border-surface-border bg-surface-raised">
