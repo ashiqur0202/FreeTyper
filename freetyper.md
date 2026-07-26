@@ -14,19 +14,29 @@ src/components/skills/typing/
 ├── useTypingEngine.ts        # rAF timer, WPM/accuracy, backspace support
 ├── useTypingProgress.ts      # localStorage progress/achievements
 ├── TypingSpeedTest.tsx        # 9 durations, 3 text modes, command palette, focus mode, 3-line scroll
-├── LiveKeyboard.tsx           # Full QWERTY, hint pulse, correct/incorrect flash, flex-grow sizing
-├── ResultCard.tsx             # Animated WPM, rank gradients, confetti, share text/card
-├── TypingLessons.tsx, TypingPractice.tsx, KeyboardGuide.tsx
-├── TypingProgress.tsx, KeyboardHeatmap.tsx, AchievementToast.tsx
+├── LiveKeyboard.tsx           # Full QWERTY, hint pulse, flash, optional focusKeys dim
+├── ResultCard.tsx             # Animated WPM, ranks, confetti, share; next/retry labels
+├── TypingLessons.tsx          # Progressive lessons, pills, LiveKeyboard, ResultCard
+├── TypingPractice.tsx         # Categories + weak keys, LiveKeyboard, ResultCard
+├── KeyboardGuide.tsx          # Finger filters, home-row mode, personal key stats
+├── TypingProgress.tsx         # Stats, WPM chart, weak keys, sessions, achievements
+├── KeyboardHeatmap.tsx, AchievementToast.tsx
 └── FallingWordsGame.tsx, WordAttackGame.tsx
 src/components/layout/ → Sidebar, SidebarProvider, RightSidebar, SettingsProvider, Footer
-src/components/tools/  → ToolClient (dynamic imports), ToolPageContent (SEO wrapper)
+src/components/tools/  → ToolClient (dynamic imports), ToolPageContent (viewport shell)
 src/components/blog/   → BlogContent (+ auto TOC), BlogCard
-src/components/seo/    → JsonLd (Org/WebSite/WebApp/Breadcrumb/FAQ/HowTo generators), FAQ
-src/components/content/ → ExpandableSeoContent (preview + Read more, SEO-safe — content always in DOM)
+src/components/seo/    → JsonLd (Org/WebSite/WebApp/Breadcrumb/FAQ/HowTo), FAQ
+src/components/content/ → ExpandableSeoContent (preview + Read more, SEO-safe, TOC hash expand)
 src/config/ → tools.ts (7 tools), site.ts
-src/data/   → blog/, home/ (typing-speed-content)
-src/app/    → page (speed test + SEO content), settings, blog, [slug] (tools), about, contact, privacy, terms, disclaimer
+src/data/
+├── home/typing-speed-content.ts          # Home speed-test SEO (~3.7k)
+├── tools/typing-lessons-content.ts       # Lessons SEO (~3.5k)
+├── tools/typing-practice-content.ts      # Practice SEO (~3k)
+├── tools/keyboard-guide-content.ts       # Guide SEO (~3k)
+├── tools/typing-progress-content.ts      # Progress SEO (~3k)
+└── blog/ …
+src/app/ → page (speed test + SEO), [slug] (tools + SEO for lessons/practice/guide/progress),
+           settings, blog, about, contact, privacy, terms, disclaimer, opengraph-image
 ```
 
 ## Speed Test Features
@@ -35,6 +45,18 @@ src/app/    → page (speed test + SEO content), settings, blog, [slug] (tools),
 - **Progress bar** with glow · Live WPM + accuracy
 - **Focus mode** (fullscreen, Esc to exit) · **Command palette** (`/` key)
 - **Result card** — rank gradient (Elite/Pro/Skilled/Avg/Beginner), animated WPM counter, confetti on 60+ WPM, share text or ASCII card
+
+## Polished Tool Pages (same bar as home)
+| Route | UX highlights | SEO |
+|---|---|---|
+| `/` | Speed test fills viewport | Elite cornerstone + FAQ/HowTo/WebApp/Breadcrumb |
+| `/typing-lessons` | Lesson pills, scroll, LiveKeyboard + focusKeys, ResultCard | Expandable 3k+ guide |
+| `/typing-practice` | Category pills, weak keys, LiveKeyboard, ResultCard | Expandable 3k+ guide |
+| `/keyboard-guide` | Finger filters, home-row toggle, key stats, weak keys | Expandable 3k+ guide |
+| `/typing-progress` | Stats, chart, heatmap, sessions, achievements | Expandable 3k+ guide |
+
+Tool SEO pages: full-viewport tool above the fold → ExpandableSeoContent below → JSON-LD (WebApplication + FAQPage + HowTo).  
+`/typing-speed-test` canonical → `/` (home owns the keyword).
 
 ## Settings (localStorage: `freetyper-settings`)
 | Setting | Values | Default |
@@ -50,31 +72,33 @@ src/app/    → page (speed test + SEO content), settings, blog, [slug] (tools),
 - Logo: keyboard key + gold cursor · Wordmark: **Free** (white) + **Typer** (gold)
 
 ## SEO & Infra
-- JSON-LD (WebApplication + FAQPage + HowTo on home), OG/Twitter cards, sitemap, robots.txt, RSS, PWA manifest
-- Google Analytics GA4 `G-QC5509TVSF` wired · Google Search Console verified · AdSense still placeholder (pending ID)
-- Home `/` is the canonical speed-test page; `/typing-speed-test` canonical → `/`
+- JSON-LD: Org + WebSite (layout); WebApplication + FAQPage + HowTo on home + polished tools; Breadcrumb on home
+- Expandable SEO: E-E-A-T byline, in-article TOC, sources/citations, methodology; body always in DOM
+- OG/Twitter cards · dynamic `opengraph-image.tsx` (1200×630) · sitemap (tools + blog) · robots · RSS · PWA
+- GA4 `G-QC5509TVSF` · Google Search Console verified · AdSense still placeholder (pending ID)
 - Legal: /about, /contact, /privacy, /terms, /disclaimer
 - Deploy: GitHub → Coolify (Docker) → Hetzner · Repo: `github.com/ashiqur0202/FreeTyper`
 
 ## Done
-- [x] Live keyboard visualizer (full layout, hint, flash)
-- [x] Shareable result card (animated WPM, confetti, share)
+- [x] Live keyboard visualizer (full layout, hint, flash, focusKeys)
+- [x] Shareable result card (animated WPM, confetti, share, next/retry labels)
 - [x] Animations (progress glow, result appear, shimmer, fade-up)
-- [x] Backspace support
-- [x] 3-line scrolling text (monkeytype-style)
-- [x] Home page SEO content (typing speed test) — preview + Read more, WebApplication/FAQPage/HowTo JSON-LD
-- [x] howToSchema generator + home metadata + canonical (home owns the keyword)
-- [x] Typing window layout (tool fills viewport; SEO content starts below the fold)
-- [x] GA4 wired (`G-QC5509TVSF`) · Google Search Console verification meta
+- [x] Backspace support · 3-line scrolling text
+- [x] Home elite SEO (methodology, TOC, E-E-A-T, sources, benchmarks, FAQ/HowTo/Breadcrumb)
+- [x] Lessons / practice / keyboard guide / progress — Monkeytype-clean UX + 3k+ SEO each
+- [x] Shared SEO tool shell in `[slug]/page.tsx` · ExpandableSeoContent TOC hash expand
+- [x] Dynamic OG image · GA4 · GSC verification · sitemap includes blog posts
+- [x] Typing window layout (tool fills viewport; SEO below the fold)
 
 ## Next Up
 - [ ] Connect settings to tools (font size, sound, hints) — currently cosmetic, nothing reads `useSettings`
 - [ ] Accent color picker changes CSS site-wide (wire sidebar swatches + inject `--color-accent`)
 - [ ] AdSense publisher ID (replace placeholder)
-- [ ] SEO polish: sources/citations, E-E-A-T (author + updated date), in-article TOC, OG image (1200x630), fix dead internal links to unbuilt blog posts
+- [ ] Games polish (Falling Words, Word Attack) to same UX/SEO bar
 - [ ] Keyboard layouts (DVORAK, Colemak)
 - [ ] Multiplayer races · Leaderboards · School mode
 - [ ] More games (Type Racer, Zombie Typing)
+- [ ] Remaining blog pillar articles (25 planned; several speed-pillar drafts exist)
 
 ## Blog Posts (25 — SEO Strategy)
 - Total Articles: 25

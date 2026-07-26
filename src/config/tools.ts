@@ -26,9 +26,9 @@ const toolData: ToolData[] = [
   {
     id: 'typing-lessons',
     name: 'Typing Lessons',
-    seoTitle: 'Typing Lessons: Learn Fast with Visual Finger Guides (Free)',
+    seoTitle: 'Free Typing Lessons — Learn Touch Typing Step by Step',
     description:
-      'Progressive typing lessons from home row to advanced. Visual finger guides show you exactly which finger to use. Free, no signup.',
+      'Free progressive typing lessons from home row to advanced. Live keyboard hints, accuracy tracking, no signup. Learn touch typing the right way.',
     iconName: 'GraduationCap',
     category: 'typing',
     featured: true,
@@ -36,9 +36,9 @@ const toolData: ToolData[] = [
   {
     id: 'typing-practice',
     name: 'Typing Practice',
-    seoTitle: 'Typing Practice: Drills & Weak-Key Fix (Free)',
+    seoTitle: 'Free Typing Practice — Daily Drills & Weak-Key Training',
     description:
-      'Typing practice with themed content — quotes, news, code. Adaptive drills target your weak keys. Free, no signup.',
+      'Free typing practice online with quotes, news, code, fun text, and adaptive weak-key drills. Build speed and accuracy daily — no signup.',
     iconName: 'PenTool',
     category: 'typing',
     featured: true,
@@ -56,19 +56,19 @@ const toolData: ToolData[] = [
   {
     id: 'keyboard-guide',
     name: 'Keyboard Guide',
-    seoTitle: 'Keyboard Guide: Color-Coded Finger Placement Map (Free)',
+    seoTitle: 'Keyboard Guide — Touch Typing Finger Placement Map (Free)',
     description:
-      'Interactive keyboard guide with color-coded finger mapping. Learn proper touch typing finger placement. Free, no signup.',
+      'Interactive color-coded keyboard guide for touch typing. Learn which finger types each key, master home row, and fix weak keys — free, no signup.',
     iconName: 'Keyboard',
     category: 'typing',
-    featured: false,
+    featured: true,
   },
   {
     id: 'typing-progress',
     name: 'Typing Progress',
-    seoTitle: 'Typing Progress Tracker: WPM History & Achievements (Free)',
+    seoTitle: 'Typing Progress Tracker — WPM History, Streaks & Achievements',
     description:
-      'Track your typing progress with WPM history, accuracy trends, streaks, and 14 unlockable achievements. Free, no signup.',
+      'Free typing progress tracker with WPM history, accuracy trends, weak-key heatmap, streaks, and achievements. Private local storage — no signup.',
     iconName: 'BarChart3',
     category: 'typing',
     featured: true,

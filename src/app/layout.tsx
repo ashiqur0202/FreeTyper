@@ -7,6 +7,7 @@ import Sidebar from '@/components/layout/Sidebar';
 import RightSidebar from '@/components/layout/RightSidebar';
 import { SidebarProvider } from '@/components/layout/SidebarProvider';
 import { SettingsProvider } from '@/components/layout/SettingsProvider';
+import JsonLd, { organizationSchema, webSiteSchema } from '@/components/seo/JsonLd';
 import { siteConfig } from '@/config/site';
 
 const inter = Inter({
@@ -41,20 +42,13 @@ export const metadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: siteConfig.title,
-      },
-    ],
+    // og:image is generated dynamically by src/app/opengraph-image.tsx.
   },
   twitter: {
     card: 'summary_large_image',
     title: siteConfig.title,
     description: siteConfig.description,
-    images: ['/og-image.png'],
+    // twitter:image is generated dynamically by src/app/opengraph-image.tsx.
   },
   robots: {
     index: true,
@@ -97,6 +91,10 @@ export default function RootLayout({
             <Footer />
           </SettingsProvider>
         </SidebarProvider>
+
+        {/* Site-wide entity schema (Organization + WebSite). Page-level schemas
+            (WebApplication / FAQPage / HowTo) are added on the home page. */}
+        <JsonLd data={[organizationSchema(), webSiteSchema()]} />
 
         {/* Google Analytics — GA4 ID: G-QC5509TVSF */}
         <Script

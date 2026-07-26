@@ -4,10 +4,95 @@ import { toolsData, getToolBySlug } from '@/config/tools';
 import { siteConfig } from '@/config/site';
 import ToolClient from '@/components/tools/ToolClient';
 import ToolPageContent from '@/components/tools/ToolPageContent';
+import ExpandableSeoContent from '@/components/content/ExpandableSeoContent';
+import JsonLd, {
+  webApplicationSchema,
+  faqSchema,
+  howToSchema,
+} from '@/components/seo/JsonLd';
+import {
+  meta as lessonsMeta,
+  previewHtml as lessonsPreviewHtml,
+  bodyHtml as lessonsBodyHtml,
+  faqs as lessonsFaqs,
+  howToSteps as lessonsHowToSteps,
+} from '@/data/tools/typing-lessons-content';
+import {
+  meta as practiceMeta,
+  previewHtml as practicePreviewHtml,
+  bodyHtml as practiceBodyHtml,
+  faqs as practiceFaqs,
+  howToSteps as practiceHowToSteps,
+} from '@/data/tools/typing-practice-content';
+import {
+  meta as guideMeta,
+  previewHtml as guidePreviewHtml,
+  bodyHtml as guideBodyHtml,
+  faqs as guideFaqs,
+  howToSteps as guideHowToSteps,
+} from '@/data/tools/keyboard-guide-content';
+import {
+  meta as progressMeta,
+  previewHtml as progressPreviewHtml,
+  bodyHtml as progressBodyHtml,
+  faqs as progressFaqs,
+  howToSteps as progressHowToSteps,
+} from '@/data/tools/typing-progress-content';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
+
+/** Tool pages that get homepage-style layout: full-viewport tool + expandable SEO. */
+const seoToolPages: Record<
+  string,
+  {
+    meta: { title: string; description: string };
+    previewHtml: string;
+    bodyHtml: string;
+    faqs: { question: string; answer: string }[];
+    howToSteps: { name: string; text: string }[];
+    h1: string;
+    howToName: string;
+  }
+> = {
+  'typing-lessons': {
+    meta: lessonsMeta,
+    previewHtml: lessonsPreviewHtml,
+    bodyHtml: lessonsBodyHtml,
+    faqs: lessonsFaqs,
+    howToSteps: lessonsHowToSteps,
+    h1: 'Free Typing Lessons',
+    howToName: 'How to Use Free Typing Lessons',
+  },
+  'typing-practice': {
+    meta: practiceMeta,
+    previewHtml: practicePreviewHtml,
+    bodyHtml: practiceBodyHtml,
+    faqs: practiceFaqs,
+    howToSteps: practiceHowToSteps,
+    h1: 'Free Typing Practice',
+    howToName: 'How to Use Free Typing Practice',
+  },
+  'keyboard-guide': {
+    meta: guideMeta,
+    previewHtml: guidePreviewHtml,
+    bodyHtml: guideBodyHtml,
+    faqs: guideFaqs,
+    howToSteps: guideHowToSteps,
+    h1: 'Keyboard Guide — Touch Typing Finger Placement',
+    howToName: 'How to Use the FreeTyper Keyboard Guide',
+  },
+  'typing-progress': {
+    meta: progressMeta,
+    previewHtml: progressPreviewHtml,
+    bodyHtml: progressBodyHtml,
+    faqs: progressFaqs,
+    howToSteps: progressHowToSteps,
+    h1: 'Typing Progress Tracker — WPM History & Achievements',
+    howToName: 'How to Track Typing Progress on FreeTyper',
+  },
+};
 
 export async function generateStaticParams() {
   return toolsData.map((tool) => ({ slug: tool.id }));
@@ -18,28 +103,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const tool = getToolBySlug(slug);
   if (!tool) return {};
 
+  const seo = seoToolPages[slug];
+  const title = seo?.meta.title ?? tool.seoTitle;
+  const description = seo?.meta.description ?? tool.description;
+  const url =
+    slug === 'typing-speed-test' ? siteConfig.url : `${siteConfig.url}/${tool.id}`;
+
   return {
-    title: tool.seoTitle,
-    description: tool.description,
+    title: seo ? { absolute: title } : title,
+    description,
     openGraph: {
-      title: tool.seoTitle,
-      description: tool.description,
-      url: `${siteConfig.url}/${tool.id}`,
+      title,
+      description,
+      url,
       type: 'website',
       siteName: siteConfig.name,
     },
     twitter: {
       card: 'summary_large_image',
-      title: tool.seoTitle,
-      description: tool.description,
+      title,
+      description,
     },
     alternates: {
-      // The speed test's canonical home is `/` (the home page owns this content);
-      // point this duplicate route there to avoid cannibalization.
-      canonical:
-        slug === 'typing-speed-test'
-          ? siteConfig.url
-          : `${siteConfig.url}/${tool.id}`,
+      // Home owns the speed-test keyword; point the duplicate route there.
+      canonical: slug === 'typing-speed-test' ? siteConfig.url : url,
     },
   };
 }
@@ -48,6 +135,43 @@ export default async function ToolPage({ params }: PageProps) {
   const { slug } = await params;
   const tool = getToolBySlug(slug);
   if (!tool) notFound();
+
+  const seo = seoToolPages[slug];
+  if (seo) {
+    const pageUrl = `${siteConfig.url}/${slug}`;
+    return (
+      <div>
+        <section className="flex min-h-screen items-center justify-center px-8 py-12 sm:px-10 lg:px-12">
+          <h1 className="sr-only">{seo.h1}</h1>
+          <div className="w-full">
+            <ToolClient toolId={tool.id} />
+          </div>
+        </section>
+
+        <section className="px-8 pb-16 sm:px-10 lg:px-12">
+          <div className="mx-auto max-w-3xl">
+            <ExpandableSeoContent
+              previewHtml={seo.previewHtml}
+              bodyHtml={seo.bodyHtml}
+              readMoreLabel="Read the full guide"
+              showLessLabel="Show less"
+            />
+          </div>
+        </section>
+
+        <JsonLd
+          data={[
+            webApplicationSchema(seo.meta.title, seo.meta.description, pageUrl),
+            faqSchema(seo.faqs),
+            howToSchema(seo.howToSteps, {
+              name: seo.howToName,
+              description: seo.meta.description,
+            }),
+          ]}
+        />
+      </div>
+    );
+  }
 
   return (
     <ToolPageContent tool={tool}>

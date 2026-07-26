@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { tools } from '@/config/tools';
 import { siteConfig } from '@/config/site';
+import { blogPosts } from '@/data/blog/typing-skills';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const toolPages = tools.map((tool) => ({
@@ -8,6 +9,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.8,
+  }));
+
+  const blogPages = blogPosts.map((post) => ({
+    url: `${siteConfig.url}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'monthly' as const,
+    priority: 0.6,
   }));
 
   const staticPages = [
@@ -20,5 +28,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteConfig.url}/disclaimer`, lastModified: new Date(), changeFrequency: 'yearly' as const, priority: 0.2 },
   ];
 
-  return [...staticPages, ...toolPages];
+  return [...staticPages, ...toolPages, ...blogPages];
 }

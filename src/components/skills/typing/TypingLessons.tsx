@@ -1,49 +1,149 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { GraduationCap, CheckCircle, Lock, RotateCcw, ChevronRight } from 'lucide-react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
+import { Check, Lock, RotateCcw } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
-import { lessons, keyboardRows, getKeyFinger, getKeyColor, homeRowKeys } from './typingData';
+import { lessons } from './typingData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
+import LiveKeyboard from './LiveKeyboard';
+import ResultCard from './ResultCard';
+
+const PROGRESS_KEY = 'freetyper-lessons-progress';
+const LEGACY_KEY = 'freetyper-completed-lessons';
+
+interface LessonProgress {
+  unlocked: number[];
+  completed: number[];
+}
+
+function loadProgress(): LessonProgress {
+  if (typeof window === 'undefined') {
+    return { unlocked: [0], completed: [] };
+  }
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw) as LessonProgress;
+      return {
+        unlocked: parsed.unlocked?.length ? parsed.unlocked : [0],
+        completed: parsed.completed ?? [],
+      };
+    }
+    const legacy = localStorage.getItem(LEGACY_KEY);
+    if (legacy) {
+      const unlocked = JSON.parse(legacy) as number[];
+      return { unlocked: unlocked.length ? unlocked : [0], completed: [] };
+    }
+  } catch {
+    /* ignore */
+  }
+  return { unlocked: [0], completed: [] };
+}
+
+function saveProgress(progress: LessonProgress) {
+  localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+}
 
 export default function TypingLessons() {
   const [activeLesson, setActiveLesson] = useState(0);
-  const [completedLessons, setCompletedLessons] = useState<Set<number>>(() => {
-    if (typeof window === 'undefined') return new Set();
-    try {
-      const stored = localStorage.getItem('freetyper-completed-lessons');
-      return stored ? new Set(JSON.parse(stored)) : new Set([0]);
-    } catch { return new Set([0]); }
-  });
+  const [progress, setProgress] = useState<LessonProgress>({ unlocked: [0], completed: [] });
+  const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
   const [toasts, setToasts] = useState<Achievement[]>([]);
+  const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
+  const [scrollOffset, setScrollOffset] = useState(0);
+  const [lineHeight, setLineHeight] = useState(0);
+
   const inputRef = useRef<HTMLInputElement>(null);
+  const typingAreaRef = useRef<HTMLDivElement>(null);
+  const firstCharRef = useRef<HTMLSpanElement>(null);
+  const currentCharRef = useRef<HTMLSpanElement>(null);
+  const activeLessonRef = useRef(activeLesson);
+  const progressRef = useRef(progress);
+  const isRunningRef = useRef(false);
+  activeLessonRef.current = activeLesson;
+  progressRef.current = progress;
 
   const { addSession, updateKeyStats, checkAchievements } = useTypingProgress();
   const lesson = lessons[activeLesson];
 
-  const handleComplete = useCallback((session: TypingSession) => {
-    const updated = { ...session, mode: 'lesson' as const, modeDetail: `Lesson ${lesson.id}` };
-    addSession(updated);
-    setResult(updated);
+  useEffect(() => {
+    setMounted(true);
+    setProgress(loadProgress());
+  }, []);
 
-    // Unlock next lesson
-    if (activeLesson < lessons.length - 1) {
-      const next = new Set(completedLessons);
-      next.add(activeLesson + 1);
-      setCompletedLessons(next);
-      localStorage.setItem('freetyper-completed-lessons', JSON.stringify([...next]));
-    }
-  }, [activeLesson, completedLessons, addSession, lesson.id]);
+  const handleComplete = useCallback(
+    (session: TypingSession) => {
+      const updated = {
+        ...session,
+        mode: 'lesson' as const,
+        modeDetail: `Lesson ${lesson.id}: ${lesson.name}`,
+      };
+      addSession(updated);
+      setResult(updated);
 
-  const { chars, currentIndex, wpm, accuracy, isRunning, isComplete, restart, handleInput } =
-    useTypingEngine({
-      text: lesson.text,
-      onComplete: handleComplete,
-      onKeyStats: (key, correct) => updateKeyStats(key, correct),
-    });
+      setProgress((prev) => {
+        const completed = prev.completed.includes(activeLesson)
+          ? prev.completed
+          : [...prev.completed, activeLesson];
+        const unlocked =
+          activeLesson < lessons.length - 1 && !prev.unlocked.includes(activeLesson + 1)
+            ? [...prev.unlocked, activeLesson + 1]
+            : prev.unlocked;
+        const next = { unlocked, completed };
+        saveProgress(next);
+        return next;
+      });
+    },
+    [activeLesson, addSession, lesson.id, lesson.name],
+  );
+
+  const {
+    chars,
+    currentIndex,
+    wpm,
+    accuracy,
+    isRunning,
+    isComplete,
+    restart,
+    handleInput,
+    handleBackspace,
+  } = useTypingEngine({
+    text: lesson.text,
+    onComplete: handleComplete,
+    onKeyStats: (key, correct) => updateKeyStats(key, correct),
+  });
+
+  isRunningRef.current = isRunning;
+
+  const charsRef = useRef(chars);
+  const currentIndexRef = useRef(currentIndex);
+  charsRef.current = chars;
+  currentIndexRef.current = currentIndex;
+
+  const resetView = useCallback(() => {
+    setResult(null);
+    setScrollOffset(0);
+    setLineHeight(0);
+    setLastKeyFlash(null);
+  }, []);
+
+  const retryLesson = useCallback(() => {
+    resetView();
+    restart();
+    inputRef.current?.focus({ preventScroll: true });
+  }, [resetView, restart]);
+
+  const goToLesson = useCallback(
+    (index: number) => {
+      if (!progressRef.current.unlocked.includes(index) || isRunningRef.current) return;
+      setActiveLesson(index);
+      resetView();
+    },
+    [resetView],
+  );
 
   useEffect(() => {
     if (isComplete) {
@@ -52,169 +152,255 @@ export default function TypingLessons() {
     }
   }, [isComplete, checkAchievements]);
 
-  // Capture keyboard input
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (isComplete || e.ctrlKey || e.altKey || e.metaKey) return;
-      if (e.key === 'Tab') return;
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+      if (isComplete) {
+        if (e.key === 'Tab' || e.key === 'Enter') {
+          e.preventDefault();
+          const idx = activeLessonRef.current;
+          const unlocked = progressRef.current.unlocked;
+          if (idx < lessons.length - 1 && unlocked.includes(idx + 1)) {
+            goToLesson(idx + 1);
+          } else {
+            retryLesson();
+          }
+        }
+        return;
+      }
+
+      if (e.key === 'Backspace') {
+        e.preventDefault();
+        handleBackspace();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        return;
+      }
+
       if (e.key.length === 1) {
         e.preventDefault();
+        const expectedChar = charsRef.current[currentIndexRef.current]?.char;
         handleInput(e.key);
+        setLastKeyFlash({
+          key: e.key === ' ' ? ' ' : e.key.toLowerCase(),
+          correct: e.key === expectedChar,
+        });
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleInput, isComplete]);
+  }, [handleInput, handleBackspace, isComplete, goToLesson, retryLesson]);
 
-  // Active keys for keyboard highlight
-  const activeKeys = new Set<string>();
-  if (currentIndex < chars.length) {
-    const nextChar = chars[currentIndex]?.char.toLowerCase();
-    if (nextChar) activeKeys.add(nextChar);
+  useLayoutEffect(() => {
+    if (typingAreaRef.current && typingAreaRef.current.scrollTop !== 0) {
+      typingAreaRef.current.scrollTop = 0;
+    }
+
+    if (!currentCharRef.current || !chars.length || !firstCharRef.current) {
+      setScrollOffset(0);
+      return;
+    }
+
+    const currentTop = currentCharRef.current.offsetTop;
+    const baseTop = firstCharRef.current.offsetTop;
+
+    if (currentTop === baseTop) {
+      setScrollOffset(0);
+      return;
+    }
+
+    let lh = lineHeight;
+    if (lh === 0) {
+      const container = typingAreaRef.current?.querySelector('.typing-text');
+      if (!container) return;
+      const spans = container.children;
+      for (let i = 1; i < spans.length; i++) {
+        const prevTop = (spans[i - 1] as HTMLElement).offsetTop;
+        const currTop = (spans[i] as HTMLElement).offsetTop;
+        if (currTop > prevTop) {
+          lh = currTop - prevTop;
+          setLineHeight(lh);
+          break;
+        }
+      }
+      if (lh === 0) return;
+    }
+
+    const currentLine = Math.round((currentTop - baseTop) / lh);
+    if (currentLine >= 2) {
+      setScrollOffset((currentLine - 1) * lh);
+    } else {
+      setScrollOffset(0);
+    }
+  }, [currentIndex, lineHeight, chars.length]);
+
+  const unlockedSet = new Set(progress.unlocked);
+  const completedSet = new Set(progress.completed);
+  const hasNext = activeLesson < lessons.length - 1 && unlockedSet.has(activeLesson + 1);
+
+  if (!mounted) {
+    return (
+      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
+        <div className="flex flex-wrap items-center justify-center gap-1">
+          {lessons.map((l) => (
+            <span key={l.id} className="px-2 py-1 text-xs text-text-dim">
+              {l.name}
+            </span>
+          ))}
+        </div>
+        <div className="h-20" />
+      </div>
+    );
   }
-  // Lesson keys
-  const lessonKeySet = new Set(lesson.keys.map((k) => k.toLowerCase()));
 
   return (
-    <div className="space-y-6">
-      {/* Toast notifications */}
+    <div className="mx-auto flex w-full max-w-5xl flex-col items-center">
       {toasts.map((a, i) => (
-        <AchievementToast key={a.id + i} achievement={a} onClose={() => setToasts((t) => t.filter((_, j) => j !== i))} />
+        <AchievementToast
+          key={a.id + i}
+          achievement={a}
+          onClose={() => setToasts((t) => t.filter((_, j) => j !== i))}
+        />
       ))}
 
-      {/* Lesson selector */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-        {lessons.map((l, i) => {
-          const unlocked = completedLessons.has(i);
-          const isActive = i === activeLesson;
-          const done = completedLessons.has(i) && i < activeLesson;
-          return (
-            <button
-              key={l.id}
-              onClick={() => unlocked && !isRunning && setActiveLesson(i)}
-              disabled={!unlocked || isRunning}
-              className={`rounded-xl border p-3 text-left transition-all ${
-                isActive
-                  ? 'border-amber-500 bg-amber-500/10'
-                  : unlocked
-                  ? 'border-gray-700 bg-gray-900 hover:border-gray-600 hover:bg-gray-800'
-                  : 'border-gray-800 bg-gray-900/50 opacity-50 cursor-not-allowed'
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                {done ? (
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                ) : unlocked ? (
-                  <GraduationCap className="h-4 w-4 text-amber-500" />
-                ) : (
-                  <Lock className="h-4 w-4 text-gray-600" />
-                )}
-                <span className={`text-sm font-medium ${isActive ? 'text-amber-400' : unlocked ? 'text-gray-200' : 'text-gray-600'}`}>
-                  {l.name}
-                </span>
-              </div>
-              <p className="mt-1 text-xs text-gray-500">{l.description}</p>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Stats bar */}
-      <div className="flex items-center justify-between rounded-xl border border-gray-800 bg-gray-900 px-4 py-3">
-        <div className="flex items-center gap-6">
-          <div>
-            <span className="text-xs text-gray-500">WPM</span>
-            <p className="text-lg font-bold text-amber-400">{wpm}</p>
-          </div>
-          <div>
-            <span className="text-xs text-gray-500">Accuracy</span>
-            <p className="text-lg font-bold text-white">{accuracy}%</p>
-          </div>
-        </div>
-        <button onClick={restart} className="rounded-lg p-2 text-gray-400 hover:bg-gray-800 hover:text-white">
-          <RotateCcw className="h-4 w-4" />
-        </button>
-      </div>
-
-      {/* Typing area */}
       {!result ? (
-        <div
-          className="rounded-xl border border-gray-800 bg-gray-900 p-6 cursor-text min-h-[160px]"
-          onClick={() => inputRef.current?.focus()}
-        >
-          <p className="font-mono text-lg leading-relaxed tracking-wide">
-            {chars.map((c, i) => (
-              <span key={i} className={`char ${c.status}`}>
-                {c.char}
-              </span>
-            ))}
-          </p>
-          <input ref={inputRef} className="sr-only" autoFocus />
-        </div>
-      ) : (
-        /* Results */
-        <div className="rounded-xl border border-amber-500/30 bg-gray-900 p-8 text-center">
-          <h3 className="text-2xl font-bold text-white">Lesson Complete!</h3>
-          <div className="mt-6 grid grid-cols-3 gap-4">
-            <div>
-              <p className="text-3xl font-bold text-amber-400">{result.wpm}</p>
-              <p className="text-sm text-gray-400">WPM</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-white">{result.accuracy}%</p>
-              <p className="text-sm text-gray-400">Accuracy</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-gray-300">{result.duration}s</p>
-              <p className="text-sm text-gray-400">Time</p>
+        <div className="w-full">
+          <div className="mb-2 flex flex-wrap items-center justify-center gap-1">
+            {lessons.map((l, i) => {
+              const unlocked = unlockedSet.has(i);
+              const done = completedSet.has(i);
+              const isActive = i === activeLesson;
+              return (
+                <button
+                  key={l.id}
+                  type="button"
+                  onClick={() => goToLesson(i)}
+                  disabled={!unlocked || isRunning}
+                  title={unlocked ? l.description : 'Complete the previous lesson to unlock'}
+                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs transition-all ${
+                    isActive
+                      ? 'bg-accent-bg text-accent'
+                      : unlocked
+                        ? 'text-text-dim hover:bg-surface-raised hover:text-text'
+                        : 'cursor-not-allowed text-text-dim/40'
+                  } ${isRunning ? 'opacity-30 cursor-not-allowed' : ''}`}
+                >
+                  {done ? (
+                    <Check className="h-3 w-3 text-accent" />
+                  ) : !unlocked ? (
+                    <Lock className="h-3 w-3" />
+                  ) : null}
+                  <span>
+                    {i + 1}. {l.name}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-mono text-sm text-text-dim">
+            <span className="text-text-bright">{lesson.name}</span>
+            <span className="text-surface-border">·</span>
+            <span className="tabular-nums text-correct">
+              {isRunning ? wpm : '--'}
+              <span className="text-text-dim"> wpm</span>
+            </span>
+            <span className="text-surface-border">·</span>
+            <span className="tabular-nums text-correct">
+              {isRunning ? accuracy : '--'}
+              <span className="text-text-dim">%</span>
+            </span>
+            {lesson.keys[0] !== 'all' && (
+              <>
+                <span className="text-surface-border">·</span>
+                <span className="text-[11px] tracking-wide">
+                  keys: <span className="text-text">{lesson.keys.join(' ').toUpperCase()}</span>
+                </span>
+              </>
+            )}
+          </div>
+
+          <div className="mx-auto mt-3 h-0.5 w-full max-w-2xl overflow-hidden rounded-full bg-surface-raised">
+            <div
+              className={`h-full rounded-full bg-accent transition-all duration-150 ${
+                isRunning ? 'progress-glow' : ''
+              }`}
+              style={{
+                width: chars.length
+                  ? `${Math.min(100, (currentIndex / chars.length) * 100)}%`
+                  : '0%',
+              }}
+            />
+          </div>
+
+          <div
+            ref={typingAreaRef}
+            className="relative mx-auto mt-4 max-w-3xl cursor-text overflow-hidden py-3"
+            style={{ height: lineHeight > 0 ? lineHeight * 3 + 24 : 112 }}
+            onClick={() => inputRef.current?.focus({ preventScroll: true })}
+          >
+            <div
+              className="typing-text text-lg leading-relaxed tracking-wide transition-transform duration-150 ease-out"
+              style={{ transform: `translateY(-${scrollOffset}px)` }}
+            >
+              {chars.map((c, i) => (
+                <span
+                  key={i}
+                  ref={(el) => {
+                    if (i === 0) firstCharRef.current = el;
+                    if (i === currentIndex) currentCharRef.current = el;
+                  }}
+                  className={`char ${c.status}`}
+                >
+                  {c.char}
+                </span>
+              ))}
             </div>
           </div>
-          <div className="mt-6 flex items-center justify-center gap-3">
-            <button
-              onClick={() => { setResult(null); restart(); }}
-              className="rounded-lg border border-gray-700 px-4 py-2 text-sm text-gray-300 hover:bg-gray-800"
-            >
-              Retry
-            </button>
-            {activeLesson < lessons.length - 1 && (
+
+          <input ref={inputRef} className="sr-only" autoFocus />
+
+          <div className="mt-6 flex h-8 items-center justify-center">
+            {!isRunning && !isComplete && (
+              <p className="text-sm text-text-dim">start typing to begin</p>
+            )}
+            {isRunning && (
               <button
-                onClick={() => { setResult(null); setActiveLesson(activeLesson + 1); }}
-                className="flex items-center gap-1 rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-500"
+                type="button"
+                onClick={retryLesson}
+                className="text-text-dim transition-colors hover:text-text"
+                title="Restart lesson"
               >
-                Next Lesson <ChevronRight className="h-4 w-4" />
+                <RotateCcw className="h-4 w-4" />
               </button>
             )}
           </div>
-        </div>
-      )}
 
-      {/* Keyboard visual */}
-      <div className="rounded-xl border border-gray-800 bg-gray-900 p-4">
-        <div className="space-y-1.5">
-          {keyboardRows.map((row, ri) => (
-            <div key={ri} className="flex justify-center gap-1">
-              {row.map((key) => {
-                const isActive = activeKeys.has(key);
-                const isLessonKey = lessonKeySet.has(key) || lesson.keys[0] === 'all';
-                const isHome = homeRowKeys.has(key);
-                const color = getKeyColor(key);
-                return (
-                  <div
-                    key={key}
-                    className={`key h-9 w-9 text-xs ${isActive ? 'active' : ''} ${isHome ? 'home-row' : ''}`}
-                    style={isLessonKey && !isActive ? { borderColor: color, color } : undefined}
-                  >
-                    {key}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-          <div className="flex justify-center">
-            <div className="key h-9 w-72">space</div>
+          <div className="mt-4 animate-fade-up">
+            <LiveKeyboard
+              nextChar={chars[currentIndex]?.char}
+              lastKeyCorrect={lastKeyFlash}
+              focusKeys={lesson.keys}
+              compact
+            />
           </div>
+
+          <p className="mt-6 text-center text-[11px] text-text-dim/70">{lesson.description}</p>
         </div>
-      </div>
+      ) : (
+        <ResultCard
+          result={result}
+          onNext={() => (hasNext ? goToLesson(activeLesson + 1) : retryLesson())}
+          nextLabel={hasNext ? 'next lesson' : 'retry lesson'}
+          nextHint={hasNext ? 'tab · next lesson' : 'tab · retry'}
+          onRetry={hasNext ? retryLesson : undefined}
+          retryLabel="retry"
+        />
+      )}
     </div>
   );
 }

@@ -109,9 +109,11 @@ interface LiveKeyboardProps {
   nextChar?: string;
   lastKeyCorrect?: { key: string; correct: boolean } | null;
   compact?: boolean;
+  /** When set, only these keys (and space) stay fully opaque — teaches lesson key focus. */
+  focusKeys?: string[];
 }
 
-export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact }: LiveKeyboardProps) {
+export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusKeys }: LiveKeyboardProps) {
   const [flashes, setFlashes] = useState<Map<string, KeyFlash>>(new Map());
   const cleanupRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
@@ -132,6 +134,10 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact }: Live
   }, [lastKeyCorrect]);
 
   const hintKey = nextChar ? (CHAR_TO_KEY[nextChar] || CHAR_TO_KEY[nextChar.toLowerCase()]) : null;
+
+  const focusSet = focusKeys && focusKeys.length > 0 && !focusKeys.includes('all')
+    ? new Set(focusKeys.map((k) => k.toLowerCase()))
+    : null;
 
   const keyH = compact ? 32 : 40;
   const unitW = compact ? 30 : 38;
@@ -161,6 +167,14 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact }: Live
               // Last key absorbs any extra units so the row fills full width
               const effectiveW = (ki === row.length - 1) ? keyW + extraUnits : keyW;
 
+              // Dim keys outside the current lesson focus set
+              const isLetterKey = kd.id.length === 1;
+              const inFocus = !focusSet
+                || kd.id === 'space'
+                || (isLetterKey && focusSet.has(kd.id))
+                || (isLetterKey && focusSet.has(kd.label));
+              const isDimmed = Boolean(focusSet && !inFocus && !isHint && !isFlashCorrect && !isFlashIncorrect);
+
               let className = 'key font-mono';
               if (compact) {
                 className += ' text-[10px]';
@@ -174,8 +188,12 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact }: Live
                 className += ' key-flash-incorrect';
               } else if (isHint) {
                 className += ' key-hint';
-              } else if (kd.home) {
+              } else if (kd.home && inFocus) {
                 className += ' home-row';
+              }
+
+              if (isDimmed) {
+                className += ' opacity-25';
               }
 
               return (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ExpandableSeoContentProps {
@@ -18,6 +18,8 @@ interface ExpandableSeoContentProps {
  * the Tailwind `hidden` utility) so crawlers and no-JS clients see the entire
  * article — the toggle never mounts/unmounts content.
  *
+ * Hash links (in-article TOC) auto-expand the body so anchors are reachable.
+ *
  * Styled by the shared `.blog-article` rules in src/app/globals.css.
  */
 export default function ExpandableSeoContent({
@@ -29,15 +31,33 @@ export default function ExpandableSeoContent({
   const [expanded, setExpanded] = useState(false);
   const bodyId = useId();
 
+  // Auto-expand when user follows an in-page anchor (TOC / deep link).
+  useEffect(() => {
+    const expandForHash = () => {
+      if (typeof window === 'undefined') return;
+      if (window.location.hash) {
+        setExpanded(true);
+        // After expand, re-scroll so the target is not still hidden.
+        requestAnimationFrame(() => {
+          const id = window.location.hash.slice(1);
+          if (!id) return;
+          document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      }
+    };
+
+    expandForHash();
+    window.addEventListener('hashchange', expandForHash);
+    return () => window.removeEventListener('hashchange', expandForHash);
+  }, []);
+
   return (
     <section className="border-t border-surface-border pt-10">
-      {/* Always-visible preview */}
       <div
         className="blog-article"
         dangerouslySetInnerHTML={{ __html: previewHtml }}
       />
 
-      {/* Full body — always in the DOM, visually hidden until expanded */}
       <div
         id={bodyId}
         className={`blog-article ${expanded ? '' : 'hidden'}`}

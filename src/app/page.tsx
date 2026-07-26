@@ -5,6 +5,7 @@ import JsonLd, {
   webApplicationSchema,
   faqSchema,
   howToSchema,
+  breadcrumbSchema,
 } from '@/components/seo/JsonLd';
 import { siteConfig } from '@/config/site';
 import {
@@ -15,10 +16,21 @@ import {
   howToSteps,
 } from '@/data/home/typing-speed-content';
 
-// Home (`/`) is the canonical speed-test page — see plan.
+// Home (`/`) is the canonical speed-test page.
 export const metadata: Metadata = {
   title: { absolute: meta.title },
   description: meta.description,
+  keywords: [
+    'typing speed test',
+    'free typing test',
+    'wpm test',
+    'words per minute test',
+    'typing test online',
+    'check typing speed',
+    'typing accuracy test',
+    'free wpm test',
+  ],
+  authors: [{ name: 'FreeTyper Editorial', url: siteConfig.url }],
   alternates: {
     canonical: siteConfig.url,
   },
@@ -34,26 +46,31 @@ export const metadata: Metadata = {
     title: meta.title,
     description: meta.description,
   },
+  other: {
+    'article:modified_time': '2026-07-26',
+  },
 };
 
 export default function HomePage() {
   return (
     <div>
-      {/* Typing window — fills the viewport so SEO content starts below the fold
-          and stays out of sight while a test is in progress. */}
+      {/* Typing window — fills the viewport so SEO content starts below the fold. */}
       <section className="flex min-h-screen items-center justify-center px-8 py-12 sm:px-10 lg:px-12">
-        {/* Visible hero is the tool; the H1 carries the primary keyword for SEO/a11y. */}
-        <h1 className="sr-only">Free Typing Speed Test</h1>
+        <h1 className="sr-only">Free Typing Speed Test — Check Your WPM Online</h1>
         <div className="w-full">
           <TypingSpeedTest />
         </div>
       </section>
 
-      {/* SEO content — visible only once the user scrolls past the typing window.
-          Preview is always shown; the full article is in the DOM but expandable. */}
+      {/* Long-form SEO — full article always in DOM (Read more only hides visually). */}
       <section className="px-8 pb-16 sm:px-10 lg:px-12">
         <div className="mx-auto max-w-3xl">
-          <ExpandableSeoContent previewHtml={previewHtml} bodyHtml={bodyHtml} />
+          <ExpandableSeoContent
+            previewHtml={previewHtml}
+            bodyHtml={bodyHtml}
+            readMoreLabel="Read the full typing speed guide"
+            showLessLabel="Show less"
+          />
         </div>
       </section>
 
@@ -62,9 +79,13 @@ export default function HomePage() {
           webApplicationSchema(meta.title, meta.description, siteConfig.url),
           faqSchema(faqs),
           howToSchema(howToSteps, {
-            name: 'How to Take the Typing Speed Test',
+            name: 'How to Take the FreeTyper Typing Speed Test',
             description: meta.description,
           }),
+          breadcrumbSchema([
+            { name: 'Home', url: siteConfig.url },
+            { name: 'Free Typing Speed Test', url: siteConfig.url },
+          ]),
         ]}
       />
     </div>

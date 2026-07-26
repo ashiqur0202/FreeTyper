@@ -67,9 +67,23 @@ function StatBlock({ label, value, color }: { label: string; value: string; colo
 interface ResultCardProps {
   result: TypingSession;
   onNext: () => void;
+  /** Primary action label (default: "next test"). */
+  nextLabel?: string;
+  /** Shortcut hint under actions (default: "tab · next test"). */
+  nextHint?: string;
+  /** Optional secondary action (e.g. retry lesson). */
+  onRetry?: () => void;
+  retryLabel?: string;
 }
 
-export default function ResultCard({ result, onNext }: ResultCardProps) {
+export default function ResultCard({
+  result,
+  onNext,
+  nextLabel = 'next test',
+  nextHint = 'tab · next test',
+  onRetry,
+  retryLabel = 'retry',
+}: ResultCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
   const [imageCopied, setImageCopied] = useState(false);
@@ -178,14 +192,22 @@ export default function ResultCard({ result, onNext }: ResultCardProps) {
       </div>
 
       {/* Actions below card */}
-      <div className="mt-6 flex items-center justify-center gap-2">
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
         <button
           onClick={onNext}
           className="flex items-center gap-1.5 rounded-lg bg-accent px-5 py-2.5 text-xs font-medium text-surface transition-all hover:brightness-110 active:scale-95"
         >
           <RotateCcw className="h-3.5 w-3.5" />
-          next test
+          {nextLabel}
         </button>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="flex items-center gap-1.5 rounded-lg border border-surface-border px-4 py-2.5 text-xs text-text-dim transition-all hover:border-accent/30 hover:text-text active:scale-95"
+          >
+            {retryLabel}
+          </button>
+        )}
         <button
           onClick={shareImage}
           className="flex items-center gap-1.5 rounded-lg border border-surface-border px-4 py-2.5 text-xs text-text-dim transition-all hover:border-accent/30 hover:text-text active:scale-95"
@@ -204,7 +226,7 @@ export default function ResultCard({ result, onNext }: ResultCardProps) {
 
       {/* Shortcut hint */}
       <p className="mt-3 text-center text-[10px] text-surface-border">
-        tab · next test
+        {nextHint}
       </p>
     </div>
   );
