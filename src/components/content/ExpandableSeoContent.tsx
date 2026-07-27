@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { injectContentDates } from '@/lib/content-dates';
 
 interface ExpandableSeoContentProps {
   /** Always-visible intro (rendered with `.blog-article` styling). */
@@ -18,9 +19,9 @@ interface ExpandableSeoContentProps {
  * the Tailwind `hidden` utility) so crawlers and no-JS clients see the entire
  * article — the toggle never mounts/unmounts content.
  *
- * Hash links (in-article TOC) auto-expand the body so anchors are reachable.
+ * Injects {{UPDATED_DISPLAY}} / {{UPDATED_DATETIME}} as the current month+year.
  *
- * Styled by the shared `.blog-article` rules in src/app/globals.css.
+ * Hash links (in-article TOC) auto-expand the body so anchors are reachable.
  */
 export default function ExpandableSeoContent({
   previewHtml,
@@ -31,13 +32,14 @@ export default function ExpandableSeoContent({
   const [expanded, setExpanded] = useState(false);
   const bodyId = useId();
 
-  // Auto-expand when user follows an in-page anchor (TOC / deep link).
+  const preview = useMemo(() => injectContentDates(previewHtml), [previewHtml]);
+  const body = useMemo(() => injectContentDates(bodyHtml), [bodyHtml]);
+
   useEffect(() => {
     const expandForHash = () => {
       if (typeof window === 'undefined') return;
       if (window.location.hash) {
         setExpanded(true);
-        // After expand, re-scroll so the target is not still hidden.
         requestAnimationFrame(() => {
           const id = window.location.hash.slice(1);
           if (!id) return;
@@ -55,13 +57,13 @@ export default function ExpandableSeoContent({
     <section className="border-t border-surface-border pt-10">
       <div
         className="blog-article"
-        dangerouslySetInnerHTML={{ __html: previewHtml }}
+        dangerouslySetInnerHTML={{ __html: preview }}
       />
 
       <div
         id={bodyId}
         className={`blog-article ${expanded ? '' : 'hidden'}`}
-        dangerouslySetInnerHTML={{ __html: bodyHtml }}
+        dangerouslySetInnerHTML={{ __html: body }}
       />
 
       <button

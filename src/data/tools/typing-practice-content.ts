@@ -15,7 +15,7 @@ export const previewHtml = `
 <h2>Free Typing Practice — Daily Drills That Actually Improve WPM</h2>
 <p class="article-byline">
   <span>By <strong>FreeTyper Editorial</strong></span>
-  <span>Updated <time datetime="2026-07-26">July 26, 2026</time></span>
+  <span>Updated <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time></span>
   <span>Reviewed for accuracy · ~11 min read</span>
 </p>
 <p>Free <strong>typing practice</strong> is how you turn a one-time speed test into real improvement. FreeTyper gives you themed passages — quotes, news, code, fun — plus an adaptive <strong>weak keys</strong> mode that drills the letters you miss most. No signup. No download. Start typing above and use this guide to practice with a plan.</p>
@@ -240,7 +240,7 @@ export const bodyHtml = `
 <li><strong>Weak-key targeting:</strong> Standard deliberate-practice approach — isolate the constraint (error-prone keys), then reintegrate into full text.</li>
 <li><strong>Product methodology:</strong> Live WPM/accuracy and key stats are computed in FreeTyper’s typing engine; related tools include <a href="/typing-lessons">lessons</a>, <a href="/">speed test</a>, and <a href="/typing-progress">progress</a>.</li>
 </ul>
-<p class="article-note"><strong>Corrections:</strong> Spot an issue? Use the <a href="/contact">contact</a> page. Last editorial update: <time datetime="2026-07-26">July 26, 2026</time>.</p>
+<p class="article-note"><strong>Corrections:</strong> Spot an issue? Use the <a href="/contact">contact</a> page. Last editorial update: <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time>.</p>
 
 <h2 id="start-practicing">Start Your Free Typing Practice Now</h2>
 <p>Scroll up. Pick a category. Type the first passage with patience. Protect accuracy. Shuffle for a new text. Tomorrow, show up again.</p>

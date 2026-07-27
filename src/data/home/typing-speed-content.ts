@@ -18,7 +18,7 @@ export const previewHtml = `
 <h2>Free Typing Speed Test — Find Your WPM and Accuracy Instantly</h2>
 <p class="article-byline">
   <span>By <strong>FreeTyper Editorial</strong></span>
-  <span>Updated <time datetime="2026-07-26">July 26, 2026</time></span>
+  <span>Updated <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time></span>
   <span>Reviewed for accuracy · ~12 min read</span>
 </p>
 <p>Take a free <strong>typing speed test</strong> online and get your <strong>words per minute (WPM)</strong>, <strong>accuracy</strong>, and error count in under a minute — no account, no download, no paywall. FreeTyper uses the same <strong>5-characters-per-word</strong> convention used in professional assessments so your score is comparable, not inflated.</p>
@@ -258,7 +258,7 @@ export const bodyHtml = `
 <li><strong>Practice dosage (15–20 minutes daily):</strong> Consistent with motor-learning principles that favor distributed practice over massed cramming for skill acquisition; applied specifically to typing in FreeTyper’s lessons guidance.</li>
 <li><strong>Internal FreeTyper methodology:</strong> Scoring behavior is implemented in the FreeTyper typing engine (correct/incorrect keystroke accounting, timed runs, live WPM). Product pages: <a href="/typing-lessons">lessons</a>, <a href="/typing-practice">practice</a>, <a href="/typing-progress">progress</a>.</li>
 </ul>
-<p class="article-note"><strong>Corrections:</strong> If you spot a factual issue, use the <a href="/contact">contact</a> page. We update this guide when scoring behavior or recommended benchmarks change. Last editorial update: <time datetime="2026-07-26">July 26, 2026</time>.</p>
+<p class="article-note"><strong>Corrections:</strong> If you spot a factual issue, use the <a href="/contact">contact</a> page. We update this guide when scoring behavior or recommended benchmarks change. Last editorial update: <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time>.</p>
 
 <h2 id="ready-to-test">Ready to Test? Take Your Free Typing Speed Test Now</h2>
 <p>Scroll up and start typing. Note your <strong>WPM</strong> and <strong>accuracy</strong>. Average a few runs. Then train the constraint that actually limits you — technique under 40 WPM, consistency at 40–60, endurance and precision above 60.</p>

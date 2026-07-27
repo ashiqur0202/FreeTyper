@@ -14,7 +14,7 @@ export const previewHtml = `
 <h2>Keyboard Guide — Color-Coded Finger Placement for Touch Typing</h2>
 <p class="article-byline">
   <span>By <strong>FreeTyper Editorial</strong></span>
-  <span>Updated <time datetime="2026-07-27">July 27, 2026</time></span>
+  <span>Updated <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time></span>
   <span>Reviewed for accuracy · ~12 min read</span>
 </p>
 <p>This free <strong>keyboard guide</strong> shows exactly <strong>which finger should press each key</strong> on a standard QWERTY layout. Colors map to finger zones. Hover or click any key above to see its owner finger — and your personal accuracy stats after you practice on FreeTyper.</p>
@@ -216,7 +216,7 @@ export const bodyHtml = `
 <li><strong>WPM context:</strong> Measurement conventions discussed on FreeTyper’s <a href="/">typing speed test</a> guide and <a href="https://en.wikipedia.org/wiki/Words_per_minute" rel="noopener noreferrer" target="_blank">Wikipedia: Words per minute</a>.</li>
 <li><strong>Product integration:</strong> Key stats come from FreeTyper’s local progress engine used by lessons, practice, and tests.</li>
 </ul>
-<p class="article-note"><strong>Corrections:</strong> Contact us via the <a href="/contact">contact</a> page. Last editorial update: <time datetime="2026-07-27">July 27, 2026</time>.</p>
+<p class="article-note"><strong>Corrections:</strong> Contact us via the <a href="/contact">contact</a> page. Last editorial update: <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time>.</p>
 
 <h2 id="troubleshooting">Troubleshooting Placement Problems</h2>
 <p>If accuracy is stuck or certain letters always feel “wrong,” use this quick diagnostic:</p>

@@ -54,6 +54,46 @@ export const blogPosts: BlogPost[] = [
     category: 'Typing Speed',
     readTime: '17 min',
   },
+  {
+    slug: 'improve-typing-accuracy',
+    title: 'How to Improve Typing Accuracy From 90% to 99%',
+    excerpt:
+      'A practical plan to raise typing accuracy from 90% to 95% and toward 99% — weak-key drills, pace control, and FreeTyper tools that make clean speed stick.',
+    date: '2026-07-27',
+    author: 'FreeTyper Team',
+    category: 'Typing Speed',
+    readTime: '16 min',
+  },
+  {
+    slug: 'free-typing-test',
+    title: 'Free Typing Test: Complete Guide to Measuring Your WPM',
+    excerpt:
+      'How free typing tests work, what WPM and accuracy mean, how to test fairly, and what to do after your score — with FreeTyper’s free no-signup test.',
+    date: '2026-07-27',
+    author: 'FreeTyper Team',
+    category: 'Typing Tests',
+    readTime: '17 min',
+  },
+  {
+    slug: 'one-minute-typing-test',
+    title: '1 Minute Typing Test: What Is a Good Score?',
+    excerpt:
+      'What a good 1 minute typing test score looks like, how to run a fair 60-second test, and when to use longer 3- and 5-minute tests instead.',
+    date: '2026-07-27',
+    author: 'FreeTyper Team',
+    category: 'Typing Tests',
+    readTime: '16 min',
+  },
+  {
+    slug: '3-minute-typing-test-vs-5-minute-typing-test',
+    title: '3 Minute Typing Test vs 5 Minute Typing Test: Which Is More Accurate?',
+    excerpt:
+      '3 minute or 5 minute typing test — which gives a more accurate WPM score? Duration science, use cases, employer tests, and which length you should use.',
+    date: '2026-07-27',
+    author: 'FreeTyper Team',
+    category: 'Typing Tests',
+    readTime: '22 min',
+  },
 ];
 
 export function getBlogPost(slug: string): BlogPost | undefined {

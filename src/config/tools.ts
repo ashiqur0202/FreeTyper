@@ -76,9 +76,9 @@ const toolData: ToolData[] = [
   {
     id: 'typing-game-falling-words',
     name: 'Falling Words Game',
-    seoTitle: 'Falling Words Game: Type Fast & Beat Every Level (Free)',
+    seoTitle: 'Falling Words Typing Game — Free Speed Training (No Signup)',
     description:
-      'Falling words typing game — type words before they hit the bottom. 10 difficulty tiers, lives system, high scores. Free, no signup.',
+      'Free falling words typing game: type words before they hit the bottom. 10 difficulty tiers, lives, high scores, and WPM tracking. No login required.',
     iconName: 'ArrowDown',
     category: 'typing',
     featured: true,
@@ -86,9 +86,9 @@ const toolData: ToolData[] = [
   {
     id: 'typing-game-word-attack',
     name: 'Word Attack Game',
-    seoTitle: 'Word Attack Game: Combos, Scores & Timed Rounds (Free)',
+    seoTitle: 'Word Attack Typing Game — Combos, Rounds & Free Speed Drills',
     description:
-      'Word attack typing game — type fast for combos and multipliers. 8 rounds of increasing difficulty. Free, no signup.',
+      'Free Word Attack typing game with timed words, combo multipliers, and 8 difficulty rounds. Build burst speed and consistency — no signup required.',
     iconName: 'Crosshair',
     category: 'typing',
     featured: true,

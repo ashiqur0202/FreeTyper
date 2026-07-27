@@ -15,6 +15,9 @@ import {
   faqs,
   howToSteps,
 } from '@/data/home/typing-speed-content';
+import { getContentUpdatedMonthYear } from '@/lib/content-dates';
+
+const { datetime: contentUpdatedMonth } = getContentUpdatedMonthYear();
 
 // Home (`/`) is the canonical speed-test page.
 export const metadata: Metadata = {
@@ -47,7 +50,8 @@ export const metadata: Metadata = {
     description: meta.description,
   },
   other: {
-    'article:modified_time': '2026-07-26',
+    // Month-level freshness signal (YYYY-MM), matches on-page "Updated" byline.
+    'article:modified_time': contentUpdatedMonth,
   },
 };
 

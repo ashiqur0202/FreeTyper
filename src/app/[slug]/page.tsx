@@ -38,6 +38,20 @@ import {
   faqs as progressFaqs,
   howToSteps as progressHowToSteps,
 } from '@/data/tools/typing-progress-content';
+import {
+  meta as fallingMeta,
+  previewHtml as fallingPreviewHtml,
+  bodyHtml as fallingBodyHtml,
+  faqs as fallingFaqs,
+  howToSteps as fallingHowToSteps,
+} from '@/data/tools/falling-words-content';
+import {
+  meta as attackMeta,
+  previewHtml as attackPreviewHtml,
+  bodyHtml as attackBodyHtml,
+  faqs as attackFaqs,
+  howToSteps as attackHowToSteps,
+} from '@/data/tools/word-attack-content';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -91,6 +105,24 @@ const seoToolPages: Record<
     howToSteps: progressHowToSteps,
     h1: 'Typing Progress Tracker — WPM History & Achievements',
     howToName: 'How to Track Typing Progress on FreeTyper',
+  },
+  'typing-game-falling-words': {
+    meta: fallingMeta,
+    previewHtml: fallingPreviewHtml,
+    bodyHtml: fallingBodyHtml,
+    faqs: fallingFaqs,
+    howToSteps: fallingHowToSteps,
+    h1: 'Falling Words Typing Game — Free Speed Training',
+    howToName: 'How to Play FreeTyper Falling Words',
+  },
+  'typing-game-word-attack': {
+    meta: attackMeta,
+    previewHtml: attackPreviewHtml,
+    bodyHtml: attackBodyHtml,
+    faqs: attackFaqs,
+    howToSteps: attackHowToSteps,
+    h1: 'Word Attack Typing Game — Combos & Timed Rounds',
+    howToName: 'How to Play FreeTyper Word Attack',
   },
 };
 

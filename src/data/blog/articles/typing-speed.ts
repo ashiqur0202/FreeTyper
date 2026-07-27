@@ -1880,4 +1880,291 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><em>Start by knowing your number: take a <a href="/typing-speed-test">free typing speed test</a> right now. Then build toward your professional target with <a href="/typing-lessons">step-by-step typing lessons</a> designed for every skill level.</em></p>
 `,
+
+  'improve-typing-accuracy': `
+<p>Most people treat typing improvement like a speed contest. They chase a higher <strong>WPM</strong>, ignore the red errors, and wonder why work still feels messy. The missing variable is <strong>accuracy</strong> — the percentage of keystrokes that were correct. Moving from <strong>90% to 99% accuracy</strong> often increases real-world throughput more than forcing another ten words per minute of panic typing.</p>
+
+<p>This complete guide explains how accuracy is measured, why 95% is the professional floor, what causes chronic errors, and a phased plan to climb from 90% → 95% → 99% using FreeTyper lessons, practice, keyboard guide insights, progress analytics, and honest retesting.</p>
+
+<blockquote><p><strong>Baseline first:</strong> Take a <a href="/">free typing speed test</a> and write down <em>both</em> WPM and accuracy before you change anything. Without both numbers, you are training blind.</p></blockquote>
+
+<h2 id="toc">Table of Contents</h2>
+<ol>
+<li><a href="#why-accuracy">Why Accuracy Beats Empty Speed</a></li>
+<li><a href="#cost-of-errors">The Hidden Cost of Errors</a></li>
+<li><a href="#how-measured">How Accuracy Is Measured</a></li>
+<li><a href="#gross-vs-net">Gross Speed vs Usable Speed</a></li>
+<li><a href="#benchmarks">Accuracy Benchmarks (90% to 99%+)</a></li>
+<li><a href="#causes">Root Causes of Low Accuracy</a></li>
+<li><a href="#diagnose">Diagnose Your Error Pattern</a></li>
+<li><a href="#plan">The Plan: 90% → 95% → 99%</a></li>
+<li><a href="#drills">Drills That Raise Accuracy</a></li>
+<li><a href="#tools">FreeTyper Tools for Accuracy Work</a></li>
+<li><a href="#speed-after">Will Accuracy Work Make Me Slower Forever?</a></li>
+<li><a href="#mistakes">Accuracy Training Mistakes</a></li>
+<li><a href="#faq">Typing Accuracy FAQ</a></li>
+</ol>
+
+<h2 id="why-accuracy">Why Accuracy Beats Empty Speed</h2>
+<p>Speed is easy to brag about. Accuracy is what makes speed valuable. In school, work, and job assessments, messy typing creates:</p>
+<ul>
+<li>Backspaces and retypes that destroy rhythm</li>
+<li>Proofreading overhead after every paragraph</li>
+<li>Lower net output even when the timer looked fast</li>
+<li>Employer test failures when minimum accuracy is enforced</li>
+</ul>
+<p>FreeTyper always surfaces accuracy beside WPM because the product goal is usable skill, not vanity scores. A clean 60 WPM beats a sloppy 80 WPM in almost every professional context. Related reading: <a href="/blog/typing-speed-for-work">typing speed for work</a> and <a href="/blog/good-typing-speed">what is a good typing speed</a>.</p>
+
+<h2 id="cost-of-errors">The Hidden Cost of Errors</h2>
+<p>Suppose two people finish a one-minute test:</p>
+<ul>
+<li>Typist A: 75 WPM at 90% accuracy</li>
+<li>Typist B: 62 WPM at 98% accuracy</li>
+</ul>
+<p>Typist A looks faster on a highlight reel. Typist B usually produces cleaner documents with fewer corrections. In chat-heavy jobs, errors also create social and process cost — wrong numbers, wrong names, wrong commands.</p>
+<p>If your FreeTyper accuracy sits under 95%, your highest-leverage project is not “more speed intervals.” It is error removal.</p>
+
+<h2 id="how-measured">How Accuracy Is Measured</h2>
+<blockquote><p><strong>Accuracy % ≈ (correct keystrokes ÷ total keystrokes) × 100</strong></p></blockquote>
+<p>If you press 200 keys and 10 are wrong, accuracy is 95%. Different platforms may handle backspaces slightly differently, but the coaching rule stays stable: fewer mismatches per hundred keystrokes is better.</p>
+<p>On FreeTyper, watch live accuracy during <a href="/typing-practice">practice</a> and lessons. If the live number collapses, your current pace is too high for your current map quality.</p>
+
+<h2 id="gross-vs-net">Gross Speed vs Usable Speed</h2>
+<p>Some assessments talk about net or adjusted WPM — speed reduced by error penalties — because employers care about usable output. Even when a site only shows raw WPM + accuracy, you should interpret them jointly:</p>
+<table>
+<thead><tr><th>Pattern</th><th>Meaning</th><th>Action</th></tr></thead>
+<tbody>
+<tr><td>High WPM, low accuracy</td><td>Rushing / unstable map</td><td>Slow down; accuracy phases below</td></tr>
+<tr><td>Medium WPM, high accuracy</td><td>Clean foundation</td><td>Careful speed building</td></tr>
+<tr><td>Low WPM, low accuracy</td><td>Form + map problems</td><td>Lessons + keyboard guide first</td></tr>
+<tr><td>High WPM, high accuracy</td><td>Strong skill</td><td>Endurance and specialty text</td></tr>
+</tbody>
+</table>
+
+<h2 id="benchmarks">Accuracy Benchmarks (90% to 99%+)</h2>
+<table>
+<thead><tr><th>Accuracy</th><th>Assessment</th><th>Training focus</th></tr></thead>
+<tbody>
+<tr><td>Below 90%</td><td>High error rate</td><td>Slow perfect practice only; pause games</td></tr>
+<tr><td>90–94%</td><td>Below professional floor</td><td>Weak keys, home row, no ego speed</td></tr>
+<tr><td>95–97%</td><td>Professional baseline</td><td>Hold form; tiny pace increases</td></tr>
+<tr><td>97–99%</td><td>Strong</td><td>Endurance, harder categories, symbols</td></tr>
+<tr><td>99–100%</td><td>Elite cleanliness</td><td>Peak WPM work becomes productive</td></tr>
+</tbody>
+</table>
+<p>Think of 95% as the gate. Below it, speed work mostly digs a deeper hole.</p>
+
+<h2 id="causes">Root Causes of Low Accuracy</h2>
+<ul>
+<li><strong>Looking at the keyboard</strong> — splits attention and freezes muscle memory</li>
+<li><strong>Wrong finger ownership</strong> — keys “feel random” (fix with the <a href="/keyboard-guide">keyboard guide</a>)</li>
+<li><strong>Unstable home row</strong> — hands drift off F/J anchors</li>
+<li><strong>Hesitation keys</strong> — often R, T, Y, U, N, B, bottom row, or symbols</li>
+<li><strong>Rushing past uncertainty</strong> — guessing instead of controlled reaches</li>
+<li><strong>Fatigue</strong> — long sessions, late nights, tense shoulders</li>
+<li><strong>Game-only training</strong> — pressure without placement rules</li>
+<li><strong>Inconsistent keyboards</strong> — laptop one day, unfamiliar board the next while comparing scores</li>
+</ul>
+
+<h2 id="diagnose">Diagnose Your Error Pattern</h2>
+<p>Before random drills, classify your errors using FreeTyper data:</p>
+<ol>
+<li>Take three <a href="/">speed tests</a> at the same duration; average accuracy.</li>
+<li>Open <a href="/typing-progress">progress</a> — note weakest keys and heatmap colors.</li>
+<li>Ask: are errors clustered on specific keys, on capitals/symbols, or everywhere when you rush?</li>
+<li>Pick one primary constraint for the next 7 days only.</li>
+</ol>
+<p>Clustered key errors → weak-key practice + finger map. Everywhere-when-fast errors → pace control. Symbol disasters → numbers/symbols lesson and code practice.</p>
+
+<h2 id="plan">The Plan: 90% → 95% → 99%</h2>
+<h3>Phase 1 — Stabilize at 95% (about 1–2 weeks)</h3>
+<ul>
+<li>15–20 minutes daily</li>
+<li>Mostly <a href="/typing-lessons">lessons</a> or easy quotes in <a href="/typing-practice">practice</a></li>
+<li>Pace: deliberately slower than your ego wants</li>
+<li>Session rule: if accuracy falls under 90%, stop or slow further — do not “push through”</li>
+<li>Weekly test: celebrate accuracy first, WPM second</li>
+</ul>
+<h3>Phase 2 — Hold 95% while restoring speed (about 2–4 weeks)</h3>
+<ul>
+<li>Add weak-key mode 8–10 minutes, then a clean integration passage</li>
+<li>Alternate quotes and news categories</li>
+<li>Introduce short controlled speed bursts only after a clean warm-up</li>
+<li>Keep games optional and short</li>
+</ul>
+<h3>Phase 3 — Climb toward 99% (ongoing)</h3>
+<ul>
+<li>Longer FreeTyper tests (3–5 minutes) to expose fatigue errors</li>
+<li>Numbers/symbols and code practice if punctuation breaks accuracy</li>
+<li>Occasional <a href="/typing-game-word-attack">Word Attack</a> for timer composure after form is clean</li>
+<li>Monthly review of weak keys — the list should shrink</li>
+</ul>
+
+<h2 id="drills">Drills That Raise Accuracy</h2>
+<ol>
+<li><strong>Slow perfect copy:</strong> one full practice run targeting 98%+ only. Restart the goal if you panic-sprint.</li>
+<li><strong>Weak-key laser:</strong> 8 minutes weak keys → 5 minutes clean quotes.</li>
+<li><strong>Home-row reset:</strong> keyboard guide home-row filter → Lesson 1 style work → short test.</li>
+<li><strong>Opposite-hand Shift practice:</strong> if capitals wreck accuracy, slow Shift+letter pairs deliberately.</li>
+<li><strong>Symbol islands:</strong> short sessions on numbers/symbols lesson content, accuracy only.</li>
+<li><strong>Error journal (2 minutes):</strong> after a test, write the three keys that felt sticky; those become tomorrow’s openers.</li>
+<li><strong>Backspace with intent:</strong> correct the mistake, then immediately type the right character with the correct finger — do not slam past errors.</li>
+</ol>
+
+<h2 id="tools">FreeTyper Tools for Accuracy Work</h2>
+<table>
+<thead><tr><th>Tool</th><th>Accuracy job</th></tr></thead>
+<tbody>
+<tr><td><a href="/">Speed test</a></td><td>Measure WPM + accuracy under consistent duration</td></tr>
+<tr><td><a href="/typing-lessons">Lessons</a></td><td>Rebuild finger maps from home row outward</td></tr>
+<tr><td><a href="/typing-practice">Practice</a></td><td>Volume + weak-key targeting on real text categories</td></tr>
+<tr><td><a href="/keyboard-guide">Keyboard guide</a></td><td>See which finger owns each problem key</td></tr>
+<tr><td><a href="/typing-progress">Progress</a></td><td>Heatmap, weak keys, trends, streaks</td></tr>
+<tr><td>Games</td><td>Optional pressure after cleanliness returns</td></tr>
+</tbody>
+</table>
+
+<h2 id="speed-after">Will Accuracy Work Make Me Slower Forever?</h2>
+<p>Usually you get temporarily slower, then faster than before — because clean automation scales. The “forever slower” fear mostly appears when people quit during the rebuild week. Stay with Phase 1 long enough for 95% to feel boring. Boredom is a signal that the new map is sticking.</p>
+<p>After accuracy stabilizes, use <a href="/blog/how-to-type-faster">how to type faster</a> for speed methods that do not reintroduce chaos. Keep weekly free tests via the <a href="/blog/free-typing-test">free typing test guide</a> mindset: same duration, both metrics.</p>
+
+<h2 id="mistakes">Accuracy Training Mistakes</h2>
+<ol>
+<li>Doing speed games at 88% accuracy “for motivation”</li>
+<li>Changing five variables at once and learning nothing</li>
+<li>Ignoring heatmap data and only “trying harder”</li>
+<li>Sessions longer than your attention — fatigue trains errors</li>
+<li>Skipping home-row resets when everything feels slightly off</li>
+<li>Comparing yourself to one viral 120 WPM clip</li>
+<li>Never retesting, so you cannot see accuracy gains</li>
+</ol>
+
+<h2 id="faq">Typing Accuracy FAQ</h2>
+<h3>Is 90% accuracy good enough?</h3>
+<p>For casual chat, maybe. For school, professional work, and many job tests, treat 95% as the minimum target floor.</p>
+<h3>How long does it take to go from 90% to 95%?</h3>
+<p>Many learners see movement in 1–2 weeks of daily slow, correct practice. Stubborn weak keys can take longer if finger ownership is wrong.</p>
+<h3>How do I go from 95% to 99%?</h3>
+<p>Weak-key isolation, longer clean passages, fatigue training with longer tests, and fewer panic sprints.</p>
+<h3>Should I use backspace during accuracy practice?</h3>
+<p>Yes when the goal is learning — correct and reinforce. For some pure diagnostics, finish without fixing, then review the accuracy number honestly.</p>
+<h3>Why does accuracy fall on longer tests?</h3>
+<p>Fatigue, tension, and form breakdown. Shorten sessions, fix posture, and build duration gradually.</p>
+<h3>Do typing games help accuracy?</h3>
+<p>Only when they penalize errors and you already have a clean base. Under 95%, prefer lessons and practice.</p>
+<h3>What accuracy do employers want?</h3>
+<p>Often 95%+ with a WPM minimum. Always read the listing — details in <a href="/blog/typing-speed-for-work">typing speed for work</a>.</p>
+<h3>Should I stop trying to raise WPM entirely?</h3>
+<p>While under 95% accuracy, make accuracy the primary KPI. WPM can rise as a side effect of cleaner automation.</p>
+<h3>Can adults still fix accuracy habits?</h3>
+<p>Yes. Adults relearn maps successfully with consistent short sessions. The limiter is usually consistency, not age.</p>
+<h3>How often should I retest accuracy?</h3>
+<p>Weekly under the same duration is enough. Daily testing can become emotional noise.</p>
+<h3>What if only symbols are inaccurate?</h3>
+<p>That is normal. Train numbers/symbols deliberately; do not only practice lowercase prose.</p>
+<h3>What is the first step today?</h3>
+<p>One FreeTyper test, note accuracy, then 15 minutes of slow practice or lessons below your panic pace.</p>
+
+
+<h2 id="case-studies">Three Accuracy Case Patterns (And What To Do)</h2>
+<h3>Pattern A — Fast and messy (70+ WPM, ~90% accuracy)</h3>
+<p>Stop speed games for two weeks. Run Phase 1 only. Your ego will hate it. Your net output will rise anyway as corrections disappear.</p>
+<h3>Pattern B — Careful but stuck (45 WPM, 97% accuracy)</h3>
+<p>You do not have an accuracy crisis; you have a speed-permission problem. Keep accuracy rules, add tiny speed intervals, and use longer practice to automate common words.</p>
+<h3>Pattern C — Collapses over time (great first minute, poor minute four)</h3>
+<p>This is endurance accuracy. Train 3–5 minute FreeTyper tests twice weekly and end sessions before form falls apart. Strengthening weak keys reduces late-session thrash.</p>
+
+<h2 id="workplace">Accuracy at Work: Emails, Tickets, Docs, and Chat</h2>
+<p>Workplace typing is not a closed test passage. You switch apps, paste numbers, and type names you cannot afford to miss. High FreeTyper accuracy transfers when you also:</p>
+<ul>
+<li>Slow down on numbers and proper nouns in real work</li>
+<li>Use the same finger habits on the job that you practice in lessons</li>
+<li>Avoid “chat sprint” culture that rewards instant typos</li>
+</ul>
+<p>If your job is chat-heavy, do one daily FreeTyper accuracy session before shift so the first customer does not become your warm-up.</p>
+
+<h2 id="symbols-accuracy">Numbers and Symbols: The Accuracy Kill Zone</h2>
+<p>Many typists look accurate on lowercase prose and fall apart on passwords, spreadsheets, code, and citations. That is not a moral failing; it is under-training. Schedule two short symbol sessions per week using FreeTyper lessons (numbers &amp; symbols) and code practice. Measure success by error rate on those sessions, not by prose WPM.</p>
+
+<h2 id="30-day-accuracy">30-Day Accuracy Challenge</h2>
+<ol>
+<li><strong>Days 1–3:</strong> Baseline tests; no speed goals.</li>
+<li><strong>Days 4–10:</strong> Slow perfect practice only; target 95%+ every session.</li>
+<li><strong>Days 11–17:</strong> Weak-key emphasis; retest mid-point.</li>
+<li><strong>Days 18–24:</strong> Reintroduce mild speed; hold accuracy gate.</li>
+<li><strong>Days 25–30:</strong> Longer tests; compare day-30 accuracy and WPM to day-1.</li>
+</ol>
+<p>Pass condition: average accuracy up at least into a higher band (for example 91% → 96%) even if WPM only moves slightly. Speed usually follows in the next month.</p>
+
+<h2 id="team-coaching">Coaching Yourself Like an Athlete</h2>
+<p>Elite skill work uses constraints. Your constraint might be “no session counts unless accuracy ≥95%.” Another constraint: “three rage restarts max, then walk away.” Write the rule down. FreeTyper can provide the reps and the metrics; you provide the standards.</p>
+
+
+<h2 id="psychology">The Psychology of Fixing Accuracy</h2>
+<p>Accuracy work can feel like demotion when you used to sprint. Reframe it: you are upgrading the quality of your automatic system. Professional musicians still practice slowly. Typists who refuse slow work stay permanently intermediate.</p>
+<p>Helpful mental rules:</p>
+<ul>
+<li>“Today’s win is clean copy, not a PR.”</li>
+<li>“If I cannot do it slow, I cannot do it fast.”</li>
+<li>“Three weak keys beaten beat one ego sprint.”</li>
+</ul>
+
+<h2 id="environment">Environment Tweaks That Reduce Errors</h2>
+<ul>
+<li>Screen brightness and font size you can actually read</li>
+<li>Keyboard at a height that keeps wrists neutral</li>
+<li>Notifications off for the 15-minute block</li>
+<li>Same keyboard during an accuracy training phase</li>
+<li>Shorter sessions when you are tired instead of grinding mistakes</li>
+</ul>
+
+<h2 id="kids-adults">Kids vs Adults: Same Principles, Different Patience</h2>
+<p>Kids often improve placement quickly but need short sessions. Adults may fight years of hybrid habits and need more home-row resets. The accuracy math does not change. The emotional story does — adults should expect a temporary slowdown without interpreting it as failure.</p>
+
+<h2 id="metrics-dashboard">What to Track for 30 Days of Accuracy Work</h2>
+<ol>
+<li>Weekly average accuracy on a fixed FreeTyper duration</li>
+<li>Weekly average WPM (secondary)</li>
+<li>Top 5 weak keys each Sunday</li>
+<li>Number of sessions that met the ≥95% session rule</li>
+<li>Subjective tension (1–5) — tension often predicts errors</li>
+</ol>
+<p>When four of five metrics trend right, your system is working even if a single test day feels off.</p>
+
+<h2 id="next-reads">Next Reads on FreeTyper</h2>
+<ul>
+<li><a href="/blog/free-typing-test">Free typing test complete guide</a> — measurement hygiene</li>
+<li><a href="/blog/one-minute-typing-test">1 minute typing test scores</a> — short-test strategy</li>
+<li><a href="/blog/how-to-type-faster">How to type faster</a> — after accuracy is stable</li>
+<li><a href="/blog/average-typing-speed">Average typing speed</a> — population context</li>
+</ul>
+
+<h2 id="finger-level-accuracy-a-key-by-key-mindset">Finger-Level Accuracy: A Key-by-Key Mindset</h2>
+<p>Whole-keyboard accuracy is an average that can hide a few catastrophic keys. You might be 97% on most letters and 80% on two or three. FreeTyper’s weak-key list and heatmap exist to expose that. Fixing two keys can lift overall accuracy more than an hour of generic speed runs.</p>
+<p>When a key is weak, check ownership on the keyboard guide before drilling mindlessly. If you are hitting R with the wrong finger, more speed will not save you. Correct the map, then drill slowly, then reintegrate into full sentences.</p>
+<p>Reintegration matters. Isolated drills that never return to full passages create “drill skill” that dies in real writing. Always end weak-key work with a short clean paragraph in practice mode.</p>
+<p>Review the weak-key list weekly rather than hourly. Lists need enough new sample presses to be meaningful. Obsessive checking every ten minutes creates noise.</p><h2 id="building-an-accuracy-first-culture-for-yourself">Building an Accuracy-First Culture for Yourself</h2>
+<p>If you work on a team that glorifies instant replies, you may need personal rules that protect accuracy: draft offline for sensitive numbers, slow down on names, and refuse to treat typos as personality. FreeTyper training supports that culture by making clean input feel normal again.</p>
+<p>Create environmental cues: a sticky note with “95% or it doesn’t count,” a calendar block titled “accuracy block,” or a browser bookmark folder that opens test → practice → progress in order. Systems beat willpower.</p>
+<p>When you slip — and you will — avoid all-or-nothing spirals. One messy day does not erase a clean month. Resume the next scheduled block.</p><h2 id="extended-faq-scenarios">Extended FAQ Scenarios</h2>
+<p>If your accuracy is high on FreeTyper but low in real email, you may be multitasking or rushing for social reasons. Practice transferring calm FreeTyper pace into the first five emails of the day.</p>
+<p>If accuracy is high on easy quotes but low on news or code, specialty text is the missing training distribution. Rotate categories deliberately.</p>
+<p>If accuracy is fine alone but collapses when someone watches you, add light pressure with Word Attack after clean warm-ups, then return to normal tests. Composure is trainable.</p>
+<p>If you only fail on the number row, stop calling yourself a bad typist. Call yourself undertrained on numbers and schedule two short weekly symbol sessions.</p>
+<p>If you bounce between 93% and 97% forever, you are probably alternating careful and ego days. Enforce the session rule for fourteen days straight and reassess.</p>
+<h2 id="session-design">Designing a Single High-Quality Accuracy Session</h2>
+<p>A great accuracy session is short enough to stay attentive and structured enough to prevent ego sprints. Try this template: two minutes of easy warm-up at conversational pace; ten minutes of main constraint work (weak keys or slow perfect copy); three minutes of integration on normal sentences; optional one-minute FreeTyper test only if the session stayed clean.</p>
+<p>If the main block is messy, skip the optional test. Testing while frustrated mostly manufactures bad data and worse mood. FreeTyper will still be there tomorrow.</p>
+<p>End the session by writing one sentence: what broke and what you will open with tomorrow. That sentence is more valuable than replaying the same mistake without reflection.</p>
+<p>Over a week, vary the main constraint so you cover home-row stability, weak letters, and symbols, but never vary all of them in one day. Sequencing beats chaos.</p>
+<p>Hydration, posture, and screen distance sound soft compared to WPM talk, yet they change error rates. If shoulders climb toward your ears, accuracy usually falls next. Reset posture between blocks.</p><h2 id="from-95-to-99-deep">The Last Four Percent: Why 95% to 99% Is a Different Game</h2>
+<p>Getting from 90% to 95% is often about obvious form problems and slowing down. Getting from 95% to 99% is about eliminating rare but expensive mistakes: double letters, wrong-hand reaches on a bad day, punctuation slips, and fatigue-induced substitutions.</p>
+<p>That is why longer tests matter in Phase 3. One-minute tests can hide late-session collapse. Three- and five-minute FreeTyper runs reveal whether 97% is real or only a short-sample illusion.</p>
+<p>At this stage, quality of attention beats quantity of minutes. An extra half hour of semi-distracted practice can reintroduce errors you spent weeks removing. Protect deep work blocks.</p>
+<p>Also audit real-life error sources: autocomplete dependence, rushing chat replies, and switching keyboards. FreeTyper accuracy will not survive a workplace habit of careless speed unless you transfer the standard.</p>
+<p>When you finally hold 98–99% on mixed text, then aggressive speed projects become rational. Until then, every pure speed project risks recycling the old mess at a higher velocity.</p><h2 id="closing-system">Your Accuracy System on One Page</h2>
+<p>Measure weekly with FreeTyper. Gate sessions on 95% when you are rebuilding. Attack weak keys with map checks and short drills. Integrate into full sentences. Confirm with longer tests. Only then push WPM. Review progress weekly. Repeat for months, not days.</p>
+<p>That is the entire accuracy system. It is simple on purpose. Complex plans die; simple standards compound. FreeTyper provides the instruments — test, lessons, practice, guide, progress, games — so you can run the system without buying a course or creating an account.</p>
+<p><em>Retest on the <a href="/">free typing speed test</a>, lock accuracy above 95%, then raise pace with <a href="/typing-practice">practice</a> and <a href="/typing-lessons">lessons</a>. Track the climb in <a href="/typing-progress">progress</a>.</em></p>
+`,
 };

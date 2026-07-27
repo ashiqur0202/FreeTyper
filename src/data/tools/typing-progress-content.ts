@@ -14,7 +14,7 @@ export const previewHtml = `
 <h2>Typing Progress Tracker — Measure What Actually Improves</h2>
 <p class="article-byline">
   <span>By <strong>FreeTyper Editorial</strong></span>
-  <span>Updated <time datetime="2026-07-27">July 27, 2026</time></span>
+  <span>Updated <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time></span>
   <span>Reviewed for accuracy · ~11 min read</span>
 </p>
 <p>A free <strong>typing progress tracker</strong> turns random practice into a feedback loop. FreeTyper stores your sessions in this browser — WPM history, accuracy, streaks, achievements, and a key-level <strong>error heatmap</strong> — without forcing an account.</p>
@@ -291,7 +291,7 @@ export const bodyHtml = `
 <li><strong>WPM definition:</strong> FreeTyper scoring uses the common 5-characters-per-word unit; see the home <a href="/">typing speed test</a> methodology and <a href="https://en.wikipedia.org/wiki/Words_per_minute" rel="noopener noreferrer" target="_blank">Wikipedia: Words per minute</a>.</li>
 <li><strong>Privacy model:</strong> Local-first progress is a product decision for FreeTyper’s no-signup design — documented here so users understand sync limits.</li>
 </ul>
-<p class="article-note"><strong>Corrections:</strong> Use the <a href="/contact">contact</a> page. Last editorial update: <time datetime="2026-07-27">July 27, 2026</time>.</p>
+<p class="article-note"><strong>Corrections:</strong> Use the <a href="/contact">contact</a> page. Last editorial update: <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time>.</p>
 
 <h2 id="start-tracking">Start Tracking — Then Train Smarter</h2>
 <p>If the dashboard is empty, take a test now. If it is full, pick one weak key and one weekly goal. Progress is not a vanity wall — it is a compass.</p>
