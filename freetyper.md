@@ -38,14 +38,14 @@ src/data/
 ├── tools/falling-words-content.ts        # Falling Words SEO
 ├── tools/word-attack-content.ts          # Word Attack SEO
 └── blog/
-    ├── typing-skills.ts                  # Post index (slug, title, meta) — 9 live
+    ├── typing-skills.ts                  # Post index (slug, title, meta) — 25 live
     ├── article-content.ts                # Re-exports articles/*
     └── articles/
         ├── typing-speed.ts               # Pillar 1 bodies (6 posts)
-        ├── typing-tests.ts               # Pillar 2 bodies (3 posts)
-        ├── touch-typing.ts               # Pillar 3 (empty)
-        ├── practice.ts                   # Pillar 4 (empty)
-        └── productivity.ts               # Pillar 5 (empty)
+        ├── typing-tests.ts               # Pillar 2 bodies (6 posts)
+        ├── touch-typing.ts               # Pillar 3 bodies (5 posts)
+        ├── practice.ts                   # Pillar 4 bodies (5 posts)
+        └── productivity.ts               # Pillar 5 bodies (3 posts)
 src/app/ → page (speed test + SEO), [slug] (all 7 tools + SEO),
            settings, blog, about, contact, privacy, terms, disclaimer, opengraph-image
 ```
@@ -89,7 +89,8 @@ SEO bylines use **dynamic month + year only** (`Updated July 2026`) via `src/lib
 - JSON-LD: Org + WebSite (layout); WebApplication + FAQPage + HowTo on home + polished tools; Breadcrumb on home
 - Expandable SEO: E-E-A-T byline, in-article TOC, sources/citations, methodology; body always in DOM
 - OG/Twitter cards · dynamic `opengraph-image.tsx` (1200×630) · sitemap (tools + blog) · robots · RSS · PWA
-- GA4 `G-QC5509TVSF` · Google Search Console verified · AdSense still placeholder (pending ID)
+- GA4 `G-QC5509TVSF` · Google Search Console verified · AdSense still placeholder (pending apply / publisher ID)
+- Blog: **25 evergreen posts** live (pillars 1–5); de-AI voice pass done site-wide on bodies
 - Legal: /about, /contact, /privacy, /terms, /disclaimer
 - Deploy: GitHub → Coolify (Docker) → Hetzner · Repo: `github.com/ashiqur0202/FreeTyper`
 
@@ -105,27 +106,31 @@ SEO bylines use **dynamic month + year only** (`Updated July 2026`) via `src/lib
 - [x] Dynamic OG image · GA4 · GSC verification · sitemap includes blog posts
 - [x] Typing window layout (tool fills viewport; SEO below the fold)
 - [x] Dynamic SEO “Updated Month Year” bylines (`content-dates.ts`)
-- [x] Blog live: **9 / 25** posts (Pillar 1 complete; Pillar 2 partial)
+- [x] Blog live: **25 / 25** posts (all 5 pillars complete)
+- [x] Blog de-AI / voice pass on **all 25** posts (less template CTAs, lighter brand spam, varied opens/closes; keywords + internal links kept for SEO)
 - [x] Removed unused raw draft `.md` files (`blog/1–4.md`); content lives in `articles/*.ts` only
 
 ## Next Up
+- [ ] **Deploy** blog + de-AI changes (commit → push → Coolify) if not already live
+- [ ] **GSC**: refresh/submit sitemap after deploy; spot-check new blog URLs in Search Console
+- [ ] **AdSense**: apply / add publisher ID when approved (replace placeholder)
 - [ ] Connect settings to tools (font size, sound, hints) — currently cosmetic, nothing reads `useSettings`
 - [ ] Accent color picker changes CSS site-wide (wire sidebar swatches + inject `--color-accent`)
-- [ ] AdSense publisher ID (replace placeholder)
+- [ ] Optional: human polish 2–3 flagship intros in your own voice (strongest “genuine” signal for review)
 - [ ] Keyboard layouts (DVORAK, Colemak)
 - [ ] Multiplayer races · Leaderboards · School mode
 - [ ] More games (Type Racer, Zombie Typing)
-- [ ] Remaining blog posts (**16 left**): Pillar 2 #8, #11–12; full Pillars 3–5
 
 ## Blog Posts (25 — SEO Strategy)
-- **Live: 9** · Planned: 25 · Remaining: 16
+- **Live: 25** · Planned: 25 · Remaining: 0
 - Content Type: Evergreen
 - Goal: SEO, Topical Authority, AdSense, Organic Traffic
 - Target length: **3,000+ words** per article (current live posts meet this bar)
 - Include FAQs, Internal Links to tools (`/`, lessons, practice, progress, games), Practical Examples
 - Index: `src/data/blog/typing-skills.ts` · Bodies: `src/data/blog/articles/*.ts`
+- **Voice pass (2026-08):** all pillars de-templated for AdSense/quality optics; keep product links; avoid claiming “never AI” unless fully rewritten by hand
 
-### Live posts (9)
+### Live posts (25)
 
 | # | Slug | Title | Pillar | ~Words |
 |---|------|--------|--------|--------|
@@ -136,8 +141,24 @@ SEO bylines use **dynamic month + year only** (`Updated July 2026`) via `src/lib
 | 5 | `typing-speed-for-work` | What Is a Good Typing Speed for Work? | 1 Speed | long |
 | 6 | `improve-typing-accuracy` | How to Improve Typing Accuracy From 90% to 99% | 1 Speed | ~3.0k |
 | 7 | `free-typing-test` | Free Typing Test: Complete Guide to Measuring Your WPM | 2 Tests | ~3.3k |
-| 8 | `one-minute-typing-test` | 1 Minute Typing Test: What Is a Good Score? | 2 Tests | ~3.1k |
-| 9 | `3-minute-typing-test-vs-5-minute-typing-test` | 3 Min vs 5 Min Typing Test: Which Is More Accurate? | 2 Tests | ~4.4k |
+| 8 | `typing-speed-test` | Typing Speed Test: Everything You Need to Know | 2 Tests | ~3.5k |
+| 9 | `one-minute-typing-test` | 1 Minute Typing Test: What Is a Good Score? | 2 Tests | ~3.1k |
+| 10 | `3-minute-typing-test-vs-5-minute-typing-test` | 3 Min vs 5 Min Typing Test: Which Is More Accurate? | 2 Tests | ~4.4k |
+| 11 | `5-minute-typing-test` | 5 Minute Typing Test: What Is a Good WPM? | 2 Tests | ~3.5k |
+| 12 | `typing-accuracy-test` | Typing Accuracy Test: Why Accuracy Matters More Than Speed | 2 Tests | ~3.5k |
+| 13 | `touch-typing-guide` | Touch Typing Guide: Learn to Type Without Looking… | 3 Touch | ~3.5k |
+| 14 | `touch-typing-for-beginners` | Touch Typing for Beginners: A Complete 30-Day Plan | 3 Touch | ~3.2k |
+| 15 | `how-to-learn-touch-typing-as-an-adult` | How to Learn Touch Typing as an Adult | 3 Touch | ~3.3k |
+| 16 | `muscle-memory-and-touch-typing` | The Science Behind Muscle Memory and Touch Typing | 3 Touch | ~3.3k |
+| 17 | `10-bad-typing-habits` | 10 Bad Typing Habits That Are Slowing You Down | 3 Touch | ~3.2k |
+| 18 | `typing-practice` | Typing Practice: Daily Exercises to Build Speed… | 4 Practice | ~3.2k |
+| 19 | `best-free-typing-games` | Best Free Typing Games to Improve Your Speed | 4 Practice | ~3.1k |
+| 20 | `type-numbers-and-symbols-without-looking` | How to Type Numbers and Symbols Without Looking | 4 Practice | ~3.1k |
+| 21 | `data-entry-typing-test` | How to Pass a Data Entry Typing Test for Job Interviews | 4 Practice | ~3.1k |
+| 22 | `typing-speed-for-programmers` | Typing Speed for Programmers: How Fast Should Coders Type? | 4 Practice | ~3.1k |
+| 23 | `best-keyboards-for-fast-typing` | Best Keyboards for Fast Typing | 5 Productivity | ~3.1k |
+| 24 | `mechanical-vs-membrane-keyboards` | Mechanical vs Membrane Keyboards: Which Is Better for Typing? | 5 Productivity | ~3.1k |
+| 25 | `fix-typing-posture-and-avoid-wrist-pain` | How to Fix Your Typing Posture and Avoid Wrist Pain | 5 Productivity | ~3.1k |
 
 ---
 
@@ -156,45 +177,45 @@ SEO bylines use **dynamic month + year only** (`Updated July 2026`) via `src/lib
 
 # Pillar 2: Typing Tests
 
-## Priority: High · Status: **3/6 live**
+## Priority: High · Status: **Complete (6/6)**
 
 7. [x] Free Typing Test: Complete Guide to Measuring Your WPM → `/blog/free-typing-test`
-8. [ ] Typing Speed Test: Everything You Need to Know
+8. [x] Typing Speed Test: Everything You Need to Know → `/blog/typing-speed-test`
 9. [x] 1 Minute Typing Test: What Is a Good Score? → `/blog/one-minute-typing-test`
 10. [x] 3 Minute Typing Test vs 5 Minute Typing Test: Which Is More Accurate? → `/blog/3-minute-typing-test-vs-5-minute-typing-test`
-11. [ ] 5 Minute Typing Test: What Is a Good WPM?
-12. [ ] Typing Accuracy Test: Why Accuracy Matters More Than Speed
+11. [x] 5 Minute Typing Test: What Is a Good WPM? → `/blog/5-minute-typing-test`
+12. [x] Typing Accuracy Test: Why Accuracy Matters More Than Speed → `/blog/typing-accuracy-test`
 
 ---
 
 # Pillar 3: Touch Typing & Learning
 
-## Priority: High · Status: **0/5** (module empty)
+## Priority: High · Status: **Complete (5/5)**
 
-13. [ ] Touch Typing Guide: Learn to Type Without Looking at the Keyboard
-14. [ ] Touch Typing for Beginners: A Complete 30-Day Learning Plan
-15. [ ] How to Learn Touch Typing as an Adult
-16. [ ] The Science Behind Muscle Memory and Touch Typing
-17. [ ] 10 Bad Typing Habits That Are Slowing You Down
+13. [x] Touch Typing Guide: Learn to Type Without Looking at the Keyboard → `/blog/touch-typing-guide`
+14. [x] Touch Typing for Beginners: A Complete 30-Day Learning Plan → `/blog/touch-typing-for-beginners`
+15. [x] How to Learn Touch Typing as an Adult → `/blog/how-to-learn-touch-typing-as-an-adult`
+16. [x] The Science Behind Muscle Memory and Touch Typing → `/blog/muscle-memory-and-touch-typing`
+17. [x] 10 Bad Typing Habits That Are Slowing You Down → `/blog/10-bad-typing-habits`
 
 ---
 
 # Pillar 4: Practice & Improvement
 
-## Priority: Medium · Status: **0/5** (module empty)
+## Priority: Medium · Status: **Complete (5/5)**
 
-18. [ ] Typing Practice: Daily Exercises to Build Speed and Muscle Memory
-19. [ ] Best Free Typing Games to Improve Your Speed
-20. [ ] How to Type Numbers and Symbols Without Looking
-21. [ ] How to Pass a Data Entry Typing Test for Job Interviews
-22. [ ] Typing Speed for Programmers: How Fast Should Coders Type?
+18. [x] Typing Practice: Daily Exercises to Build Speed and Muscle Memory → `/blog/typing-practice`
+19. [x] Best Free Typing Games to Improve Your Speed → `/blog/best-free-typing-games`
+20. [x] How to Type Numbers and Symbols Without Looking → `/blog/type-numbers-and-symbols-without-looking`
+21. [x] How to Pass a Data Entry Typing Test for Job Interviews → `/blog/data-entry-typing-test`
+22. [x] Typing Speed for Programmers: How Fast Should Coders Type? → `/blog/typing-speed-for-programmers`
 
 ---
 
 # Pillar 5: Productivity & Hardware
 
-## Priority: Medium · Status: **0/3** (module empty)
+## Priority: Medium · Status: **Complete (3/3)**
 
-23. [ ] Best Keyboards for Fast Typing
-24. [ ] Mechanical vs Membrane Keyboards: Which Is Better for Typing?
-25. [ ] How to Fix Your Typing Posture and Avoid Wrist Pain
+23. [x] Best Keyboards for Fast Typing → `/blog/best-keyboards-for-fast-typing`
+24. [x] Mechanical vs Membrane Keyboards: Which Is Better for Typing? → `/blog/mechanical-vs-membrane-keyboards`
+25. [x] How to Fix Your Typing Posture and Avoid Wrist Pain → `/blog/fix-typing-posture-and-avoid-wrist-pain`
