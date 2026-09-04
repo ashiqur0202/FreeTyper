@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
-import { RotateCcw, Settings2, X, Maximize, Minimize } from 'lucide-react';
+import Link from 'next/link';
+import { RotateCcw, Settings2, X, Maximize, Minimize, Share2, Check, PenTool } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
 import { practiceTexts } from './typingData';
@@ -9,8 +10,11 @@ import { wordPools } from './gameData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
-import ResultCard from './ResultCard';
-import TypingPassage, { measureTypingLineHeight } from './TypingPassage';
+import PracticeFeedback, {
+  speedTestCoachNote,
+  type PracticeLogEntry,
+} from './PracticeFeedback';
+import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 
 type TextMode = 'words' | 'sentences' | 'code';
 
@@ -66,11 +70,39 @@ function generateTestText(mode: TextMode): string {
   return chunks.join(' ');
 }
 
+const LOG_KEY = 'freetyper-speed-log';
+const LOG_MAX = 5;
+
+function loadSpeedLog(): PracticeLogEntry[] {
+  try {
+    const raw = localStorage.getItem(LOG_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as PracticeLogEntry[];
+    if (!Array.isArray(parsed)) return [];
+    const trimmed = parsed.slice(0, LOG_MAX).map((entry, i, arr) => {
+      if (entry.headline && entry.tone) return entry;
+      return { ...entry, ...speedTestCoachNote(entry, arr[i + 1], arr.slice(i + 1)) };
+    });
+    if (parsed.length > LOG_MAX) {
+      try {
+        localStorage.setItem(LOG_KEY, JSON.stringify(trimmed));
+      } catch {
+        /* ignore */
+      }
+    }
+    return trimmed;
+  } catch {
+    return [];
+  }
+}
+
 export default function TypingSpeedTest() {
   const [duration, setDuration] = useState(60);
   const [text, setText] = useState('');
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
+  const [log, setLog] = useState<PracticeLogEntry[]>([]);
+  const [copied, setCopied] = useState(false);
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [customDuration, setCustomDuration] = useState<number | null>(null);
   const [showCustomInput, setShowCustomInput] = useState(false);
@@ -90,12 +122,33 @@ export default function TypingSpeedTest() {
   const currentCharRef = useRef<HTMLSpanElement>(null);
 
   const { addSession, updateKeyStats, checkAchievements } = useTypingProgress();
+  const settingsRef = useRef({ duration, textMode, customDuration });
+  settingsRef.current = { duration, textMode, customDuration };
 
   const handleComplete = useCallback((session: TypingSession) => {
-    const updated = { ...session, mode: 'speed-test' as const, modeDetail: `${duration}s` };
+    const { duration: dur, textMode: mode, customDuration: custom } = settingsRef.current;
+    const secs = custom ?? dur;
+    const updated = {
+      ...session,
+      mode: 'speed-test' as const,
+      modeDetail: `${mode} · ${secs}s`,
+    };
     addSession(updated);
     setResult(updated);
-  }, [addSession, duration]);
+    setLog((prev) => {
+      const entry: PracticeLogEntry = {
+        ...updated,
+        ...speedTestCoachNote(updated, prev[0], prev),
+      };
+      const next = [entry, ...prev].slice(0, LOG_MAX);
+      try {
+        localStorage.setItem(LOG_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+  }, [addSession]);
 
   const { chars, currentIndex, wpm, accuracy, isRunning, isComplete, timeLeft, restart, handleInput, handleBackspace } =
     useTypingEngine({
@@ -105,75 +158,71 @@ export default function TypingSpeedTest() {
       onKeyStats: (key, correct) => updateKeyStats(key, correct),
     });
 
+  const isCompleteRef = useRef(false);
+  isCompleteRef.current = isComplete;
+  const isRunningRef = useRef(false);
+  isRunningRef.current = isRunning;
+  const charsRef = useRef(chars);
+  const currentIndexRef = useRef(currentIndex);
+  charsRef.current = chars;
+  currentIndexRef.current = currentIndex;
+  const showCommandPaletteRef = useRef(showCommandPalette);
+  showCommandPaletteRef.current = showCommandPalette;
+  const focusModeRef = useRef(focusMode);
+  focusModeRef.current = focusMode;
+
   useEffect(() => {
     setMounted(true);
     setText(generateTestText('sentences'));
+    setLog(loadSpeedLog());
   }, []);
 
   useEffect(() => {
-    if (isComplete) {
-      const newA = checkAchievements();
-      if (newA.length > 0) setToasts((t) => [...t, ...newA]);
-    }
-  }, [isComplete, checkAchievements]);
-
-  useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      // Command palette
-      if (showCommandPalette) {
+      if (showCommandPaletteRef.current) {
         if (e.key === 'Escape') {
           e.preventDefault();
           setShowCommandPalette(false);
           setCommandInput('');
         }
-        return; // let the input handle typing
+        return;
       }
 
       if (e.ctrlKey || e.altKey || e.metaKey) return;
 
-      // Shortcuts that only work when test is COMPLETE (showing results)
-      if (isComplete) {
-        if (e.key === 'Tab') {
-          e.preventDefault();
-          startNewTest();
-          return;
-        }
-        if (e.key === '/' || e.key === 'Escape') {
-          e.preventDefault();
-          startNewTest();
-          return;
-        }
-        return; // don't capture any other keys after test completes
+      if (isCompleteRef.current) {
+        e.preventDefault();
+        return;
       }
 
-      // Escape to exit focus mode (only when NOT typing)
-      if (e.key === 'Escape' && !isRunning && focusMode) {
+      if (e.key === 'Escape' && !isRunningRef.current && focusModeRef.current) {
         e.preventDefault();
         setFocusMode(false);
         return;
       }
 
-      // `/` to open command palette (only when idle — not started yet)
-      if (e.key === '/' && !isRunning) {
+      if (e.key === '/' && !isRunningRef.current) {
         e.preventDefault();
         setShowCommandPalette(true);
         setTimeout(() => commandRef.current?.focus(), 50);
         return;
       }
 
-      // During typing — backspace to correct
       if (e.key === 'Backspace') {
         e.preventDefault();
         handleBackspace();
         return;
       }
 
-      // During typing — only pass through printable characters
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        return;
+      }
+
       if (e.key.length === 1) {
         e.preventDefault();
-        const expectedChar = chars[currentIndex]?.char;
+        const expectedChar = charsRef.current[currentIndexRef.current]?.char;
         handleInput(e.key);
-        // Flash the key on the live keyboard
         setLastKeyFlash({
           key: e.key === ' ' ? ' ' : e.key.toLowerCase(),
           correct: e.key === expectedChar,
@@ -182,7 +231,7 @@ export default function TypingSpeedTest() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleInput, isComplete]);
+  }, [handleInput, handleBackspace]);
 
   // Line-tracking scroll: recalculate from DOM on every index change (idempotent)
   useLayoutEffect(() => {
@@ -235,14 +284,33 @@ export default function TypingSpeedTest() {
   const startNewTest = useCallback((dur?: number) => {
     const d = dur ?? duration;
     setDuration(d);
-    setCustomDuration(null);
+    if (dur !== undefined && DURATION_OPTIONS.some((o) => o.seconds === dur)) {
+      setCustomDuration(null);
+    }
     setResult(null);
     setScrollOffset(0);
     setLineHeight(0);
-    // Generate new text to trigger engine reset with updated duration
-    setText(generateTestText(textMode));
+    setLastKeyFlash(null);
+    const next = generateTestText(textMode);
+    setText(next);
+    restart(next);
+    isCompleteRef.current = false;
     setShowCustomInput(false);
-  }, [duration, textMode]);
+    inputRef.current?.focus({ preventScroll: true });
+  }, [duration, textMode, restart]);
+
+  const startNewTestRef = useRef(startNewTest);
+  startNewTestRef.current = startNewTest;
+  const lastCompleteIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!isComplete || !result) return;
+    if (lastCompleteIdRef.current === result.id) return;
+    lastCompleteIdRef.current = result.id;
+    const newA = checkAchievements();
+    if (newA.length > 0) setToasts((t) => [...t, ...newA]);
+    startNewTestRef.current();
+  }, [isComplete, result, checkAchievements]);
 
   const applyCustomDuration = () => {
     const val = parseInt(customValue);
@@ -309,131 +377,128 @@ export default function TypingSpeedTest() {
   const progress = isRunning ? ((activeDuration - (timeLeft || 0)) / activeDuration) * 100 : 0;
   const isLowTime = isRunning && timeLeft < 10 && timeLeft < activeDuration * 0.1;
 
+  const shareLatest = async () => {
+    const run = log[0];
+    if (!run) return;
+    const text = `${run.wpm} WPM · ${run.accuracy}% accuracy — FreeTyper`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      /* ignore */
+    }
+  };
+
   if (!mounted || !text) {
     return (
-      <div className="flex flex-col items-center gap-8">
-        <div className="flex flex-wrap items-center justify-center gap-1">
+      <div className="w-full">
+        <div className="flex flex-wrap items-center gap-1">
           {DURATION_OPTIONS.map((d) => (
             <span key={d.seconds} className="px-2 py-1 text-xs text-text-dim">
               {d.label}
             </span>
           ))}
-          <span className="px-2 py-1 text-xs text-text-dim">custom</span>
         </div>
         <div className="h-20" />
       </div>
     );
   }
 
-  // Content to render
   const testContent = (
     <>
       {toasts.map((a, i) => (
         <AchievementToast key={a.id + i} achievement={a} onClose={() => setToasts((t) => t.filter((_, j) => j !== i))} />
       ))}
 
-      {!result ? (
-        <div className="w-full">
-          {/* Config bar — durations left, modes right */}
-          <div className="mb-4">
-            <div className="flex flex-wrap items-center justify-between gap-y-2">
-              {/* Duration pills */}
-              <div className="flex flex-wrap items-center gap-1">
-                {DURATION_OPTIONS.map((d) => (
-                  <button
-                    key={d.seconds}
-                    onClick={() => { setCustomDuration(null); !isRunning && startNewTest(d.seconds); }}
-                    disabled={isRunning}
-                    className={`rounded-md px-2 py-1 text-xs transition-all ${
-                      activeDuration === d.seconds && !customDuration
-                        ? 'bg-accent-bg text-accent'
-                        : 'text-text-dim hover:bg-surface-raised hover:text-text'
-                    } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
-                  >
-                    {d.label}
-                  </button>
-                ))}
-
-                {/* Custom icon button */}
+      <div className="w-full">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+            <div className="flex flex-wrap items-center gap-1">
+              {DURATION_OPTIONS.map((d) => (
                 <button
-                  onClick={() => !isRunning && setShowCustomInput(!showCustomInput)}
+                  key={d.seconds}
+                  onClick={() => { !isRunning && startNewTest(d.seconds); }}
                   disabled={isRunning}
-                  className={`flex items-center justify-center rounded-md p-1.5 transition-all ${
-                    customDuration
+                  className={`rounded-md px-2 py-1 text-xs transition-all ${
+                    activeDuration === d.seconds && !customDuration
                       ? 'bg-accent-bg text-accent'
                       : 'text-text-dim hover:bg-surface-raised hover:text-text'
                   } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
-                  title="Custom time"
                 >
-                  <Settings2 className="h-3.5 w-3.5" />
+                  {d.label}
                 </button>
-              </div>
-
-              {/* Text mode pills + fullscreen */}
-              <div className="flex items-center gap-1">
-                {TEXT_MODES.map((m) => (
-                  <button
-                    key={m.id}
-                    onClick={() => {
-                      if (isRunning) return;
-                      setTextMode(m.id);
-                      setResult(null);
-                      setText(generateTestText(m.id));
-                      restart();
-                    }}
-                    disabled={isRunning}
-                    className={`rounded-md px-2 py-1 text-xs transition-all ${
-                      textMode === m.id
-                        ? 'bg-accent-bg text-accent'
-                        : 'text-text-dim hover:bg-surface-raised hover:text-text'
-                    } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
-                  >
-                    {m.label}
-                  </button>
-                ))}
-
-                {/* Fullscreen toggle */}
+              ))}
+              <button
+                onClick={() => !isRunning && setShowCustomInput(!showCustomInput)}
+                disabled={isRunning}
+                className={`flex items-center justify-center rounded-md p-1.5 transition-all ${
+                  customDuration
+                    ? 'bg-accent-bg text-accent'
+                    : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
+                title="Custom time"
+              >
+                <Settings2 className="h-3.5 w-3.5" />
+              </button>
+              <span className="mx-1 hidden h-3 w-px bg-surface-border sm:block" />
+              {TEXT_MODES.map((m) => (
                 <button
-                  onClick={() => setFocusMode(!focusMode)}
-                  className="flex items-center justify-center rounded-md p-1.5 text-text-dim transition-all hover:bg-surface-raised hover:text-text"
-                  title={focusMode ? 'Exit focus mode (Esc)' : 'Focus mode'}
+                  key={m.id}
+                  onClick={() => {
+                    if (isRunning) return;
+                    setTextMode(m.id);
+                    const next = generateTestText(m.id);
+                    setText(next);
+                    restart(next);
+                  }}
+                  disabled={isRunning}
+                  className={`rounded-md px-2 py-1 text-xs transition-all ${
+                    textMode === m.id
+                      ? 'bg-accent-bg text-accent'
+                      : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                  } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
-                  {focusMode ? <Minimize className="h-3.5 w-3.5" /> : <Maximize className="h-3.5 w-3.5" />}
+                  {m.label}
                 </button>
-              </div>
+              ))}
+              <button
+                onClick={() => setFocusMode(!focusMode)}
+                className="flex items-center justify-center rounded-md p-1.5 text-text-dim transition-all hover:bg-surface-raised hover:text-text"
+                title={focusMode ? 'Exit focus mode (Esc)' : 'Focus mode'}
+              >
+                {focusMode ? <Minimize className="h-3.5 w-3.5" /> : <Maximize className="h-3.5 w-3.5" />}
+              </button>
             </div>
-
-            {/* Timer / live stats — always same structure to prevent layout shift */}
-            <div className="mt-2 flex items-center gap-4 font-mono text-sm text-text-dim">
+            <div className="flex items-center gap-3 font-mono text-sm text-text">
               <span className={`tabular-nums ${isLowTime && isRunning ? 'text-error' : 'text-text-bright'}`}>
                 {seconds}
               </span>
               <span className="text-surface-border">·</span>
-              <span className="tabular-nums text-correct">
-                {isRunning ? wpm : '--'}<span className="text-text-dim"> wpm</span>
+              <span className="tabular-nums text-text-bright">
+                {isRunning ? wpm : '--'}
+                <span className="text-text"> wpm</span>
               </span>
               <span className="text-surface-border">·</span>
-              <span className="tabular-nums text-correct">
-                {isRunning ? accuracy : '--'}<span className="text-text-dim">%</span>
+              <span className="tabular-nums text-text-bright">
+                {isRunning ? accuracy : '--'}
+                <span className="text-text">%</span>
               </span>
-            </div>
-
-            {/* Progress bar */}
-            <div className="mt-2 h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
-              <div
-                className={`h-full rounded-full transition-all duration-300 ease-linear ${
-                  isLowTime ? 'bg-error' : 'bg-accent'
-                } ${isRunning && !isLowTime ? 'progress-glow' : ''}`}
-                style={{ width: `${progress}%` }}
-              />
             </div>
           </div>
 
-          {/* Typing area — 3-line scrolling window */}
+          <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
+            <div
+              className={`h-full rounded-full transition-all duration-300 ease-linear ${
+                isLowTime ? 'bg-error' : 'bg-accent'
+              } ${isRunning && !isLowTime ? 'progress-glow' : ''}`}
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+
           <div
             ref={typingAreaRef}
-            className="cursor-text overflow-hidden relative py-3"
-            style={{ height: lineHeight > 0 ? lineHeight * 3 + 24 : 112 }}
+            className="relative mt-3 cursor-text overflow-hidden py-3"
+            style={{ height: typingWindowHeight(lineHeight) }}
             onClick={() => inputRef.current?.focus({ preventScroll: true })}
           >
             <TypingPassage
@@ -446,22 +511,23 @@ export default function TypingSpeedTest() {
             />
           </div>
 
-          {/* Hidden input outside scroll container — prevents browser scroll-on-focus */}
           <input ref={inputRef} className="sr-only" autoFocus />
 
-          {/* Bottom area — always same height to prevent shift */}
-          <div className="mt-6 flex h-8 items-center justify-center">
-            {!isRunning && !isComplete && (
+          <div className="mt-4 flex h-8 items-center justify-center">
+            {!isRunning ? (
               <p className="text-sm text-text-dim">start typing to begin</p>
-            )}
-            {isRunning && (
-              <button onClick={restart} className="text-text-dim transition-colors hover:text-text" title="Restart (Tab after test)">
+            ) : (
+              <button
+                type="button"
+                onClick={() => restart()}
+                className="text-text-dim transition-colors hover:text-text"
+                title="Restart"
+              >
                 <RotateCcw className="h-4 w-4" />
               </button>
             )}
           </div>
 
-          {/* Live keyboard visualizer */}
           <div className="mt-4 animate-fade-up">
             <LiveKeyboard
               nextChar={chars[currentIndex]?.char}
@@ -469,17 +535,30 @@ export default function TypingSpeedTest() {
               compact
             />
           </div>
+
+          <PracticeFeedback
+            log={log}
+            extraActions={
+              <>
+                <Link
+                  href="/typing-practice"
+                  className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
+                >
+                  <PenTool className="h-3 w-3" />
+                  practice
+                </Link>
+                <button
+                  type="button"
+                  onClick={shareLatest}
+                  className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
+                >
+                  {copied ? <Check className="h-3 w-3 text-accent" /> : <Share2 className="h-3 w-3" />}
+                  {copied ? 'copied' : 'share'}
+                </button>
+              </>
+            }
+          />
         </div>
-      ) : (
-        /* Results screen — new shareable card */
-        <ResultCard
-          result={result}
-          onNext={() => startNewTest()}
-          practiceHref="/typing-practice"
-          practiceLabel={result.incorrectChars > 0 ? 'practice weak keys' : 'daily practice'}
-          nextHint="tab · next test · practice to improve"
-        />
-      )}
 
       {/* Command palette */}
       {showCommandPalette && (

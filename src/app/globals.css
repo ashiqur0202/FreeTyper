@@ -43,20 +43,19 @@ html[data-theme="paper"] {
 }
 
 html[data-theme="light"] {
-  /* Cool sage-linen: still clearly light, low glare, medium contrast.
-     Text is slate (not black). Pending type is even softer. */
+  /* Cool sage-linen. Pending type is slate, not washed-out gray. */
   --color-surface: #e8e9e4;
   --color-surface-raised: #f2f3ee;
   --color-surface-border: #d3d4ce;
-  --color-text: #4a4e52;
-  --color-text-dim: #7c8186;
-  --color-text-bright: #3a3e42;
-  --color-correct: #5d6b5c;
+  --color-text: #3a3e42;
+  --color-text-dim: #5c6166;
+  --color-text-bright: #1c1f22;
+  --color-correct: #3f4d3e;
   --color-error: #c05656;
   --color-error-bg: #c0565616;
   --color-key-shadow: #d5d6d0;
   --color-scrollbar: #c5c6c0;
-  --color-typing-pending: #8e9398;
+  --color-typing-pending: #4a5056;
 }
 
 html[data-theme="midnight"] {
@@ -77,15 +76,15 @@ html[data-theme="paper"] {
   --color-surface: #e2d3b8;
   --color-surface-raised: #eadcc4;
   --color-surface-border: #cbbba0;
-  --color-text: #43392e;
-  --color-text-dim: #74685a;
-  --color-text-bright: #322920;
-  --color-correct: #5e5844;
+  --color-text: #3a3228;
+  --color-text-dim: #5c5348;
+  --color-text-bright: #1f1a14;
+  --color-correct: #3f3a2c;
   --color-error: #9c4a44;
   --color-error-bg: #9c4a441a;
   --color-key-shadow: #c9ba9e;
   --color-scrollbar: #c0b194;
-  --color-typing-pending: #8a8072;
+  --color-typing-pending: #4a4034;
 }
 
 body {
@@ -94,6 +93,15 @@ body {
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Antialiased + pale gray glyphs look blurry on light paper. */
+html[data-theme="light"] body,
+html[data-theme="paper"] body,
+html[data-theme="light"] .typing-text,
+html[data-theme="paper"] .typing-text {
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 /* Typing text — monospace */
@@ -116,31 +124,36 @@ html { scroll-behavior: smooth; }
 
 .typing-text {
   text-align: justify;
-  text-align-last: justify;
+  text-align-last: left;
   text-justify: inter-word;
+  line-height: 2.25rem;
 }
 
 /* Letters stay together; spaces between words are what justify stretches. */
 .word {
   display: inline-block;
   white-space: nowrap;
-  vertical-align: baseline;
+  vertical-align: bottom;
+  line-height: 2.25rem;
 }
 
 /* ===== Character states ===== */
 .char {
   display: inline-block;
-  transition: color 0.075s;
+  vertical-align: bottom;
+  line-height: 2.25rem;
+  /* Reserve underline so .current does not change box size. */
+  border-bottom: 2px solid transparent;
+  transition: color 0.075s, border-color 0.075s, background-color 0.075s;
   white-space: pre;
 }
-/* Real space characters wrap/justify like a paragraph, so lines stay flush. */
 .char.space {
-  display: inline;
-  white-space: normal;
+  display: inline-block;
+  white-space: pre;
 }
 .char.correct { color: var(--color-correct); }
 .char.incorrect { color: var(--color-error); background: var(--color-error-bg); border-radius: 2px; }
-.char.current { color: var(--color-text-bright); border-bottom: 2px solid var(--color-accent); }
+.char.current { color: var(--color-text-bright); border-bottom-color: var(--color-accent); }
 .char.pending { color: var(--color-typing-pending); }
 
 /* Keyboard keys */

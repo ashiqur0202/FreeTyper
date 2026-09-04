@@ -51,7 +51,7 @@ export const bodyHtml = `
 <h3>Backspace and correction</h3>
 <p>Mistakes happen. Backspace lets you correct without restarting the whole lesson. Correcting trains accuracy; ignoring errors trains sloppiness. Use backspace, then re-type the right character with the right finger.</p>
 <h3>Results that feel like real progress</h3>
-<p>When you finish, you get a full result card: WPM, accuracy, correct/incorrect counts, and rank context. From there you can go to the next lesson or retry. Press <strong>Tab</strong> as a shortcut to advance after a completed lesson.</p>
+<p>When you finish, the next lesson loads on the same page so you can keep typing. A short guide under the keyboard gives a suggestion for that run, with your latest five performances underneath. You can always click an earlier unlocked lesson to retry it.</p>
 <p>Sessions also feed your overall progress history when you use <a href="/typing-progress">typing progress</a> tracking across FreeTyper tools.</p>
 
 <h2>Complete Lesson-by-Lesson Guide</h2>

@@ -11,7 +11,7 @@ export default function TermsPage() {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       <h1 className="text-3xl font-bold text-text-bright">Terms of Service</h1>
-      <p className="mt-2 text-sm text-text-dim">Last updated: June 2026</p>
+      <p className="mt-2 text-sm text-text-dim">Last updated: September 2026</p>
 
       <div className="mt-8 space-y-8 text-text leading-relaxed">
         <section>
@@ -27,7 +27,7 @@ export default function TermsPage() {
 
         <section>
           <h2 className="text-xl font-bold text-text-bright">No Account Required</h2>
-          <p className="mt-2">{siteConfig.name} does not require user registration or accounts. All features are accessible without providing any personal information. Your typing data is stored locally in your browser and is not transmitted to our servers.</p>
+          <p className="mt-2">{siteConfig.name} does not require registration or accounts. Typing progress stays in your browser. We use Google Analytics to measure traffic, as described in the privacy policy. We do not sell user profiles or require you to create a login.</p>
         </section>
 
         <section>

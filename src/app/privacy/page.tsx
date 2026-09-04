@@ -107,7 +107,10 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-xl font-bold text-text-bright">Contact</h2>
           <p className="mt-2 text-text-dim">
-            Questions about this policy: contact@freetyper.com
+            Questions about this policy:{' '}
+            <a href="mailto:contact@freetyper.com" className="text-accent hover:underline">
+              contact@freetyper.com
+            </a>
           </p>
         </section>
       </div>

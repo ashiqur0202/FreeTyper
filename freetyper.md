@@ -15,15 +15,17 @@ src/components/skills/typing/
 ├── useTypingEngine.ts        # rAF timer, WPM/accuracy, backspace support
 ├── useTypingProgress.ts      # localStorage progress/achievements
 ├── TypingPassage.tsx          # Word-wrap + justified passage (flush left and right)
-├── TypingSpeedTest.tsx        # 9 durations, 3 text modes, command palette, focus mode, 3-line scroll
+├── TypingSpeedTest.tsx        # 9 durations, 3 text modes, command palette, focus mode, same-page result
 ├── LiveKeyboard.tsx           # Full QWERTY, hint pulse, flash, optional focusKeys dim
-├── ResultCard.tsx             # Animated WPM, ranks, confetti, share; next/retry; practice CTA on home
-├── TypingLessons.tsx          # Progressive lessons, pills, LiveKeyboard, ResultCard
-├── TypingPractice.tsx         # Categories + weak keys, LiveKeyboard, ResultCard
+├── PracticeFeedback.tsx       # Guide + latest 5 performances (newest first); richer card on speed tests
+├── TypingLessons.tsx          # Progressive lessons, pills, LiveKeyboard, same-page coach + auto-next
+├── TypingPractice.tsx         # Categories + weak keys, LiveKeyboard, same-page coach + auto-next
 ├── KeyboardGuide.tsx          # Finger filters, home-row mode, personal key stats
 ├── TypingProgress.tsx         # Stats, WPM chart, weak keys, sessions, achievements
 ├── KeyboardHeatmap.tsx, AchievementToast.tsx
-└── FallingWordsGame.tsx, WordAttackGame.tsx
+├── GameFeedback.tsx           # Game result + latest 5 (score, WPM, hits/misses, coach)
+├── FallingWordsGame.tsx, WordAttackGame.tsx
+└── ResultCard.tsx             # leftover; unused (replaced by PracticeFeedback)
 src/components/layout/ → Sidebar, SidebarProvider, RightSidebar, SettingsProvider, Footer
 src/components/tools/  → ToolClient (dynamic imports), ToolPageContent (viewport shell)
 src/components/blog/   → BlogContent (+ auto TOC), BlogCard
@@ -56,21 +58,41 @@ src/app/ → page (speed test + SEO), [slug] (all 7 tools + SEO),
 - **3-line scrolling** (monkeytype-style) · **Backspace** to correct mistakes
 - **Justified passage** — words wrap as units; lines flush left and right (`TypingPassage`)
 - **Live keyboard** — full QWERTY, gold hint pulse on next key, green/red flash on type
+- **One-line chrome** — durations + words/sentences/code + focus, then clock / WPM / accuracy
 - **Progress bar** with glow · Live WPM + accuracy
 - **Focus mode** (fullscreen, Esc to exit) · **Command palette** (`/` key)
-- **Result card** — rank gradient (Elite/Pro/Skilled/Avg/Beginner), animated WPM counter, confetti on 60+ WPM, share text or ASCII card
-- After a test: **practice** CTA → `/typing-practice` (“practice weak keys” if errors, else “daily practice”)
+- **Same-page result** — next test loads immediately so you can keep typing; score sits under the keyboard
+- Latest result: **net WPM**, accuracy, time, **gross WPM**, correct / errors / words, rank (beginner→elite) + band, WPM bar (0–120), vs last test, coach tip
+- **Latest 5 tests** only (newest first) in `freetyper-speed-log`
+- **Share** copies `WPM · accuracy` · **practice** CTA → `/typing-practice`
+
+## Practice & Lessons (same loop)
+- Stay on the page after a run. Next passage / next lesson loads; type immediately (no extra click)
+- Compact top: pills + live WPM/accuracy on one row (lessons has no “lessons” label)
+- Keyboard, then a quiet divider, then **guide** + **performances** (max 5, newest first)
+- Practice log: `freetyper-practice-log` · Lessons log: `freetyper-lessons-log`
+- Tips are per-run (accuracy first, vs last, category/lesson-specific). Low accuracy → finger-map link; practice can offer weak-key drill
+- Lessons still unlock in order; finishing auto-opens the next unlocked lesson
+- Layout: tool starts near the top (`pt-16` mobile to clear the menu, `md:pt-10` desktop) — not vertically centered (results would clip / look empty)
+
+## Games (same result loop)
+- After a run: **start panel on top**, **GameFeedback below** (result + latest 5, newest first) — same as practice/speed test
+- Compact in-game HUD (score / round-or-tier / WPM), not a splash takeover
+- Logs: `freetyper-fw-log` (Falling Words), `freetyper-wa-log` (Word Attack)
+- Falling Words: exact-match before prefix highlight so the input clears and the next word types; drops count as misses (real accuracy, not fake 100%)
+- Word Attack: save a result when a **round** ends (so the card shows without waiting for all 8); last round returns to start + latest 5. Timer lives outside React setState so the save is not dropped
+- High scores still in `freetyper-fw-highscore` / `freetyper-wa-highscore`
 
 ## Polished Tool Pages (same bar as home)
 | Route | UX highlights | SEO |
 |---|---|---|
-| `/` | Speed test fills viewport | Elite cornerstone + FAQ/HowTo/WebApp/Breadcrumb |
-| `/typing-lessons` | Lesson pills, scroll, LiveKeyboard + focusKeys, ResultCard | Expandable 3k+ guide |
-| `/typing-practice` | Category pills, weak keys, LiveKeyboard, ResultCard | Expandable 3k+ guide |
+| `/` | Speed test, same-page result + latest 5, share/practice | Elite cornerstone + FAQ/HowTo/WebApp/Breadcrumb |
+| `/typing-lessons` | Lesson pills, LiveKeyboard + focusKeys, same-page coach, auto-next | Expandable 3k+ guide |
+| `/typing-practice` | Category pills, weak keys, same-page coach, auto-next | Expandable 3k+ guide |
 | `/keyboard-guide` | Finger filters, home-row toggle, key stats, weak keys | Expandable 3k+ guide |
 | `/typing-progress` | Stats, chart, heatmap, sessions, achievements | Expandable 3k+ guide |
-| `/typing-game-falling-words` | 10 tiers, lives, high score, token UI | Expandable guide + FAQ/HowTo |
-| `/typing-game-word-attack` | 8 rounds, combos, timers, token UI | Expandable guide + FAQ/HowTo |
+| `/typing-game-falling-words` | Start after game over; result + latest 5; real miss accuracy | Expandable guide + FAQ/HowTo |
+| `/typing-game-word-attack` | Start after last round; result saved per round + latest 5 | Expandable guide + FAQ/HowTo |
 
 Tool SEO pages: full-viewport tool above the fold → ExpandableSeoContent below → JSON-LD (WebApplication + FAQPage + HowTo).  
 **Home stays the speed test** (`/`). Practice is `/typing-practice` — daily habit, not the landing URL (search intent for “typing speed test” owns `/`).  
@@ -114,7 +136,9 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 
 ## Done
 - [x] Live keyboard visualizer (full layout, hint, flash, focusKeys)
-- [x] Shareable result card (animated WPM, confetti, share, next/retry labels)
+- [x] Same-page results (speed test / practice / lessons) — no takeover card; next text stays typeable
+- [x] PracticeFeedback: per-run coach + max 5 newest-first performances (localStorage logs)
+- [x] Speed-test result is the full score (net/gross WPM, correct/errors/words, rank, bar, share)
 - [x] Animations (progress glow, result appear, shimmer, fade-up)
 - [x] Backspace support · 3-line scrolling text
 - [x] Home elite SEO (methodology, TOC, E-E-A-T, sources, benchmarks, FAQ/HowTo/Breadcrumb)
@@ -132,11 +156,16 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - [x] `TypingPassage` — word wrap + justified lines (practice / lessons / speed test)
 - [x] Lessons pills + stats left-aligned with the passage (no centered wrap indent)
 - [x] Themes: dark / light / midnight / paper + accent picker (sidebar Theme + Settings). Default dark + gold. Manual only
-- [x] Speed-test result card → practice CTA (`/typing-practice`)
+- [x] Speed-test result → practice CTA (`/typing-practice`) + share
+- [x] Practice / lessons / home chrome compacted; top padding aligned with sidebar (mobile clears hamburger)
 - [x] Product call: **do not** put practice on `/` — home owns “typing speed test”; practice is the post-test habit
 - [x] Keyboard guide: hover no longer scales keys or reflows the page
 - [x] Timed tests generate enough text for 15–30 min (no more empty passage while the clock runs)
 - [x] Games no longer write fake 100% accuracy into best-accuracy / achievements
+- [x] Falling Words + Word Attack: compact HUD, GameFeedback (score/WPM/hits/misses + latest 5), top-aligned like practice
+- [x] After game over: start screen on top, result + latest 5 underneath (both games)
+- [x] Falling Words: full-word match clears input (next word types); drops = misses
+- [x] Word Attack: persist result when a round ends (not only after round 8); timer no longer swallows the save
 - [x] AdSense hygiene: removed fake `ca-pub` script; `ads.txt` comments-only until real ID
 - [x] About / privacy / terms / contact rewritten for AdSense (no “we don’t track you”, no “all ages”, no unverified open-source claim)
 - [x] Right sidebar filled (tool links + tip) so the site does not look unfinished

@@ -8,8 +8,11 @@ import { practiceTexts } from './typingData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
-import ResultCard from './ResultCard';
-import TypingPassage, { measureTypingLineHeight } from './TypingPassage';
+import PracticeFeedback, {
+  coachNote,
+  type PracticeLogEntry,
+} from './PracticeFeedback';
+import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 
 type Category = 'quotes' | 'news' | 'code' | 'fun' | 'weak';
 
@@ -21,11 +24,38 @@ const CATEGORIES: { id: Category; label: string }[] = [
   { id: 'weak', label: 'weak keys' },
 ];
 
+const LOG_KEY = 'freetyper-practice-log';
+const LOG_MAX = 5;
+
+function loadPracticeLog(): PracticeLogEntry[] {
+  try {
+    const raw = localStorage.getItem(LOG_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as PracticeLogEntry[];
+    if (!Array.isArray(parsed)) return [];
+    const trimmed = parsed.slice(0, LOG_MAX).map((entry, i, arr) => {
+      if (entry.headline && entry.tone) return entry;
+      return { ...entry, ...coachNote(entry, arr[i + 1], arr.slice(i + 1)) };
+    });
+    if (parsed.length > LOG_MAX) {
+      try {
+        localStorage.setItem(LOG_KEY, JSON.stringify(trimmed));
+      } catch {
+        /* ignore */
+      }
+    }
+    return trimmed;
+  } catch {
+    return [];
+  }
+}
+
 export default function TypingPractice() {
   const [category, setCategory] = useState<Category>('quotes');
   const [text, setText] = useState('');
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
+  const [log, setLog] = useState<PracticeLogEntry[]>([]);
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
@@ -88,6 +118,7 @@ export default function TypingPractice() {
   useEffect(() => {
     setMounted(true);
     setText(generateTextRef.current('quotes'));
+    setLog(loadPracticeLog());
   }, []);
 
   useEffect(() => {
@@ -107,6 +138,20 @@ export default function TypingPractice() {
       };
       addSession(updated);
       setResult(updated);
+      setLog((prev) => {
+        const note = coachNote(updated, prev[0], prev);
+        const entry: PracticeLogEntry = {
+          ...updated,
+          ...note,
+        };
+        const next = [entry, ...prev].slice(0, LOG_MAX);
+        try {
+          localStorage.setItem(LOG_KEY, JSON.stringify(next));
+        } catch {
+          /* ignore */
+        }
+        return next;
+      });
     },
     [addSession],
   );
@@ -128,30 +173,45 @@ export default function TypingPractice() {
   });
 
   isRunningRef.current = isRunning;
+  const isCompleteRef = useRef(false);
+  isCompleteRef.current = isComplete;
 
   const charsRef = useRef(chars);
   const currentIndexRef = useRef(currentIndex);
   charsRef.current = chars;
   currentIndexRef.current = currentIndex;
 
-  useEffect(() => {
-    if (isComplete) {
-      const newA = checkAchievements();
-      if (newA.length > 0) setToasts((t) => [...t, ...newA]);
-    }
-  }, [isComplete, checkAchievements]);
+  const textRef = useRef(text);
+  textRef.current = text;
 
   const nextText = useCallback(() => {
-    setResult(null);
+    let next = generateTextRef.current(categoryRef.current);
+    for (let i = 0; i < 8 && next === textRef.current; i++) {
+      next = generateTextRef.current(categoryRef.current);
+    }
     setScrollOffset(0);
     setLineHeight(0);
     setLastKeyFlash(null);
-    setText(generateTextRef.current(categoryRef.current));
+    setText(next);
+    restart(next);
+    isCompleteRef.current = false;
     inputRef.current?.focus({ preventScroll: true });
-  }, []);
+  }, [restart]);
+
+  const nextTextRef = useRef(nextText);
+  nextTextRef.current = nextText;
+  const lastCompleteIdRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!isComplete || !result) return;
+    if (lastCompleteIdRef.current === result.id) return;
+    lastCompleteIdRef.current = result.id;
+    const newA = checkAchievements();
+    if (newA.length > 0) setToasts((t) => [...t, ...newA]);
+    nextTextRef.current();
+  }, [isComplete, result, checkAchievements]);
 
   const retryText = useCallback(() => {
-    setResult(null);
     setScrollOffset(0);
     setLineHeight(0);
     setLastKeyFlash(null);
@@ -159,20 +219,15 @@ export default function TypingPractice() {
     inputRef.current?.focus({ preventScroll: true });
   }, [restart]);
 
-  const nextTextRef = useRef(nextText);
   const retryTextRef = useRef(retryText);
-  nextTextRef.current = nextText;
   retryTextRef.current = retryText;
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.altKey || e.metaKey) return;
 
-      if (isComplete) {
-        if (e.key === 'Tab' || e.key === 'Enter') {
-          e.preventDefault();
-          nextTextRef.current();
-        }
+      if (isCompleteRef.current) {
+        e.preventDefault();
         return;
       }
 
@@ -199,7 +254,7 @@ export default function TypingPractice() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleInput, handleBackspace, isComplete]);
+  }, [handleInput, handleBackspace]);
 
   // 3-line scroll
   useLayoutEffect(() => {
@@ -245,10 +300,11 @@ export default function TypingPractice() {
 
   if (!mounted || !text) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
-        <div className="flex flex-wrap items-center justify-center gap-1">
+      <div className="w-full">
+        <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-text-dim">practice</p>
+        <div className="flex flex-wrap items-center gap-1">
           {CATEGORIES.map((c) => (
-            <span key={c.id} className="px-2 py-1 text-xs text-text-dim">
+            <span key={c.id} className="px-2.5 py-1 text-xs text-text-dim">
               {c.label}
             </span>
           ))}
@@ -268,44 +324,42 @@ export default function TypingPractice() {
         />
       ))}
 
-      {!result ? (
-        <div className="w-full">
-          {/* Category pills */}
-          <div className="mb-2 flex flex-wrap items-center justify-center gap-1">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => changeCategory(cat.id)}
-                disabled={isRunning}
-                className={`rounded-md px-2.5 py-1 text-xs transition-all ${
-                  category === cat.id
-                    ? 'bg-accent-bg text-accent'
-                    : 'text-text-dim hover:bg-surface-raised hover:text-text'
-                } ${isRunning ? 'cursor-not-allowed opacity-30' : 'cursor-pointer'}`}
-              >
-                {cat.label}
-              </button>
-            ))}
+      <div className="w-full">
+          <div className="mb-4">
+            <div className="mb-3 flex items-center justify-between gap-x-4 gap-y-1">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-text-dim">practice</p>
+              <div className="flex items-center gap-3 font-mono text-sm text-text">
+                <span className="tabular-nums text-text-bright">
+                  {isRunning ? wpm : '--'}
+                  <span className="text-text"> wpm</span>
+                </span>
+                <span className="text-surface-border">·</span>
+                <span className="tabular-nums text-text-bright">
+                  {isRunning ? accuracy : '--'}
+                  <span className="text-text">%</span>
+                </span>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-1">
+              {CATEGORIES.map((cat) => (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => changeCategory(cat.id)}
+                  disabled={isRunning}
+                  className={`rounded-md px-2.5 py-1 text-xs transition-all ${
+                    category === cat.id
+                      ? 'bg-accent-bg font-medium text-text-bright'
+                      : 'text-text hover:bg-surface-raised hover:text-text-bright'
+                  } ${isRunning ? 'cursor-not-allowed opacity-30' : 'cursor-pointer'}`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Live stats */}
-          <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-1 font-mono text-sm text-text-dim">
-            <span className="tabular-nums text-correct">
-              {isRunning ? wpm : '--'}
-              <span className="text-text-dim"> wpm</span>
-            </span>
-            <span className="text-surface-border">·</span>
-            <span className="tabular-nums text-correct">
-              {isRunning ? accuracy : '--'}
-              <span className="text-text-dim">%</span>
-            </span>
-            <span className="text-surface-border">·</span>
-            <span className="text-[11px] tracking-wide text-text">{category}</span>
-          </div>
-
-          {/* Passage progress */}
-          <div className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
+          <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
             <div
               className={`h-full rounded-full bg-accent transition-all duration-150 ${
                 isRunning ? 'progress-glow' : ''
@@ -318,11 +372,10 @@ export default function TypingPractice() {
             />
           </div>
 
-          {/* Typing area — 3-line scroll */}
           <div
             ref={typingAreaRef}
-            className="relative mt-4 cursor-text overflow-hidden py-3"
-            style={{ height: lineHeight > 0 ? lineHeight * 3 + 24 : 112 }}
+            className="relative mt-3 cursor-text overflow-hidden py-3"
+            style={{ height: typingWindowHeight(lineHeight) }}
             onClick={() => inputRef.current?.focus({ preventScroll: true })}
           >
             <TypingPassage
@@ -337,11 +390,10 @@ export default function TypingPractice() {
 
           <input ref={inputRef} className="sr-only" autoFocus />
 
-          <div className="mt-6 flex h-8 items-center justify-center gap-4">
-            {!isRunning && !isComplete && (
+          <div className="mt-4 flex h-8 items-center justify-center gap-4">
+            {!isRunning ? (
               <p className="text-sm text-text-dim">start typing to begin</p>
-            )}
-            {isRunning && (
+            ) : (
               <>
                 <button
                   type="button"
@@ -371,22 +423,12 @@ export default function TypingPractice() {
             />
           </div>
 
-          <p className="mt-6 text-center text-[11px] text-text-dim/70">
-            {category === 'weak'
-              ? 'Drills words that hit your weakest keys from past sessions'
-              : `Practice mode · ${category} passages · shuffle for a new text`}
-          </p>
+          <PracticeFeedback
+            log={log}
+            currentCategory={category}
+            onTryWeakKeys={() => changeCategory('weak')}
+          />
         </div>
-      ) : (
-        <ResultCard
-          result={result}
-          onNext={nextText}
-          nextLabel="next text"
-          nextHint="tab · next text"
-          onRetry={retryText}
-          retryLabel="retry"
-        />
-      )}
     </div>
   );
 }

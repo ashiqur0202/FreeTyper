@@ -2,10 +2,17 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { Play, RotateCcw, Heart, ArrowDown } from 'lucide-react';
+import { Play, Heart, ArrowDown } from 'lucide-react';
 import { fallingWordsTiers, getRandomWords, getWordDifficulty, scoringRules } from './gameData';
 import { useTypingProgress } from './useTypingProgress';
-import type { TypingSession } from './types';
+import GameFeedback, {
+  fallingCoachNote,
+  loadGameLog,
+  prependGameLog,
+  type GameLogEntry,
+} from './GameFeedback';
+
+const LOG_KEY = 'freetyper-fw-log';
 
 interface FallingWord {
   id: number;
@@ -16,17 +23,6 @@ interface FallingWord {
   typed: string;
   matched: boolean;
   exploding: boolean;
-}
-
-function Stat({ label, value, accent }: { label: string; value: string | number; accent?: boolean }) {
-  return (
-    <div className="text-center">
-      <p className={`font-mono text-2xl font-light tabular-nums sm:text-3xl ${accent ? 'text-accent' : 'text-text-bright'}`}>
-        {value}
-      </p>
-      <p className="mt-0.5 text-[10px] uppercase tracking-wider text-text-dim">{label}</p>
-    </div>
-  );
 }
 
 export default function FallingWordsGame() {
@@ -40,6 +36,7 @@ export default function FallingWordsGame() {
   const [wpm, setWpm] = useState(0);
   const [highScore, setHighScore] = useState(0);
   const [mounted, setMounted] = useState(false);
+  const [log, setLog] = useState<GameLogEntry[]>([]);
 
   const { addSession, updateKeyStats } = useTypingProgress();
   const startTimeRef = useRef(0);
@@ -54,6 +51,8 @@ export default function FallingWordsGame() {
   const wordsClearedRef = useRef(0);
   const tierRef = useRef(0);
   const scoreRef = useRef(0);
+  const missesRef = useRef(0);
+  const endedRef = useRef(false);
 
   useEffect(() => {
     setMounted(true);
@@ -62,6 +61,7 @@ export default function FallingWordsGame() {
     } catch {
       /* ignore */
     }
+    setLog(loadGameLog(LOG_KEY));
   }, []);
 
   const startGame = useCallback(() => {
@@ -81,14 +81,22 @@ export default function FallingWordsGame() {
     startTimeRef.current = performance.now();
     lastSpawnRef.current = 0;
     wordIdRef.current = 0;
+    missesRef.current = 0;
+    endedRef.current = false;
     setWpm(0);
   }, []);
 
   const endGame = useCallback(() => {
+    if (endedRef.current) return;
+    endedRef.current = true;
     setGameState('gameover');
     const elapsed = (performance.now() - startTimeRef.current) / 1000;
     const mins = elapsed / 60;
     const finalWpm = mins > 0 ? Math.round(totalCharsRef.current / 5 / mins) : 0;
+    const hits = wordsClearedRef.current;
+    const misses = missesRef.current;
+    const attempts = hits + misses;
+    const accuracy = attempts > 0 ? Math.round((hits / attempts) * 100) : 0;
 
     setWpm(finalWpm);
 
@@ -101,19 +109,36 @@ export default function FallingWordsGame() {
       }
     }
 
-    const session: TypingSession = {
+    addSession({
       id: `game-fw-${Date.now()}`,
       date: Date.now(),
       wpm: finalWpm,
-      accuracy: 100,
+      accuracy,
       correctChars: totalCharsRef.current,
-      incorrectChars: 0,
+      incorrectChars: misses,
       totalChars: totalCharsRef.current,
       duration: Math.round(elapsed),
       mode: 'game',
       modeDetail: `Falling Words - Tier ${tierRef.current + 1}`,
-    };
-    addSession(session);
+    });
+
+    setLog((prev) => {
+      const draft: Omit<GameLogEntry, 'headline' | 'tip' | 'tone'> = {
+        id: `fw-${Date.now()}`,
+        date: Date.now(),
+        game: 'falling',
+        score: scoreRef.current,
+        wpm: finalWpm,
+        words: hits,
+        hits,
+        misses,
+        accuracy,
+        duration: Math.round(elapsed),
+        detail: `tier ${tierRef.current + 1}`,
+      };
+      const note = fallingCoachNote(draft, prev[0], prev);
+      return prependGameLog(LOG_KEY, { ...draft, ...note }, prev);
+    });
   }, [addSession, highScore]);
 
   useEffect(() => {
@@ -154,6 +179,7 @@ export default function FallingWordsGame() {
         .filter((w) => {
           if (w.y >= 95 && !w.matched && !w.exploding) {
             lostLife = true;
+            missesRef.current += 1;
             return false;
           }
           return true;
@@ -180,16 +206,14 @@ export default function FallingWordsGame() {
 
   const handleInputChange = useCallback(
     (value: string) => {
-      setInput(value);
       const typed = value.toLowerCase();
-
       let matched = false;
+
       wordsRef.current = wordsRef.current.map((w) => {
         if (w.matched || w.exploding) return w;
-        if (w.word.toLowerCase().startsWith(typed) && typed.length > 0) {
-          return { ...w, typed };
-        }
-        if (w.word.toLowerCase() === typed) {
+        const target = w.word.toLowerCase();
+        if (!typed) return { ...w, typed: '' };
+        if (!matched && target === typed) {
           matched = true;
           const diff = getWordDifficulty(w.word);
           const points = scoringRules.basePoints[diff];
@@ -211,20 +235,24 @@ export default function FallingWordsGame() {
             }
           }
 
-          return { ...w, matched: true, exploding: true };
+          return { ...w, typed, matched: true, exploding: true };
         }
-        return w;
+        if (target.startsWith(typed)) {
+          return { ...w, typed };
+        }
+        return { ...w, typed: '' };
       });
 
+      setInput(matched ? '' : value);
+      setWords([...wordsRef.current]);
+
       if (matched) {
-        setInput('');
-        setTimeout(() => {
+        window.setTimeout(() => {
           wordsRef.current = wordsRef.current.filter((w) => !w.exploding);
           setWords([...wordsRef.current]);
+          inputRef.current?.focus();
         }, 300);
       }
-
-      setWords([...wordsRef.current]);
     },
     [updateKeyStats],
   );
@@ -239,89 +267,55 @@ export default function FallingWordsGame() {
     );
   }
 
-  if (gameState === 'idle') {
+  if (gameState === 'idle' || gameState === 'gameover') {
     return (
-      <div className="mx-auto flex w-full max-w-2xl flex-col items-center px-2 py-6 text-center">
-        <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-surface-border bg-surface-raised text-accent">
-          <ArrowDown className="h-6 w-6" />
+      <div className="w-full">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+          <p className="text-[10px] uppercase tracking-[0.18em] text-text-dim">falling words</p>
+          <p className="font-mono text-sm text-text-dim">
+            best <span className="tabular-nums text-accent">{highScore}</span>
+          </p>
         </div>
-        <h2 className="mt-6 text-2xl font-semibold text-text-bright">Falling Words</h2>
-        <p className="mt-2 max-w-md text-sm leading-relaxed text-text-dim">
-          Type each word before it hits the bottom. Tiers ramp speed and difficulty — 3 lives, local high score.
-        </p>
-        <p className="mt-4 font-mono text-sm text-text-dim">
-          best <span className="text-accent">{highScore}</span>
-        </p>
-        <button
-          type="button"
-          onClick={startGame}
-          className="mt-6 inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-2.5 text-sm font-medium text-surface transition-opacity hover:opacity-90"
-        >
-          <Play className="h-4 w-4" /> start game
-        </button>
-        <p className="mt-6 text-[11px] text-text-dim/70">
-          Also try{' '}
-          <Link href="/typing-game-word-attack" className="text-accent hover:underline">
-            Word Attack
-          </Link>{' '}
-          · track runs in{' '}
-          <Link href="/typing-progress" className="text-accent hover:underline">
-            progress
-          </Link>
-        </p>
-      </div>
-    );
-  }
-
-  if (gameState === 'gameover') {
-    return (
-      <div className="mx-auto flex w-full max-w-xl flex-col items-center px-2 py-8 text-center">
-        <p className="text-[10px] uppercase tracking-[0.2em] text-error">game over</p>
-        <h2 className="mt-2 text-2xl font-semibold text-text-bright">Run complete</h2>
-        <div className="mt-8 grid w-full grid-cols-2 gap-6 sm:grid-cols-4">
-          <Stat label="Score" value={score} accent />
-          <Stat label="WPM" value={wpm} />
-          <Stat label="Words" value={wordsCleared} />
-          <Stat label="Best" value={highScore} accent />
-        </div>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
+        <div className="flex min-h-[220px] flex-col items-center justify-center rounded-xl border border-surface-border bg-surface-raised/30 px-6 py-10 text-center">
+          <ArrowDown className="h-6 w-6 text-accent" />
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-text-dim">
+            Type each word before it hits the bottom. 10 tiers, 3 lives.
+          </p>
           <button
             type="button"
             onClick={startGame}
-            className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-xs font-medium text-surface hover:opacity-90"
+            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-surface hover:opacity-90"
           >
-            <RotateCcw className="h-3.5 w-3.5" /> play again
+            <Play className="h-4 w-4" /> start game
           </button>
-          <Link
-            href="/typing-progress"
-            className="rounded-lg border border-surface-border px-4 py-2.5 text-xs text-text-dim transition-colors hover:border-accent hover:text-accent"
-          >
-            view progress
-          </Link>
         </div>
+        <GameFeedback
+          log={log}
+          extraActions={
+            <Link
+              href="/typing-practice"
+              className="rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
+            >
+              practice
+            </Link>
+          }
+        />
       </div>
     );
   }
 
   return (
     <div className="w-full space-y-3">
-      <div className="flex items-center justify-between rounded-xl border border-surface-border bg-surface-raised/40 px-4 py-3">
-        <div className="flex items-center gap-5 font-mono text-sm">
-          <div>
-            <span className="text-[10px] uppercase tracking-wider text-text-dim">score</span>
-            <p className="tabular-nums text-accent">{score}</p>
-          </div>
-          <div>
-            <span className="text-[10px] uppercase tracking-wider text-text-dim">tier</span>
-            <p className="tabular-nums text-text-bright">
-              {tier + 1}
-              <span className="text-text-dim">/10</span>
-            </p>
-          </div>
-          <div>
-            <span className="text-[10px] uppercase tracking-wider text-text-dim">wpm</span>
-            <p className="tabular-nums text-text">{wpm}</p>
-          </div>
+      <div className="mb-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+        <div className="flex items-center gap-3 font-mono text-sm text-text">
+          <span className="tabular-nums text-accent">{score}</span>
+          <span className="text-[11px] text-text-dim">pts</span>
+          <span className="text-surface-border">·</span>
+          <span className="tabular-nums text-text-bright">{tier + 1}/10</span>
+          <span className="text-[11px] text-text-dim">tier</span>
+          <span className="text-surface-border">·</span>
+          <span className="tabular-nums text-text-bright">{wpm}</span>
+          <span className="text-[11px] text-text-dim">wpm</span>
         </div>
         <div className="flex items-center gap-1">
           {Array.from({ length: 3 }).map((_, i) => (

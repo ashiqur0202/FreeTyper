@@ -8,11 +8,16 @@ import { lessons } from './typingData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
-import ResultCard from './ResultCard';
-import TypingPassage, { measureTypingLineHeight } from './TypingPassage';
+import PracticeFeedback, {
+  lessonCoachNote,
+  type PracticeLogEntry,
+} from './PracticeFeedback';
+import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 
 const PROGRESS_KEY = 'freetyper-lessons-progress';
 const LEGACY_KEY = 'freetyper-completed-lessons';
+const LOG_KEY = 'freetyper-lessons-log';
+const LOG_MAX = 5;
 
 interface LessonProgress {
   unlocked: number[];
@@ -47,11 +52,35 @@ function saveProgress(progress: LessonProgress) {
   localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
 }
 
+function loadLessonLog(): PracticeLogEntry[] {
+  try {
+    const raw = localStorage.getItem(LOG_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as PracticeLogEntry[];
+    if (!Array.isArray(parsed)) return [];
+    const trimmed = parsed.slice(0, LOG_MAX).map((entry, i, arr) => {
+      if (entry.headline && entry.tone) return entry;
+      return { ...entry, ...lessonCoachNote(entry, arr[i + 1], arr.slice(i + 1)) };
+    });
+    if (parsed.length > LOG_MAX) {
+      try {
+        localStorage.setItem(LOG_KEY, JSON.stringify(trimmed));
+      } catch {
+        /* ignore */
+      }
+    }
+    return trimmed;
+  } catch {
+    return [];
+  }
+}
+
 export default function TypingLessons() {
   const [activeLesson, setActiveLesson] = useState(0);
   const [progress, setProgress] = useState<LessonProgress>({ unlocked: [0], completed: [] });
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
+  const [log, setLog] = useState<PracticeLogEntry[]>([]);
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
@@ -73,33 +102,45 @@ export default function TypingLessons() {
   useEffect(() => {
     setMounted(true);
     setProgress(loadProgress());
+    setLog(loadLessonLog());
   }, []);
 
-  const handleComplete = useCallback(
-    (session: TypingSession) => {
-      const updated = {
-        ...session,
-        mode: 'lesson' as const,
-        modeDetail: `Lesson ${lesson.id}: ${lesson.name}`,
+  const handleComplete = useCallback((session: TypingSession) => {
+    const idx = activeLessonRef.current;
+    const current = lessons[idx];
+    const updated = {
+      ...session,
+      mode: 'lesson' as const,
+      modeDetail: current.name,
+    };
+    addSession(updated);
+    setResult(updated);
+    setLog((prev) => {
+      const entry: PracticeLogEntry = {
+        ...updated,
+        ...lessonCoachNote(updated, prev[0], prev),
       };
-      addSession(updated);
-      setResult(updated);
+      const next = [entry, ...prev].slice(0, LOG_MAX);
+      try {
+        localStorage.setItem(LOG_KEY, JSON.stringify(next));
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
 
-      setProgress((prev) => {
-        const completed = prev.completed.includes(activeLesson)
-          ? prev.completed
-          : [...prev.completed, activeLesson];
-        const unlocked =
-          activeLesson < lessons.length - 1 && !prev.unlocked.includes(activeLesson + 1)
-            ? [...prev.unlocked, activeLesson + 1]
-            : prev.unlocked;
-        const next = { unlocked, completed };
-        saveProgress(next);
-        return next;
-      });
-    },
-    [activeLesson, addSession, lesson.id, lesson.name],
-  );
+    setProgress((prev) => {
+      const completed = prev.completed.includes(idx) ? prev.completed : [...prev.completed, idx];
+      const unlocked =
+        idx < lessons.length - 1 && !prev.unlocked.includes(idx + 1)
+          ? [...prev.unlocked, idx + 1]
+          : prev.unlocked;
+      const next = { unlocked, completed };
+      progressRef.current = next;
+      saveProgress(next);
+      return next;
+    });
+  }, [addSession]);
 
   const {
     chars,
@@ -118,6 +159,8 @@ export default function TypingLessons() {
   });
 
   isRunningRef.current = isRunning;
+  const isCompleteRef = useRef(false);
+  isCompleteRef.current = isComplete;
 
   const charsRef = useRef(chars);
   const currentIndexRef = useRef(currentIndex);
@@ -125,7 +168,6 @@ export default function TypingLessons() {
   currentIndexRef.current = currentIndex;
 
   const resetView = useCallback(() => {
-    setResult(null);
     setScrollOffset(0);
     setLineHeight(0);
     setLastKeyFlash(null);
@@ -134,6 +176,7 @@ export default function TypingLessons() {
   const retryLesson = useCallback(() => {
     resetView();
     restart();
+    isCompleteRef.current = false;
     inputRef.current?.focus({ preventScroll: true });
   }, [resetView, restart]);
 
@@ -142,32 +185,43 @@ export default function TypingLessons() {
       if (!progressRef.current.unlocked.includes(index) || isRunningRef.current) return;
       setActiveLesson(index);
       resetView();
+      restart(lessons[index].text);
+      isCompleteRef.current = false;
+      inputRef.current?.focus({ preventScroll: true });
     },
-    [resetView],
+    [resetView, restart],
   );
 
+  const restartRef = useRef(restart);
+  restartRef.current = restart;
+  const lastCompleteIdRef = useRef<string | null>(null);
+
   useEffect(() => {
-    if (isComplete) {
-      const newAchievements = checkAchievements();
-      if (newAchievements.length > 0) setToasts((t) => [...t, ...newAchievements]);
+    if (!isComplete || !result) return;
+    if (lastCompleteIdRef.current === result.id) return;
+    lastCompleteIdRef.current = result.id;
+    const newAchievements = checkAchievements();
+    if (newAchievements.length > 0) setToasts((t) => [...t, ...newAchievements]);
+
+    const idx = activeLessonRef.current;
+    resetView();
+    if (idx < lessons.length - 1) {
+      const next = lessons[idx + 1];
+      setActiveLesson(idx + 1);
+      restartRef.current(next.text);
+    } else {
+      restartRef.current();
     }
-  }, [isComplete, checkAchievements]);
+    isCompleteRef.current = false;
+    inputRef.current?.focus({ preventScroll: true });
+  }, [isComplete, result, checkAchievements, resetView]);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.altKey || e.metaKey) return;
 
-      if (isComplete) {
-        if (e.key === 'Tab' || e.key === 'Enter') {
-          e.preventDefault();
-          const idx = activeLessonRef.current;
-          const unlocked = progressRef.current.unlocked;
-          if (idx < lessons.length - 1 && unlocked.includes(idx + 1)) {
-            goToLesson(idx + 1);
-          } else {
-            retryLesson();
-          }
-        }
+      if (isCompleteRef.current) {
+        e.preventDefault();
         return;
       }
 
@@ -194,7 +248,7 @@ export default function TypingLessons() {
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleInput, handleBackspace, isComplete, goToLesson, retryLesson]);
+  }, [handleInput, handleBackspace]);
 
   useLayoutEffect(() => {
     if (typingAreaRef.current && typingAreaRef.current.scrollTop !== 0) {
@@ -233,14 +287,13 @@ export default function TypingLessons() {
 
   const unlockedSet = new Set(progress.unlocked);
   const completedSet = new Set(progress.completed);
-  const hasNext = activeLesson < lessons.length - 1 && unlockedSet.has(activeLesson + 1);
 
   if (!mounted) {
     return (
-      <div className="flex min-h-[60vh] flex-col items-center justify-center gap-6">
-        <div className="flex flex-wrap items-center justify-center gap-1">
+      <div className="w-full">
+        <div className="flex flex-wrap items-center gap-1">
           {lessons.map((l) => (
-            <span key={l.id} className="px-2 py-1 text-xs text-text-dim">
+            <span key={l.id} className="px-2.5 py-1 text-xs text-text-dim">
               {l.name}
             </span>
           ))}
@@ -260,9 +313,9 @@ export default function TypingLessons() {
         />
       ))}
 
-      {!result ? (
-        <div className="w-full">
-          <div className="mb-2 flex flex-wrap items-center gap-1">
+      <div className="w-full">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+          <div className="flex flex-wrap items-center gap-1">
             {lessons.map((l, i) => {
               const unlocked = unlockedSet.has(i);
               const done = completedSet.has(i);
@@ -276,11 +329,11 @@ export default function TypingLessons() {
                   title={unlocked ? l.description : 'Complete the previous lesson to unlock'}
                   className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs transition-all ${
                     isActive
-                      ? 'bg-accent-bg text-accent'
+                      ? 'bg-accent-bg font-medium text-text-bright'
                       : unlocked
-                        ? 'text-text-dim hover:bg-surface-raised hover:text-text'
+                        ? 'text-text hover:bg-surface-raised hover:text-text-bright'
                         : 'cursor-not-allowed text-text-dim/40'
-                  } ${isRunning ? 'opacity-30 cursor-not-allowed' : ''}`}
+                  } ${isRunning ? 'cursor-not-allowed opacity-30' : ''}`}
                 >
                   {done ? (
                     <Check className="h-3 w-3 text-accent" />
@@ -294,97 +347,76 @@ export default function TypingLessons() {
               );
             })}
           </div>
-
-          <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-sm text-text-dim">
-            <span className="text-text-bright">{lesson.name}</span>
-            <span className="text-surface-border">·</span>
-            <span className="tabular-nums text-correct">
+          <div className="flex items-center gap-3 font-mono text-sm text-text">
+            <span className="tabular-nums text-text-bright">
               {isRunning ? wpm : '--'}
-              <span className="text-text-dim"> wpm</span>
+              <span className="text-text"> wpm</span>
             </span>
             <span className="text-surface-border">·</span>
-            <span className="tabular-nums text-correct">
+            <span className="tabular-nums text-text-bright">
               {isRunning ? accuracy : '--'}
-              <span className="text-text-dim">%</span>
+              <span className="text-text">%</span>
             </span>
-            {lesson.keys[0] !== 'all' && (
-              <>
-                <span className="text-surface-border">·</span>
-                <span className="text-[11px] tracking-wide">
-                  keys: <span className="text-text">{lesson.keys.join(' ').toUpperCase()}</span>
-                </span>
-              </>
-            )}
           </div>
-
-          <div className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
-            <div
-              className={`h-full rounded-full bg-accent transition-all duration-150 ${
-                isRunning ? 'progress-glow' : ''
-              }`}
-              style={{
-                width: chars.length
-                  ? `${Math.min(100, (currentIndex / chars.length) * 100)}%`
-                  : '0%',
-              }}
-            />
-          </div>
-
-          <div
-            ref={typingAreaRef}
-            className="relative mt-4 w-full cursor-text overflow-hidden py-3"
-            style={{ height: lineHeight > 0 ? lineHeight * 3 + 24 : 112 }}
-            onClick={() => inputRef.current?.focus({ preventScroll: true })}
-          >
-            <TypingPassage
-              chars={chars}
-              currentIndex={currentIndex}
-              firstCharRef={firstCharRef}
-              currentCharRef={currentCharRef}
-              className="transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(-${scrollOffset}px)` }}
-            />
-          </div>
-
-          <input ref={inputRef} className="sr-only" autoFocus />
-
-          <div className="mt-6 flex h-8 items-center justify-center">
-            {!isRunning && !isComplete && (
-              <p className="text-sm text-text-dim">start typing to begin</p>
-            )}
-            {isRunning && (
-              <button
-                type="button"
-                onClick={retryLesson}
-                className="text-text-dim transition-colors hover:text-text"
-                title="Restart lesson"
-              >
-                <RotateCcw className="h-4 w-4" />
-              </button>
-            )}
-          </div>
-
-          <div className="mt-4 animate-fade-up">
-            <LiveKeyboard
-              nextChar={chars[currentIndex]?.char}
-              lastKeyCorrect={lastKeyFlash}
-              focusKeys={lesson.keys}
-              compact
-            />
-          </div>
-
-          <p className="mt-6 text-center text-[11px] text-text-dim/70">{lesson.description}</p>
         </div>
-      ) : (
-        <ResultCard
-          result={result}
-          onNext={() => (hasNext ? goToLesson(activeLesson + 1) : retryLesson())}
-          nextLabel={hasNext ? 'next lesson' : 'retry lesson'}
-          nextHint={hasNext ? 'tab · next lesson' : 'tab · retry'}
-          onRetry={hasNext ? retryLesson : undefined}
-          retryLabel="retry"
-        />
-      )}
+
+        <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
+          <div
+            className={`h-full rounded-full bg-accent transition-all duration-150 ${
+              isRunning ? 'progress-glow' : ''
+            }`}
+            style={{
+              width: chars.length
+                ? `${Math.min(100, (currentIndex / chars.length) * 100)}%`
+                : '0%',
+            }}
+          />
+        </div>
+
+        <div
+          ref={typingAreaRef}
+          className="relative mt-3 cursor-text overflow-hidden py-3"
+          style={{ height: typingWindowHeight(lineHeight) }}
+          onClick={() => inputRef.current?.focus({ preventScroll: true })}
+        >
+          <TypingPassage
+            chars={chars}
+            currentIndex={currentIndex}
+            firstCharRef={firstCharRef}
+            currentCharRef={currentCharRef}
+            className="transition-transform duration-150 ease-out"
+            style={{ transform: `translateY(-${scrollOffset}px)` }}
+          />
+        </div>
+
+        <input ref={inputRef} className="sr-only" autoFocus />
+
+        <div className="mt-4 flex h-8 items-center justify-center">
+          {!isRunning ? (
+            <p className="text-sm text-text-dim">start typing to begin</p>
+          ) : (
+            <button
+              type="button"
+              onClick={retryLesson}
+              className="text-text-dim transition-colors hover:text-text"
+              title="Restart lesson"
+            >
+              <RotateCcw className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        <div className="mt-4 animate-fade-up">
+          <LiveKeyboard
+            nextChar={chars[currentIndex]?.char}
+            lastKeyCorrect={lastKeyFlash}
+            focusKeys={lesson.keys}
+            compact
+          />
+        </div>
+
+        <PracticeFeedback log={log} />
+      </div>
     </div>
   );
 }

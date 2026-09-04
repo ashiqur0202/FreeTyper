@@ -30,6 +30,8 @@ export function useTypingEngine(options: TypingEngineOptions) {
   const isCompleteRef = useRef(false);
   const currentIndexRef = useRef(0);
   const timedRef = useRef(timed);
+  const textRef = useRef(text);
+  textRef.current = text;
 
   // Keep ref in sync when timed prop changes
   useEffect(() => {
@@ -175,8 +177,11 @@ export function useTypingEngine(options: TypingEngineOptions) {
     setCurrentIndex(prevIdx);
   }, [chars]);
 
-  const restart = useCallback(() => {
+  const restart = useCallback((nextText?: string) => {
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+
+    const t = nextText ?? textRef.current;
+    if (nextText !== undefined) textRef.current = nextText;
 
     correctCountRef.current = 0;
     incorrectCountRef.current = 0;
@@ -185,14 +190,14 @@ export function useTypingEngine(options: TypingEngineOptions) {
     currentIndexRef.current = 0;
     startTimeRef.current = 0;
 
-    setChars(initChars(text));
+    setChars(initChars(t));
     setCurrentIndex(0);
     setIsRunning(false);
     setIsComplete(false);
-    setTimeLeft(timed ?? 0);
+    setTimeLeft(timedRef.current);
     setElapsed(0);
     setErrors([]);
-  }, [text, timed, initChars]);
+  }, [initChars]);
 
   // Reset when text changes
   useEffect(() => {

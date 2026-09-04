@@ -12,7 +12,7 @@ export default function DisclaimerPage() {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       <h1 className="text-3xl font-bold text-text-bright">Disclaimer</h1>
-      <p className="mt-2 text-sm text-text-dim">Last updated: June 2026</p>
+      <p className="mt-2 text-sm text-text-dim">Last updated: September 2026</p>
 
       <div className="mt-8 space-y-8 text-text leading-relaxed">
         <section>

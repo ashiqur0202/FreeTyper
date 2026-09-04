@@ -59,7 +59,7 @@ export default function HomePage() {
   return (
     <div>
       {/* Typing window — fills the viewport so SEO content starts below the fold. */}
-      <section className="flex min-h-screen items-center justify-center px-8 py-12 sm:px-10 lg:px-12">
+      <section className="flex min-h-screen flex-col justify-start px-8 pt-16 pb-12 sm:px-10 md:pt-10 lg:px-12">
         <h1 className="sr-only">Free Typing Speed Test — Check Your WPM Online</h1>
         <div className="w-full">
           <TypingSpeedTest />

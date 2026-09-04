@@ -86,7 +86,7 @@ export const bodyHtml = `
 </ul>
 <p>A 60-second test is excellent for a baseline. Longer durations (2–5 minutes) expose whether your “sprint WPM” collapses under sustained work — the number that actually matters for office output.</p>
 <h3>Gross vs net vs “feel”</h3>
-<p>Many people “feel” fast because they type bursts of familiar words, then pause. A timer removes that illusion. FreeTyper’s result card ranks your performance so you can map a raw WPM to a practical band (beginner → elite) without guesswork.</p>
+<p>Many people “feel” fast because they type bursts of familiar words, then pause. A timer removes that illusion. When the clock ends, a short guide under the keyboard maps your WPM to a practical band (beginner → elite) and keeps your latest five tests for comparison.</p>
 
 <h2 id="understanding-your-result">Understanding Your Result: WPM Benchmarks</h2>
 <h3>WPM score benchmarks (population context)</h3>
@@ -219,7 +219,7 @@ export const bodyHtml = `
 <li><strong>Live keyboard feedback</strong> — next-key hints and correct/incorrect flash help you learn while you measure.</li>
 <li><strong>Privacy-first</strong> — progress can stay in localStorage; no account required to test.</li>
 <li><strong>Full skill path</strong> — lessons, practice, games, and progress tools live beside the test so improvement is one click away.</li>
-<li><strong>Shareable results</strong> — result cards make it easy to save a baseline or share a PR.</li>
+<li><strong>Shareable results</strong> — copy a score from the latest test to save a baseline or share a PR.</li>
 </ul>
 <p>FreeTyper is free forever by design. The product goal is simple: honest measurement + a clear path to type faster without surveillance or paywalls.</p>
 

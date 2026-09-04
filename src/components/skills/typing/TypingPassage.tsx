@@ -41,15 +41,27 @@ function groupWords(chars: TypingCharState[]): WordRun[] {
   return words;
 }
 
-/** Line box height from the first wrap among character spans (not word wrappers). */
+const MIN_LINE = 24;
+
+/** Stable CSS line-height. Never treat a 2px underline/space offset as a new line. */
 export function measureTypingLineHeight(container: HTMLElement): number {
+  const computed = parseFloat(getComputedStyle(container).lineHeight);
+  if (Number.isFinite(computed) && computed >= MIN_LINE) return computed;
+
+  const fontSize = parseFloat(getComputedStyle(container).fontSize) || 18;
+  const minDelta = fontSize * 0.9;
   const nodes = container.querySelectorAll('.char');
   for (let i = 1; i < nodes.length; i++) {
-    const prevTop = (nodes[i - 1] as HTMLElement).offsetTop;
-    const currTop = (nodes[i] as HTMLElement).offsetTop;
-    if (currTop > prevTop) return currTop - prevTop;
+    const delta =
+      (nodes[i] as HTMLElement).offsetTop - (nodes[i - 1] as HTMLElement).offsetTop;
+    if (delta >= minDelta) return delta;
   }
-  return 0;
+  return fontSize * 1.625;
+}
+
+export function typingWindowHeight(lineHeight: number): number {
+  const lh = lineHeight > 0 ? lineHeight : 36;
+  return Math.max(112, lh * 3 + 24);
 }
 
 interface TypingPassageProps {
@@ -73,7 +85,7 @@ export default function TypingPassage({
 
   return (
     <div
-      className={`typing-text text-lg leading-relaxed tracking-wide ${className}`}
+      className={`typing-text text-lg tracking-wide ${className}`}
       style={style}
     >
       {words.map((word) => {
