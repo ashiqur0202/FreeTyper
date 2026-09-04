@@ -301,7 +301,6 @@ export default function TypingPractice() {
   if (!mounted || !text) {
     return (
       <div className="w-full">
-        <p className="mb-3 text-[10px] uppercase tracking-[0.18em] text-text-dim">practice</p>
         <div className="flex flex-wrap items-center gap-1">
           {CATEGORIES.map((c) => (
             <span key={c.id} className="px-2.5 py-1 text-xs text-text-dim">
@@ -325,21 +324,7 @@ export default function TypingPractice() {
       ))}
 
       <div className="w-full">
-          <div className="mb-4">
-            <div className="mb-3 flex items-center justify-between gap-x-4 gap-y-1">
-              <p className="text-[10px] uppercase tracking-[0.18em] text-text-dim">practice</p>
-              <div className="flex items-center gap-3 font-mono text-sm text-text">
-                <span className="tabular-nums text-text-bright">
-                  {isRunning ? wpm : '--'}
-                  <span className="text-text"> wpm</span>
-                </span>
-                <span className="text-surface-border">·</span>
-                <span className="tabular-nums text-text-bright">
-                  {isRunning ? accuracy : '--'}
-                  <span className="text-text">%</span>
-                </span>
-              </div>
-            </div>
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
             <div className="flex flex-wrap items-center gap-1">
               {CATEGORIES.map((cat) => (
                 <button
@@ -356,6 +341,17 @@ export default function TypingPractice() {
                   {cat.label}
                 </button>
               ))}
+            </div>
+            <div className="flex items-center gap-3 font-mono text-sm text-text">
+              <span className="tabular-nums text-text-bright">
+                {isRunning ? wpm : '--'}
+                <span className="text-text"> wpm</span>
+              </span>
+              <span className="text-surface-border">·</span>
+              <span className="tabular-nums text-text-bright">
+                {isRunning ? accuracy : '--'}
+                <span className="text-text">%</span>
+              </span>
             </div>
           </div>
 
