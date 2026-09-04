@@ -345,7 +345,7 @@ export default function WordAttackGame() {
   const isCorrectSoFar = currentWord.toLowerCase().startsWith(typed);
 
   return (
-    <div className="mx-auto w-full max-w-3xl space-y-3">
+    <div className="w-full space-y-3">
       <div className="flex items-center justify-between rounded-xl border border-surface-border bg-surface-raised/40 px-4 py-3">
         <div className="flex items-center gap-5 font-mono text-sm">
           <div>

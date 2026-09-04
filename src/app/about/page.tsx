@@ -1,48 +1,47 @@
+import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 import { Keyboard } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'About FreeTyper',
+  description:
+    'FreeTyper is a free typing site: speed test, lessons, practice, and games. No signup. Progress stays in your browser.',
+  alternates: { canonical: `${siteConfig.url}/about` },
+};
 
 export default function AboutPage() {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       <div className="flex items-center gap-3 mb-8">
-        <Keyboard className="h-8 w-8 text-amber-500" />
-        <h1 className="text-3xl font-bold text-white">About {siteConfig.name}</h1>
+        <Keyboard className="h-8 w-8 text-accent" />
+        <h1 className="text-3xl font-bold text-text-bright">About {siteConfig.name}</h1>
       </div>
 
-      <div className="space-y-6 text-gray-300 leading-relaxed">
+      <div className="space-y-6 text-text leading-relaxed">
         <p>
-          <strong className="text-white">{siteConfig.name}</strong> is a free, privacy-first typing
-          skills platform built for anyone who wants to type faster. Whether you are a student, writer,
-          developer, or just someone who spends a lot of time at a keyboard, we help you build the
-          muscle memory for fast, accurate typing.
+          {siteConfig.name} is a free typing site. Open it, type, get a WPM and accuracy score. No
+          account. Progress stays in your browser.
         </p>
         <p>
-          Our philosophy is simple: typing tools should be free, require no account, and respect your
-          privacy. All your progress data is stored locally in your browser — we never see it, collect
-          it, or share it.
+          I built it because most typing tests either bury the tool under popups or lock practice
+          behind a signup. The test on the home page is the same 5-characters-per-word scoring used
+          in a lot of job tests, so the number is comparable — not a vanity score.
         </p>
-        <h2 className="text-xl font-bold text-white pt-4">What We Offer</h2>
-        <ul className="list-disc list-inside space-y-2 text-gray-400">
-          <li>7 progressive typing lessons from home row to speed building</li>
-          <li>Adaptive practice with themed content (quotes, news, code, fun facts)</li>
-          <li>Timed speed tests (1, 3, 5, and 10 minutes)</li>
-          <li>Interactive keyboard guide with color-coded finger mapping</li>
-          <li>Full progress tracking with achievements and streaks</li>
-          <li>Two arcade-style typing games for fun practice</li>
+        <h2 className="text-xl font-bold text-text-bright pt-4">What is on the site</h2>
+        <ul className="list-disc list-inside space-y-2 text-text-dim">
+          <li>Timed speed test (home)</li>
+          <li>Seven lessons from home row to mixed text</li>
+          <li>Practice: quotes, news, code, fun, weak keys</li>
+          <li>Keyboard guide and a local progress log</li>
+          <li>Two short games: Falling Words and Word Attack</li>
         </ul>
-        <h2 className="text-xl font-bold text-white pt-4">Our Mission</h2>
-        <p className="text-gray-400">
-          We believe everyone should have access to quality typing education. In an increasingly digital
-          world, typing speed is a fundamental skill that impacts productivity, communication, and even
-          career opportunities. {siteConfig.name} exists to make that skill accessible to everyone,
-          regardless of budget or background.
-        </p>
-        <h2 className="text-xl font-bold text-white pt-4">Open Source</h2>
-        <p className="text-gray-400">
-          {siteConfig.name} is open source. You can view the code, report issues, or contribute on{' '}
-          <a href={siteConfig.links.github} className="text-amber-500 hover:underline" target="_blank" rel="noopener noreferrer">
-            GitHub
-          </a>.
+        <h2 className="text-xl font-bold text-text-bright pt-4">Who runs it</h2>
+        <p className="text-text-dim">
+          {siteConfig.name} is a small independent project. Questions:{' '}
+          <a href="mailto:contact@freetyper.com" className="text-accent hover:underline">
+            contact@freetyper.com
+          </a>
+          .
         </p>
       </div>
     </div>

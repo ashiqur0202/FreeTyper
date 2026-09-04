@@ -9,6 +9,7 @@ import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import ResultCard from './ResultCard';
+import TypingPassage, { measureTypingLineHeight } from './TypingPassage';
 
 type Category = 'quotes' | 'news' | 'code' | 'fun' | 'weak';
 
@@ -223,17 +224,9 @@ export default function TypingPractice() {
     if (lh === 0) {
       const container = typingAreaRef.current?.querySelector('.typing-text');
       if (!container) return;
-      const spans = container.children;
-      for (let i = 1; i < spans.length; i++) {
-        const prevTop = (spans[i - 1] as HTMLElement).offsetTop;
-        const currTop = (spans[i] as HTMLElement).offsetTop;
-        if (currTop > prevTop) {
-          lh = currTop - prevTop;
-          setLineHeight(lh);
-          break;
-        }
-      }
+      lh = measureTypingLineHeight(container as HTMLElement);
       if (lh === 0) return;
+      setLineHeight(lh);
     }
 
     const currentLine = Math.round((currentTop - baseTop) / lh);
@@ -266,7 +259,7 @@ export default function TypingPractice() {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col items-center">
+    <div className="flex w-full flex-col items-center">
       {toasts.map((a, i) => (
         <AchievementToast
           key={a.id + i}
@@ -312,7 +305,7 @@ export default function TypingPractice() {
           </div>
 
           {/* Passage progress */}
-          <div className="mx-auto mt-3 h-0.5 w-full max-w-2xl overflow-hidden rounded-full bg-surface-raised">
+          <div className="mt-3 h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
             <div
               className={`h-full rounded-full bg-accent transition-all duration-150 ${
                 isRunning ? 'progress-glow' : ''
@@ -328,27 +321,18 @@ export default function TypingPractice() {
           {/* Typing area — 3-line scroll */}
           <div
             ref={typingAreaRef}
-            className="relative mx-auto mt-4 max-w-3xl cursor-text overflow-hidden py-3"
+            className="relative mt-4 cursor-text overflow-hidden py-3"
             style={{ height: lineHeight > 0 ? lineHeight * 3 + 24 : 112 }}
             onClick={() => inputRef.current?.focus({ preventScroll: true })}
           >
-            <div
-              className="typing-text text-lg leading-relaxed tracking-wide transition-transform duration-150 ease-out"
+            <TypingPassage
+              chars={chars}
+              currentIndex={currentIndex}
+              firstCharRef={firstCharRef}
+              currentCharRef={currentCharRef}
+              className="transition-transform duration-150 ease-out"
               style={{ transform: `translateY(-${scrollOffset}px)` }}
-            >
-              {chars.map((c, i) => (
-                <span
-                  key={`${text.slice(0, 12)}-${i}`}
-                  ref={(el) => {
-                    if (i === 0) firstCharRef.current = el;
-                    if (i === currentIndex) currentCharRef.current = el;
-                  }}
-                  className={`char ${c.status}`}
-                >
-                  {c.char}
-                </span>
-              ))}
-            </div>
+            />
           </div>
 
           <input ref={inputRef} className="sr-only" autoFocus />

@@ -1,7 +1,8 @@
 'use client';
 
 import { useRef, useState, useCallback, useEffect } from 'react';
-import { Share2, Check, RotateCcw, Image } from 'lucide-react';
+import Link from 'next/link';
+import { Share2, Check, RotateCcw, Image, PenTool } from 'lucide-react';
 import type { TypingSession } from './types';
 
 /* ── Rank helpers ── */
@@ -74,6 +75,9 @@ interface ResultCardProps {
   /** Optional secondary action (e.g. retry lesson). */
   onRetry?: () => void;
   retryLabel?: string;
+  /** Optional link to daily practice (used on the speed-test result). */
+  practiceHref?: string;
+  practiceLabel?: string;
 }
 
 export default function ResultCard({
@@ -83,6 +87,8 @@ export default function ResultCard({
   nextHint = 'tab · next test',
   onRetry,
   retryLabel = 'retry',
+  practiceHref,
+  practiceLabel = 'practice',
 }: ResultCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
@@ -200,6 +206,15 @@ export default function ResultCard({
           <RotateCcw className="h-3.5 w-3.5" />
           {nextLabel}
         </button>
+        {practiceHref && (
+          <Link
+            href={practiceHref}
+            className="flex items-center gap-1.5 rounded-lg border border-accent/40 bg-accent-bg px-4 py-2.5 text-xs text-accent transition-all hover:border-accent hover:brightness-110 active:scale-95"
+          >
+            <PenTool className="h-3.5 w-3.5" />
+            {practiceLabel}
+          </Link>
+        )}
         {onRetry && (
           <button
             onClick={onRetry}

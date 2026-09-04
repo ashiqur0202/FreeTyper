@@ -1,63 +1,114 @@
+import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy',
+  description:
+    'How FreeTyper handles data: local progress in your browser, Google Analytics, and (when enabled) Google ads.',
+  alternates: { canonical: `${siteConfig.url}/privacy` },
+};
 
 export default function PrivacyPage() {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
-      <h1 className="text-3xl font-bold text-white">Privacy Policy</h1>
-      <p className="mt-2 text-sm text-gray-500">Last updated: June 2026</p>
+      <h1 className="text-3xl font-bold text-text-bright">Privacy Policy</h1>
+      <p className="mt-2 text-sm text-text-dim">Last updated: September 2026</p>
 
-      <div className="mt-8 space-y-8 text-gray-300 leading-relaxed">
+      <div className="mt-8 space-y-8 text-text leading-relaxed">
         <section>
-          <h2 className="text-xl font-bold text-white">Overview</h2>
-          <p className="mt-2">{siteConfig.name} is built with privacy as a core principle. We do not require accounts, we do not collect personal information, and we do not track you across the web.</p>
+          <h2 className="text-xl font-bold text-text-bright">Overview</h2>
+          <p className="mt-2">
+            {siteConfig.name} is a no-account typing site. Your WPM history, settings, and
+            achievements stay in this browser (localStorage). We do not run user accounts or sell
+            profiles. We do use Google Analytics to see which pages are used, and we may show Google
+            ads after AdSense approval. Those Google services use cookies as described below.
+          </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-white">Data Storage</h2>
-          <p className="mt-2">All your typing progress, achievements, settings, and history are stored exclusively in your browser&apos;s localStorage. This data never leaves your device. We have no access to it, cannot read it, and cannot share it.</p>
-          <p className="mt-2 text-gray-400">Clearing your browser data will permanently delete your progress. We recommend noting your key stats periodically if you wish to track long-term improvement.</p>
+          <h2 className="text-xl font-bold text-text-bright">Data stored on your device</h2>
+          <p className="mt-2">
+            Progress, achievements, settings, and game high scores are stored only in your
+            browser&apos;s localStorage. That data does not go to our servers. Clearing site data
+            deletes it.
+          </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-white">Analytics</h2>
-          <p className="mt-2">We use Google Analytics to understand general site traffic patterns (page views, session duration, country-level location). This data is anonymous and aggregated. We do not track individual users or tie analytics data to any personal identity.</p>
-          <p className="mt-2 text-gray-400">You can opt out of analytics by using a browser extension that blocks Google Analytics or by enabling Do Not Track in your browser settings.</p>
+          <h2 className="text-xl font-bold text-text-bright">Google Analytics</h2>
+          <p className="mt-2">
+            We use Google Analytics 4 to measure visits (pages, approximate country, device type,
+            session length). Google processes this on our behalf. It is not tied to a FreeTyper
+            login because we do not have logins.
+          </p>
+          <p className="mt-2 text-text-dim">
+            You can block Analytics with a browser extension or Google&apos;s own opt-out tools.
+            &quot;Do Not Track&quot; browser flags are not a reliable opt-out for Analytics.
+          </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-white">Advertising</h2>
-          <p className="mt-2">We may display advertisements through Google AdSense. These ads may use cookies to serve relevant content. Google&apos;s advertising cookies enable it and its partners to serve ads based on visits to this site and/or other sites on the Internet.</p>
-          <p className="mt-2 text-gray-400">You may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" className="text-amber-500 hover:underline" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>.</p>
+          <h2 className="text-xl font-bold text-text-bright">Google advertising</h2>
+          <p className="mt-2">
+            When ads are enabled, Google AdSense (and its partners) may use cookies to serve ads on
+            this site, including ads based on visits to this site and other sites. See{' '}
+            <a
+              href="https://policies.google.com/technologies/partner-sites"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              How Google uses information on sites or apps that use our services
+            </a>
+            .
+          </p>
+          <p className="mt-2 text-text-dim">
+            Opt out of personalized Google ads at{' '}
+            <a
+              href="https://www.google.com/settings/ads"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Google Ads Settings
+            </a>{' '}
+            or{' '}
+            <a
+              href="https://www.aboutads.info/choices/"
+              className="text-accent hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              aboutads.info
+            </a>
+            .
+          </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-white">Cookies</h2>
-          <p className="mt-2">Our use of cookies is minimal and limited to:</p>
-          <ul className="list-disc list-inside mt-2 space-y-1 text-gray-400">
-            <li>Google Analytics cookies (for anonymous traffic analysis)</li>
-            <li>Google AdSense cookies (for ad personalization, if applicable)</li>
+          <h2 className="text-xl font-bold text-text-bright">Cookies</h2>
+          <p className="mt-2">We do not set first-party tracking cookies. Third parties may set:</p>
+          <ul className="list-disc list-inside mt-2 space-y-1 text-text-dim">
+            <li>Google Analytics cookies (traffic measurement)</li>
+            <li>Google AdSense cookies (ads), once ads are live</li>
           </ul>
-          <p className="mt-2 text-gray-400">We do not set our own cookies. Your typing progress uses localStorage, not cookies.</p>
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-white">Third-Party Links</h2>
-          <p className="mt-2">Our site may contain links to external websites (e.g., blog references, affiliate recommendations). We are not responsible for the privacy practices of those external sites.</p>
+          <h2 className="text-xl font-bold text-text-bright">Children</h2>
+          <p className="mt-2">
+            {siteConfig.name} is a general-audience typing tool. It is not directed at children
+            under 13. We do not knowingly collect personal information from children. If you believe
+            a child has sent us personal information, email contact@freetyper.com and we will delete
+            it.
+          </p>
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-white">Children&apos;s Privacy</h2>
-          <p className="mt-2">{siteConfig.name} is suitable for all ages. We do not knowingly collect personal information from children because we do not collect personal information from anyone.</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-bold text-white">Changes to This Policy</h2>
-          <p className="mt-2 text-gray-400">We may update this privacy policy from time to time. Changes will be posted on this page with an updated revision date.</p>
-        </section>
-
-        <section>
-          <h2 className="text-xl font-bold text-white">Contact</h2>
-          <p className="mt-2 text-gray-400">Questions about this privacy policy? Email us at contact@freetyper.com.</p>
+          <h2 className="text-xl font-bold text-text-bright">Contact</h2>
+          <p className="mt-2 text-text-dim">
+            Questions about this policy: contact@freetyper.com
+          </p>
         </section>
       </div>
     </div>

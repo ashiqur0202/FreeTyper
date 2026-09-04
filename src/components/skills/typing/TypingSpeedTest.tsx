@@ -10,6 +10,7 @@ import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import ResultCard from './ResultCard';
+import TypingPassage, { measureTypingLineHeight } from './TypingPassage';
 
 type TextMode = 'words' | 'sentences' | 'code';
 
@@ -37,20 +38,32 @@ const DURATION_OPTIONS: DurationOption[] = [
 ];
 
 function generateTestText(mode: TextMode): string {
+  // Enough text for a 30-minute run at high WPM; timer still ends the test.
   if (mode === 'words') {
-    const allWords = [...wordPools.easy, ...wordPools.medium];
-    const shuffled = allWords.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 60).join(' ');
+    const pool = [...wordPools.easy, ...wordPools.medium];
+    const out: string[] = [];
+    while (out.length < 2000) {
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      out.push(...shuffled);
+    }
+    return out.slice(0, 2000).join(' ');
   }
   if (mode === 'code') {
     const codeTexts = practiceTexts.filter((p) => p.category === 'code');
-    const shuffled = [...codeTexts].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 2).map((p) => p.text).join(' ');
+    const chunks: string[] = [];
+    while (chunks.join(' ').split(/\s+/).length < 800) {
+      chunks.push(...[...codeTexts].sort(() => Math.random() - 0.5).map((p) => p.text));
+      if (codeTexts.length === 0) break;
+    }
+    return chunks.join(' ');
   }
-  // sentences — mix quotes, news, fun
   const proseTexts = practiceTexts.filter((p) => p.category !== 'code');
-  const shuffled = [...proseTexts].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, 3).map((p) => p.text).join(' ');
+  const chunks: string[] = [];
+  while (chunks.join(' ').split(/\s+/).length < 1500) {
+    chunks.push(...[...proseTexts].sort(() => Math.random() - 0.5).map((p) => p.text));
+    if (proseTexts.length === 0) break;
+  }
+  return chunks.join(' ');
 }
 
 export default function TypingSpeedTest() {
@@ -201,20 +214,11 @@ export default function TypingSpeedTest() {
     // Measure line height if not yet known
     let lh = lineHeight;
     if (lh === 0) {
-      // Scan DOM for the first pair of chars on different lines
       const container = typingAreaRef.current?.querySelector('.typing-text');
       if (!container) return;
-      const spans = container.children;
-      for (let i = 1; i < spans.length; i++) {
-        const prevTop = (spans[i - 1] as HTMLElement).offsetTop;
-        const currTop = (spans[i] as HTMLElement).offsetTop;
-        if (currTop > prevTop) {
-          lh = currTop - prevTop;
-          setLineHeight(lh);
-          break;
-        }
-      }
-      if (lh === 0) return; // couldn't measure yet
+      lh = measureTypingLineHeight(container as HTMLElement);
+      if (lh === 0) return;
+      setLineHeight(lh);
     }
 
     // Which line is cursor on? (0-based, relative to baseline)
@@ -432,23 +436,14 @@ export default function TypingSpeedTest() {
             style={{ height: lineHeight > 0 ? lineHeight * 3 + 24 : 112 }}
             onClick={() => inputRef.current?.focus({ preventScroll: true })}
           >
-            <div
-              className="typing-text text-lg leading-relaxed tracking-wide transition-transform duration-150 ease-out"
+            <TypingPassage
+              chars={chars}
+              currentIndex={currentIndex}
+              firstCharRef={firstCharRef}
+              currentCharRef={currentCharRef}
+              className="transition-transform duration-150 ease-out"
               style={{ transform: `translateY(-${scrollOffset}px)` }}
-            >
-              {chars.map((c, i) => (
-                <span
-                  key={i}
-                  ref={(el) => {
-                    if (i === 0) firstCharRef.current = el;
-                    if (i === currentIndex) currentCharRef.current = el;
-                  }}
-                  className={`char ${c.status}`}
-                >
-                  {c.char}
-                </span>
-              ))}
-            </div>
+            />
           </div>
 
           {/* Hidden input outside scroll container — prevents browser scroll-on-focus */}
@@ -477,7 +472,13 @@ export default function TypingSpeedTest() {
         </div>
       ) : (
         /* Results screen — new shareable card */
-        <ResultCard result={result} onNext={() => startNewTest()} />
+        <ResultCard
+          result={result}
+          onNext={() => startNewTest()}
+          practiceHref="/typing-practice"
+          practiceLabel={result.incorrectChars > 0 ? 'practice weak keys' : 'daily practice'}
+          nextHint="tab · next test · practice to improve"
+        />
       )}
 
       {/* Command palette */}

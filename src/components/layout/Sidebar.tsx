@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { useSidebar } from './SidebarProvider';
 import { useState } from 'react';
+import { useSettings, THEMES, ACCENT_COLORS } from './SettingsProvider';
 
 const navGroups = [
   {
@@ -47,16 +48,9 @@ const navGroups = [
 
 const version = '1.0.0';
 
-const accentColors = [
-  { name: 'gold', color: '#e2b714' },
-  { name: 'blue', color: '#519aba' },
-  { name: 'green', color: '#8a8a6e' },
-  { name: 'red', color: '#c44250' },
-  { name: 'purple', color: '#a37acc' },
-  { name: 'cyan', color: '#56b6c2' },
-];
-
 function ThemeModal({ onClose }: { onClose: () => void }) {
+  const { settings, updateSetting } = useSettings();
+
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center">
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
@@ -73,23 +67,42 @@ function ThemeModal({ onClose }: { onClose: () => void }) {
         <div className="px-5 py-4">
           <span className="mb-3 block text-xs text-text-dim">accent color</span>
           <div className="flex gap-2">
-            {accentColors.map((c) => (
+            {ACCENT_COLORS.map((c) => (
               <button
-                key={c.name}
-                className="h-7 w-7 rounded-full border-2 border-transparent transition-all hover:scale-110"
+                key={c.id}
+                type="button"
+                onClick={() => updateSetting('accentColor', c.id)}
+                className={`h-7 w-7 rounded-full border-2 transition-all hover:scale-110 ${
+                  settings.accentColor === c.id ? 'border-text-bright scale-110' : 'border-transparent'
+                }`}
                 style={{ backgroundColor: c.color }}
-                title={c.name}
+                title={c.id}
+                aria-label={`${c.id} accent`}
+                aria-pressed={settings.accentColor === c.id}
               />
             ))}
           </div>
           <span className="mb-3 mt-5 block text-xs text-text-dim">mode</span>
-          <div className="flex gap-1">
-            <button className="rounded-md bg-accent-bg px-3 py-1.5 text-xs text-accent">
-              dark
-            </button>
-            <button className="rounded-md px-3 py-1.5 text-xs text-text-dim hover:bg-surface-raised hover:text-text">
-              light
-            </button>
+          <div className="flex flex-wrap gap-1">
+            {THEMES.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => updateSetting('theme', t.id)}
+                className={`inline-flex items-center rounded-md px-3 py-1.5 text-xs transition-colors ${
+                  settings.theme === t.id
+                    ? 'bg-accent-bg text-accent'
+                    : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                }`}
+                aria-pressed={settings.theme === t.id}
+              >
+                <span
+                  className="mr-1.5 inline-block h-2 w-2 rounded-full border border-surface-border"
+                  style={{ backgroundColor: t.swatch }}
+                />
+                {t.label}
+              </button>
+            ))}
           </div>
         </div>
       </div>

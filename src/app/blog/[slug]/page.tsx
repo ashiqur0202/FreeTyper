@@ -51,18 +51,18 @@ export default async function BlogPostPage({ params }: PageProps) {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       {/* Breadcrumbs */}
-      <nav className="mb-6 flex items-center gap-1 text-sm text-gray-500">
-        <Link href="/" className="hover:text-amber-400">Home</Link>
+      <nav className="mb-6 flex items-center gap-1 text-sm text-text-dim">
+        <Link href="/" className="hover:text-accent">Home</Link>
         <ChevronRight className="h-3 w-3" />
-        <Link href="/blog" className="hover:text-amber-400">Blog</Link>
+        <Link href="/blog" className="hover:text-accent">Blog</Link>
         <ChevronRight className="h-3 w-3" />
-        <span className="text-gray-300">{post.title}</span>
+        <span className="text-text">{post.title}</span>
       </nav>
 
       {/* Post header */}
       <header className="mb-8">
-        <h1 className="text-3xl font-bold text-white sm:text-4xl">{post.title}</h1>
-        <div className="mt-4 flex items-center gap-3 text-sm text-gray-500">
+        <h1 className="text-3xl font-bold text-text-bright sm:text-4xl">{post.title}</h1>
+        <div className="mt-4 flex items-center gap-3 text-sm text-text-dim">
           <span>{post.author}</span>
           <span>·</span>
           <time>{post.date}</time>
@@ -75,8 +75,8 @@ export default async function BlogPostPage({ params }: PageProps) {
       <BlogContent html={content} />
 
       {/* Back to blog */}
-      <div className="mt-12 border-t border-gray-800 pt-6">
-        <Link href="/blog" className="text-sm text-amber-500 hover:underline">
+      <div className="mt-12 border-t border-surface-border pt-6">
+        <Link href="/blog" className="text-sm text-accent hover:underline">
           ← Back to Blog
         </Link>
       </div>

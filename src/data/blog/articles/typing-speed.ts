@@ -2098,7 +2098,7 @@ export const typingSpeedArticles: Record<string, string> = {
 <p>Pass condition: average accuracy up at least into a higher band (for example 91% → 96%) even if WPM only moves slightly. Speed usually follows in the next month.</p>
 
 <h2 id="team-coaching">Coaching Yourself Like an Athlete</h2>
-<p>Elite skill work uses constraints. Your constraint might be “no session counts unless accuracy ≥95%.” Another constraint: “three rage restarts max, then walk away.” Write the rule down. can provide the reps and the metrics; you provide the standards.</p>
+<p>Elite skill work uses constraints. Your constraint might be “no session counts unless accuracy ≥95%.” Another constraint: “three rage restarts max, then walk away.” Write the rule down. FreeTyper can provide the reps and the metrics; you provide the standards.</p>
 
 
 <h2 id="psychology">The Psychology of Fixing Accuracy</h2>
@@ -2141,14 +2141,14 @@ export const typingSpeedArticles: Record<string, string> = {
 </ul>
 
 <h2 id="finger-level-accuracy-a-key-by-key-mindset">Finger-Level Accuracy: A Key-by-Key Mindset</h2>
-<p>Whole-keyboard accuracy is an average that can hide a few catastrophic keys. You might be 97% on most letters and 80% on two or three. weak-key list and heatmap exist to expose that. Fixing two keys can lift overall accuracy more than an hour of generic speed runs.</p>
+<p>Whole-keyboard accuracy is an average that can hide a few catastrophic keys. You might be 97% on most letters and 80% on two or three. FreeTyper’s weak-key list and heatmap exist to expose that. Fixing two keys can lift overall accuracy more than an hour of generic speed runs.</p>
 <p>When a key is weak, check ownership on the keyboard guide before drilling mindlessly. If you are hitting R with the wrong finger, more speed will not save you. Correct the map, then drill slowly, then reintegrate into full sentences.</p>
 <p>Reintegration matters. Isolated drills that never return to full passages create “drill skill” that dies in real writing. Always end weak-key work with a short clean paragraph in practice mode.</p>
 <p>Review the weak-key list weekly rather than hourly. Lists need enough new sample presses to be meaningful. Obsessive checking every ten minutes creates noise.</p><h2 id="building-an-accuracy-first-culture-for-yourself">Building an Accuracy-First Culture for Yourself</h2>
 <p>If you work on a team that glorifies instant replies, you may need personal rules that protect accuracy: draft offline for sensitive numbers, slow down on names, and refuse to treat typos as personality. training supports that culture by making clean input feel normal again.</p>
 <p>Create environmental cues: a sticky note with “95% or it doesn’t count,” a calendar block titled “accuracy block,” or a browser bookmark folder that opens test → practice → progress in order. Systems beat willpower.</p>
 <p>When you slip — and you will — avoid all-or-nothing spirals. One messy day does not erase a clean month. Resume the next scheduled block.</p><h2 id="extended-faq-scenarios">Extended FAQ Scenarios</h2>
-<p>If your accuracy is high on but low in real email, you may be multitasking or rushing for social reasons. Practice transferring calm pace into the first five emails of the day.</p>
+<p>If your accuracy is high on the test but low in real email, you may be multitasking or rushing for social reasons. Practice transferring calm pace into the first five emails of the day.</p>
 <p>If accuracy is high on easy quotes but low on news or code, specialty text is the missing training distribution. Rotate categories deliberately.</p>
 <p>If accuracy is fine alone but collapses when someone watches you, add light pressure with Word Attack after clean warm-ups, then return to normal tests. Composure is trainable.</p>
 <p>If you only fail on the number row, stop calling yourself a bad typist. Call yourself undertrained on numbers and schedule two short weekly symbol sessions.</p>

@@ -75,7 +75,7 @@ export default function KeyboardGuide() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-5xl flex-col items-center">
+    <div className="flex w-full flex-col items-center">
       {/* Finger zone filters */}
       <div className="mb-3 flex flex-wrap items-center justify-center gap-1">
         {ZONES.map((z) => (
@@ -123,8 +123,8 @@ export default function KeyboardGuide() {
       </div>
 
       {/* Interactive keyboard */}
-      <div className="w-full overflow-x-auto pb-2">
-        <div className="mx-auto space-y-1.5 px-1" style={{ minWidth: '34rem' }}>
+      <div className="w-full pb-2">
+        <div className="w-full space-y-1.5">
           {keyboardRows.map((row, ri) => (
             <div key={ri} className="flex justify-center gap-1">
               {row.map((key) => {
@@ -145,9 +145,9 @@ export default function KeyboardGuide() {
                     onMouseEnter={() => setHoveredKey(key)}
                     onMouseLeave={() => setHoveredKey(null)}
                     onClick={() => setSelectedKey(key)}
-                    className={`key relative h-11 w-11 text-xs font-mono transition-all duration-100 sm:h-12 sm:w-12 sm:text-sm ${
+                    className={`key relative h-11 min-w-0 flex-1 text-xs font-mono sm:h-12 sm:text-sm ${
                       isHome ? 'home-row' : ''
-                    } ${isActive ? 'key-hint z-10 scale-105' : ''} ${
+                    } ${isActive ? 'key-hint z-10' : ''} ${
                       dim ? 'opacity-20' : ''
                     }`}
                     style={
@@ -179,7 +179,7 @@ export default function KeyboardGuide() {
               onMouseEnter={() => setHoveredKey(' ')}
               onMouseLeave={() => setHoveredKey(null)}
               onClick={() => setSelectedKey(' ')}
-              className={`key h-11 w-72 text-xs font-mono transition-all sm:h-12 ${
+              className={`key h-11 w-[55%] max-w-xl text-xs font-mono sm:h-12 ${
                 activeKey === ' ' ? 'key-hint' : ''
               } ${isDimmed(' ') ? 'opacity-20' : ''}`}
               style={
@@ -198,8 +198,8 @@ export default function KeyboardGuide() {
         </div>
       </div>
 
-      {/* Detail panel */}
-      <div className="mt-8 w-full max-w-xl rounded-xl border border-surface-border bg-surface-raised/50 p-5">
+      {/* Detail panel — fixed height so hover does not reflow the centered page. */}
+      <div className="mt-8 w-full rounded-xl border border-surface-border bg-surface-raised/50 p-5">
         {activeKey ? (
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
             <div>
@@ -214,11 +214,15 @@ export default function KeyboardGuide() {
                 <span className="text-text-dim">finger · </span>
                 {formatFinger(activeKey)}
               </p>
-              {homeRowKeys.has(activeKey) && (
-                <p className="mt-1 text-xs text-accent">Home row rest position</p>
-              )}
+              <p
+                className={`mt-1 text-xs text-accent ${
+                  homeRowKeys.has(activeKey) ? '' : 'invisible'
+                }`}
+              >
+                Home row rest position
+              </p>
             </div>
-            <div className="min-w-[9rem] rounded-lg border border-surface-border bg-surface px-4 py-3">
+            <div className="min-h-[7.5rem] min-w-[9rem] rounded-lg border border-surface-border bg-surface px-4 py-3">
               <p className="text-[10px] uppercase tracking-widest text-text-dim">your stats</p>
               {selectedStats && selectedStats.totalPresses > 0 ? (
                 <div className="mt-2 space-y-1 font-mono text-sm">
@@ -250,7 +254,7 @@ export default function KeyboardGuide() {
       </div>
 
       {/* Weak keys + CTAs */}
-      <div className="mt-6 grid w-full max-w-xl gap-3 sm:grid-cols-2">
+      <div className="mt-6 grid w-full gap-3 sm:grid-cols-2">
         <div className="rounded-xl border border-surface-border bg-surface-raised/40 p-4">
           <div className="flex items-center gap-2 text-accent">
             <Target className="h-3.5 w-3.5" />

@@ -38,19 +38,19 @@ export default function AchievementToast({ achievement, onClose }: AchievementTo
 
   return (
     <div
-      className={`fixed right-4 top-16 z-[100] max-w-xs rounded border border-gray-800 bg-gray-950 px-3 py-2 shadow-lg ${
+      className={`fixed right-4 top-16 z-[100] max-w-xs rounded border border-surface-border bg-surface-raised px-3 py-2 shadow-lg ${
         exiting ? 'toast-exit' : 'toast-enter'
       }`}
     >
       <div className="flex items-center gap-2">
         <span className="text-lg">{iconMap[achievement.icon] || '🏅'}</span>
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-amber-500">{achievement.name}</p>
-          <p className="text-xs text-gray-600 truncate">{achievement.description}</p>
+          <p className="text-xs text-accent">{achievement.name}</p>
+          <p className="text-xs text-text-dim truncate">{achievement.description}</p>
         </div>
         <button
           onClick={() => { setExiting(true); setTimeout(onClose, 200); }}
-          className="text-gray-700 hover:text-gray-400 shrink-0"
+          className="text-text-dim hover:text-text shrink-0"
         >
           <X className="h-3 w-3" />
         </button>

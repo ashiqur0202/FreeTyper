@@ -3,9 +3,10 @@
 Standalone typing platform. No login, privacy-first, monetized via ads & affiliates.
 
 ## Tech Stack
-- **Next.js 16** (App Router, TS) + **Tailwind v4** (dark, gold accent) + **lucide-react**
+- **Next.js 16** (App Router, TS) + **Tailwind v4** + **lucide-react**
 - Fonts: Inter + JetBrains Mono · Docker standalone on Hetzner via Coolify · Cloudflare DNS
 - No Vercel. No database. All data in localStorage.
+- Appearance: 4 themes (dark / light / midnight / paper) + 6 accent colors, stored in `freetyper-settings`. Default **dark + gold**. Manual only — no auto day/night.
 
 ## Key Components
 ```
@@ -13,9 +14,10 @@ src/components/skills/typing/
 ├── types.ts, typingData.ts, gameData.ts
 ├── useTypingEngine.ts        # rAF timer, WPM/accuracy, backspace support
 ├── useTypingProgress.ts      # localStorage progress/achievements
+├── TypingPassage.tsx          # Word-wrap + justified passage (flush left and right)
 ├── TypingSpeedTest.tsx        # 9 durations, 3 text modes, command palette, focus mode, 3-line scroll
 ├── LiveKeyboard.tsx           # Full QWERTY, hint pulse, flash, optional focusKeys dim
-├── ResultCard.tsx             # Animated WPM, ranks, confetti, share; next/retry labels
+├── ResultCard.tsx             # Animated WPM, ranks, confetti, share; next/retry; practice CTA on home
 ├── TypingLessons.tsx          # Progressive lessons, pills, LiveKeyboard, ResultCard
 ├── TypingPractice.tsx         # Categories + weak keys, LiveKeyboard, ResultCard
 ├── KeyboardGuide.tsx          # Finger filters, home-row mode, personal key stats
@@ -52,10 +54,12 @@ src/app/ → page (speed test + SEO), [slug] (all 7 tools + SEO),
 
 ## Speed Test Features
 - **3-line scrolling** (monkeytype-style) · **Backspace** to correct mistakes
+- **Justified passage** — words wrap as units; lines flush left and right (`TypingPassage`)
 - **Live keyboard** — full QWERTY, gold hint pulse on next key, green/red flash on type
 - **Progress bar** with glow · Live WPM + accuracy
 - **Focus mode** (fullscreen, Esc to exit) · **Command palette** (`/` key)
 - **Result card** — rank gradient (Elite/Pro/Skilled/Avg/Beginner), animated WPM counter, confetti on 60+ WPM, share text or ASCII card
+- After a test: **practice** CTA → `/typing-practice` (“practice weak keys” if errors, else “daily practice”)
 
 ## Polished Tool Pages (same bar as home)
 | Route | UX highlights | SEO |
@@ -69,27 +73,41 @@ src/app/ → page (speed test + SEO), [slug] (all 7 tools + SEO),
 | `/typing-game-word-attack` | 8 rounds, combos, timers, token UI | Expandable guide + FAQ/HowTo |
 
 Tool SEO pages: full-viewport tool above the fold → ExpandableSeoContent below → JSON-LD (WebApplication + FAQPage + HowTo).  
-`/typing-speed-test` canonical → `/` (home owns the keyword).  
-SEO bylines use **dynamic month + year only** (`Updated July 2026`) via `src/lib/content-dates.ts`.
+**Home stays the speed test** (`/`). Practice is `/typing-practice` — daily habit, not the landing URL (search intent for “typing speed test” owns `/`).  
+`/typing-speed-test` **308 redirect → `/`** (home owns the keyword; slug is not in the sitemap).  
+SEO bylines use **dynamic month + year only** (`Updated July 2026`) via `src/lib/content-dates.ts`.  
+Tool pages use the **full middle column** (between left nav and right rail). Right sidebar is visible (200px) with on-site links + a short tip — not an empty ad slot.
 
 ## Settings (localStorage: `freetyper-settings`)
 | Setting | Values | Default |
 |---|---|---|
+| theme | dark / light / midnight / paper | dark |
+| accentColor | gold / blue / green / red / purple / cyan | gold |
 | fontSize | small / default / large | default |
 | soundEnabled | boolean | false |
 | keyboardLayout | qwerty | qwerty |
 | showKeyboardHints | boolean | true |
-| accentColor | gold / blue / green / red / purple / cyan | gold |
+
+Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → `data-theme` + CSS vars). Font size, sound, and hints are still stored only — tools do not read them yet.
 
 ## Brand
-- Accent: `#e2b714` · Dark theme: surface `#323234`, raised `#3a3a3c`, border `#4a4a4c`
-- Logo: keyboard key + gold cursor · Wordmark: **Free** (white) + **Typer** (gold)
+- Default: **dark + gold** (`#e2b714`) · surface `#323234`, raised `#3a3a3c`, border `#4a4a4c`
+- **light** — cool sage-linen (eye-comfort; not pure white) · **midnight** — near-black · **paper** — medium parchment
+- Accents darken slightly on light/paper so gold stays readable
+- Logo: keyboard key + gold cursor · Wordmark: **Free** (white/bright) + **Typer** (gold)
+- No auto day/night or OS follow — user picks a theme and it sticks
 
 ## SEO & Infra
 - JSON-LD: Org + WebSite (layout); WebApplication + FAQPage + HowTo on home + polished tools; Breadcrumb on home
+- Org logo → `/opengraph-image` (not the old 404 `/og-image.png`). No fake SearchAction (`/?q=` does not exist)
 - Expandable SEO: E-E-A-T byline, in-article TOC, sources/citations, methodology; body always in DOM
-- OG/Twitter cards · dynamic `opengraph-image.tsx` (1200×630) · sitemap (tools + blog) · robots · RSS · PWA
-- GA4 `G-QC5509TVSF` · Google Search Console verified · AdSense still placeholder (pending apply / publisher ID)
+- OG/Twitter cards · dynamic `opengraph-image.tsx` (1200×630) · sitemap (tools + blog, **no** `/typing-speed-test`) · `app/robots.ts` (Allow + Sitemap) · RSS (tools + 25 posts) · PWA
+- **Do not** put ads.txt in `public/robots.txt` — that file was blocking a real robots.txt; ads stay in `public/ads.txt`
+- Settings `/settings` is `noindex`. About/contact/legal have unique titles + canonicals
+- GA4 `G-QC5509TVSF` · Google Search Console verified
+- **AdSense:** do **not** ship `ca-pub-XXXXXXXXXXXXXXXX`. Script removed until a real publisher ID exists. `public/ads.txt` is comments-only until then. Apply only after deploy + working `contact@freetyper.com`
+- Privacy (Sep 2026): honest about GA; Google partner-sites + ads opt-out; **not directed at children under 13**. Do not claim “no tracking” while Analytics is on
+- Site title: `FreeTyper — Type Faster. Free Forever.` (no decorative unicode)
 - Blog: **25 evergreen posts** live (pillars 1–5); de-AI voice pass done site-wide on bodies
 - Legal: /about, /contact, /privacy, /terms, /disclaimer
 - Deploy: GitHub → Coolify (Docker) → Hetzner · Repo: `github.com/ashiqur0202/FreeTyper`
@@ -109,14 +127,31 @@ SEO bylines use **dynamic month + year only** (`Updated July 2026`) via `src/lib
 - [x] Blog live: **25 / 25** posts (all 5 pillars complete)
 - [x] Blog de-AI / voice pass on **all 25** posts (less template CTAs, lighter brand spam, varied opens/closes; keywords + internal links kept for SEO)
 - [x] Removed unused raw draft `.md` files (`blog/1–4.md`); content lives in `articles/*.ts` only
+- [x] Indexing hygiene: real `robots.ts` (deleted bogus `public/robots.txt`), sitemap drops duplicate speed-test slug, 308 `/typing-speed-test` → `/`, settings `noindex`, legal unique titles/canonicals, RSS includes blog, JSON-LD logo + no fake site search
+- [x] Tool pages fill the middle column (lessons, practice, guide, progress, games)
+- [x] `TypingPassage` — word wrap + justified lines (practice / lessons / speed test)
+- [x] Lessons pills + stats left-aligned with the passage (no centered wrap indent)
+- [x] Themes: dark / light / midnight / paper + accent picker (sidebar Theme + Settings). Default dark + gold. Manual only
+- [x] Speed-test result card → practice CTA (`/typing-practice`)
+- [x] Product call: **do not** put practice on `/` — home owns “typing speed test”; practice is the post-test habit
+- [x] Keyboard guide: hover no longer scales keys or reflows the page
+- [x] Timed tests generate enough text for 15–30 min (no more empty passage while the clock runs)
+- [x] Games no longer write fake 100% accuracy into best-accuracy / achievements
+- [x] AdSense hygiene: removed fake `ca-pub` script; `ads.txt` comments-only until real ID
+- [x] About / privacy / terms / contact rewritten for AdSense (no “we don’t track you”, no “all ages”, no unverified open-source claim)
+- [x] Right sidebar filled (tool links + tip) so the site does not look unfinished
+- [x] Fixed broken leftover sentences in `improve-typing-accuracy`
 
 ## Next Up
-- [ ] **Deploy** blog + de-AI changes (commit → push → Coolify) if not already live
-- [ ] **GSC**: refresh/submit sitemap after deploy; spot-check new blog URLs in Search Console
-- [ ] **AdSense**: apply / add publisher ID when approved (replace placeholder)
-- [ ] Connect settings to tools (font size, sound, hints) — currently cosmetic, nothing reads `useSettings`
-- [ ] Accent color picker changes CSS site-wide (wire sidebar swatches + inject `--color-accent`)
+- [ ] **Deploy** this round (commit → push → Coolify)
+- [ ] After deploy: confirm `https://freetyper.com/robots.txt` is Allow + Sitemap (not ads.txt); `/typing-speed-test` 308s to `/`
+- [ ] Confirm **contact@freetyper.com** receives mail (AdSense reviewers test it)
+- [ ] **GSC**: submit/refresh `https://freetyper.com/sitemap.xml`; request indexing for `/typing-practice`, `/typing-lessons`, `/blog`
+- [ ] **AdSense apply** only after the above. Then add real `ca-pub-…` in `layout.tsx` + matching `ads.txt` line
+- [ ] Wire remaining settings into tools: font size → `.typing-text`; sound → key beeps; hints → LiveKeyboard gold pulse
 - [ ] Optional: human polish 2–3 flagship intros in your own voice (strongest “genuine” signal for review)
+- [ ] Known bugs (next coding pass): command palette vs typing on `/`; Falling Words frame-rate speed; Esc in focus mode; mobile `keydown` vs input; LiveKeyboard missing shift glyphs
+- [ ] Sound on games (Falling Words / Word Attack)
 - [ ] Keyboard layouts (DVORAK, Colemak)
 - [ ] Multiplayer races · Leaderboards · School mode
 - [ ] More games (Type Racer, Zombie Typing)

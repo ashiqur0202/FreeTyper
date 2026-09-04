@@ -4,12 +4,15 @@ import { siteConfig } from '@/config/site';
 import { blogPosts } from '@/data/blog/typing-skills';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const toolPages = tools.map((tool) => ({
-    url: `${siteConfig.url}/${tool.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
+  // Home (`/`) is the canonical speed-test URL; do not list the duplicate slug.
+  const toolPages = tools
+    .filter((tool) => tool.id !== 'typing-speed-test')
+    .map((tool) => ({
+      url: `${siteConfig.url}/${tool.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    }));
 
   const blogPages = blogPosts.map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}`,

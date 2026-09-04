@@ -100,8 +100,9 @@ export function useTypingProgress() {
       return {
         ...prev,
         sessions: [...prev.sessions, session],
-        bestWpm: Math.max(prev.bestWpm, session.wpm),
-        bestAccuracy: Math.max(prev.bestAccuracy, session.accuracy),
+        bestWpm: session.mode === 'game' ? prev.bestWpm : Math.max(prev.bestWpm, session.wpm),
+        bestAccuracy:
+          session.mode === 'game' ? prev.bestAccuracy : Math.max(prev.bestAccuracy, session.accuracy),
         totalTypingTime: prev.totalTypingTime + session.duration,
         wordsTyped: prev.wordsTyped + Math.round(session.correctChars / 5),
         streak: {

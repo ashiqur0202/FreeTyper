@@ -1,7 +1,12 @@
 'use client';
 
-import { Type, Volume2, VolumeX, Keyboard, Eye, EyeOff, RotateCcw, Trash2 } from 'lucide-react';
-import { useSettings, type FontSize } from '@/components/layout/SettingsProvider';
+import { Type, Volume2, VolumeX, Keyboard, Eye, EyeOff, RotateCcw, Trash2, Palette } from 'lucide-react';
+import {
+  useSettings,
+  THEMES,
+  ACCENT_COLORS,
+  type FontSize,
+} from '@/components/layout/SettingsProvider';
 import { useState } from 'react';
 
 const fontSizes: { value: FontSize; label: string; px: string }[] = [
@@ -115,6 +120,69 @@ export default function SettingsPage() {
                 `}
               />
             </button>
+          </div>
+        </section>
+
+        <div className="h-px bg-surface-border" />
+
+        {/* Appearance */}
+        <section>
+          <h2 className="mb-4 text-xs font-medium uppercase tracking-widest text-text-dim">
+            Appearance
+          </h2>
+
+          <div className="flex items-center justify-between rounded-lg px-4 py-3">
+            <div className="flex items-center gap-3">
+              <Palette className="h-4 w-4 text-text-dim" />
+              <div>
+                <p className="text-sm text-text">Theme</p>
+                <p className="text-xs text-text-dim">Background and text colors</p>
+              </div>
+            </div>
+            <div className="flex flex-wrap justify-end gap-1">
+              {THEMES.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  onClick={() => updateSetting('theme', t.id)}
+                  className={`rounded-md px-3 py-1 text-xs transition-colors ${
+                    settings.theme === t.id
+                      ? 'bg-accent-bg text-accent'
+                      : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between rounded-lg px-4 py-3">
+            <div className="flex items-center gap-3">
+              <span
+                className="h-4 w-4 rounded-full border border-surface-border"
+                style={{ backgroundColor: ACCENT_COLORS.find((c) => c.id === settings.accentColor)?.color }}
+              />
+              <div>
+                <p className="text-sm text-text">Accent color</p>
+                <p className="text-xs text-text-dim">Highlights, cursor, and buttons</p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              {ACCENT_COLORS.map((c) => (
+                <button
+                  key={c.id}
+                  type="button"
+                  onClick={() => updateSetting('accentColor', c.id)}
+                  className={`h-7 w-7 rounded-full border-2 transition-all hover:scale-110 ${
+                    settings.accentColor === c.id ? 'border-text-bright scale-110' : 'border-transparent'
+                  }`}
+                  style={{ backgroundColor: c.color }}
+                  title={c.id}
+                  aria-label={`${c.id} accent`}
+                />
+              ))}
+            </div>
           </div>
         </section>
 

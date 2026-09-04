@@ -1,4 +1,12 @@
+import type { Metadata } from 'next';
 import { Mail } from 'lucide-react';
+import { siteConfig } from '@/config/site';
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: 'Get in touch with FreeTyper — questions, feedback, and suggestions welcome.',
+  alternates: { canonical: `${siteConfig.url}/contact` },
+};
 
 export default function ContactPage() {
   return (
@@ -21,8 +29,7 @@ export default function ContactPage() {
           </a>
         </div>
         <p className="mt-6 text-xs text-text-dim">
-          FreeTyper is maintained by a small team. We do our best to respond to all
-          messages, but it may take a few days.
+          This is a small project. Email is the best way to reach us; replies can take a few days.
         </p>
       </div>
     </div>

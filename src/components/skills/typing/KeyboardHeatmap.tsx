@@ -45,8 +45,8 @@ export default function KeyboardHeatmap() {
         </div>
       </div>
 
-      <div className="overflow-x-auto pb-1">
-        <div className="mx-auto space-y-1" style={{ minWidth: '32rem' }}>
+      <div className="w-full pb-1">
+        <div className="w-full space-y-1">
           {keyboardRows.map((row, ri) => (
             <div key={ri} className="flex justify-center gap-1">
               {row.map((key) => {
@@ -55,7 +55,7 @@ export default function KeyboardHeatmap() {
                 return (
                   <div
                     key={key}
-                    className="flex h-9 w-9 items-center justify-center rounded-md border border-surface-border font-mono text-[11px] text-text-bright transition-transform hover:scale-105"
+                    className="flex h-9 min-w-0 flex-1 items-center justify-center rounded-md border border-surface-border font-mono text-[11px] text-text-bright transition-transform hover:scale-105"
                     style={{ backgroundColor: bg }}
                     title={getTooltip(key)}
                   >
@@ -67,7 +67,7 @@ export default function KeyboardHeatmap() {
           ))}
           <div className="flex justify-center">
             <div
-              className="flex h-9 w-64 items-center justify-center rounded-md border border-surface-border font-mono text-[11px] text-text-bright"
+              className="flex h-9 w-[55%] max-w-xl items-center justify-center rounded-md border border-surface-border font-mono text-[11px] text-text-bright"
               style={{ backgroundColor: heatStyle(getErrorRate(' ')).bg }}
               title={getTooltip(' ')}
             >

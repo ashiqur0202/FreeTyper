@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
+import { notFound, permanentRedirect } from 'next/navigation';
 import { toolsData, getToolBySlug } from '@/config/tools';
 import { siteConfig } from '@/config/site';
 import ToolClient from '@/components/tools/ToolClient';
@@ -127,7 +127,9 @@ const seoToolPages: Record<
 };
 
 export async function generateStaticParams() {
-  return toolsData.map((tool) => ({ slug: tool.id }));
+  return toolsData
+    .filter((tool) => tool.id !== 'typing-speed-test')
+    .map((tool) => ({ slug: tool.id }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -165,6 +167,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ToolPage({ params }: PageProps) {
   const { slug } = await params;
+  if (slug === 'typing-speed-test') {
+    permanentRedirect('/');
+  }
+
   const tool = getToolBySlug(slug);
   if (!tool) notFound();
 

@@ -1,1 +1,2 @@
-google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+# Add the official AdSense line after you have a real publisher ID:
+# google.com, pub-YOURID, DIRECT, f08c47fec0942fa0

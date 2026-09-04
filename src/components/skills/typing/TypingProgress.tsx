@@ -124,7 +124,7 @@ export default function TypingProgress() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-5xl space-y-6">
+    <div className="w-full space-y-6">
       {/* Header */}
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
