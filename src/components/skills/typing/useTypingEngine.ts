@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import type { TypingCharState, TypingSession, TypingEngineOptions } from './types';
 
 export function useTypingEngine(options: TypingEngineOptions) {
@@ -29,7 +29,7 @@ export function useTypingEngine(options: TypingEngineOptions) {
   const isRunningRef = useRef(false);
   const isCompleteRef = useRef(false);
   const currentIndexRef = useRef(0);
-  const timedRef = useRef(timed);
+  const timedRef = useRef(timed ?? 0);
   const textRef = useRef(text);
   textRef.current = text;
 
@@ -194,7 +194,7 @@ export function useTypingEngine(options: TypingEngineOptions) {
     setCurrentIndex(0);
     setIsRunning(false);
     setIsComplete(false);
-    setTimeLeft(timedRef.current);
+    setTimeLeft(timedRef.current ?? 0);
     setElapsed(0);
     setErrors([]);
   }, [initChars]);
@@ -232,5 +232,3 @@ export function useTypingEngine(options: TypingEngineOptions) {
     handleBackspace,
   };
 }
-
-import { useMemo } from 'react';
