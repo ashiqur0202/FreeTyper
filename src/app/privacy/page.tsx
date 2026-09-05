@@ -18,10 +18,11 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-xl font-bold text-text-bright">Overview</h2>
           <p className="mt-2">
-            {siteConfig.name} is a no-account typing site. Your WPM history, settings, and
-            achievements stay in this browser (localStorage). We do not run user accounts or sell
-            profiles. We do use Google Analytics to see which pages are used, and we may show Google
-            ads after AdSense approval. Those Google services use cookies as described below.
+            {siteConfig.name} ({siteConfig.url}) is a no-account typing site operated by Ashiqur
+            Rahman. Your WPM history, settings, and achievements stay in this browser
+            (localStorage). We do not run user accounts or sell profiles. We do use Google Analytics
+            to see which pages are used, and we may show Google ads after AdSense approval. Those
+            Google services use cookies as described below.
           </p>
         </section>
 
@@ -50,8 +51,13 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-xl font-bold text-text-bright">Google advertising</h2>
           <p className="mt-2">
-            When ads are enabled, Google AdSense (and its partners) may use cookies to serve ads on
-            this site, including ads based on visits to this site and other sites. See{' '}
+            When ads are enabled, third-party vendors, including Google, use cookies to serve ads
+            based on a user&apos;s prior visits to this website or other websites. Google&apos;s use
+            of advertising cookies enables it and its partners to serve ads to your users based on
+            their visit to this site and/or other sites on the Internet.
+          </p>
+          <p className="mt-2">
+            See{' '}
             <a
               href="https://policies.google.com/technologies/partner-sites"
               className="text-accent hover:underline"
@@ -63,7 +69,7 @@ export default function PrivacyPage() {
             .
           </p>
           <p className="mt-2 text-text-dim">
-            Opt out of personalized Google ads at{' '}
+            Users may opt out of personalized advertising by visiting{' '}
             <a
               href="https://www.google.com/settings/ads"
               className="text-accent hover:underline"
@@ -71,8 +77,9 @@ export default function PrivacyPage() {
               rel="noopener noreferrer"
             >
               Google Ads Settings
-            </a>{' '}
-            or{' '}
+            </a>
+            . You can also opt out of some third-party vendors&apos; use of cookies for personalized
+            advertising at{' '}
             <a
               href="https://www.aboutads.info/choices/"
               className="text-accent hover:underline"
@@ -87,7 +94,11 @@ export default function PrivacyPage() {
 
         <section>
           <h2 className="text-xl font-bold text-text-bright">Cookies</h2>
-          <p className="mt-2">We do not set first-party tracking cookies. Third parties may set:</p>
+          <p className="mt-2">
+            We do not set first-party tracking cookies. Third parties, including Google, may place
+            and read cookies on your browser, or use web beacons or IP addresses to collect
+            information as a result of ad serving and analytics on this website.
+          </p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-text-dim">
             <li>Google Analytics cookies (traffic measurement)</li>
             <li>Google AdSense cookies (ads), once ads are live</li>

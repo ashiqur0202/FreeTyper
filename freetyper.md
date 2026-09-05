@@ -26,7 +26,7 @@ src/components/skills/typing/
 ├── GameFeedback.tsx           # Game result + latest 5 (score, WPM, hits/misses, coach)
 ├── FallingWordsGame.tsx, WordAttackGame.tsx
 └── ResultCard.tsx             # leftover; unused (replaced by PracticeFeedback)
-src/components/layout/ → Sidebar, SidebarProvider, RightSidebar, SettingsProvider, Footer
+src/components/layout/ → Sidebar, SidebarProvider, RightSidebar, SettingsProvider, Footer, ContactPanel
 src/components/tools/  → ToolClient (dynamic imports), ToolPageContent (viewport shell)
 src/components/blog/   → BlogContent (+ auto TOC), BlogCard
 src/components/seo/    → JsonLd (Org/WebSite/WebApp/Breadcrumb/FAQ/HowTo), FAQ
@@ -127,8 +127,12 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - **Do not** put ads.txt in `public/robots.txt` — that file was blocking a real robots.txt; ads stay in `public/ads.txt`
 - Settings `/settings` is `noindex`. About/contact/legal have unique titles + canonicals
 - GA4 `G-QC5509TVSF` · Google Search Console verified
-- **AdSense:** do **not** ship `ca-pub-XXXXXXXXXXXXXXXX`. Script removed until a real publisher ID exists. `public/ads.txt` is comments-only until then. Apply only after deploy + working `contact@freetyper.com`
-- Privacy (Sep 2026): honest about GA; Google partner-sites + ads opt-out; **not directed at children under 13**. Do not claim “no tracking” while Analytics is on
+- **AdSense:** do **not** ship `ca-pub-XXXXXXXXXXXXXXXX`. Script removed until a real publisher ID exists. `public/ads.txt` is comments-only until then. Apply after this deploy is live + GSC indexing. Then add real `ca-pub-…` in `layout.tsx` + matching `ads.txt` line
+- Privacy (Sep 2026): operator named (Ashiqur Rahman); honest about GA; Google-required third-party cookie wording (vendors including Google, prior visits, opt-out, web beacons/IP); **not directed at children under 13**. Do not claim “no tracking” while Analytics is on
+- About: named operator, scoring method, what’s on the site, what we store / don’t claim. Contact: email box (copy + open mail) + mailto message form (`ContactPanel`) — no server inbox, nothing posted to our servers
+- `contact@freetyper.com` MX is live (Cloudflare Email Routing). Reviewers test this address
+- Expandable SEO stays **Read more** (collapsed). Full body remains in the DOM for crawlers. Do not auto-expand the guide for AdSense — product call
+- Login: **not now**. Guest + localStorage stays the product. Optional magic-link sync is a later conversation, not this round
 - Site title: `FreeTyper — Type Faster. Free Forever.` (no decorative unicode)
 - Blog: **25 evergreen posts** live (pillars 1–5); de-AI voice pass done site-wide on bodies
 - Legal: /about, /contact, /privacy, /terms, /disclaimer
@@ -168,21 +172,26 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - [x] Word Attack: persist result when a round ends (not only after round 8); timer no longer swallows the save
 - [x] AdSense hygiene: removed fake `ca-pub` script; `ads.txt` comments-only until real ID
 - [x] About / privacy / terms / contact rewritten for AdSense (no “we don’t track you”, no “all ages”, no unverified open-source claim)
+- [x] About: named operator (Ashiqur Rahman), scoring method, what’s on the site, storage, what we don’t claim
+- [x] Privacy: Google-required third-party cookie / opt-out wording; operator named
+- [x] Contact: email box (copy + open mail) + topic/message form that opens mailto (`ContactPanel`)
+- [x] `contact@freetyper.com` MX via Cloudflare Email Routing
+- [x] Product call: keep ExpandableSeoContent **Read more** collapsed (do not auto-open the guide for AdSense)
+- [x] Product call: **no login this round** — guest + localStorage only
 - [x] Right sidebar filled (tool links + tip) so the site does not look unfinished
 - [x] Fixed broken leftover sentences in `improve-typing-accuracy`
 
 ## Next Up
-- [ ] **Deploy** this round (commit → push → Coolify)
-- [ ] After deploy: confirm `https://freetyper.com/robots.txt` is Allow + Sitemap (not ads.txt); `/typing-speed-test` 308s to `/`
-- [ ] Confirm **contact@freetyper.com** receives mail (AdSense reviewers test it)
-- [ ] **GSC**: submit/refresh `https://freetyper.com/sitemap.xml`; request indexing for `/typing-practice`, `/typing-lessons`, `/blog`
-- [ ] **AdSense apply** only after the above. Then add real `ca-pub-…` in `layout.tsx` + matching `ads.txt` line
-- [ ] Wire remaining settings into tools: font size → `.typing-text`; sound → key beeps; hints → LiveKeyboard gold pulse
+- [ ] **Deploy** this round (about / privacy / contact) — commit → push → Coolify
+- [ ] After deploy: confirm live `/about` names the operator, `/privacy` has cookie wording, `/contact` has the email box
+- [ ] **GSC**: submit/refresh `https://freetyper.com/sitemap.xml`; request indexing for `/`, `/about`, `/privacy`, `/contact`, `/blog`, `/typing-practice`, `/typing-lessons`
+- [ ] **AdSense apply** only after the live pages above look right. Then add real `ca-pub-…` in `layout.tsx` + matching `ads.txt` line
 - [ ] Optional: human polish 2–3 flagship intros in your own voice (strongest “genuine” signal for review)
+- [ ] Wire remaining settings into tools: font size → `.typing-text`; sound → key beeps; hints → LiveKeyboard gold pulse
 - [ ] Known bugs (next coding pass): command palette vs typing on `/`; Falling Words frame-rate speed; Esc in focus mode; mobile `keydown` vs input; LiveKeyboard missing shift glyphs
 - [ ] Sound on games (Falling Words / Word Attack)
 - [ ] Keyboard layouts (DVORAK, Colemak)
-- [ ] Multiplayer races · Leaderboards · School mode
+- [ ] Multiplayer races · Leaderboards · School mode (needs optional login later)
 - [ ] More games (Type Racer, Zombie Typing)
 
 ## Blog Posts (25 — SEO Strategy)
