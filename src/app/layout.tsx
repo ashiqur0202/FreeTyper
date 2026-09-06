@@ -61,6 +61,9 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  other: {
+    'google-adsense-account': siteConfig.adsenseClient,
+  },
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
@@ -79,6 +82,12 @@ export default function RootLayout({
     <html lang="en" className="h-full dark" data-theme="dark" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#323234" />
+        {/* AdSense requires this snippet in <head> (site-wide, every page). */}
+        <script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${siteConfig.adsenseClient}`}
+          crossOrigin="anonymous"
+        />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} flex min-h-full flex-col`}>
         <Script id="theme-init" strategy="beforeInteractive">
@@ -113,7 +122,7 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* AdSense: add the real ca-pub-… script only after approval. Do not ship a placeholder ID. */}
+
       </body>
     </html>
   );

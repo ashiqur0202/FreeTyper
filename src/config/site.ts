@@ -26,4 +26,5 @@ export const siteConfig = {
   links: {
     github: 'https://github.com/ashiqur0202/freetyper',
   },
+  adsenseClient: 'ca-pub-3237588309372777',
 } as const;

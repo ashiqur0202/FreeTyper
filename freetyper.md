@@ -127,7 +127,7 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - **Do not** put ads.txt in `public/robots.txt` — that file was blocking a real robots.txt; ads stay in `public/ads.txt`
 - Settings `/settings` is `noindex`. About/contact/legal have unique titles + canonicals
 - GA4 `G-QC5509TVSF` · Google Search Console verified
-- **AdSense:** do **not** ship `ca-pub-XXXXXXXXXXXXXXXX`. Script removed until a real publisher ID exists. `public/ads.txt` is comments-only until then. Apply after this deploy is live + GSC indexing. Then add real `ca-pub-…` in `layout.tsx` + matching `ads.txt` line
+- **AdSense:** live publisher `ca-pub-3237588309372777`. `adsbygoogle.js` in root `<head>` (`layout.tsx`, every page) + `<meta name="google-adsense-account">`. `public/ads.txt` is `google.com, pub-3237588309372777, DIRECT, f08c47fec0942fa0`. No in-article `<ins>` units — Auto ads from the AdSense UI. In the dashboard, turn **off** overlay / anchor / vignette ads so they do not sit on the typing area. **Do not** put ads.txt in `public/robots.txt`
 - Privacy (Sep 2026): operator named (Ashiqur Rahman); honest about GA; Google-required third-party cookie wording (vendors including Google, prior visits, opt-out, web beacons/IP); **not directed at children under 13**. Do not claim “no tracking” while Analytics is on
 - About: named operator, scoring method, what’s on the site, what we store / don’t claim. Contact: email box (copy + open mail) + mailto message form (`ContactPanel`) — no server inbox, nothing posted to our servers
 - `contact@freetyper.com` MX is live (Cloudflare Email Routing). Reviewers test this address
@@ -170,7 +170,7 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - [x] After game over: start screen on top, result + latest 5 underneath (both games)
 - [x] Falling Words: full-word match clears input (next word types); drops = misses
 - [x] Word Attack: persist result when a round ends (not only after round 8); timer no longer swallows the save
-- [x] AdSense hygiene: removed fake `ca-pub` script; `ads.txt` comments-only until real ID
+- [x] AdSense: real `ca-pub-3237588309372777` script + meta + `ads.txt` (no display slots; Auto ads from dashboard)
 - [x] About / privacy / terms / contact rewritten for AdSense (no “we don’t track you”, no “all ages”, no unverified open-source claim)
 - [x] About: named operator (Ashiqur Rahman), scoring method, what’s on the site, storage, what we don’t claim
 - [x] Privacy: Google-required third-party cookie / opt-out wording; operator named
@@ -182,10 +182,10 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - [x] Fixed broken leftover sentences in `improve-typing-accuracy`
 
 ## Next Up
-- [ ] **Deploy** this round (about / privacy / contact) — commit → push → Coolify
-- [ ] After deploy: confirm live `/about` names the operator, `/privacy` has cookie wording, `/contact` has the email box
-- [ ] **GSC**: submit/refresh `https://freetyper.com/sitemap.xml`; request indexing for `/`, `/about`, `/privacy`, `/contact`, `/blog`, `/typing-practice`, `/typing-lessons`
-- [ ] **AdSense apply** only after the live pages above look right. Then add real `ca-pub-…` in `layout.tsx` + matching `ads.txt` line
+- [x] About / privacy / contact live (named operator, cookie wording, email box)
+- [ ] **Deploy** AdSense snippet (commit → push → Coolify). Then confirm live `https://freetyper.com/ads.txt` is the google.com pub line and View Source on `/` has `ca-pub-3237588309372777` inside `<head>`
+- [ ] In AdSense UI: turn **off** overlay / anchor / vignette ads so they miss the typing area
+- [ ] **GSC**: other URLs are Discovered/not indexed (normal). Request indexing for `/blog`, `/typing-practice`, `/typing-lessons` once each — do not wait on this for AdSense
 - [ ] Optional: human polish 2–3 flagship intros in your own voice (strongest “genuine” signal for review)
 - [ ] Wire remaining settings into tools: font size → `.typing-text`; sound → key beeps; hints → LiveKeyboard gold pulse
 - [ ] Known bugs (next coding pass): command palette vs typing on `/`; Falling Words frame-rate speed; Esc in focus mode; mobile `keydown` vs input; LiveKeyboard missing shift glyphs
