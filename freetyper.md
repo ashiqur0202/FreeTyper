@@ -2,7 +2,7 @@
 
 Standalone typing platform. No login, privacy-first, monetized via ads & affiliates.
 
-> **Status (2026-10-03):** AdSense rejected (“Low value content”). All 7 tool-page guides were rewritten from the real code + verified sources, and ~10 bugs/inaccuracies found along the way were fixed. **All of it is uncommitted** (28 files) — commit → push → Coolify deploy is the next step. Still open: Verify site ownership (AdSense UI), the blog cut/rewrite, indexing + traffic, then reapply. See **TODO — AdSense fix plan**.
+> **Status (2026-10-03):** AdSense rejected (“Low value content”). All 7 tool-page guides were rewritten from the real code + verified sources, and ~10 bugs/inaccuracies found along the way were fixed. Browser-tested before release (32/32 checks: speed test, keyboard guide, Word Attack rounds/progress, Falling Words speed and game over, progress page, schema, no console errors) — that run also caught and fixed a hydration error on `/keyboard-guide` for users with saved stats. Merged to `master` and pushed for the Coolify deploy on 2026-10-04. Still open: Verify site ownership (AdSense UI), the blog cut/rewrite, indexing + traffic, then reapply. See **TODO — AdSense fix plan**.
 
 ## Tech Stack
 - **Next.js 16** (App Router, TS) + **Tailwind v4** + **lucide-react**
@@ -265,7 +265,7 @@ Rules: describe only what the tool really does (read its code first); every numb
 - [ ] Once approved: turn **off** overlay / anchor / vignette Auto ads so they miss the typing area
 
 ## Next Up (product backlog, after AdSense)
-- [ ] **Commit the 2026-10-03 batch** (suggested split: 1 site/SEO fixes [layout schema, sitemap, bylines, links, README, deletions]; 2 tool-guide rewrites [`src/data/**`]; 3 tool bug fixes [keyboard map, streak, Falling Words, Word Attack, percentile label]) → push → Coolify; then verify live `/` H1, `/blog/*` BlogPosting, sitemap
+- [x] ~~Commit the 2026-10-03 batch~~ (done; merged + pushed 2026-10-04) (suggested split: 1 site/SEO fixes [layout schema, sitemap, bylines, links, README, deletions]; 2 tool-guide rewrites [`src/data/**`]; 3 tool bug fixes [keyboard map, streak, Falling Words, Word Attack, percentile label]) → push → Coolify; then verify live `/` H1, `/blog/*` BlogPosting, sitemap
 - [ ] Product decisions raised by the guides: (a) lessons unlock without any accuracy check — add a 95% gate? (b) Falling Words tiers 7–10 fall in under 1 s (very steep) — ease the speed curve? (c) only 20 practice passages — add more; (d) progress export/import; (e) unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`)
 - [ ] Cleanup: ~57 pre-existing lint errors (e.g. `useTypingEngine.ts` refs read/written during render, set-state-in-effect in the games); delete unused `src/lib/content-dates.ts` + the placeholder injection in `ExpandableSeoContent`
 - [ ] Wire remaining settings into tools: font size → `.typing-text`; sound → key beeps; hints → LiveKeyboard gold pulse

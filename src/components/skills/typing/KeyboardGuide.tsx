@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Hand, Home, Target } from 'lucide-react';
 import {
@@ -11,6 +11,16 @@ import {
   getKeyColor,
 } from './typingData';
 import { useTypingProgress } from './useTypingProgress';
+
+// False on the server and during hydration, true afterwards, so per-user stats
+// (read from localStorage) never cause a hydration mismatch.
+const subscribeNoop = () => () => {};
+const useIsClient = () =>
+  useSyncExternalStore(
+    subscribeNoop,
+    () => true,
+    () => false,
+  );
 
 const FINGER_LABELS = ['Pinky', 'Ring', 'Middle', 'Index'] as const;
 
@@ -56,15 +66,20 @@ export default function KeyboardGuide() {
   const [activeZone, setActiveZone] = useState<ZoneId>('all');
   const [homeOnly, setHomeOnly] = useState(false);
   const { progress, getWeakKeys } = useTypingProgress();
+  const isClient = useIsClient();
 
   const activeKey = hoveredKey ?? selectedKey;
 
   const keyStats = (key: string) => {
+    if (!isClient) return null;
     const k = key.toLowerCase();
     return progress.keyStats[k] || null;
   };
 
-  const weakKeys = useMemo(() => getWeakKeys().slice(0, 6), [getWeakKeys, progress.keyStats]);
+  const weakKeys = useMemo(
+    () => (isClient ? getWeakKeys().slice(0, 6) : []),
+    [isClient, getWeakKeys],
+  );
 
   const selectedStats = activeKey ? keyStats(activeKey) : null;
   const selectedColor = activeKey ? getKeyColor(activeKey) : undefined;
