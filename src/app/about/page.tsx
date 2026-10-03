@@ -33,7 +33,7 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <section>
+        <section id="author">
           <h2 className="text-xl font-bold text-text-bright">Who runs it</h2>
           <p className="mt-2">
             I&apos;m Ashiqur Rahman. {siteConfig.name} is a small independent project I operate —

@@ -14,8 +14,7 @@ interface ExpandableSeoContentProps {
 }
 
 /**
- * Renders a short visible preview plus a "Read more" toggle that reveals the
- * full body. The body is always present in the HTML (only visually hidden via
+ * Renders a visible preview plus a toggle for the full body (open by default). The body is always present in the HTML (only visually hidden via
  * the Tailwind `hidden` utility) so crawlers and no-JS clients see the entire
  * article — the toggle never mounts/unmounts content.
  *
@@ -29,10 +28,17 @@ export default function ExpandableSeoContent({
   readMoreLabel = 'Read more',
   showLessLabel = 'Show less',
 }: ExpandableSeoContentProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const bodyId = useId();
 
-  const preview = useMemo(() => injectContentDates(previewHtml), [previewHtml]);
+  // The first heading of the guide is the page's visible H1.
+  const preview = useMemo(
+    () =>
+      injectContentDates(previewHtml)
+        .replace('<h2>', '<h1>')
+        .replace('</h2>', '</h1>'),
+    [previewHtml]
+  );
   const body = useMemo(() => injectContentDates(bodyHtml), [bodyHtml]);
 
   useEffect(() => {

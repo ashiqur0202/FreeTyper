@@ -6,6 +6,7 @@ import { siteConfig } from '@/config/site';
 import { blogPosts, getBlogPost } from '@/data/blog/typing-skills';
 import { articleContent } from '@/data/blog/article-content';
 import BlogContent from '@/components/blog/BlogContent';
+import JsonLd, { blogPostingSchema, breadcrumbSchema } from '@/components/seo/JsonLd';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -63,9 +64,9 @@ export default async function BlogPostPage({ params }: PageProps) {
       <header className="mb-8">
         <h1 className="text-3xl font-bold text-text-bright sm:text-4xl">{post.title}</h1>
         <div className="mt-4 flex items-center gap-3 text-sm text-text-dim">
-          <span>{post.author}</span>
+          <Link href="/about#author" className="hover:text-accent">{post.author}</Link>
           <span>·</span>
-          <time>{post.date}</time>
+          <time dateTime={post.date}>{post.date}</time>
           <span>·</span>
           <span>{post.readTime} read</span>
         </div>
@@ -73,6 +74,17 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       {/* Content */}
       <BlogContent html={content} />
+
+      <JsonLd
+        data={[
+          blogPostingSchema(post),
+          breadcrumbSchema([
+            { name: 'Home', url: siteConfig.url },
+            { name: 'Blog', url: `${siteConfig.url}/blog` },
+            { name: post.title, url: `${siteConfig.url}/blog/${post.slug}` },
+          ]),
+        ]}
+      />
 
       {/* Back to blog */}
       <div className="mt-12 border-t border-surface-border pt-6">

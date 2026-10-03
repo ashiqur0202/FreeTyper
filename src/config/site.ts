@@ -4,7 +4,7 @@ export const siteConfig = {
   description:
     'Master touch typing with free lessons, speed tests, and games. Track your WPM, crush your weak keys, and watch yourself improve — no signup, progress stays in your browser.',
   url: 'https://freetyper.com',
-  author: 'FreeTyper',
+  author: 'Ashiqur Rahman',
   keywords: [
     'typing test',
     'typing speed test',

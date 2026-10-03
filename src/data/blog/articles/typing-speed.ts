@@ -35,7 +35,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>If you want to work comfortably without typing being a bottleneck in your day, <strong>60–70 WPM with high accuracy</strong> is a solid target for most people.</p>
 
-<blockquote><p><strong>Not sure where you stand?</strong> Take a <a href="/typing-speed-test">free typing speed test</a> right now to get your baseline before you start practicing.</p></blockquote>
+<blockquote><p><strong>Not sure where you stand?</strong> Take a <a href="/">free typing speed test</a> right now to get your baseline before you start practicing.</p></blockquote>
 
 <h2 id="why-most-people-type-slowly">Why Most People Type Slowly</h2>
 
@@ -146,9 +146,9 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <h3 id="technique-7-take-regular-typing-tests">7. Take Regular Typing Tests</h3>
 
-<p><strong>Why it works:</strong> You can't improve what you don't measure. Regular <a href="/typing-speed-test">typing tests</a> give you objective data about your speed, accuracy, and progress over time.</p>
+<p><strong>Why it works:</strong> You can't improve what you don't measure. Regular <a href="/">typing tests</a> give you objective data about your speed, accuracy, and progress over time.</p>
 
-<p><strong>How to do it:</strong> Take a standardized <a href="/typing-speed-test">typing speed test</a> once or twice a week under the same conditions (same time of day, same duration). Log your results. Look for trends.</p>
+<p><strong>How to do it:</strong> Take a standardized <a href="/">typing speed test</a> once or twice a week under the same conditions (same time of day, same duration). Log your results. Look for trends.</p>
 
 <p><strong>Common mistake:</strong> Testing under inconsistent conditions — sometimes tired, sometimes fresh — and drawing conclusions from the noise.</p>
 
@@ -384,7 +384,7 @@ export const typingSpeedArticles: Record<string, string> = {
 <p>Absolutely. The same principles apply: consistent daily practice, proper technique, and accuracy before speed. Many adults in their 40s, 50s, and 60s have significantly improved their typing speed.</p>
 
 <h3 id="faq-test-frequency">How often should I take a typing speed test?</h3>
-<p>Once or twice per week is ideal. A weekly <a href="/typing-speed-test">typing speed test</a> gives you reliable trend data without interfering with your practice mindset.</p>
+<p>Once or twice per week is ideal. A weekly <a href="/">typing speed test</a> gives you reliable trend data without interfering with your practice mindset.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -403,7 +403,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>The difference between 45 WPM and 75 WPM is not raw talent — it's about 60 days of consistent, deliberate practice.</p>
 
-<p>Start today. Take a <a href="/typing-speed-test">typing speed test</a> to get your baseline. Then jump into <a href="/typing-lessons">structured typing lessons</a> and commit to your daily <a href="/typing-practice">typing practice</a> sessions. In two months, you'll type faster than you ever thought you could.</p>
+<p>Start today. Take a <a href="/">typing speed test</a> to get your baseline. Then jump into <a href="/typing-lessons">structured typing lessons</a> and commit to your daily <a href="/typing-practice">typing practice</a> sessions. In two months, you'll type faster than you ever thought you could.</p>
 
 <p>Grab a baseline on the <a href="/">homepage speed test</a> when you are ready. Then pick one technique from this page and run it for a week before you add another. That is how the gains stick.</p>
 <p>If you want guided finger drills after the test, the <a href="/typing-lessons">typing lessons</a> are built for that next step.</p>
@@ -502,7 +502,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>You can improve at any age.</strong> Typing speed is a motor skill, and motor skills respond to deliberate practice at any age. Adults in their 50s and 60s who take up structured typing practice regularly make meaningful gains, even if their ceiling is somewhat lower than it would be at 25.</p>
 
-<blockquote><p><strong>Not sure where you stand for your age group?</strong> Take a <a href="/typing-speed-test">free typing speed test</a> and get your WPM and accuracy in under two minutes.</p></blockquote>
+<blockquote><p><strong>Not sure where you stand for your age group?</strong> Take a <a href="/">free typing speed test</a> and get your WPM and accuracy in under two minutes.</p></blockquote>
 
 <h2 id="typing-speed-by-profession">Typing Speed by Profession</h2>
 
@@ -630,7 +630,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>The practical takeaway: <strong>when evaluating your typing speed, always note your accuracy alongside your WPM.</strong> A "clean" 60 WPM (at 97% accuracy) is more valuable than a "noisy" 75 WPM (at 88% accuracy) in almost any real-world context.</p>
 
-<blockquote><p><strong>Check both numbers at once:</strong> the <a href="/typing-speed-test">FreeTyper typing test</a> reports your WPM and accuracy side by side at the end of every test.</p></blockquote>
+<blockquote><p><strong>Check both numbers at once:</strong> the <a href="/">FreeTyper typing test</a> reports your WPM and accuracy side by side at the end of every test.</p></blockquote>
 
 <h2 id="gross-wpm-vs-net-wpm">Gross WPM vs. Net WPM</h2>
 
@@ -685,7 +685,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>Note both numbers.</strong> Record both your WPM and your accuracy percentage every time you test. You need both to understand your actual performance.</p>
 
-<blockquote><p>Take your baseline <a href="/typing-speed-test">typing speed test</a> now — it takes less than two minutes and gives you both WPM and accuracy instantly.</p></blockquote>
+<blockquote><p>Take your baseline <a href="/">typing speed test</a> now — it takes less than two minutes and gives you both WPM and accuracy instantly.</p></blockquote>
 
 <h2 id="how-to-improve-your-typing-speed">How to Improve Your Typing Speed</h2>
 
@@ -697,7 +697,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>If you're between 40 and 60 WPM:</strong> You likely have the basics of touch typing but muscle memory isn't fully automated yet. Targeted <a href="/typing-practice">typing practice</a> on your weak keys and common word patterns will drive the next phase of improvement. Focus on accuracy: most people in this range make more errors than they realize.</p>
 
-<p><strong>If you're between 60 and 80 WPM:</strong> You're a solid typist. Getting to 80+ requires a combination of speed drills (pushing slightly past your comfortable pace), endurance training (longer sessions), and eliminating the last remaining hesitation points on specific keys or letter combinations. Regular <a href="/typing-speed-test">typing tests</a> to track your trend are essential at this stage.</p>
+<p><strong>If you're between 60 and 80 WPM:</strong> You're a solid typist. Getting to 80+ requires a combination of speed drills (pushing slightly past your comfortable pace), endurance training (longer sessions), and eliminating the last remaining hesitation points on specific keys or letter combinations. Regular <a href="/">typing tests</a> to track your trend are essential at this stage.</p>
 
 <p><strong>If you're above 80 WPM:</strong> You're already proficient by professional standards. Further improvement is possible but requires increasingly deliberate effort. Competition-level typists at this range typically use custom training regimens focused on specific n-gram patterns and rhythm optimization.</p>
 
@@ -733,7 +733,7 @@ export const typingSpeedArticles: Record<string, string> = {
 <p>Barbara Blackburn holds the Guinness World Record for sustained typing on a standard keyboard, maintaining 150 WPM for 50 minutes and reaching a peak of 212 WPM in shorter bursts. Using the Dvorak keyboard layout, she consistently outperformed QWERTY typists in competition. For QWERTY typists specifically, speeds above 150 WPM are extraordinarily rare and represent years of dedicated training.</p>
 
 <h3 id="how-do-i-know-if-my-typing-speed-is-accurate">How do I know if my typing speed is accurate?</h3>
-<p>The most reliable method: take 3–5 standardized tests using text you haven't seen before, and average the results. Single-test scores have high variance. Also make sure the test is reporting Net WPM (which subtracts error penalties) rather than Gross WPM, since Gross WPM overstates your usable speed if your accuracy isn't high. The <a href="/typing-speed-test">FreeTyper typing speed test</a> reports both metrics so you can see the full picture.</p>
+<p>The most reliable method: take 3–5 standardized tests using text you haven't seen before, and average the results. Single-test scores have high variance. Also make sure the test is reporting Net WPM (which subtracts error penalties) rather than Gross WPM, since Gross WPM overstates your usable speed if your accuracy isn't high. The <a href="/">FreeTyper typing speed test</a> reports both metrics so you can see the full picture.</p>
 
 <h2 id="conclusion">Conclusion</h2>
 
@@ -752,7 +752,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>Whatever your current number, there's a clear path to improving it. The benchmarks in this article give you a target. The next steps are straightforward:</p>
 <ul>
-<li>Find your baseline with a <a href="/typing-speed-test">typing speed test</a></li>
+<li>Find your baseline with a <a href="/">typing speed test</a></li>
 <li>Work through <a href="/typing-lessons">structured typing lessons</a> to build or refine your technique</li>
 <li>Practice consistently with <a href="/typing-practice">daily typing exercises</a></li>
 <li>Test regularly to track your progress over time</li>
@@ -805,7 +805,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>The most defensible answer: the average adult types between 38 and 44 WPM, with a median close to 41–42 WPM at roughly 92% accuracy.</strong></p>
 
-<blockquote><p><strong>Find your own number in 60 seconds.</strong> Take the <a href="/typing-speed-test">FreeTyper typing speed test</a> to get your WPM and accuracy instantly.</p></blockquote>
+<blockquote><p><strong>Find your own number in 60 seconds.</strong> Take the <a href="/">FreeTyper typing speed test</a> to get your WPM and accuracy instantly.</p></blockquote>
 
 <h2 id="why-40-wpm-is-misleading-on-its-own">Why "40 WPM" Is Misleading on Its Own</h2>
 
@@ -995,7 +995,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>This is why professional typing assessments almost universally report <strong>Net WPM</strong> — which subtracts error penalties — rather than Gross WPM. And it's why the consistent guidance from typing instructors is to prioritize accuracy first, then build speed on top of a clean foundation.</p>
 
-<blockquote><p><strong>Check both numbers together:</strong> the <a href="/typing-speed-test">FreeTyper typing test</a> reports your WPM and accuracy side by side at the end of every session.</p></blockquote>
+<blockquote><p><strong>Check both numbers together:</strong> the <a href="/">FreeTyper typing test</a> reports your WPM and accuracy side by side at the end of every session.</p></blockquote>
 
 <h2 id="how-typing-speed-has-changed-over-time">How Typing Speed Has Changed Over Time</h2>
 
@@ -1023,7 +1023,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>Test at a consistent time of day.</strong> Your typing speed varies with energy and focus. Testing at the same time across sessions gives you genuinely comparable data.</p>
 
-<blockquote><p><strong>Take your baseline right now:</strong> the <a href="/typing-speed-test">FreeTyper typing speed test</a> uses randomized text, reports WPM and accuracy together, and takes under two minutes.</p></blockquote>
+<blockquote><p><strong>Take your baseline right now:</strong> the <a href="/">FreeTyper typing speed test</a> uses randomized text, reports WPM and accuracy together, and takes under two minutes.</p></blockquote>
 
 <h2 id="what-to-do-if-your-speed-is-below-average">What to Do If Your Speed Is Below Average</h2>
 
@@ -1045,7 +1045,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>Then build the habit of daily <a href="/typing-practice">typing practice</a> for 15–20 minutes — focused drills, not just regular work emails.</p>
 
-<p>Retest every 1–2 weeks with the <a href="/typing-speed-test">typing speed test</a> to track your trend and confirm what's working.</p>
+<p>Retest every 1–2 weeks with the <a href="/">typing speed test</a> to track your trend and confirm what's working.</p>
 
 <p>For a full breakdown of every technique that produces real improvement — including daily practice plans and honest timelines — see our complete guide: <a href="/blog/how-to-type-faster">How to Type Faster: 15 Proven Techniques to Increase Your WPM</a>.</p>
 
@@ -1093,7 +1093,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>Whatever your current number, the path to a better one is the same:</p>
 <ul>
-<li>Get your baseline with a <a href="/typing-speed-test">typing speed test</a> — WPM and accuracy together</li>
+<li>Get your baseline with a <a href="/">typing speed test</a> — WPM and accuracy together</li>
 <li>Build or fix your technique through <a href="/typing-lessons">structured typing lessons</a></li>
 <li>Practice daily with focused <a href="/typing-practice">typing exercises</a></li>
 <li>Track your progress with regular retests every 1–2 weeks</li>
@@ -1180,7 +1180,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>Practical target for students:</strong> Aim for 55–65 WPM with 95%+ accuracy by the time you start university. That level keeps typing out of the way and lets you focus on the actual thinking.</p>
 
-<blockquote><p>Take a <a href="/typing-speed-test">typing speed test</a> to find your current WPM, then work through <a href="/typing-lessons">typing lessons</a> designed to close the gap.</p></blockquote>
+<blockquote><p>Take a <a href="/">typing speed test</a> to find your current WPM, then work through <a href="/typing-lessons">typing lessons</a> designed to close the gap.</p></blockquote>
 
 <h3 id="how-many-wpm-for-office-workers">How Many WPM for Office Workers?</h3>
 
@@ -1355,7 +1355,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>Step 1: Find your current baseline.</strong></p>
 
-<p>Take 3–5 <a href="/typing-speed-test">typing speed tests</a> on different days and average the results. This is your real starting point — not your best run, not your worst.</p>
+<p>Take 3–5 <a href="/">typing speed tests</a> on different days and average the results. This is your real starting point — not your best run, not your worst.</p>
 
 <p><strong>Step 2: Identify your purpose.</strong></p>
 
@@ -1450,7 +1450,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>Here's your action plan:</p>
 <ol>
-<li><strong>Know your current speed</strong> — take a <a href="/typing-speed-test">typing speed test</a> and note both your WPM and accuracy</li>
+<li><strong>Know your current speed</strong> — take a <a href="/">typing speed test</a> and note both your WPM and accuracy</li>
 <li><strong>Set a specific target</strong> based on the role or situation that applies to you from this article</li>
 <li><strong>Build your technique</strong> through <a href="/typing-lessons">structured typing lessons</a></li>
 <li><strong>Practice consistently</strong> with daily <a href="/typing-practice">typing exercises</a> — 15 minutes a day beats 2 hours once a week</li>
@@ -1749,7 +1749,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>Practical preparation tips:</strong></p>
 <ul>
-<li>Take <a href="/typing-speed-test">practice typing tests</a> under timed conditions regularly in the weeks before applying</li>
+<li>Take <a href="/">practice typing tests</a> under timed conditions regularly in the weeks before applying</li>
 <li>Practice on text you haven't seen before, not memorized passages</li>
 <li>Focus on accuracy during the test, an uncorrected error costs you more than a corrected one</li>
 <li>Simulate the test environment: sit at a desk, use the same keyboard you'd use at work, time yourself</li>
@@ -1795,7 +1795,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>The path to professional typing proficiency is consistent and well-documented. Here's what actually moves the needle:</p>
 
-<p><strong>Start with a baseline.</strong> Take a <a href="/typing-speed-test">typing speed test</a> and record your WPM and accuracy. That number is your starting point, not a verdict.</p>
+<p><strong>Start with a baseline.</strong> Take a <a href="/">typing speed test</a> and record your WPM and accuracy. That number is your starting point, not a verdict.</p>
 
 <p><strong>Fix technique before drilling speed.</strong> If you're still hunt-and-pecking or using fewer than eight fingers consistently, no amount of speed practice will get you to professional levels. Work through <a href="/typing-lessons">structured typing lessons</a> that teach correct finger placement, home row positioning, and screen-focused typing.</p>
 
@@ -1805,7 +1805,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p><strong>Target your weak spots.</strong> Every typist has specific keys, key combinations, or finger transitions that cause consistent hesitation. Identifying and drilling those specific weaknesses is far more efficient than general practice.</p>
 
-<p><strong>Track your progress.</strong> Retest every 1–2 weeks using the <a href="/typing-speed-test">typing speed test</a>. Record both WPM and accuracy over time. Seeing consistent improvement, even 2–3 WPM per week, sustains motivation through the plateau periods that every typist encounters.</p>
+<p><strong>Track your progress.</strong> Retest every 1–2 weeks using the <a href="/">typing speed test</a>. Record both WPM and accuracy over time. Seeing consistent improvement, even 2–3 WPM per week, sustains motivation through the plateau periods that every typist encounters.</p>
 
 <p>For a complete technique breakdown with daily practice plans at every level, see: <a href="/blog/how-to-type-faster">How to Type Faster: 15 Proven Techniques to Increase Your WPM</a>.</p>
 
@@ -1870,7 +1870,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <p>Your action plan:</p>
 <ol>
-<li><strong>Find your current baseline</strong> with a <a href="/typing-speed-test">typing speed test</a>, note WPM and accuracy</li>
+<li><strong>Find your current baseline</strong> with a <a href="/">typing speed test</a>, note WPM and accuracy</li>
 <li><strong>Identify your target</strong> from the role-specific sections above</li>
 <li><strong>Fix any technique issues</strong> with <a href="/typing-lessons">structured typing lessons</a></li>
 <li><strong>Build consistency</strong> with daily <a href="/typing-practice">typing practice</a> sessions of 15–20 minutes</li>

@@ -189,7 +189,6 @@ export default async function ToolPage({ params }: PageProps) {
               : 'flex min-h-screen items-center justify-center px-8 py-12 sm:px-10 lg:px-12'
           }
         >
-          <h1 className="sr-only">{seo.h1}</h1>
           <div className="w-full">
             <ToolClient toolId={tool.id} />
           </div>

@@ -8,7 +8,7 @@ export default function JsonLd({ data }: JsonLdProps) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }}
     />
   );
 }
@@ -88,5 +88,35 @@ export function howToSchema(
       name: step.name,
       text: step.text,
     })),
+  };
+}
+
+export function blogPostingSchema(post: {
+  title: string;
+  excerpt: string;
+  slug: string;
+  date: string;
+  author: string;
+}) {
+  const url = `${siteConfig.url}/blog/${post.slug}`;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    url,
+    mainEntityOfPage: url,
+    datePublished: post.date,
+    author: {
+      '@type': 'Person',
+      name: post.author,
+      url: `${siteConfig.url}/about#author`,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: siteConfig.url,
+      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/opengraph-image` },
+    },
   };
 }

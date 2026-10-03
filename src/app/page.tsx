@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     'typing accuracy test',
     'free wpm test',
   ],
-  authors: [{ name: 'FreeTyper Editorial', url: siteConfig.url }],
+  authors: [{ name: siteConfig.author, url: `${siteConfig.url}/about` }],
   alternates: {
     canonical: siteConfig.url,
   },
@@ -60,7 +60,6 @@ export default function HomePage() {
     <div>
       {/* Typing window — fills the viewport so SEO content starts below the fold. */}
       <section className="flex min-h-screen flex-col justify-start px-8 pt-16 pb-12 sm:px-10 md:pt-10 lg:px-12">
-        <h1 className="sr-only">Free Typing Speed Test — Check Your WPM Online</h1>
         <div className="w-full">
           <TypingSpeedTest />
         </div>
