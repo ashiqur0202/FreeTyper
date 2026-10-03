@@ -1,344 +1,179 @@
 /**
- * Elite SEO content for /keyboard-guide
- * ExpandableSeoContent — body always in DOM.
- * Last editorial pass: 2026-07-27
+ * Guide content for /keyboard-guide.
+ *
+ * Describes `KeyboardGuide.tsx` and the finger map in `typingData.ts`
+ * (`fingerMap`, `keyboardColors`, `keyboardRows`, `homeRowKeys`). If the map,
+ * colours or filters change, update this file in the same commit.
+ *
+ * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
+ *
+ * Last real edit: 2026-10-03
  */
 
 export const meta = {
   title: 'Keyboard Guide — Touch Typing Finger Placement Map (Free)',
   description:
-    'Interactive color-coded keyboard guide for touch typing. Learn which finger types each key, master home row position, and fix weak keys — free, no signup.',
+    'A colour-coded keyboard showing which finger types each key, with a home-row mode and your own key accuracy. Free, no signup, QWERTY.',
 };
+
+export const faqs: { question: string; answer: string }[] = [
+  {
+    question: 'Which finger types which key on a keyboard?',
+    answer:
+      'In standard touch typing, each finger owns a column of keys. The left little finger takes the backtick, 1, Q, A and Z. The left ring finger takes 2, W, S and X. The left middle finger takes 3, E, D and C. The left index finger takes 4, 5, R, T, F, G, V and B. The right index finger takes 6, 7, Y, U, H, J, N and M. The right middle finger takes 8, I, K and the comma. The right ring finger takes 9, O, L and the full stop. The right little finger takes 0, minus, equals, P, the brackets, backslash, semicolon, apostrophe and slash.',
+  },
+  {
+    question: 'What is the home row on a keyboard?',
+    answer:
+      'The home row is the middle row of letter keys. Your left fingers rest on A, S, D and F and your right fingers on J, K, L and the semicolon. Every other key is a short reach from there, and your fingers return to it after each reach.',
+  },
+  {
+    question: 'Why are there small bumps on the F and J keys?',
+    answer:
+      'The bumps are tactile markers. They let your index fingers find the home position by touch, so you can set your hands correctly without looking at the keyboard.',
+  },
+  {
+    question: 'Which finger presses the space bar?',
+    answer:
+      'Either thumb. Most people favor one thumb out of habit. The guide marks the space bar in neutral grey and labels it as either thumb, because it does not belong to any of the eight finger zones.',
+  },
+  {
+    question: 'Which fingers type the number row?',
+    answer:
+      'The number row follows the same columns as the letters above the home row. 1 is the left little finger, 2 the left ring, 3 the left middle, and 4 and 5 the left index. 6 and 7 are the right index, 8 the right middle, 9 the right ring, and 0 the right little finger.',
+  },
+  {
+    question: 'How does the guide know which keys are my weak keys?',
+    answer:
+      'FreeTyper counts how many times you press each key and how many of those presses are correct, across the speed test, lessons, practice and the games. A key needs at least five presses to be considered. The five with the lowest accuracy are listed as your weak keys.',
+  },
+  {
+    question: 'Do I need to use all ten fingers to type fast?',
+    answer:
+      'Not strictly. A research paper on 168,000 typists cites earlier work finding that people who do not use all their fingers and have no touch-typing training can still type as fast as touch typists. The analysis in the paper itself suggests that consistency matters more than any particular finger map. The map is still the most dependable way to build that consistency from scratch.',
+  },
+  {
+    question: 'Does the keyboard guide cover Dvorak or Colemak?',
+    answer:
+      'No. The guide shows the standard QWERTY layout only, and it does not show modifier keys such as Shift, Enter, Tab or Backspace.',
+  },
+  {
+    question: 'Is my key data saved or shared?',
+    answer:
+      'Your key statistics are stored in your own browser using local storage, on this device only. FreeTyper has no accounts and does not upload what you type. Clearing your site data erases them.',
+  },
+];
+
+const faqHtml = faqs
+  .map((f) => `<h3>${f.question}</h3>\n<p>${f.answer}</p>`)
+  .join('\n');
 
 export const previewHtml = `
 <h2>Keyboard Guide — Color-Coded Finger Placement for Touch Typing</h2>
 <p class="article-byline">
-  <span>By <strong>FreeTyper Editorial</strong></span>
-  <span>Updated <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time></span>
-  <span>Reviewed for accuracy · ~12 min read</span>
+  <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
+  <span>Last updated <time datetime="2026-10-03">October 3, 2026</time></span>
+  <span>~6 min read</span>
 </p>
-<p>This free <strong>keyboard guide</strong> shows exactly <strong>which finger should press each key</strong> on a standard QWERTY layout. Colors map to finger zones. Hover or click any key above to see its owner finger — and your personal accuracy stats after you practice on FreeTyper.</p>
-<p>Correct finger placement is the foundation of touch typing. Without it, speed ceilings arrive early and “practice” only cements hunt-and-peck. Use this map, then train with <a href="/typing-lessons">typing lessons</a> and <a href="/typing-practice">typing practice</a>.</p>
-<h3>How to Use This Keyboard Guide</h3>
-<ol>
-<li><strong>Study the colors</strong> — each finger owns a vertical column zone on the keyboard.</li>
-<li><strong>Find home row</strong> — left hand on A S D F, right on J K L ; (bumps on F and J).</li>
-<li><strong>Filter by finger</strong> — use the pills above to isolate one finger’s keys.</li>
-<li><strong>Click weak keys</strong> — after a few sessions, your error-prone keys appear for targeted drills.</li>
-</ol>
-<blockquote><p><strong>Golden rule:</strong> Stretch a finger to its keys; do not slide your whole hand off home row. Return to F and J after every reach.</p></blockquote>
-<nav class="article-toc" aria-label="Table of contents">
-<p>On this page</p>
-<ol>
-<li><a href="#why-finger-map">Why a finger map matters</a></li>
-<li><a href="#home-row">Home row position</a></li>
-<li><a href="#finger-zones">Finger zones on QWERTY</a></li>
-<li><a href="#posture">Posture &amp; hand setup</a></li>
-<li><a href="#common-errors">Common placement errors</a></li>
-<li><a href="#learning-path">From guide to speed</a></li>
-<li><a href="#weak-keys-guide">Using personal weak keys</a></li>
-<li><a href="#layouts">QWERTY and other layouts</a></li>
-<li><a href="#shift-numbers">Shift, numbers &amp; symbols</a></li>
-<li><a href="#drills">5-minute map drills</a></li>
-<li><a href="#troubleshooting">Troubleshooting placement</a></li>
-<li><a href="#classroom">Students, teachers &amp; self-learners</a></li>
-<li><a href="#guide-faq">Keyboard guide FAQ</a></li>
-<li><a href="#sources-guide">Sources &amp; standards</a></li>
-</ol>
-</nav>
+<p>This keyboard guide shows the correct finger placement for each key on a standard QWERTY keyboard. Every key is coloured by the finger that owns it, the eight home-row keys carry a small dot, and you can click or hover over any key to see its finger and your own accuracy on it. It is a reference for learning touch typing and for working out why certain keys keep going wrong.</p>
+<p>Below you will find how to use the guide, the full finger map in text form, what your key statistics mean, and where the guide stops being useful.</p>
 `;
 
 export const bodyHtml = `
-<h2 id="why-finger-map">Why a Finger Placement Map Matters</h2>
-<p>Touch typing is not “typing without looking” alone. It is a <strong>consistent assignment of keys to fingers</strong> so your brain can automate sequences. When every letter can be hit by any finger, your motor system never builds reliable muscle memory — speed plateaus and accuracy stays noisy.</p>
-<p>A color-coded <strong>keyboard guide</strong> makes the invisible rule set visible:</p>
+<h2 id="how-to-use-the-keyboard-guide">How to use the keyboard guide</h2>
 <ul>
-<li>Each finger owns a small set of keys (usually a column-ish zone).</li>
-<li>Home row is the default rest position between keystrokes.</li>
-<li>Reaches are short stretches, not whole-hand shifts.</li>
-<li>Thumbs handle space (commonly right thumb in standard teaching).</li>
+<li><strong>Hover or click a key.</strong> A panel under the keyboard shows the key, the finger that types it, and, if it is a home-row key, a "home row rest position" note. The F key is selected when the page opens.</li>
+<li><strong>Filter by finger.</strong> The pills at the top let you light up one finger's keys and dim the rest: left little, ring, middle and index, then right index, middle, ring and little.</li>
+<li><strong>Home row only.</strong> This toggle dims everything except the eight home-row keys (and leaves the space bar lit), so you can focus on the resting position.</li>
+<li><strong>Your stats.</strong> The panel also shows how many times you have pressed that key, your accuracy on it, and your error count. A key where your accuracy is under 90% gets a faint glow around it.</li>
+<li><strong>Weak keys.</strong> Up to five of your least accurate keys are listed as buttons. Click one to jump to it, or follow the link to <a href="/typing-practice">practice a drill built from them</a>.</li>
 </ul>
-<p>FreeTyper’s interactive map is designed for QWERTY learners who want the same progressive path used in classic typing education — updated for a modern dark UI and personal key stats from your local practice history.</p>
 
-<h2 id="home-row">Home Row Position (A S D F · J K L ;)</h2>
-<p>Home row is the anchor of touch typing. Before any speed work, you should be able to drop both hands onto home row without looking.</p>
+<h2 id="which-finger-types-which-key">Which finger types which key? The full finger placement chart</h2>
+<p>This is the same map the colours on the keyboard use.</p>
 <table>
-<thead><tr><th>Hand</th><th>Keys</th><th>Fingers (pinky → index)</th></tr></thead>
+<thead><tr><th>Finger</th><th>Colour</th><th>Keys</th></tr></thead>
 <tbody>
-<tr><td>Left</td><td>A S D F</td><td>Pinky, ring, middle, index</td></tr>
-<tr><td>Right</td><td>J K L ;</td><td>Index, middle, ring, pinky</td></tr>
+<tr><td>Left little</td><td>Red</td><td>\` 1 Q A Z</td></tr>
+<tr><td>Left ring</td><td>Orange</td><td>2 W S X</td></tr>
+<tr><td>Left middle</td><td>Yellow</td><td>3 E D C</td></tr>
+<tr><td>Left index</td><td>Green</td><td>4 5 R T F G V B</td></tr>
+<tr><td>Right index</td><td>Cyan</td><td>6 7 Y U H J N M</td></tr>
+<tr><td>Right middle</td><td>Blue</td><td>8 I K ,</td></tr>
+<tr><td>Right ring</td><td>Violet</td><td>9 O L .</td></tr>
+<tr><td>Right little</td><td>Pink</td><td>0 - = P [ ] \\ ; ' /</td></tr>
+<tr><td>Either thumb</td><td>Grey</td><td>Space bar</td></tr>
 </tbody>
 </table>
-<p>Most physical keyboards include <strong>tactile bumps on F and J</strong>. Those bumps exist so your index fingers can re-find home position by feel. If you cannot find F and J blindfolded, home-row training is not finished.</p>
-<h3>Home-row checklist</h3>
+<p>This is the standard textbook assignment. The guide does not show Shift, Enter, Tab or Backspace. By the usual convention you press Shift with the little finger on the opposite hand from the letter you are capitalising, and reach for Enter and Backspace with the right little finger.</p>
+
+<h2 id="home-row-and-the-f-and-j-bumps">The home row and the F and J bumps</h2>
+<p>The home row is the middle row of letters. Your left fingers rest on A, S, D and F, your right fingers on J, K, L and the semicolon, and your thumbs on the space bar. The raised bumps on F and J are there so your index fingers can find home by touch. After every reach, return to that position: it is what keeps every other key a short, consistent distance away.</p>
+
+<h2 id="reading-your-key-stats">Reading your key statistics</h2>
 <ul>
-<li>Wrists float lightly — not pinned hard into the desk edge.</li>
-<li>Fingers curved gently, not flat-slapping keys.</li>
-<li>After every top- or bottom-row reach, return to home.</li>
-<li>Eyes stay on the screen, not the keyboard.</li>
+<li><strong>Presses</strong> counts every time you have typed that key, in the speed test, lessons, practice and the games. Capital and lowercase letters count as the same key in the tests, lessons and practice.</li>
+<li><strong>Accuracy</strong> is correct presses divided by all presses of that key.</li>
+<li><strong>Weak keys</strong> are the five keys with the lowest accuracy, among keys you have pressed at least five times. A key you have hardly used cannot be called weak, so it will not appear until it has enough data.</li>
 </ul>
-<p>Train home row first in FreeTyper <a href="/typing-lessons">typing lessons</a> (Lesson 1), then return here when you forget which finger owns a key.</p>
+<p>Use the pattern, not just the list. If your weak keys are mostly on the outer columns, such as Q, A, Z, P, the semicolon and the slash, the little fingers are the likely cause. If they are in the middle of the board, such as T, G, B, Y, H and N, it is often an index-finger reach problem. This is a pattern worth checking, not a diagnosis.</p>
 
-<h2 id="finger-zones">Finger Zones on a Standard QWERTY Keyboard</h2>
-<p>Standard English QWERTY teaching maps fingers roughly as follows (simplified for learners):</p>
-<table>
-<thead><tr><th>Finger</th><th>Typical keys (examples)</th></tr></thead>
-<tbody>
-<tr><td>Left pinky</td><td>1 Q A Z and nearby left-edge keys</td></tr>
-<tr><td>Left ring</td><td>2 W S X</td></tr>
-<tr><td>Left middle</td><td>3 E D C</td></tr>
-<tr><td>Left index</td><td>4 5 R T F G V B</td></tr>
-<tr><td>Right index</td><td>6 7 Y U H J N M</td></tr>
-<tr><td>Right middle</td><td>8 I K ,</td></tr>
-<tr><td>Right ring</td><td>9 O L .</td></tr>
-<tr><td>Right pinky</td><td>0 P ; / - = [ ] and right-edge keys</td></tr>
-<tr><td>Thumb(s)</td><td>Space bar</td></tr>
-</tbody>
-</table>
-<p>FreeTyper colors these zones on the interactive keyboard above. Use the finger filter pills to dim everything except one finger’s territory — an excellent study mode before a lesson or weak-key drill.</p>
-<h3>Index fingers do more work</h3>
-<p>Index fingers own the center columns (including G/H and neighboring keys). That load is intentional: stronger, more dexterous fingers handle denser key clusters. Do not “help” index keys with middle fingers out of convenience — that creates messy collisions later at higher speed.</p>
-<h3>Pinkies are weak but essential</h3>
-<p>Pinky keys (A, ;, Shift, Enter territory, numbers on the edges) feel awkward at first. Avoid the common cheat of using ring fingers for pinky keys. Short, accurate pinky practice prevents a permanent accuracy leak on punctuation and left-edge letters.</p>
-
-<h2 id="posture">Posture &amp; Hand Setup for Touch Typing</h2>
-<p>A perfect finger map fails if posture fights you. Use this minimal setup checklist:</p>
-<ul>
-<li><strong>Screen at eye level</strong> so you are not hunched toward the keys.</li>
-<li><strong>Elbows near 90°</strong>, shoulders relaxed.</li>
-<li><strong>Keyboard centered</strong> with B key roughly on your midline (for standard setups).</li>
-<li><strong>Light keystrokes</strong> — bottoming out every key hard increases fatigue and errors.</li>
-<li><strong>Breaks</strong> — if wrists hurt, stop. Pain is not a badge of progress.</li>
-</ul>
-<p class="article-note"><strong>Health note:</strong> FreeTyper is an educational typing tool, not medical advice. Persistent pain deserves ergonomic adjustment and, if needed, professional care.</p>
-
-<h2 id="common-errors">Common Finger Placement Errors</h2>
+<h2 id="using-the-finger-map-to-learn-touch-typing">Using the finger placement map to learn touch typing</h2>
+<p>These are our recommendations, not guarantees.</p>
 <ol>
-<li><strong>Looking at the keyboard</strong> — destroys the point of a touch-typing map.</li>
-<li><strong>Sliding the whole hand</strong> for top/bottom rows instead of stretching one finger.</li>
-<li><strong>Wrong home keys</strong> — starting one key off permanently misaligns every reach.</li>
-<li><strong>Index-finger poaching</strong> — using the wrong index for center keys.</li>
-<li><strong>Ignoring punctuation fingers</strong> — speed on letters, chaos on <code>, . ; '</code>.</li>
-<li><strong>Floating thumbs off space</strong> — inconsistent spacing rhythm.</li>
-<li><strong>Tense pinkies</strong> — stabbing instead of controlled presses.</li>
-<li><strong>Skipping the map entirely</strong> — jumping into speed tests without placement rules.</li>
+<li><strong>Study the home row first.</strong> Switch on "home row only" and set your hands to match.</li>
+<li><strong>Add one finger at a time.</strong> Use the filters to look at a finger's whole column, then practice those keys.</li>
+<li><strong>Learn by doing.</strong> The <a href="/typing-lessons">typing lessons</a> introduce the rows in order, and the finger map is the reference to check when a key confuses you.</li>
+<li><strong>Return to home after each reach.</strong> Do not let your hands drift.</li>
+<li><strong>Come back with data.</strong> After some practice, return to the guide and see which keys have the lowest accuracy.</li>
 </ol>
-<p>If you recognize yourself in three or more items, spend a week on lessons + this guide before chasing WPM on the <a href="/">typing speed test</a>.</p>
 
-<h2 id="learning-path">From Keyboard Guide to Real Speed (Recommended Path)</h2>
-<table>
-<thead><tr><th>Stage</th><th>Tool</th><th>Goal</th></tr></thead>
-<tbody>
-<tr><td>1. Map</td><td>This keyboard guide</td><td>Know which finger owns each key</td></tr>
-<tr><td>2. Foundations</td><td><a href="/typing-lessons">Typing lessons</a></td><td>Home → top → bottom → words → sentences</td></tr>
-<tr><td>3. Application</td><td><a href="/typing-practice">Typing practice</a></td><td>Quotes, news, code, weak keys</td></tr>
-<tr><td>4. Measurement</td><td><a href="/">Speed test</a></td><td>Weekly WPM + accuracy under time</td></tr>
-<tr><td>5. Review</td><td><a href="/typing-progress">Progress</a></td><td>Trends, streaks, weak-key history</td></tr>
-</tbody>
-</table>
-<p><strong>Daily minimum that works for most adults:</strong> 15–20 minutes. Example: 5 minutes map/lessons form → 10 minutes practice → optional short test on Fridays only.</p>
-<p>Deep technique reading: <a href="/blog/how-to-type-faster">how to type faster</a>. Benchmarks: <a href="/blog/good-typing-speed">what is a good typing speed</a>.</p>
+<h2 id="finger-map-and-typing-speed">Does the finger map decide how fast you type?</h2>
+<p>Not by itself. In <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">a study of 168,000 online typists</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018), the authors cite earlier work finding that people who do not use all their fingers, and have no touch-typing training, can still reach speeds comparable to touch typists. In their own analysis, which finger presses which key did not on its own explain why some typists were fast and others slow. Consistency in moving between awkward letter pairs mattered more.</p>
+<p>That does not make the map pointless. A fixed finger for each key is the most dependable way to build consistency when you are starting out, because it removes guessing. Treat it as a starting framework, and let your own accuracy data tell you where you still need work.</p>
 
-<h2 id="weak-keys-guide">Using Personal Weak Keys on FreeTyper</h2>
-<p>After you type on FreeTyper, key-level stats accumulate in local storage (privacy-first, no login). The keyboard guide can surface your weakest keys so you stop practicing what is already easy.</p>
-<p><strong>Protocol:</strong></p>
-<ol>
-<li>Complete several practice or test sessions so stats exist.</li>
-<li>Open this guide and review weak keys + per-key accuracy on click.</li>
-<li>Drill those keys in <a href="/typing-practice">weak-keys practice mode</a>.</li>
-<li>Retest weekly and confirm accuracy rose before pushing peak WPM.</li>
-</ol>
-<p>Weak-key work is the highest leverage intermediate upgrade after home-row competence. Most 45–65 WPM typists are not missing “talent” — they are leaking time on a handful of letters.</p>
-
-<h2 id="layouts">QWERTY vs Other Layouts</h2>
-<p>FreeTyper’s current interactive guide targets <strong>standard QWERTY</strong>, the default for most English keyboards and job tests. Alternative layouts (DVORAK, Colemak, etc.) reassign letters to reduce movement, but:</p>
+<h2 id="limits-of-the-keyboard-guide">Limits of the keyboard guide</h2>
 <ul>
-<li>Most employers and shared computers still assume QWERTY.</li>
-<li>Learning a new layout is a multi-week project with a temporary productivity cost.</li>
-<li>If your goal is job tests or general computer use, master QWERTY first.</li>
+<li>QWERTY only. There is no Dvorak or Colemak view.</li>
+<li>It draws the main character keys and the space bar, not Shift, Enter, Tab, Backspace or the function keys.</li>
+<li>It shows the standard textbook finger assignment. Individual hands and habits vary, and this is not ergonomic or medical advice.</li>
+<li>Your stats reflect typing on this device and browser only.</li>
 </ul>
-<p>Layout experiments can wait until you already touch-type cleanly on QWERTY. FreeTyper’s lessons and practice path are built around that mainstream default.</p>
 
-<h2 id="shift-numbers">Shift, Numbers &amp; Symbols on the Map</h2>
-<p>Letter placement is only half of real-world typing. Numbers and symbols are where many otherwise solid typists slow down or look at the keyboard.</p>
-<ul>
-<li><strong>Number row</strong> generally follows the same finger columns as the letter keys beneath (1 with pinky zone, 2 with ring, and so on — with center numbers on indexes).</li>
-<li><strong>Shift</strong> is typically a pinky key opposite the hand typing the letter (left Shift for right-hand letters, right Shift for left-hand letters). That opposite-hand habit keeps one side free to type.</li>
-<li><strong>Punctuation</strong> on the right edge (semicolon, quote, slash, brackets) is pinky/ring territory for most curricula — awkward at first, essential for writing and code.</li>
-</ul>
-<p>If symbols destroy your accuracy, do not only “practice more quotes.” Use FreeTyper’s numbers &amp; symbols lesson, then code practice, and revisit this guide with the pinky filters on.</p>
-<p>Job-focused targets for clean professional output are covered in <a href="/blog/typing-speed-for-work">typing speed for work</a>.</p>
+<h2 id="your-data-and-privacy">Your data and privacy</h2>
+<p>Your key statistics are stored in your browser's local storage on this device. There is no FreeTyper account, and what you type is not uploaded. Clearing your site data erases them. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</p>
 
-<h2 id="drills">Five-Minute Keyboard Map Drills</h2>
-<p>Use these when you only have a short window — perfect before a longer practice block.</p>
-<table>
-<thead><tr><th>Drill</th><th>Time</th><th>How</th></tr></thead>
-<tbody>
-<tr><td>Home-row eyes-up</td><td>2 min</td><td>Filter “home row only.” Say each key’s finger out loud, then type A–; without looking.</td></tr>
-<tr><td>One-finger isolation</td><td>2 min</td><td>Pick left index or right pinky. Filter that zone. Mentally list its keys, then type them slowly.</td></tr>
-<tr><td>Blind reset</td><td>1 min</td><td>Hands off keyboard, eyes on screen, drop onto F/J bumps. Repeat 10 times.</td></tr>
-</tbody>
-</table>
-<p>After map drills, switch immediately to <a href="/typing-lessons">lessons</a> or <a href="/typing-practice">practice</a> so the knowledge becomes movement, not trivia.</p>
-<p><strong>Weekly rhythm that works:</strong> map study 2–3 times early in a learning cycle, then mostly practice + one speed test. Return to the guide whenever a key “feels ownerless” mid-session — click it, re-assign the finger, continue.</p>
+<h2 id="keyboard-guide-faq">Keyboard guide FAQ</h2>
+${faqHtml}
 
-<h2 id="guide-faq">Keyboard Guide FAQ</h2>
-<h3>Is this keyboard guide free?</h3>
-<p>Yes. FreeTyper’s finger placement map is free with no signup.</p>
-<h3>Which fingers should type which keys?</h3>
-<p>Use the color zones on the interactive keyboard. In short: each finger owns a vertical-ish zone; index fingers cover the center; pinkies cover the outer edges; thumbs handle space.</p>
-<h3>What is home row?</h3>
-<p>Home row is A S D F for the left hand and J K L ; for the right. It is the resting position for touch typing. F and J usually have raised bumps for blind orientation.</p>
-<h3>Should I look at the on-screen keyboard while learning?</h3>
-<p>Yes as a study aid. No as a permanent crutch while typing real text. Glance to learn, then type with eyes on the text field in lessons and practice.</p>
-<h3>Why are some keys dimmed when I filter fingers?</h3>
-<p>Finger filters isolate one finger’s territory so you can study without visual noise. Choose “all fingers” to restore the full map. “Home row only” dims non-home keys.</p>
-<h3>Why does a key show “no data yet”?</h3>
-<p>Personal stats appear after FreeTyper records keystrokes from tests, lessons, or practice in this browser. No data means you have not typed enough on that key yet (or storage was cleared).</p>
-<h3>Does this work for laptop keyboards?</h3>
-<p>Yes. Finger assignments are the same. Laptop keys are often shorter travel; type lightly and keep form. External keyboards can be more comfortable for long practice.</p>
-<h3>Is space always the right thumb?</h3>
-<p>Many curricula teach right-thumb space as default; some typists use either thumb. Consistency matters more than ideology — pick a habit and keep it.</p>
-<h3>Can kids use this guide?</h3>
-<p>Yes. Color zones are especially helpful for visual learners. Keep sessions short and accuracy-focused.</p>
-<h3>Will a finger map alone make me fast?</h3>
-<p>No. The map is the rulebook; lessons and daily practice build automation; speed tests measure results. Use all three.</p>
-<h3>How is this different from the live keyboard on the speed test?</h3>
-<p>The speed-test keyboard hints the next key while you type. This guide is a study map with finger filters, home-row focus, and personal stats — optimized for learning placement, not timed runs.</p>
-<h3>Do you support DVORAK or Colemak maps yet?</h3>
-<p>The interactive guide is QWERTY-first today. Alternative layouts may come later; QWERTY remains the practical default for most users and hiring tests.</p>
-
-<h2 id="sources-guide">Sources &amp; Editorial Standards</h2>
+<h2 id="sources-and-method">Sources and method</h2>
 <ul class="article-sources">
-<li><strong>Touch-typing finger zones:</strong> Standard QWERTY teaching model used across typing education (home-row method with per-finger key ownership).</li>
-<li><strong>Home-row anchors (F/J bumps):</strong> Conventional keyboard manufacturing feature to support blind orientation on home row.</li>
-<li><strong>Practice dosage:</strong> Distributed short sessions (about 15–20 minutes) align with common motor-learning guidance for skill acquisition.</li>
-<li><strong>WPM context:</strong> Measurement conventions discussed on FreeTyper’s <a href="/">typing speed test</a> guide and <a href="https://en.wikipedia.org/wiki/Words_per_minute" rel="noopener noreferrer" target="_blank">Wikipedia: Words per minute</a>.</li>
-<li><strong>Product integration:</strong> Key stats come from FreeTyper’s local progress engine used by lessons, practice, and tests.</li>
+<li>Finger map, colours, filters and key statistics: how the guide on this page works, as described above. The map is the standard touch-typing assignment.</li>
+<li>Finger-use findings: Dhakal, Feit, Kristensson and Oulasvirta, <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>, CHI 2018.</li>
+<li>The routine and the weak-key pattern notes are FreeTyper's own suggestions.</li>
 </ul>
-<p class="article-note"><strong>Corrections:</strong> Contact us via the <a href="/contact">contact</a> page. Last editorial update: <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time>.</p>
-
-<h2 id="troubleshooting">Troubleshooting Placement Problems</h2>
-<p>If accuracy is stuck or certain letters always feel “wrong,” use this quick diagnostic:</p>
-<table>
-<thead><tr><th>Symptom</th><th>Likely cause</th><th>Fix</th></tr></thead>
-<tbody>
-<tr><td>Every key is slightly off</td><td>Home position shifted one key</td><td>Re-find F/J bumps; restart home-row lesson</td></tr>
-<tr><td>Center letters collide (G/H/Y/U)</td><td>Index fingers crossing roles</td><td>Filter left vs right index zones; slow drills</td></tr>
-<tr><td>Bottom row feels impossible</td><td>Whole-hand sliding</td><td>Stretch one finger from home; return every time</td></tr>
-<tr><td>Capitals destroy rhythm</td><td>Same-hand Shift habit</td><td>Practice opposite-hand Shift deliberately</td></tr>
-<tr><td>Numbers always need looking</td><td>Never trained number columns</td><td>Map study + numbers lesson + code practice</td></tr>
-<tr><td>Fast but inaccurate</td><td>Speed before ownership</td><td>95% accuracy rule; weak-key practice only</td></tr>
-</tbody>
-</table>
-<p>Most “I’m bad at typing” stories are placement stories. Fix the map, then speed returns — usually faster than people expect once ownership is clean.</p>
-<p>For population context while you retrain, see <a href="/blog/average-typing-speed">average typing speed</a> and <a href="/blog/how-many-words-per-minute">how many WPM you should type</a>.</p>
-
-<h2 id="classroom">Students, Teachers &amp; Self-Learners</h2>
-<p>A visual keyboard guide is one of the highest-ROI tools for classrooms and self-study because it removes ambiguity. Learners stop guessing; teachers stop repeating “use the right finger” without a shared reference.</p>
-<ul>
-<li><strong>Students:</strong> Keep this page open on a second monitor or split view during the first two weeks of lessons.</li>
-<li><strong>Adults relearning:</strong> Expect old hybrid habits to fight the map for 7–14 days. That friction is normal.</li>
-<li><strong>Teachers / coaches:</strong> Assign one finger zone per day, then a short FreeTyper lesson, then a 60-second accuracy check.</li>
-<li><strong>Self-learners:</strong> Pair the guide with a written sticky note of your three weakest keys until they disappear from the weak-key list.</li>
-</ul>
-<p>FreeTyper stays free and login-free so labs, libraries, and personal browsers can use the same tool without account friction.</p>
-
-<h2 id="start-guide">Master the Map, Then Type</h2>
-<p>Scroll up. Filter one finger. Click F and J. Memorize home row. Then open lessons and put the map into motion.</p>
-<p><strong>Next steps:</strong></p>
-<ul>
-<li>Study this <strong>keyboard guide</strong> for 5 minutes with home-row filter on.</li>
-<li>Complete <a href="/typing-lessons">Lesson 1: Home Row</a>.</li>
-<li>Drill mixed text in <a href="/typing-practice">typing practice</a>.</li>
-<li>Measure weekly with the <a href="/">free typing speed test</a>.</li>
-<li>Track weak keys in <a href="/typing-progress">progress</a>.</li>
-</ul>
-<p>Speed is what happens after placement becomes automatic. FreeTyper’s keyboard guide makes the rules visible — free, private, and ready whenever you need a refresher.</p>
+<p class="article-note">Written and maintained by <a href="/about#author">Ashiqur Rahman</a>. If a key is mapped to a finger you disagree with, or the guide behaves differently from this page, <a href="/contact">tell me</a> and I will check it.</p>
 `;
-
-export const faqs: { question: string; answer: string }[] = [
-  {
-    question: 'Is FreeTyper’s keyboard guide free?',
-    answer:
-      'Yes. The interactive finger placement map is free with no signup required.',
-  },
-  {
-    question: 'Which fingers should type which keys?',
-    answer:
-      'Each finger owns a zone of keys on the QWERTY keyboard. Index fingers cover the center columns, pinkies cover the outer edges, and thumbs handle the space bar. Use FreeTyper’s color-coded map to see exact ownership per key.',
-  },
-  {
-    question: 'What is home row in touch typing?',
-    answer:
-      'Home row is A S D F for the left hand and J K L ; for the right. It is the resting position between keystrokes. F and J usually have raised bumps so you can find home row by feel.',
-  },
-  {
-    question: 'Should I look at the keyboard while learning finger placement?',
-    answer:
-      'Use the on-screen guide to study, but train yourself to type with eyes on the text. Looking down constantly prevents touch-typing muscle memory.',
-  },
-  {
-    question: 'Why do some keys show no personal stats?',
-    answer:
-      'Stats appear after FreeTyper records keystrokes from lessons, practice, or tests in this browser. No data means that key has not been typed enough yet or local storage was cleared.',
-  },
-  {
-    question: 'Does the keyboard guide work on laptops?',
-    answer:
-      'Yes. Finger assignments are the same on laptop and external keyboards. Type lightly and keep home-row form even on short-travel keys.',
-  },
-  {
-    question: 'Is space always typed with the right thumb?',
-    answer:
-      'Many typing curricula teach right-thumb space as the default. Some typists use either thumb. Consistency matters more than which thumb you choose.',
-  },
-  {
-    question: 'How is this different from the live keyboard on the speed test?',
-    answer:
-      'The speed-test keyboard hints the next key during a timed run. The keyboard guide is a study map with finger filters, home-row focus, and personal key stats for learning placement.',
-  },
-  {
-    question: 'Will a finger map alone make me type faster?',
-    answer:
-      'No. The map teaches correct ownership. Lessons and daily practice build automation. Speed tests measure results. Use the full FreeTyper path.',
-  },
-  {
-    question: 'Do you support DVORAK or Colemak finger maps?',
-    answer:
-      'The interactive guide is QWERTY-first today because QWERTY is the default for most users and job tests. Alternative layouts may be added later.',
-  },
-  {
-    question: 'How should beginners use this guide day to day?',
-    answer:
-      'Spend a few minutes studying one finger zone, practice home row in typing lessons, then apply skills in typing practice. Retest weekly on the speed test.',
-  },
-  {
-    question: 'Can kids use the FreeTyper keyboard guide?',
-    answer:
-      'Yes. Color-coded zones help visual learners. Keep sessions short and emphasize accuracy and home-row position over speed.',
-  },
-];
 
 export const howToSteps: { name: string; text: string }[] = [
   {
-    name: 'Open the keyboard guide',
-    text: 'Go to FreeTyper’s free keyboard guide to view the color-coded QWERTY finger map.',
+    name: 'Set your hands on the home row',
+    text: 'Switch on home row only, then rest your left fingers on A, S, D and F and your right fingers on J, K, L and the semicolon. Use the bumps on F and J to find the position by touch.',
   },
   {
-    name: 'Find home row',
-    text: 'Place left fingers on A S D F and right fingers on J K L ; using the bumps on F and J as anchors.',
+    name: 'Click a key to see its finger',
+    text: 'Hover over or click any key to see which finger types it and the colour of that finger zone.',
   },
   {
-    name: 'Study finger zones',
-    text: 'Use the finger filter pills and click keys to learn which finger owns each key.',
+    name: 'Filter by one finger',
+    text: 'Use the finger pills at the top to light up only one finger\'s keys and study its column.',
   },
   {
-    name: 'Train with lessons and practice',
-    text: 'Apply the map in FreeTyper typing lessons, then drill with typing practice and weak-key mode.',
+    name: 'Check your weak keys',
+    text: 'After some typing, return to see your key statistics and the five keys with the lowest accuracy.',
   },
   {
-    name: 'Measure progress weekly',
-    text: 'Take a typing speed test under the same conditions each week to confirm speed and accuracy gains.',
+    name: 'Practice the keys you miss',
+    text: 'Follow the link to typing practice for a drill built from your weak keys, then repeat.',
   },
 ];

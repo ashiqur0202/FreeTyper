@@ -1,249 +1,190 @@
 /**
- * Elite SEO for /typing-game-falling-words
- * Last editorial pass: 2026-07-27
+ * Guide content for /typing-game-falling-words.
+ *
+ * Describes `FallingWordsGame.tsx` and the tier table, scoring and word lists
+ * in `gameData.ts` (`fallingWordsTiers`, `scoringRules`, `wordPools`,
+ * `getWordDifficulty`). If tiers, speeds, scoring or word lists change, update
+ * this file in the same commit.
+ *
+ * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
+ *
+ * Last real edit: 2026-10-03
  */
 
 export const meta = {
   title: 'Falling Words Typing Game — Free Speed Training (No Signup)',
   description:
-    'Free falling words typing game: type words before they hit the bottom. 10 difficulty tiers, lives, high scores, and WPM tracking. No login required.',
+    'Free falling words typing game: type each word before it hits the bottom. 10 tiers, 3 lives, a personal high score and your last five runs. No signup.',
 };
-
-export const previewHtml = `
-<h2>Falling Words Typing Game — Train Speed Under Pressure</h2>
-<p class="article-byline">
-  <span>By <strong>FreeTyper Editorial</strong></span>
-  <span>Updated <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time></span>
-  <span>~10 min read</span>
-</p>
-<p>Play a free <strong>falling words typing game</strong> in your browser. Words drop from the top — type them completely before they hit the bottom or you lose a life. Survive 10 escalating tiers, beat your local high score, and build reactive WPM without an account.</p>
-<p>Games are not a full replacement for <a href="/typing-lessons">lessons</a> or structured <a href="/typing-practice">practice</a>, but they are excellent for speed under time pressure, focus, and daily motivation. Use the game above, then read how to play smarter below.</p>
-<h3>How to Play Falling Words</h3>
-<ol>
-<li><strong>Press start</strong> and focus the input field.</li>
-<li><strong>Type a falling word</strong> exactly (partial match highlights as you go).</li>
-<li><strong>Clear the word</strong> before it reaches the bottom — miss three lives and the run ends.</li>
-<li><strong>Advance tiers</strong> as you clear words; speed and difficulty rise.</li>
-</ol>
-<blockquote><p><strong>Tip:</strong> Prioritize the lowest words first. Saving a word about to hit the floor is worth more than clearing a high, safe word.</p></blockquote>
-<nav class="article-toc" aria-label="Table of contents">
-<p>On this page</p>
-<ol>
-<li><a href="#fw-why">Why falling-word games help typing</a></li>
-<li><a href="#fw-rules">Rules, lives &amp; tiers</a></li>
-<li><a href="#fw-scoring">Scoring &amp; WPM</a></li>
-<li><a href="#fw-strategy">Strategy tips</a></li>
-<li><a href="#fw-vs">Games vs practice vs tests</a></li>
-<li><a href="#fw-plan">Weekly game plan</a></li>
-<li><a href="#fw-faq">Falling Words FAQ</a></li>
-<li><a href="#fw-sources">Sources</a></li>
-</ol>
-</nav>
-`;
-
-export const bodyHtml = `
-<h2 id="fw-why">Why Falling Words Typing Games Help You Type Faster</h2>
-<p>Standard practice trains accuracy and maps. Falling-word games add <strong>time pressure and visual scanning</strong> — the same skills you need when chat, tickets, or code reviews demand fast, correct output under stress.</p>
-<ul>
-<li><strong>Urgency without chaos:</strong> You must finish words before a hard deadline (the bottom edge).</li>
-<li><strong>Target selection:</strong> Multiple words on screen force prioritization — a real cognitive skill.</li>
-<li><strong>Reinforcement:</strong> Instant clear feedback when a word explodes off the screen keeps motivation high.</li>
-<li><strong>Session logging:</strong> FreeTyper saves game runs into <a href="/typing-progress">progress</a> so games still count toward your history.</li>
-</ul>
-<p>Research and coaching consensus on motor skills still favor deliberate practice, but game layers improve adherence. The winning stack is: lessons for form → practice for volume → games for pressure → speed tests for measurement.</p>
-
-<h2 id="fw-rules">Rules, Lives &amp; Difficulty Tiers</h2>
-<p>FreeTyper Falling Words is built for fair, progressive challenge:</p>
-<table>
-<thead><tr><th>Mechanic</th><th>Detail</th></tr></thead>
-<tbody>
-<tr><td>Lives</td><td>3 hearts. A word that hits the bottom costs one life.</td></tr>
-<tr><td>Tiers</td><td>10 tiers. Fall speed and word difficulty ramp as you clear words.</td></tr>
-<tr><td>Matching</td><td>Type the full word (case-insensitive). Partial input highlights progress on a matching word.</td></tr>
-<tr><td>High score</td><td>Stored locally in this browser (no account).</td></tr>
-<tr><td>Session save</td><td>End-of-run WPM and duration feed FreeTyper progress.</td></tr>
-</tbody>
-</table>
-<p>Early tiers use shorter, common words. Later tiers mix medium and hard vocabulary and spawn more on-screen pressure. If you die early, restart and treat tier 1–3 as warm-up — many players need 2–3 runs to “get eyes.”</p>
-
-<h2 id="fw-scoring">Scoring, Difficulty Points &amp; WPM</h2>
-<p>Points scale with word difficulty (easy / medium / hard pools). Longer, harder words are worth more — do not farm only short words when a high-value hard word is about to hit the floor.</p>
-<p>WPM during and after a run is estimated from characters cleared over elapsed time (standard 5-characters-per-word unit). Game WPM is a training metric under stress, not a perfect substitute for a calm timed <a href="/">speed test</a>. Use both: games for thrills, tests for honest baselines.</p>
-
-<h2 id="fw-strategy">Strategy Tips for Higher Scores</h2>
-<ol>
-<li><strong>Scan bottom-first.</strong> Always clear the lowest word that you can finish in time.</li>
-<li><strong>Commit to one word.</strong> Switching mid-type wastes keystrokes unless the original target is hopeless.</li>
-<li><strong>Keep hands home-row ready.</strong> Looking at the keyboard mid-game is how lives disappear.</li>
-<li><strong>Warm up 2 minutes</strong> in <a href="/typing-practice">practice</a> if your first game run always flops.</li>
-<li><strong>Stop after accuracy collapse.</strong> Rage restarts teach panic typing. Take a 60-second break.</li>
-<li><strong>Review weak keys</strong> on <a href="/typing-progress">progress</a> after a few games — games expose hesitation letters fast.</li>
-</ol>
-<p>Advanced players pre-read the next 1–2 words while finishing the current one. That lookahead is the same skill that raises “real work” typing throughput.</p>
-
-<h2 id="fw-vs">Falling Words vs Word Attack vs Practice vs Tests</h2>
-<table>
-<thead><tr><th>Mode</th><th>Pressure type</th><th>Best for</th></tr></thead>
-<tbody>
-<tr><td>Falling Words</td><td>Vertical time + multi-target</td><td>Reactive speed, scanning</td></tr>
-<tr><td><a href="/typing-game-word-attack">Word Attack</a></td><td>Per-word timer + combos</td><td>Burst speed, consistency</td></tr>
-<tr><td><a href="/typing-practice">Practice</a></td><td>Low pressure, long passages</td><td>Accuracy &amp; weak keys</td></tr>
-<tr><td><a href="/typing-lessons">Lessons</a></td><td>Guided skill building</td><td>Beginners &amp; form resets</td></tr>
-<tr><td><a href="/">Speed test</a></td><td>Timed measurement</td><td>Weekly true WPM</td></tr>
-</tbody>
-</table>
-<p>If your game scores rise but timed-test WPM does not, you may be gaming the minigame without cleaning accuracy. Rebalance toward practice + weekly tests.</p>
-
-<h2 id="fw-plan">A Simple Weekly Plan Using Falling Words</h2>
-<ul>
-<li><strong>Mon–Fri:</strong> 10–15 min lessons/practice first, then 1–2 Falling Words runs (not the whole session).</li>
-<li><strong>Sat:</strong> Longer game session for fun + one <a href="/typing-game-word-attack">Word Attack</a> set.</li>
-<li><strong>Sun:</strong> One standardized speed test; log on progress.</li>
-</ul>
-<p>Cap pure game time if you notice sloppy form. Games amplify whatever habits you already have — good or bad.</p>
-
-<h2 id="fw-who">Who This Game Is For</h2>
-<ul>
-<li>Intermediate typists bored by plain drills</li>
-<li>Students who need short, high-engagement practice blocks</li>
-<li>Anyone training for speed under mild stress</li>
-<li>Competitive self-challengers chasing high scores</li>
-</ul>
-<p>Complete beginners should still learn home row in <a href="/typing-lessons">lessons</a> and the <a href="/keyboard-guide">keyboard guide</a> before grinding late tiers. Games reward existing maps; they do not teach maps well from zero.</p>
-
-<h2 id="fw-mistakes">Common Falling Words Mistakes</h2>
-<ol>
-<li>Ignoring the lowest word</li>
-<li>Restarting endlessly instead of warming up</li>
-<li>Looking at the keyboard during spawns</li>
-<li>Only playing games, never testing WPM</li>
-<li>Playing while exhausted (error patterns stick)</li>
-</ol>
-
-<h2 id="fw-faq">Falling Words FAQ</h2>
-<h3>Is FreeTyper Falling Words free?</h3>
-<p>Yes. No signup, no download. Play in the browser.</p>
-<h3>How many lives do I get?</h3>
-<p>Three. Each word that hits the bottom costs one life.</p>
-<h3>Does difficulty increase automatically?</h3>
-<p>Yes. Clearing words advances tiers (up to 10), which increases fall speed and harder word pools.</p>
-<h3>Where is my high score saved?</h3>
-<p>Locally in this browser. Clearing site data resets it. Scores do not sync across devices in FreeTyper’s no-login model.</p>
-<h3>Does the game improve real WPM?</h3>
-<p>It can improve speed under pressure and engagement. Pair it with lessons, practice, and weekly speed tests for balanced gains.</p>
-<h3>Why did a word not clear when I typed it?</h3>
-<p>The full word must match. Extra characters or a different target word still on screen can block a clear — finish the intended word exactly.</p>
-<h3>Can I play on mobile?</h3>
-<p>You can, but physical keyboards transfer better to desktop typing goals.</p>
-<h3>Do runs show up in progress?</h3>
-<p>Yes. Completed runs save a session with WPM and duration to your local progress tracker.</p>
-<h3>Is this better than Word Attack?</h3>
-<p>Different. Falling Words stresses multi-target scanning; Word Attack stresses single-target timed bursts and combos. Alternate both.</p>
-<h3>How long should I play per day?</h3>
-<p>5–15 minutes of games after form practice is enough for most people. More is fine for fun if accuracy stays clean.</p>
-<h3>What if I always die on early tiers?</h3>
-<p>Warm up with easy practice text, sit for home-row position, and prioritize bottom words only until tier 3 feels calm.</p>
-<h3>Are the words random?</h3>
-<p>Yes — drawn from FreeTyper difficulty pools so runs stay fresh.</p>
-
-<h2 id="fw-sources">Sources &amp; Standards</h2>
-<ul class="article-sources">
-<li><strong>Deliberate practice + engagement:</strong> Skill coaching often pairs structured drills with game-like pressure for adherence.</li>
-<li><strong>WPM unit:</strong> FreeTyper estimates game WPM with the common 5-characters-per-word convention used on the <a href="/">speed test</a>.</li>
-<li><strong>Privacy:</strong> High scores and progress stay local to your browser by design.</li>
-</ul>
-<p class="article-note">Last update: <time datetime="{{UPDATED_DATETIME}}">{{UPDATED_DISPLAY}}</time>. Contact via <a href="/contact">contact</a>.</p>
-
-<h2 id="fw-cta">Play Falling Words Free</h2>
-<p>Scroll up, start a run, protect your lives, and climb tiers. Then retest calmly on the homepage speed test so game thrills turn into real WPM.</p>
-<ul>
-<li>Play <strong>Falling Words</strong> above</li>
-<li>Switch to <a href="/typing-game-word-attack">Word Attack</a> for combo training</li>
-<li>Fix form with <a href="/typing-lessons">lessons</a> · <a href="/typing-practice">practice</a></li>
-<li>Review history in <a href="/typing-progress">progress</a></li>
-</ul>
-`;
 
 export const faqs: { question: string; answer: string }[] = [
   {
-    question: 'Is FreeTyper Falling Words free?',
-    answer: 'Yes. Play in the browser with no signup or download.',
-  },
-  {
-    question: 'How many lives do I get in Falling Words?',
-    answer: 'You start with three lives. Each word that reaches the bottom costs one life.',
-  },
-  {
-    question: 'Does difficulty increase as I play?',
+    question: 'How do you play the falling words typing game?',
     answer:
-      'Yes. FreeTyper Falling Words has 10 tiers that increase fall speed and word difficulty as you clear words.',
+      'Words fall from the top of the play area. Type a word in the box underneath, and when what you typed matches a falling word exactly, the word is cleared and the box empties. If a word reaches the bottom you lose one of your three lives. The game ends when you have no lives left.',
   },
   {
-    question: 'Where is my high score saved?',
+    question: 'How is the score calculated?',
     answer:
-      'Locally in your browser. Clearing site data resets it, and scores do not sync across devices in FreeTyper’s no-login design.',
+      'Each cleared word scores by its length: 10 points for words of up to four letters, 25 points for five or six letters, and 50 points for seven letters or more. There are no combo multipliers in this game.',
   },
   {
-    question: 'Will Falling Words improve my real typing speed?',
+    question: 'How do I move up a tier?',
     answer:
-      'It helps train speed under pressure and keeps practice fun. For balanced improvement, also use lessons, practice, and weekly timed speed tests.',
+      'Tiers rise as you clear more words in a single run. You need 10 cleared words for tier 2, 20 for tier 3, 36 for tier 4, 48 for tier 5, 75 for tier 6, 90 for tier 7, 126 for tier 8, 144 for tier 9 and 180 for tier 10. Each tier falls faster and shows more words at once.',
   },
   {
-    question: 'Do Falling Words runs count toward progress?',
+    question: 'Does a typing mistake cost me a life?',
     answer:
-      'Yes. Completed runs save a session with estimated WPM and duration to your local FreeTyper progress tracker.',
+      'No. Only a word reaching the bottom costs a life. A wrong key does not count against you in the game. It does mean nothing highlights until you press Backspace, so mistakes cost you time rather than lives.',
   },
   {
-    question: 'What is the best strategy for Falling Words?',
+    question: 'What does the accuracy number mean in this game?',
     answer:
-      'Prioritize the lowest words first, commit to finishing one word at a time, and keep your eyes on the screen rather than the keyboard.',
+      'It is the share of words you cleared out of all the words you cleared or dropped. It is not a keystroke accuracy like the one in the typing speed test, because mistyped letters are not counted. Only the words themselves are scored.',
   },
   {
-    question: 'How is Falling Words different from Word Attack?',
+    question: 'How is WPM calculated in falling words?',
     answer:
-      'Falling Words uses multi-target vertical pressure. Word Attack uses single-word timers with combos across rounds. Alternate both for complementary skills.',
+      'WPM is the total letters of the words you cleared, divided by five, divided by the minutes since the game started. Spaces are not typed, and time spent waiting for the first word counts, so it can read a little lower than your speed test result.',
   },
   {
-    question: 'Can beginners play Falling Words?',
+    question: 'Does the game run at the same speed on every screen?',
     answer:
-      'Yes for fun, but complete beginners should learn home-row finger placement in lessons first so the game does not reinforce hunt-and-peck habits.',
+      'Yes. Fall speed is scaled by real elapsed time, so the game plays the same on a 60 Hz screen as on a 120 or 144 Hz one.',
   },
   {
-    question: 'Why didn’t my typed word clear?',
+    question: 'Does the game count toward my typing progress?',
     answer:
-      'The full word must match. Extra characters or focusing the wrong on-screen word can prevent a clear — type the intended word exactly.',
+      'Partly. Each run is added to your session list and total typing time, and the letters of the words you clear are counted as correct key presses. Games are left out of your best WPM, best accuracy and the speed and accuracy achievements.',
   },
   {
-    question: 'How long should I play per day?',
+    question: 'Is the falling words game good for improving typing speed?',
     answer:
-      'Five to fifteen minutes of games after structured practice is enough for most learners. Longer sessions are fine if accuracy stays clean.',
+      'It trains fast reading and quick recall of common words under time pressure, and it is a break from passages. It does not train capital letters, punctuation or long text, so use it alongside typing practice and the typing speed test.',
   },
   {
-    question: 'Is mobile play recommended?',
+    question: 'Is my high score saved?',
     answer:
-      'You can play on mobile, but a physical keyboard is better if your goal is desktop typing speed and accuracy.',
+      'Yes, in your own browser using local storage, along with your last five runs. There is no account, nothing is uploaded, and clearing your site data erases them.',
   },
 ];
 
+const faqHtml = faqs
+  .map((f) => `<h3>${f.question}</h3>\n<p>${f.answer}</p>`)
+  .join('\n');
+
+export const previewHtml = `
+<h2>Falling Words Typing Game — Type Each Word Before It Lands</h2>
+<p class="article-byline">
+  <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
+  <span>Last updated <time datetime="2026-10-03">October 3, 2026</time></span>
+  <span>~6 min read</span>
+</p>
+<p>Falling Words is a free typing game. Words drop from the top of the play area and you type each one in the box below before it reaches the bottom. You have three lives, and the game gets faster and busier across ten tiers. It scores you by word length, tracks your WPM and personal best, and keeps your last five runs.</p>
+<p>Below is exactly how the game works: the scoring, the tier table with how fast words fall, what the accuracy and WPM numbers mean, and where the game is a good fit for typing practice and where it is not.</p>
+`;
+
+export const bodyHtml = `
+<h2 id="how-to-play-falling-words">How to play Falling Words</h2>
+<ol>
+<li><strong>Press start.</strong> The first word appears at the top and begins to fall.</li>
+<li><strong>Type a falling word</strong> in the box under the play area. Case does not matter.</li>
+<li><strong>Match it exactly.</strong> When what you have typed equals a falling word, it bursts, you score, and the box clears so you can type the next word straight away.</li>
+<li><strong>Watch the bottom.</strong> If a word reaches the bottom before you finish it, you lose a heart. You have three.</li>
+<li><strong>The game ends</strong> when the last heart is gone. There is no pause, and the game starts again when you press start.</li>
+</ol>
+<p>As you type, the part of a falling word that matches your input turns gold. If what you have typed matches no falling word, nothing highlights, and you need to press Backspace to correct it. A wrong letter never costs a life by itself, but it costs time, and time is what the falling words take from you.</p>
+
+<h2 id="scoring">How scoring works</h2>
+<table>
+<thead><tr><th>Word length</th><th>Points</th></tr></thead>
+<tbody>
+<tr><td>Up to 4 letters</td><td>10</td></tr>
+<tr><td>5 or 6 letters</td><td>25</td></tr>
+<tr><td>7 letters or more</td><td>50</td></tr>
+</tbody>
+</table>
+<p>Points depend on the length of the word you actually cleared. This game has no combo multiplier. Your best score is saved in your browser, and the start screen shows it.</p>
+
+<h2 id="tiers-and-speed">The ten tiers: speed, word types and how to reach them</h2>
+<table>
+<thead><tr><th>Tier</th><th>Word list</th><th>Words on screen</th><th>Time to fall</th><th>Total words cleared to reach it</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>3-letter words</td><td>up to 2</td><td>about 3.2 s</td><td>start</td></tr>
+<tr><td>2</td><td>3-letter words</td><td>up to 3</td><td>about 2.3 s</td><td>10</td></tr>
+<tr><td>3</td><td>3- and 5-letter words</td><td>up to 3</td><td>about 1.8 s</td><td>20</td></tr>
+<tr><td>4</td><td>3- and 5-letter words</td><td>up to 3</td><td>about 1.4 s</td><td>36</td></tr>
+<tr><td>5</td><td>5-letter words</td><td>up to 4</td><td>about 1.2 s</td><td>48</td></tr>
+<tr><td>6</td><td>5-letter words</td><td>up to 4</td><td>about 1.1 s</td><td>75</td></tr>
+<tr><td>7</td><td>5-letter and long words</td><td>up to 4</td><td>about 0.9 s</td><td>90</td></tr>
+<tr><td>8</td><td>5-letter and long words</td><td>up to 5</td><td>about 0.8 s</td><td>126</td></tr>
+<tr><td>9</td><td>Long words (5–10 letters)</td><td>up to 5</td><td>about 0.7 s</td><td>144</td></tr>
+<tr><td>10</td><td>Long words (5–10 letters)</td><td>up to 6</td><td>about 0.6 s</td><td>180</td></tr>
+</tbody>
+</table>
+<p>The times are how long a word takes to fall the full height of the play area. They are worked out from the game's speed settings and are approximate. The difficulty ramps up steeply: by tier 7 a word of seven letters or more falls in under a second, which is far beyond most typists. Do not read a low tier as failure. Reaching tier 4 or 5 already means clearing dozens of words at speed.</p>
+<p>New words appear roughly every 1.5 seconds at the start and about every 0.9 seconds at the top tiers, as long as there is room on screen. The words come from three built-in lists of lowercase English words: 60 three-letter words, 80 five-letter words and 258 longer words of 5 to 10 letters. Points follow the length of the word you clear, so a five-letter word from the long list still scores 25.</p>
+
+<h2 id="what-wpm-and-accuracy-mean-here">What WPM and accuracy mean in this game</h2>
+<ul>
+<li><strong>WPM</strong> is the total letters of the words you cleared, divided by five, divided by the minutes since the game began. Spaces are not typed, and the wait for the first word counts, so it can be a little lower than your <a href="/">typing speed test</a> score.</li>
+<li><strong>Accuracy</strong> is words cleared divided by words cleared plus words dropped. It is <em>not</em> keystroke accuracy, because mistyped letters are not counted in this game. A run that clears 40 words and drops 10 shows 80%, however many typos you made along the way.</li>
+<li><strong>Hits and misses</strong> on the result card are the same two numbers: words cleared and words dropped.</li>
+</ul>
+
+<h2 id="how-falling-words-helps-your-typing">How Falling Words helps your typing, and where it does not</h2>
+<p>It is good at a few things. It trains you to read a word and begin typing it quickly, and it rewards you for finishing words cleanly instead of fixing them later, because there is no time to. It is also a break from typing passages.</p>
+<p>It does not train capital letters, punctuation, numbers or long text, and because accuracy here ignores typos, it will not tell you how clean your typing is. Use it as a warm-up or a change of pace next to <a href="/typing-practice">typing practice</a>, the <a href="/typing-lessons">lessons</a> and the speed test, not as your only training.</p>
+
+<h2 id="your-results-and-data">Your results and data</h2>
+<ul>
+<li><strong>High score:</strong> your best points total, saved in your browser.</li>
+<li><strong>Your last five runs</strong> are listed under the start button, newest first, with score, WPM, words cleared and dropped, accuracy, tier reached and a short coach note.</li>
+<li><strong>Progress page:</strong> each run is saved as a game session and adds to your typing time. The letters of words you clear are counted as correct key presses, but typos are not recorded as errors, so the games make your key accuracy look slightly better than the tests do. Games are excluded from your best WPM, best accuracy and the speed and accuracy achievements. See the <a href="/typing-progress">progress tracker guide</a>.</li>
+<li><strong>Privacy:</strong> everything is stored in your browser's local storage. There is no FreeTyper account and nothing you type is uploaded. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</li>
+</ul>
+
+<h2 id="limits-of-falling-words">Limits of this game</h2>
+<ul>
+<li>English words only, from three built-in lists (60, 80 and 258 words), so repeats are normal.</li>
+<li>No pause button, and no way to set the starting tier.</li>
+<li>Accuracy ignores typos, and WPM includes the wait for the first word.</li>
+<li>The steepest tiers are very hard, and few runs will reach them.</li>
+<li>Built for a physical keyboard.</li>
+</ul>
+
+<h2 id="falling-words-faq">Falling Words FAQ</h2>
+${faqHtml}
+
+<h2 id="sources-and-method">Sources and method</h2>
+<ul class="article-sources">
+<li>All rules, scoring, tier thresholds, speeds and word lists: how the game on this page works, as described above. Fall times are approximate and derived from the game's speed settings.</li>
+<li>WPM uses the five-characters-per-word convention described in the <a href="https://en.wikipedia.org/wiki/Words_per_minute" rel="noopener" target="_blank">Words per minute</a> article.</li>
+<li>The advice on using the game alongside other practice is FreeTyper's own opinion.</li>
+</ul>
+<p class="article-note">Written and maintained by <a href="/about#author">Ashiqur Rahman</a>. If the game behaves differently from what is described here, <a href="/contact">tell me</a> and I will fix the page or the game.</p>
+`;
+
 export const howToSteps: { name: string; text: string }[] = [
   {
-    name: 'Start Falling Words',
-    text: 'Open FreeTyper Falling Words and press start to begin a run with three lives.',
+    name: 'Start the game',
+    text: 'Press start. Words begin falling from the top of the play area, and you have three lives.',
   },
   {
-    name: 'Type falling words',
-    text: 'Type each word completely before it reaches the bottom of the play area.',
+    name: 'Type a falling word',
+    text: 'Type any falling word in the box under the play area. The matching part turns gold as you type.',
   },
   {
-    name: 'Prioritize urgent targets',
-    text: 'Clear the lowest words first as tiers increase speed and difficulty.',
+    name: 'Clear it exactly',
+    text: 'When your input equals a falling word, it bursts, you score points and the box clears for the next word. Use Backspace to fix a mistake.',
   },
   {
-    name: 'Review your score and WPM',
-    text: 'After game over, note score, WPM, words cleared, and high score, then play again or open progress.',
+    name: 'Keep words from reaching the bottom',
+    text: 'A word that reaches the bottom costs one life. The game ends when all three lives are gone.',
   },
   {
-    name: 'Balance with structured practice',
-    text: 'Pair game sessions with typing lessons, practice drills, and weekly speed tests for real improvement.',
+    name: 'Climb the tiers and beat your score',
+    text: 'Clear more words to move up the ten tiers, then compare your score, WPM and tier with your last five runs.',
   },
 ];
