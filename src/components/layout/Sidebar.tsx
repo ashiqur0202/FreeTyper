@@ -141,7 +141,7 @@ export default function Sidebar() {
           flex-col gap-1 overflow-y-auto bg-surface
           border-r border-surface-border
           transition-transform duration-200 ease-in-out
-          md:sticky md:z-auto md:h-auto md:min-h-screen md:translate-x-0 md:shrink-0
+          md:sticky md:top-0 md:z-auto md:h-screen md:self-start md:translate-x-0 md:shrink-0
           ${isOpen ? 'translate-x-0' : '-translate-x-full'}
           hidden md:flex
           ${isOpen ? '!flex' : ''}

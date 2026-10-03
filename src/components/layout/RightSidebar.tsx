@@ -20,7 +20,7 @@ export default function RightSidebar() {
       className="
         fixed right-0 top-0 z-20 hidden h-full w-[200px]
         shrink-0 flex-col overflow-y-auto border-l border-surface-border bg-surface
-        md:sticky md:top-0 md:z-auto md:flex md:h-auto md:min-h-screen
+        md:sticky md:top-0 md:z-auto md:flex md:h-screen md:self-start
       "
     >
       <div className="px-4 pb-3 pt-5">
