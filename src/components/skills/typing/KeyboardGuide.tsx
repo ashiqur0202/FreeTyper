@@ -44,6 +44,7 @@ function zoneForKey(key: string): string | null {
 }
 
 function formatFinger(key: string): string {
+  if (key === ' ') return 'either thumb';
   const m = fingerMap[key.toLowerCase()];
   if (!m) return '—';
   return `${m.hand} ${FINGER_LABELS[m.finger].toLowerCase()}`;
@@ -185,12 +186,12 @@ export default function KeyboardGuide() {
               style={
                 activeKey !== ' '
                   ? {
-                      borderColor: keyboardColors['right-index'],
-                      color: keyboardColors['right-index'],
+                      borderColor: getKeyColor(' '),
+                      color: getKeyColor(' '),
                     }
                   : undefined
               }
-              aria-label="Space bar, right thumb/index zone"
+              aria-label="Space bar, either thumb"
             >
               space
             </button>

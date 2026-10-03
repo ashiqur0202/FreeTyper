@@ -63,6 +63,19 @@ export default function WordAttackGame() {
   const timeLeftRef = useRef(0);
   const closingRoundRef = useRef(false);
   const advanceWordRef = useRef<(correct: boolean) => void>(() => {});
+  // One id per game, so every round-end save updates the same log entry.
+  const gameIdRef = useRef('');
+  // Only time spent actually playing counts toward WPM and typing time
+  // (not the "get ready" and "round complete" screens).
+  const activeMsRef = useRef(0);
+  const segmentStartRef = useRef(0);
+  // What has already been written to progress, so each round adds only its own share.
+  const savedRef = useRef({ chars: 0, hits: 0, attempts: 0, activeSec: 0 });
+
+  const getActiveSeconds = useCallback(() => {
+    const running = segmentStartRef.current ? performance.now() - segmentStartRef.current : 0;
+    return (activeMsRef.current + running) / 1000;
+  }, []);
 
   logRef.current = log;
 
@@ -84,7 +97,7 @@ export default function WordAttackGame() {
   }, []);
 
   const saveRun = useCallback(() => {
-    const elapsed = (performance.now() - startTimeRef.current) / 1000;
+    const elapsed = getActiveSeconds();
     const mins = elapsed / 60;
     const finalWpm = mins > 0 ? Math.round(totalCharsRef.current / 5 / mins) : 0;
     const hits = totalCorrectRef.current;
@@ -92,9 +105,11 @@ export default function WordAttackGame() {
     const accuracy = attempts > 0 ? Math.round((hits / attempts) * 100) : 0;
     const misses = Math.max(0, attempts - hits);
     const roundsPlayed = Math.min(currentRoundRef.current + 1, wordAttackRounds.length);
-    const prev = logRef.current;
+    // Drop this game's earlier snapshot so one game shows as one entry.
+    const all = logRef.current;
+    const prev = all[0]?.id === gameIdRef.current ? all.slice(1) : all;
     const draft: Omit<GameLogEntry, 'headline' | 'tip' | 'tone'> = {
-      id: `wa-${Date.now()}`,
+      id: gameIdRef.current,
       date: Date.now(),
       game: 'attack',
       score: scoreRef.current,
@@ -123,24 +138,39 @@ export default function WordAttackGame() {
     }
 
     try {
-      addSession({
-        id: `game-wa-${Date.now()}`,
-        date: Date.now(),
-        wpm: finalWpm,
-        accuracy,
-        correctChars: totalCharsRef.current,
-        incorrectChars: misses,
-        totalChars: totalCharsRef.current,
-        duration: Math.round(elapsed),
-        mode: 'game',
-        modeDetail: 'Word Attack',
-      });
+      // Save only this round's share, so progress is not double-counted.
+      const saved = savedRef.current;
+      const dChars = totalCharsRef.current - saved.chars;
+      const dHits = hits - saved.hits;
+      const dAttempts = attempts - saved.attempts;
+      const dSec = elapsed - saved.activeSec;
+      if (dAttempts > 0) {
+        const dMins = dSec / 60;
+        addSession({
+          id: `game-${gameIdRef.current}-r${roundsPlayed}`,
+          date: Date.now(),
+          wpm: dMins > 0 ? Math.round(dChars / 5 / dMins) : 0,
+          accuracy: Math.round((dHits / dAttempts) * 100),
+          correctChars: dChars,
+          incorrectChars: dAttempts - dHits,
+          totalChars: dChars,
+          duration: Math.round(dSec),
+          mode: 'game',
+          modeDetail: `Word Attack - Round ${roundsPlayed}`,
+        });
+        savedRef.current = {
+          chars: totalCharsRef.current,
+          hits,
+          attempts,
+          activeSec: elapsed,
+        };
+      }
     } catch {
       /* ignore */
     }
 
     return entry;
-  }, [addSession, highScore]);
+  }, [addSession, getActiveSeconds, highScore]);
 
   const prepareRound = useCallback((round: number) => {
     const config = wordAttackRounds[round];
@@ -170,6 +200,10 @@ export default function WordAttackGame() {
     maxComboRef.current = 0;
     totalCharsRef.current = 0;
     startTimeRef.current = performance.now();
+    gameIdRef.current = `wa-${Date.now()}`;
+    activeMsRef.current = 0;
+    segmentStartRef.current = 0;
+    savedRef.current = { chars: 0, hits: 0, attempts: 0, activeSec: 0 };
     setCurrentRound(0);
     setScore(0);
     setCombo(0);
@@ -186,6 +220,7 @@ export default function WordAttackGame() {
     const t = wordAttackRounds[currentRoundRef.current]?.timePerWord ?? 5;
     timeLeftRef.current = t;
     setTimeLeft(t);
+    segmentStartRef.current = performance.now();
     setGameState('playing');
     window.setTimeout(() => inputRef.current?.focus(), 0);
   }, []);
@@ -194,6 +229,10 @@ export default function WordAttackGame() {
     if (closingRoundRef.current) return;
     closingRoundRef.current = true;
     stopTimer();
+    if (segmentStartRef.current) {
+      activeMsRef.current += performance.now() - segmentStartRef.current;
+      segmentStartRef.current = 0;
+    }
     saveRun();
     const last = currentRoundRef.current >= wordAttackRounds.length - 1;
     setGameState(last ? 'gameover' : 'round-end');
@@ -282,11 +321,11 @@ export default function WordAttackGame() {
   useEffect(() => {
     if (gameState !== 'playing') return;
     const id = window.setInterval(() => {
-      const mins = (performance.now() - startTimeRef.current) / 60000;
+      const mins = getActiveSeconds() / 60;
       if (mins > 0) setWpm(Math.round(totalCharsRef.current / 5 / mins));
     }, 500);
     return () => window.clearInterval(id);
-  }, [gameState]);
+  }, [gameState, getActiveSeconds]);
 
   const goNextRound = () => {
     const next = currentRoundRef.current + 1;

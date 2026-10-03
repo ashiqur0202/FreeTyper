@@ -42,6 +42,7 @@ export default function FallingWordsGame() {
   const startTimeRef = useRef(0);
   const totalCharsRef = useRef(0);
   const frameRef = useRef(0);
+  const lastFrameRef = useRef(0);
   const wordIdRef = useRef(0);
   const lastSpawnRef = useRef(0);
   const gameAreaRef = useRef<HTMLDivElement>(null);
@@ -144,7 +145,15 @@ export default function FallingWordsGame() {
   useEffect(() => {
     if (gameState !== 'playing') return;
 
+    lastFrameRef.current = 0;
+
     const gameLoop = (now: number) => {
+      // Fall speed is defined per 60 Hz frame; scale by real elapsed time so the
+      // game plays the same on 60, 120 and 144 Hz displays.
+      const dt = lastFrameRef.current ? Math.min(now - lastFrameRef.current, 50) : 1000 / 60;
+      lastFrameRef.current = now;
+      const frameScale = dt / (1000 / 60);
+
       const elapsed = (now - startTimeRef.current) / 1000;
       const mins = elapsed / 60;
       if (mins > 0) {
@@ -174,7 +183,7 @@ export default function FallingWordsGame() {
       wordsRef.current = wordsRef.current
         .map((w) => {
           if (w.exploding) return w;
-          return { ...w, y: w.y + w.speed };
+          return { ...w, y: w.y + w.speed * frameScale };
         })
         .filter((w) => {
           if (w.y >= 95 && !w.matched && !w.exploding) {

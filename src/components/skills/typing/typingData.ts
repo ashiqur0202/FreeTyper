@@ -238,8 +238,14 @@ export const fingerMap: Record<string, { finger: number; hand: 'left' | 'right' 
   'h': { finger: 3, hand: 'right' },
   'n': { finger: 3, hand: 'right' },
   '6': { finger: 3, hand: 'right' },
-  // Space
-  ' ': { finger: 3, hand: 'right' },
+  // Punctuation and edge keys — standard touch-typing assignment
+  '`': { finger: 0, hand: 'left' },
+  '=': { finger: 0, hand: 'right' },
+  '[': { finger: 0, hand: 'right' },
+  ']': { finger: 0, hand: 'right' },
+  '\\': { finger: 0, hand: 'right' },
+  "'": { finger: 0, hand: 'right' },
+  // Space has no entry: it is typed with either thumb, not a finger zone.
 };
 
 // Keyboard colors per finger zone

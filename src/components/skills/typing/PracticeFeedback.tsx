@@ -42,15 +42,6 @@ function rankLabel(wpm: number) {
   return 'beginner';
 }
 
-function percentileLabel(wpm: number) {
-  if (wpm >= 100) return 'top 5%';
-  if (wpm >= 80) return 'fast';
-  if (wpm >= 70) return 'above average';
-  if (wpm >= 50) return 'average';
-  if (wpm >= 30) return 'below average';
-  return 'beginner';
-}
-
 function wpmBarPercent(wpm: number) {
   return Math.min(100, (wpm / 120) * 100);
 }
@@ -578,7 +569,6 @@ export default function PracticeFeedback({
             {detailed && (
               <span className="rounded-full bg-accent-bg px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-accent">
                 {rankLabel(latest.wpm)}
-                <span className="text-accent/70"> · {percentileLabel(latest.wpm)}</span>
               </span>
             )}
             {prev && (
