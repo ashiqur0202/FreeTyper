@@ -25,6 +25,8 @@ src/components/skills/typing/
 ├── KeyboardGuide.tsx          # Finger filters, home-row mode, personal key stats
 ├── TypingProgress.tsx         # Stats, WPM chart, weak keys, sessions, achievements
 ├── KeyboardHeatmap.tsx, AchievementToast.tsx
+├── useKeySound.ts            # key sound hook (only plays when Settings → Sound is on); sound itself in src/lib/key-sound.ts (Web Audio, no files)
+├── mobileInput.ts            # touch/IME fallback: reads typing from the hidden input's `input` event (sentinel char trick) when keydown is unusable
 ├── GameFeedback.tsx           # Game result + latest 5 (score, WPM, hits/misses, coach)
 └── FallingWordsGame.tsx, WordAttackGame.tsx
 src/components/layout/ → Sidebar, SidebarProvider, RightSidebar, SettingsProvider, Footer, ContactPanel
@@ -32,6 +34,7 @@ src/components/tools/  → ToolClient (dynamic imports), ToolPageContent (viewpo
 src/components/blog/   → BlogContent (+ auto TOC), BlogCard
 src/components/seo/    → JsonLd (Org/WebSite/WebApp/Breadcrumb/FAQ/HowTo), FAQ
 src/components/content/ → ExpandableSeoContent (guide open by default, toggle “Show less”; first heading rendered as the page’s visible H1; TOC hash expand)
+src/lib/post-dates.ts → `visiblePostDate()`: the ONE date readers see on posts/cards (Updated if `updated` exists, else Published; fixed UTC formatting). Both dates stay in JSON-LD.
 src/lib/content-dates.ts → dynamic “Updated Month Year” placeholders ({{UPDATED_*}}) — **no content uses them any more** (all guides carry a real fixed date); safe to delete later
 src/config/ → tools.ts (7 tools), site.ts
 src/data/
@@ -109,7 +112,7 @@ Tool pages use the **full middle column** (between left nav and right rail). Rig
 | keyboardLayout | qwerty | qwerty |
 | showKeyboardHints | boolean | true |
 
-Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → `data-theme` + CSS vars). Font size, sound, and hints are still stored only — tools do not read them yet.
+**All settings are wired (2026-10-04):** theme + accent (`data-theme` + CSS vars) · **font size** (`data-font-size` on `<html>` set by the init script and the provider; CSS scales `.typing-text` to 14 / 18 / 22 px) · **sound** (`useKeySound` → `playKeySound`: soft tick for a correct key, lower thud for a wrong one; speed test, lessons, practice and both games) · **keyboard hints** (`LiveKeyboard` highlights the next key only when on; the typing-text window is unaffected) · **layout** is now a fixed “QWERTY — only layout available” label (it used to be a dropdown with one option).
 
 ## Brand
 - Default: **dark + gold** (`#e2b714`) · surface `#323234`, raised `#3a3a3c`, border `#4a4a4c`
@@ -181,6 +184,7 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - [x] Fixed broken leftover sentences in `improve-typing-accuracy`
 - [x] **2026-10-03 batch (live since 2026-10-04):** all 7 tool guides rewritten from the code (see 3a) · real author/date bylines · `BlogPosting` schema · sitemap no fake lastmod · 23 redirect links fixed · dead `ResultCard.tsx` / stray draft deleted · README replaced
 - [x] **Bugs found and fixed while writing the guides (live):** unsupported “top 5%” result label removed · keyboard guide: 6 keys had no finger + space labelled “right index” · streak used UTC day (now local) · Falling Words fall speed was per-frame (now time-based) · Word Attack double-counted progress and logged cumulative snapshots, WPM counted idle screens (now per-round delta, active time only)
+- [x] **Code work (2026-10-04, branch `fix/settings-and-bugs`):** all four settings now do something (see Settings) · single visible post date · **command palette** `/` no longer blocks typing when a passage starts with `/` · **Esc** exits focus mode even mid-test · **touch / IME typing** works (hidden-input `input` fallback, no double counting on desktop; AltGr characters now count) · **LiveKeyboard** hints and flashes handle capitals and shifted symbols (highlights the key plus the opposite-hand Shift) and the space bar · browser-tested 24/24 new checks + 32/32 functional + 46/46 sidebar, 0 hydration errors
 - [x] **Release 2026-10-04:** merged to `master` + pushed → Coolify; verified live (new H1, guide dates, BlogPosting, either-thumb label, sitemap `lastmod` only on posts). Pre-release browser tests caught + fixed a `/keyboard-guide` hydration mismatch (stats read from localStorage on first paint → now rendered after hydration via `useSyncExternalStore`)
 - [x] **Sticky sidebars** (2026-10-04): left + right rails stay pinned on long pages (see layout note); verified 46/46 locally and on the live site at 900px and 560px viewport heights, plus mobile drawer unchanged
 
@@ -274,9 +278,8 @@ Rules: describe only what the tool really does (read its code first); every numb
 - [ ] Product decisions raised by the guides: (a) lessons unlock without any accuracy check — add a 95% gate? (b) Falling Words tiers 7–10 fall in under 1 s (very steep) — ease the speed curve? (c) only 20 practice passages — add more; (d) progress export/import; (e) unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`)
 - [ ] Add the browser checks to the repo: this session’s headless-Chrome scripts (functional + sticky sidebars) lived in a temp folder and are not saved. Recreate as Playwright tests in the repo (`tests/`) so every release can run them (cover: speed-test run, keyboard-guide labels, Word Attack per-round progress, Falling Words speed, hydration on pages with stored data, sticky rails)
 - [ ] Cleanup: ~57 pre-existing lint errors (e.g. `useTypingEngine.ts` refs read/written during render, set-state-in-effect in the games); delete unused `src/lib/content-dates.ts` + the placeholder injection in `ExpandableSeoContent`
-- [ ] Wire remaining settings into tools: font size → `.typing-text`; sound → key beeps; hints → LiveKeyboard gold pulse
-- [ ] Known bugs (next coding pass): command palette vs typing on `/`; Esc in focus mode; mobile `keydown` vs input; LiveKeyboard missing shift glyphs
-- [ ] Sound on games (Falling Words / Word Attack)
+- [ ] Known limits left: the `/` palette cannot be opened while a passage starts with `/` (type it instead); the touch/IME path was tested with simulated input events, not on a physical phone — try it on a real Android/iOS keyboard
+- [x] ~~Sound on games~~ — done 2026-10-04 (Settings → Sound applies to both games)
 - [ ] Keyboard layouts (DVORAK, Colemak)
 - [ ] Multiplayer races · Leaderboards · School mode (needs optional login later)
 - [ ] More games (Type Racer, Zombie Typing)
@@ -305,7 +308,7 @@ Index: `src/data/blog/typing-skills.ts` · Bodies: `src/data/blog/articles/*.ts`
 - 1.2–2k words, answer first, one clear question per post; no templated “Table of Contents”, “From Article to Action”, “Bottom Line”
 - Facts only from sources actually opened and checked, linked inline; no invented statistics; no fake first-hand stories — say what is unknown
 - Use the site’s own measured behaviour where relevant (scoring rules, rank bands) and link to the right tool
-- Real `date` (first published) and `updated` (BlogPost field, shown on the page, feeds `dateModified` + sitemap) when substantively rewritten; never batch-backdate; byline Ashiqur Rahman
+- Real `date` (first published) and `updated` (BlogPost field) when substantively rewritten; readers see **one** date (`Updated …` if `updated` exists, else `Published …`), while JSON-LD keeps `datePublished` + `dateModified` and the sitemap uses `updated ?? date`; never batch-backdate; byline Ashiqur Rahman
 - Then **1 new post per week** (ongoing curation is an AdSense criterion); keep a topic queue here
 
 **Topic queue (draft ideas, none written):** how typing speed is scored by employers (net vs gross, accuracy floors) · typing on a laptop vs external keyboard · how to practice typing 10 minutes a day · does typing speed matter for programmers (with evidence) · common typing errors by key pair (from the Dhakal et al. error data)
