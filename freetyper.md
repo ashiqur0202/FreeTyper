@@ -12,7 +12,13 @@ This is the living reference. History lives in git. Per-guide detail lives in th
   - every guide rewritten from the real code, with verified sources
   - blog cut from 25 to 10 posts, all rewritten
   - real author and dates, BlogPosting schema, bugs found while documenting fixed
-- **Still open (needs Ashiqur):** verify ownership · request indexing · publish 1 post a week · let real traffic build · request a review (§7).
+- **Analytics snapshot (GA4 6 Jul–3 Oct 2026, Search Console last 3 months; exports were read on 2026-10-04):**
+  - ~850 users, 1,123 sessions; new users rose from ~5/day (Aug) to ~40–55/day (late Sep), so today’s run-rate is well above 500 a month.
+  - **Bing is the main source:** Bing 692 sessions (+ Yahoo 75, DuckDuckGo 17, all Bing-powered) ≈ 70 %. **Google organic: only 41 sessions (~4 %).** ChatGPT referrals: 53.
+  - **Google has barely indexed the site:** 13 clicks / 44 impressions in 3 months; Pages report (to 21 Sep): 4 indexed, 34 not (32 “Discovered – currently not indexed”). Sitemap last read 28 Sep (old 38-URL version).
+  - Visitors engage (organic ≈ 232 s per session). 93 % of views are tool pages; blog only 3.4 %. Lessons and practice are the 2nd and 3rd most visited pages.
+  - Top countries: India 27.5 %, US 24 %, then Canada, China, Philippines, Pakistan, UK. **Key events were 0** (no conversions tracked) until the events below shipped.
+- **Still open (needs Ashiqur):** see the TODO in §8.
 
 ## 2. Stack and release
 - Next.js 16 (App Router, TypeScript) · Tailwind v4 · lucide-react · Inter + JetBrains Mono.
@@ -25,7 +31,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
   3. test on `next start` in a headless browser
   4. fast-forward `master`, push
   5. poll the live site to confirm
-- Analytics: GA4 `G-QC5509TVSF` · Search Console verified · mail: `contact@freetyper.com`.
+- Analytics: GA4 `G-QC5509TVSF` · Search Console verified · Bing Webmaster Tools not set up yet · mail: `contact@freetyper.com`.
 
 ## 3. Architecture map
 ```
@@ -40,7 +46,7 @@ src/components/skills/typing/
 src/components/layout/   Sidebar, RightSidebar (both pinned), SettingsProvider, Footer, ContactPanel
 src/components/          content/ExpandableSeoContent, seo/JsonLd, blog/BlogContent+BlogCard, tools/ToolClient
 src/config/     tools.ts (7 tools), site.ts (name, author, AdSense id)
-src/lib/        post-dates.ts (the one visible post date), key-sound.ts (Web Audio), content-dates.ts (unused)
+src/lib/        post-dates.ts (the one visible post date), key-sound.ts (Web Audio), analytics.ts (GA4 events), content-dates.ts (unused)
 src/data/       home/typing-speed-content.ts and tools/*-content.ts  (guides: meta, faqs, previewHtml, bodyHtml, howToSteps)
                 blog/typing-skills.ts (index) and blog/articles/*.ts (bodies)
 public/ads.txt  google.com, pub-3237588309372777, DIRECT, f08c47fec0942fa0
@@ -97,13 +103,18 @@ The guides and posts must stay consistent with these.
 | `/blog`, `/blog/[slug]` | 10 sourced posts | — |
 | `/about` `/contact` `/privacy` `/terms` `/disclaimer` | trust and legal | — |
 
-- A tool page is a full-viewport tool, then the guide (its first heading is the visible H1, open by default). `/typing-speed-test` redirects 308 to `/`.
+- A tool page is a full-viewport tool, then the guide (its first heading is the visible H1, open by default). `/typing-speed-test` and `/typing-test` redirect 308 to `/` (next.config.ts).
 - Metadata: unique titles and canonicals · OG/Twitter and a generated OG image · PWA manifest.
 - `robots.ts` allows all and points to the sitemap.
 - `sitemap.ts`: **23 URLs** (7 static + 6 tools + 10 posts). Posts use `updated ?? date`; other URLs omit `lastmod` rather than fake it.
 - `feed.xml`: tools + posts, dated `updated ?? date`.
 - JSON-LD: Organization + WebSite (layout); WebApplication + FAQPage + HowTo on home and tools (FAQ text = the visible FAQ); Breadcrumb; **BlogPosting** on posts (author → `/about#author`). Output escapes `<`.
 - Google has largely retired HowTo/FAQ rich results, so that markup is harmless and accurate, not a ranking lever.
+- **GA4 custom events** (`src/lib/analytics.ts` → `trackEvent`). Numbers and short fixed labels only; never typed text.
+  - `test_complete` {duration_s, text_mode, wpm, accuracy} · `lesson_complete` {lesson_number, lesson, wpm, accuracy} · `practice_complete` {category, wpm, accuracy}
+  - `game_complete` {game, score, wpm, accuracy, level} (Falling Words at game over; Word Attack after round 8) · `game_round_complete` {game, round, score}
+  - `setting_change` {setting, value} · `share_result` {source} (counted when the button is used)
+  - The privacy page discloses these. Add a new event only if it follows the same rule and is added there.
 - **AdSense:** publisher `ca-pub-3237588309372777` in the root `<head>`, the `google-adsense-account` meta, and `public/ads.txt`. Auto ads only (no `<ins>` units).
 - **Never put ads.txt in `robots.txt`.** When approved, turn off overlay / anchor / vignette formats so they miss the typing area.
 - Privacy/About: operator named (Ashiqur Rahman); honest about GA and Google’s cookie wording; not directed at children under 13; never claim “no tracking”.
@@ -132,23 +143,32 @@ The guides and posts must stay consistent with these.
 
 ## 7. AdSense plan
 Google’s stated bar: authentic, high-quality content and tools · **ongoing curation** · **sustained, genuine user interest**.
-Likely causes (inferred, not confirmed): bulk templated content with no sources or real author (fixed), guides collapsed behind “Read more” (fixed), and a new domain with almost no indexed pages or traffic (open).
+Likely causes (inferred): bulk templated content with no sources or real author (fixed), guides collapsed behind “Read more” (fixed), and a new domain with almost no Google-indexed pages (open; traffic itself is now rising).
+- [ ] **[A]** AdSense → Sites → freetyper.com → **Verify site ownership** (snippet, meta tag and ads.txt are live; if there is no button, Google auto-verifies within days, else contact AdSense help with a screenshot).
+- [ ] **[A]** After several weeks of steady growth and more pages indexed: **request a review** (repeated rejections do not help).
 
-- [ ] **[A]** AdSense → Sites → freetyper.com → **Verify site ownership**. The snippet, meta tag and ads.txt are all live. If there is no button, Google auto-verifies within days; otherwise contact AdSense help or the community with a screenshot.
-- [ ] **[A]** Search Console → request indexing for `/`, `/blog`, the 6 tool pages and the 10 posts.
-- [ ] **[A]** Publish 1 real post a week. Share honestly (Reddit r/typing, Show HN, Product Hunt). Watch GA4 for steady organic users.
-- [ ] **[A]** After several weeks of steady activity, **request a review** (repeated rejections do not help).
-- [ ] **[A, optional]** Add a real screenshot of a result card to the home guide. Rename the sidebar link “start” to “speed test”.
+## 8. TODO (owner: **[A]** Ashiqur · **[C]** Claude in code)
+**Now — growth is limited by distribution, not features**
+- [ ] **[A]** Set up **Bing Webmaster Tools** (free): import the site from Search Console, submit `sitemap.xml`, read its queries. Bing is ~70 % of traffic.
+- [ ] **[A]** Search Console: **resubmit the sitemap** (23 URLs) and **request indexing** for `/`, `/blog`, the 6 tool pages and the 10 posts.
+- [ ] **[A]** GA4, after this release has run for a day: Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`.
+- [ ] **[A]** Publish 1 sourced post a week; share honestly (Reddit r/typing, Show HN, Product Hunt); look for a few real links.
+- [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) so progress can be compared.
 
-## 8. Backlog (after AdSense)
-- **Decisions:** add a 95 % accuracy gate to lessons? · ease Falling Words tiers 7–10? · more than 20 practice passages · progress export/import.
-- **Engineering:**
-  - save the browser checks as Playwright tests in `tests/` (speed run, finger labels, Word Attack progress, Falling Words speed, hydration with stored data, sticky rails, touch input)
-  - test touch typing on a real phone
-  - clear the ~57 older lint errors (refs read/written during render, set-state-in-effect)
-  - delete `content-dates.ts` and its injection in `ExpandableSeoContent`
-  - unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`)
-- **Features:** Dvorak/Colemak · multiplayer races, leaderboards, school mode (needs optional login) · more games.
+**Next — product work the data supports**
+- [ ] **[C]** Proposal for a **longer lessons course** (lessons are the 2nd most visited page and hold people for ~157 s): shift/capitals, punctuation, numbers, left/right-hand drills. Includes the **95 % accuracy gate** decision.
+- [ ] **[C]** A clear, printable **touch-typing finger chart** (people already search “keyboard finger chart / touch typing diagram”; the keyboard guide ranks ~position 47–73 for it).
+- [ ] **[C]** Preset **duration pages** (e.g. 1-minute, 5-minute test) as real working tools with a short unique intro — only after pages are being indexed, and never thin duplicates.
+- [ ] **[C]** Save the browser checks as **Playwright tests** in `tests/` (speed run, finger labels, Word Attack progress, Falling Words speed, hydration, sticky rails, touch input, GA4 events, redirects).
+- [ ] **[A]** Test touch typing on a real phone; optional: real screenshot of a result card for the home guide; rename sidebar “start” → “speed test”.
+
+**Later — ideas, validate first**
+- Exam / language typing tests (India, Pakistan and Bangladesh are in the top countries): check Bing Webmaster queries before building.
+- Make guides easy for AI assistants to cite (clear definitions, sourced numbers) — ChatGPT already refers visitors.
+- Accounts, leaderboards, multiplayer races, Dvorak/Colemak, more games, progress export/import, ease Falling Words tiers 7–10, more than 20 practice passages.
+- Cleanup: ~57 older lint errors · delete `content-dates.ts` · unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`).
+
+**Recently done (2026-10-03/04):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events.
 
 ## 9. Gotchas
 - **Sidebars:** keep `md:sticky md:top-0 md:h-screen md:self-start` on both asides. `h-auto` or `min-h-screen` stretches them in the flex row and breaks sticky.
