@@ -44,13 +44,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'touch-typing-for-beginners',
-    title: 'Touch Typing for Beginners: A Complete 30-Day Learning Plan',
-    excerpt:
-      'A day-by-day 30-day touch typing plan for beginners — home row to mixed practice, 15–25 minutes a day on FreeTyper, with weekly checks and Day 30 goals.',
+    title: 'Touch Typing for Beginners: A Realistic Plan',
+    excerpt: 'What touch typing is, whether you need it, a step-by-step path using the free lessons, how to practice, and why no honest guide can promise a number of days.',
     date: '2026-08-07',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Touch Typing',
-    readTime: '18 min',
+    readTime: '7 min',
   },
   {
     slug: 'muscle-memory-and-touch-typing',

@@ -1,307 +1,74 @@
 export const touchTypingArticles: Record<string, string> = {
-  'touch-typing-for-beginners': `<p>If you are new to touch typing, skip the pep talk. You need a calendar: what to do today, what “done” looks like this week, and a rule for not staring at the keys.</p>
+  'touch-typing-for-beginners': `<p>Touch typing means typing without looking at the keys: each finger has its own keys, your hands rest on the home row, and your muscle memory does the finding. To learn it, set your hands on the home row, learn the rows in order, keep your accuracy at about 95% or better before you move on, and practice a little every day. This guide lays out that path using the free lessons on this site.</p>
 
-<p>This is a <strong>30-day beginner plan</strong> for real schedules: about 15–25 minutes a day. Home row first, then the letter map, then no-peek practice, then mixed work. Use <a href="/typing-lessons">lessons</a>, <a href="/typing-practice">practice</a>, the <a href="/keyboard-guide">keyboard guide</a>, and a weekly <a href="/">speed test</a>.</p>
+<p>One thing we will not do is promise a number of days. Typing-course websites give timelines that range from a couple of weeks to a few months, and we could not find a controlled study behind those figures. People start from different places and practice at different rates. A better measure than the calendar is whether you can finish a lesson accurately without looking at the keys.</p>
 
-<h2 id="toc">Table of Contents</h2>
+<h2 id="what-touch-typing-is">What touch typing is</h2>
+<p>According to Wikipedia's <a href="https://en.wikipedia.org/wiki/Touch_typing" rel="noopener" target="_blank">Touch typing</a> article, it is a style of typing that does not rely on sight to find the keys. It depends on muscle memory instead. The home row is A S D F for the left hand and J K L ; for the right, and touch typists keep their fingers on those keys and return to them after each reach. Most keyboards have small raised marks on F and J so your index fingers can find home by touch. The method is usually traced to the late 1880s: the article reports that a court stenographer, Frank E. McGurrin, won a widely publicised typing contest in 1888.</p>
+
+<h2 id="do-you-need-it">Do you need touch typing to be fast?</h2>
+<p>Not strictly, and it is worth knowing. A large study of 168,960 typists, <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018), found that people who reported typing training were on average only about 5 WPM faster than those who did not. The University of Cambridge's <a href="https://www.cam.ac.uk/research/news/what-makes-a-faster-typist" rel="noopener" target="_blank">write-up of the study</a> adds that self-taught typists who use fewer than ten fingers can be as fast as touch typists.</p>
+<p>What touch typing gives you is a clear, repeatable method: a fixed finger for each key, no hunting, and no need to look down. In the same study, participants reporting more fingers tended to be faster, and fast typists reported about 8.4 fingers on average against 5.3 for slow typists. That is a correlation, not proof, but it is a good reason to learn a consistent system if you are starting from scratch.</p>
+
+<h2 id="before-you-start">Before you start</h2>
+<ul>
+<li><strong>Set up your desk.</strong> Elbows near keyboard height, wrists straight, feet supported. Our <a href="/blog/fix-typing-posture-and-avoid-wrist-pain">posture and wrist pain guide</a> covers this with OSHA guidance.</li>
+<li><strong>Use the QWERTY layout.</strong> The lessons and the finger map on this site use the standard QWERTY keyboard only.</li>
+<li><strong>Place your hands.</strong> Left fingers on A S D F, right fingers on J K L ;, both thumbs resting on the space bar. Feel for the bumps on F and J.</li>
+<li><strong>See the whole map.</strong> The <a href="/keyboard-guide">keyboard guide</a> colours every key by the finger that owns it.</li>
+</ul>
+
+<h2 id="the-beginner-path">The beginner path, step by step</h2>
+<p>The <a href="/typing-lessons">typing lessons</a> follow this order. Each lesson is one short passage, and the keys outside the current lesson are dimmed on the live keyboard.</p>
 <ol>
-<li><a href="#who">Who This 30-Day Plan Is For</a></li>
-<li><a href="#rules">Rules That Make the Plan Work</a></li>
-<li><a href="#tools">Tools You Will Use (FreeTyper)</a></li>
-<li><a href="#outcomes">What Success Looks Like on Day 30</a></li>
-<li><a href="#before">Before Day 1: Baseline and Setup</a></li>
-<li><a href="#week1">Week 1 (Days 1–7): Home Row Only</a></li>
-<li><a href="#week2">Week 2 (Days 8–14): Expand the Letter Map</a></li>
-<li><a href="#week3">Week 3 (Days 15–21): No-Peek Fluency + Accuracy Floor</a></li>
-<li><a href="#week4">Week 4 (Days 22–30): Mixed Practice, Light Speed, Real Transfer</a></li>
-<li><a href="#daily">The Daily Session Template</a></li>
-<li><a href="#missed">What If You Miss Days?</a></li>
-<li><a href="#stuck">Stuck? Troubleshooting by Week</a></li>
-<li><a href="#after">After Day 30: Month Two Direction</a></li>
-<li><a href="#faq">30-Day Touch Typing Plan FAQ</a></li>
+<li><strong>Home row.</strong> A S D F J K L ;. Spend as long as you need here, because everything else is a reach from this position.</li>
+<li><strong>Top row.</strong> Q W E R T Y U I O P. Return to the home row after every reach.</li>
+<li><strong>Bottom row.</strong> Z X C V B N M , and the full stop.</li>
+<li><strong>Common words.</strong> Real words using all the letters.</li>
+<li><strong>Sentences.</strong> Capital letters and punctuation join in.</li>
+<li><strong>Numbers and symbols.</strong> The number row, which sits furthest from the home row, and common punctuation.</li>
+<li><strong>Speed building.</strong> A longer passage of ordinary prose.</li>
 </ol>
+<p>One thing to know: finishing a lesson unlocks the next one even if you made mistakes. The lessons do not check your accuracy, so that discipline is yours. Our suggestion is to repeat a lesson until two runs in a row reach 95% or better. Clicking a lesson's name at the top lets you repeat it at any time.</p>
 
-<h2 id="who">Who This 30-Day Plan Is For</h2>
-<p>This plan fits you if:</p>
+<h2 id="how-to-practice">How to practice</h2>
+<p>These are our suggestions, not tested rules.</p>
 <ul>
-<li>You hunt-and-peck, or you are a hybrid who still looks at the keys a lot</li>
-<li>You can spare <strong>15–25 minutes</strong> most days for a month</li>
-<li>You want a beginner path, not an advanced speed-racing program</li>
-<li>You prefer clear daily tasks over “just practice more”</li>
-</ul>
-<p>It is still useful if you already type “okay” but want real touch typing. It is <em>not</em> optimized as a two-night cram before a hiring test tomorrow — for that, see job-focused guides and train duration honestly, but start this plan as soon as you can for lasting skill.</p>
-<p>For the concepts behind the plan (home row, finger map, no-peek), read the companion <a href="/blog/touch-typing-for-beginners">touch typing guide</a>. This article is the calendar.</p>
-
-<h2 id="rules">Rules That Make the Plan Work</h2>
-<ol>
-<li><strong>Accuracy over ego WPM.</strong> If accuracy is under ~95% on clean practice, slow down. Do not “win” the day with messy speed.</li>
-<li><strong>Eyes up during practice blocks.</strong> Wrong keys are allowed. Constant peeking is not (during the block).</li>
-<li><strong>Same keyboard</strong> for baselines and weekly tests when possible.</li>
-<li><strong>Short sessions, most days.</strong> Five days a week minimum; six is better. One heroic weekend does not replace a streak.</li>
-<li><strong>Tests measure; lessons install.</strong> Do not replace the plan with endless homepage restarts.</li>
-<li><strong>One layer at a time.</strong> Do not jump to symbols and games in week one.</li>
-<li><strong>Log weekly.</strong> Date, duration, WPM, accuracy, “peeking? yes/no,” notes. Use <a href="/typing-progress">progress</a> when you can.</li>
-</ol>
-<p>Break these rules and the 30 days become random clicking. Keep them and beginners usually leave month one with a real map.</p>
-
-<h2 id="tools">Tools You Will Use (FreeTyper)</h2>
-<table>
-<thead><tr><th>Tool</th><th>Role in the 30 days</th></tr></thead>
-<tbody>
-<tr><td><a href="/">Speed test</a></td><td>Day 0 baseline, weekly checks, Day 30 compare</td></tr>
-<tr><td><a href="/typing-lessons">Lessons</a></td><td>Primary map installer (home row → full letters)</td></tr>
-<tr><td><a href="/keyboard-guide">Keyboard guide</a></td><td>Finger zones, home-row focus, visual map</td></tr>
-<tr><td><a href="/typing-practice">Practice</a></td><td>Mixed words, weak keys, transfer volume</td></tr>
-<tr><td><a href="/typing-progress">Progress</a></td><td>Trends, weak keys, honesty over vibes</td></tr>
-<tr><td><a href="/typing-game-falling-words">Games</a></td><td>Only late plan, after form is clean</td></tr>
-</tbody>
-</table>
-<p>All of this works without forcing an account for the core test. That keeps beginner friction low.</p>
-
-<h2 id="outcomes">What Success Looks Like on Day 30</h2>
-<p>Honest beginner success metrics:</p>
-<ul>
-<li>You can find <strong>F</strong> and <strong>J</strong> home bumps without looking</li>
-<li>You type most letters with a default finger, eyes mostly on screen</li>
-<li>Home-row and common words feel less like puzzle pieces and more like units</li>
-<li>Weekly accuracy is at or climbing toward <strong>95%+</strong> on your check duration</li>
-<li>You peek less in real writing (email, notes, homework)</li>
-<li>WPM may be higher than Day 0 — or similar but cleaner. Cleaner is still a win.</li>
-</ul>
-<p>If you finish at 35 WPM with real touch typing and 96% accuracy after starting as a 28 WPM hunter, that is a successful month. If you finish at 55 WPM still staring at the keys, you completed thirty days of hybrid practice — restart the no-peek rules.</p>
-
-<h2 id="before">Before Day 1: Baseline and Setup</h2>
-<ol>
-<li>Take <strong>two or three</strong> tests at the same duration (60 seconds is fine for beginners; 3 minutes if you prefer a calmer sample). Average WPM and accuracy. Write them down as <strong>Day 0</strong>.</li>
-<li>Note honestly: do you look at the keys? Always / often / sometimes.</li>
-<li>Set up chair and keyboard so shoulders can stay down and wrists stay roughly neutral. Light key force.</li>
-<li>Bookmark lessons, practice, keyboard guide, and the homepage test.</li>
-<li>Pick a daily time window (after breakfast, lunch break, evening). Same time reduces skipped days.</li>
-<li>Optional: put a sticky note on the monitor: <em>Eyes up. Slow is fine.</em></li>
-</ol>
-<p>You are ready. Do not wait for a “perfect Monday in September.”</p>
-
-<h2 id="week1">Week 1 (Days 1–7): Home Row Only</h2>
-<p><strong>Goal:</strong> Own A S D F / J K L ; without looking. Ignore speed goals.</p>
-<h3>Daily focus</h3>
-<ul>
-<li>Fingers return to home</li>
-<li>Use F/J bumps when lost</li>
-<li>Eyes on screen during the main block</li>
-<li>High accuracy on simple home-row lines</li>
-</ul>
-<h3>Day-by-day</h3>
-<table>
-<thead><tr><th>Day</th><th>Do this (15–20 min)</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>Keyboard guide home-row overview + 12–15 min home-row lessons. No full-board freestyle.</td></tr>
-<tr><td>2</td><td>Home-row lessons only. End with 2 minutes of slow home-row words in practice if available.</td></tr>
-<tr><td>3</td><td>Same. If you panic-peek, slow further until eyes stay up.</td></tr>
-<tr><td>4</td><td>Home-row lessons. One optional 60s test — log accuracy first. Expect low WPM.</td></tr>
-<tr><td>5</td><td>Home-row. Focus on even rhythm, not bursts.</td></tr>
-<tr><td>6</td><td>Light day: 10–12 min home-row or rest if exhausted. Do not binge to “catch up.”</td></tr>
-<tr><td>7</td><td><strong>Week check:</strong> 2× 60s tests, average them. Lessons 10 min. Note peeking level (1–5).</td></tr>
-</tbody>
-</table>
-<p><strong>Week 1 pass criteria:</strong> You can type home-row sequences with eyes up most of the time and accuracy that feels controlled when you go slow. If not, repeat Week 1 before expanding. That is not failure; that is the plan working.</p>
-
-<h2 id="week2">Week 2 (Days 8–14): Expand the Letter Map</h2>
-<p><strong>Goal:</strong> Add top and bottom letter rows in layers through lessons. Keep home row as home base.</p>
-<h3>Daily focus</h3>
-<ul>
-<li>One new layer at a time (upper row reaches, then lower)</li>
-<li>Still no games</li>
-<li>Still accuracy-first</li>
-<li>Still eyes-up blocks</li>
-</ul>
-<h3>Day-by-day</h3>
-<table>
-<thead><tr><th>Day</th><th>Do this (15–25 min)</th></tr></thead>
-<tbody>
-<tr><td>8</td><td>Review home row 5 min. Start upper-row lesson content. Stop if accuracy collapses — slow down.</td></tr>
-<tr><td>9</td><td>Upper-row lessons + home-row warm-up. Peek only if completely lost; re-home on F/J.</td></tr>
-<tr><td>10</td><td>Continue upper row. 5 min practice on easy mixed words at the end.</td></tr>
-<tr><td>11</td><td>Introduce lower-row lesson layer if upper is stable; else stay upper one more day.</td></tr>
-<tr><td>12</td><td>Full letter lessons at your layer. Weak keys: repeat problem letters slowly.</td></tr>
-<tr><td>13</td><td>Light mixed practice 8–10 min after short lesson warm-up.</td></tr>
-<tr><td>14</td><td><strong>Week check:</strong> 2–3 runs, average. Compare accuracy to Day 0 and Day 7. Lessons 8 min.</td></tr>
-</tbody>
-</table>
-<p><strong>Week 2 pass criteria:</strong> Most letters have a default finger. You still get lost sometimes — normal. You recover by touch more often than by staring.</p>
-<p>If you feel slower than your old hunt-and-peck self: expected. Read the awkward-middle notes in the <a href="/blog/touch-typing-for-beginners">touch typing guide</a> and keep going.</p>
-
-<h2 id="week3">Week 3 (Days 15–21): No-Peek Fluency + Accuracy Floor</h2>
-<p><strong>Goal:</strong> Make no-peek the default. Push average accuracy toward <strong>95%+</strong> on short checks. Speed is still secondary.</p>
-<h3>Daily focus</h3>
-<ul>
-<li>Enforce a hard no-peek block every session (even 8–10 minutes)</li>
-<li>Weak-key drills from mistakes</li>
-<li>Mixed practice volume</li>
-<li>One longer test mid-week or weekend for honesty</li>
-</ul>
-<h3>Day-by-day</h3>
-<table>
-<thead><tr><th>Day</th><th>Do this (20–25 min)</th></tr></thead>
-<tbody>
-<tr><td>15</td><td>Warm-up home row. 12 min lessons/review. 8 min practice. No peek block labeled in your notes.</td></tr>
-<tr><td>16</td><td>Weak keys first (5–8 min), then mixed practice. Log top 3 error letters.</td></tr>
-<tr><td>17</td><td>Same structure. Optional: keyboard guide finger filter for problem zones.</td></tr>
-<tr><td>18</td><td><strong>Honesty test:</strong> one 3-minute run if you can focus; else 3× 60s averaged. Accuracy first.</td></tr>
-<tr><td>19</td><td>If accuracy &lt;95%, slow practice only. If ≥95%, tiny speed layers on easy words (still stop if accuracy breaks).</td></tr>
-<tr><td>20</td><td>Mixed practice + short lesson clean-up on weak letters.</td></tr>
-<tr><td>21</td><td><strong>Week check:</strong> same protocol as Day 14. Compare peeking self-score. Celebrate consistency streaks.</td></tr>
-</tbody>
-</table>
-<p><strong>Week 3 pass criteria:</strong> Eyes-up is normal, not heroic. Accuracy on weekly checks is near or above 95%, or clearly trending up from Week 1. If accuracy is stuck under 90%, stay in Week 3 rules another week before Week 4 speed toys.</p>
-<p>Deep accuracy help: <a href="/blog/improve-typing-accuracy">typing accuracy test</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
-
-<h2 id="week4">Week 4 (Days 22–30): Mixed Practice, Light Speed, Real Transfer</h2>
-<p><strong>Goal:</strong> Use the map in real text. Add light speed only if accuracy holds. Finish with a Day 30 comparison test.</p>
-<h3>Daily focus</h3>
-<ul>
-<li>Practice passages and common words</li>
-<li>Optional short games only if form is clean</li>
-<li>Transfer: real email/notes after sessions</li>
-<li>Protect accuracy floor while nudging pace</li>
-</ul>
-<h3>Day-by-day</h3>
-<table>
-<thead><tr><th>Day</th><th>Do this (20–25 min)</th></tr></thead>
-<tbody>
-<tr><td>22</td><td>Warm-up + mixed practice. End with 5 lines of real writing (email draft, journal).</td></tr>
-<tr><td>23</td><td>Weak keys + practice. One 60s test for feedback only.</td></tr>
-<tr><td>24</td><td>Controlled speed: slightly faster on easy words, then a clean recovery block at slow accuracy pace.</td></tr>
-<tr><td>25</td><td>Optional first game session (5–8 min) <em>after</em> clean practice — not instead of it.</td></tr>
-<tr><td>26</td><td>Numbers intro only if letters feel solid: short number/symbol awareness, still eyes-up tries. Else more letter practice.</td></tr>
-<tr><td>27</td><td>Mixed practice + transfer writing. Note how often you look down in real text.</td></tr>
-<tr><td>28</td><td>Light day or full practice if energy is good. No all-night binge.</td></tr>
-<tr><td>29</td><td>Dress rehearsal: same warm-up as Day 30. 2 short tests. Sleep.</td></tr>
-<tr><td>30</td><td><strong>Final baseline:</strong> 2–3 runs at the same duration as Day 0. Average WPM + accuracy. Write a 3-line note: what improved, what still peeks, next month focus.</td></tr>
-</tbody>
-</table>
-<p><strong>Day 30 success:</strong> Compare to Day 0 with both metrics. If accuracy and no-peek improved, the plan worked even when WPM only moved a little. If WPM jumped but you still stare at keys, keep Week 3 rules in month two.</p>
-
-<h2 id="daily">The Daily Session Template</h2>
-<p>When you do not want to think, run this:</p>
-<ol>
-<li><strong>1–2 min</strong> — hands on home row, posture, easy warm-up</li>
-<li><strong>10–15 min</strong> — main block (lessons in weeks 1–2, practice + weak keys in weeks 3–4)</li>
-<li><strong>3–5 min</strong> — clean cool-down at a pace where accuracy is easy</li>
-<li><strong>Optional 1–3 min</strong> — short test or real writing transfer</li>
-<li><strong>30 seconds</strong> — log: done / accuracy feel / peeking score</li>
-</ol>
-<p>Total: roughly 15–25 minutes. That is enough for beginners. More is fine if accuracy stays high and hands feel fine. Pain = stop.</p>
-
-<h2 id="missed">What If You Miss Days?</h2>
-<ul>
-<li><strong>Missed 1 day:</strong> continue the calendar; do not double tomorrow into a 50-minute punishment session.</li>
-<li><strong>Missed 2–3 days:</strong> resume at the current week’s focus; add one extra weak-key day if letters feel fuzzy.</li>
-<li><strong>Missed a week:</strong> spend two days on home-row + easy lessons, then rejoin the week you left. Do not pretend you are still warmed up.</li>
-<li><strong>Never “restart from Day 1” out of shame</strong> unless you truly abandoned no-peek and home row entirely for weeks.</li>
-</ul>
-<p>Streaks help. All-or-nothing thinking does not.</p>
-
-<h2 id="stuck">Stuck? Troubleshooting by Week</h2>
-<h3>Week 1 stuck</h3>
-<p>You keep looking, or home row will not stick. Slow to a crawl. Shorten the no-peek block to 5 minutes of perfect eyes-up rather than 20 minutes of cheating. Revisit keyboard guide home-row mode.</p>
-<h3>Week 2 stuck</h3>
-<p>New rows destroy accuracy. Stay on the new layer longer. Do not add lower row until upper is usable. Reduce session speed; increase correct reps.</p>
-<h3>Week 3 stuck</h3>
-<p>Accuracy will not approach 95%. You are probably still rushing or peek-hybridizing. Ban speed. Weak-key only. Read <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>. Consider a 3-minute test to see fatigue errors.</p>
-<h3>Week 4 stuck</h3>
-<p>Real writing still forces look-downs. End every session with transfer text. Lower practice difficulty. Games may be early — cut them.</p>
-<h3>WPM dropped vs Day 0</h3>
-<p>Common in weeks 1–3. Judge accuracy, peeking, and comfort. Retest WPM seriously on Day 30 and in month two. Technique list later: <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
-
-<h2 id="parents">For Parents and Teachers (Beginners)</h2>
-<p>Use the same 30-day skeleton with shorter blocks for younger learners (10–15 minutes). Log accuracy and “eyes up” praise more than leaderboard WPM. Avoid public shaming. free test works on shared machines without account theater.</p>
-<p>Students can align Week 4 transfer with real homework typing so the skill pays rent immediately.</p>
-
-<h2 id="job">If You Have a Job Test During the 30 Days</h2>
-<p>Do not abandon accuracy for panic speed. In the final 7–10 days before a screen, keep this plan’s form rules and add duration matching (3 or 5 minutes) two or three times. Clean averages beat messy spikes. See <a href="/">5 minute typing test</a> and <a href="/blog/good-typing-speed">typing speed for work</a>.</p>
-
-<h2 id="after">After Day 30: Month Two Direction</h2>
-<table>
-<thead><tr><th>If Day 30 looks like…</th><th>Month two focus</th></tr></thead>
-<tbody>
-<tr><td>Still peeking a lot / accuracy &lt;92%</td><td>Repeat Week 3 rules; lessons + weak keys</td></tr>
-<tr><td>Good map, accuracy 95%+, modest WPM</td><td>Volume practice + controlled speed intervals</td></tr>
-<tr><td>Strong accuracy, rising WPM</td><td>Longer tests, numbers/symbols, light games</td></tr>
-<tr><td>Prose fine, symbols weak</td><td>Symbol/number blocks + code practice categories</td></tr>
-</tbody>
-</table>
-<p>Month two is where many beginners finally pass their old hunt-and-peck speed <em>while</em> looking less. That crossover is the psychological payoff. Do not quit at Day 24 because Week 2 felt slow.</p>
-
-<h2 id="checklist-print">Copy-Paste Tracker (Minimal)</h2>
-<p>Date | Minutes | Focus (home/upper/lower/mixed) | Peeking 1–5 | Optional test WPM | Acc | Notes</p>
-<p>Four weekly averages matter more than twenty emotional screenshots.</p>
-
-<h2 id="faq">30-Day Touch Typing Plan FAQ</h2>
-<h3>Can a complete beginner finish this in 30 days?</h3>
-<p>Yes for a solid foundation (home row, letter map, no-peek habit, accuracy direction). Not always for advanced WPM. Foundations first.</p>
-<h3>How many minutes per day?</h3>
-<p>Plan for 15–25. Ten is better than zero. Forty is fine if form stays clean and hands feel good.</p>
-<h3>What if I only have weekends?</h3>
-<p>You will progress slower. Try two short weekday micro-sessions (10 min) plus weekends. Pure weekend-only is the hard mode.</p>
-<h3>Should I use games in week one?</h3>
-<p>No. Games are optional in Week 4 after form exists.</p>
-<h3>Is 60 seconds enough for weekly tests?</h3>
-<p>For beginners, yes. Add a 3-minute test in Weeks 3–4 for a calmer read. Guides: <a href="/">1 minute</a>, <a href="/">free typing test</a>.</p>
-<h3>What accuracy should I hit by Day 30?</h3>
-<p>Aim toward 95%+ on your check runs. If you started very low, a clear upward trend plus eyes-up skill still counts as success.</p>
-<h3>Can adults use this plan?</h3>
-<p>Yes. It was written for real schedules. Adult-specific mindset help is in the upcoming adult-focused post; the calendar here already fits adults.</p>
-<h3>Do I need a blank keyboard?</h3>
-<p>No. Optional later for anti-peek drills. Not required for Day 1.</p>
-<h3>What if my WPM is lower on Day 30 than Day 0?</h3>
-<p>Check accuracy and peeking. Many rebuilders dip then rise in month two. Do not scrap the map to chase an old hybrid number.</p>
-<h3>Can I reorder the weeks?</h3>
-<p>Do not skip Week 1 home row. You can stretch any week longer. Compressing all four weeks into ten days usually fails.</p>
-<h3>How do I stop looking at the keys during the plan?</h3>
-<p>Scheduled no-peek blocks, F/J re-home by touch, slower pace, and refusing to reward peeks. Details in the <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
-<h3>Should children follow the same 30 days?</h3>
-<p>Yes with shorter sessions and softer emotional framing. Prioritize consistency and accuracy praise.</p>
-<h3>What page do I open every day?</h3>
-<p>Weeks 1–2: lessons (+ keyboard guide). Weeks 3–4: practice + weak keys + weekly test. Homepage test on schedule days.</p>
-<h3>What is the very first action after reading?</h3>
-<p>Day 0 baseline test, write the numbers down, start Day 1 home-row lessons today.</p>
-
-<h2 id="myths">Beginner Myths That Break 30-Day Plans</h2>
-<ul>
-<li><strong>“If I’m not faster by Day 10, it’s not working.”</strong> Map first, speed later.</li>
-<li><strong>“More hours on Day 1 = better.”</strong> Form quality and streaks win.</li>
-<li><strong>“I already type okay, so I can skip home row.”</strong> Hybrids who skip home row stay hybrids.</li>
-<li><strong>“Tests alone will teach me.”</strong> Tests measure; lessons teach.</li>
-<li><strong>“One perfect day fixes a missed week.”</strong> Distribution beats cramming.</li>
+<li><strong>Little and often.</strong> About 10 to 20 minutes on most days is easier to keep up than a long session now and then. The researchers behind the study above also advise practising deliberately, because people can slip back into less efficient habits.</li>
+<li><strong>Accuracy before speed.</strong> If you are making mistakes, slow down until the lesson feels clean. Speed grows from control.</li>
+<li><strong>Eyes on the text.</strong> If you catch yourself glancing at the keys, slow down further instead of speeding up. The live keyboard is there so you do not need to look down.</li>
+<li><strong>Stop when tired.</strong> If accuracy drops sharply, come back later.</li>
 </ul>
 
-<h2 id="motivation">Motivation Without Hype</h2>
-<p>You will have boring days. Boring days install the skill. The plan is deliberately un-sexy: home row, layers, accuracy, transfer. That is how beginners actually learn touch typing instead of collecting bookmarks.</p>
-<p>When motivation dips, shrink the session to ten minutes of eyes-up home row or weak keys. Keep the identity: “I practice on the plan,” not “I feel inspired.”</p>
-
-<h2 id="sample-logs">Sample Logs: What Good Notes Look Like</h2>
-<p>You do not need a fancy journal. You need enough detail that Week 4-you can understand Week 1-you.</p>
-<p><strong>Day 3 example:</strong> 18 min · home row lessons · peeking 3/5 · no test · note: slowed down, eyes stayed up better after minute five.</p>
-<p><strong>Day 14 example:</strong> 22 min · upper/lower lessons + 5 min practice · peeking 2/5 · tests 34 WPM / 93% and 36 WPM / 94% · avg 35 / 93.5% · note: still fishing for B and Y.</p>
-<p><strong>Day 30 example:</strong> 3× 60s · avg 42 WPM / 96% · Day 0 was 31 WPM / 88% · peeking 1–2/5 in practice · real email still one glance per paragraph · next month: weak keys + 3-min tests.</p>
-<p>That last log is a successful beginner month even though 42 WPM is not internet-hero speed. Cleaner, more eyes-up, higher floor — that is the point of thirty days.</p>
-
-<h2 id="equipment">Equipment Notes for Beginners (Keep It Simple)</h2>
+<h2 id="how-long-will-it-take">How long will it take?</h2>
+<p>We cannot say, and neither can anyone who has not measured you. Instead of counting days, use checkpoints:</p>
 <ul>
-<li>A full physical keyboard beats a tiny tablet for this plan.</li>
-<li>Laptop keyboards are fine if that is your daily device — train where you live.</li>
-<li>Do not buy a new mechanical board to “unlock” touch typing. Practice unlocks touch typing.</li>
-<li>If keys are sticky or broken, fix that; false errors wreck motivation.</li>
-<li>Same device for Day 0 and Day 30 comparisons whenever possible.</li>
+<li>You can finish lessons 1 to 3 at about 95% accuracy with your eyes on the text.</li>
+<li>You can finish the sentences lesson at that accuracy.</li>
+<li>Your speed test results become steady: the middle of three runs stays within a few WPM from week to week.</li>
 </ul>
-<p>Fancy blank keycaps can be a Week 4 anti-peek experiment. They are not a Day 1 requirement and they will not save you from skipping home row.</p>
+<p>Wikipedia notes that around 60 to 80 WPM is roughly the speed needed to keep up with your thoughts, which gives you a rough long-term target. For the evidence on what typical speeds look like, see <a href="/blog/good-typing-speed">what is a good typing speed</a>, and for a week-by-week practice schedule see the plan in <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
 
-<h2 id="family">Two-Person Accountability (Optional)</h2>
-<p>Beginners stick better with light accountability: a classmate, partner, or parent who asks once a week, “Did you log accuracy?” not “How fast are you?” Share weekly averages only. Skip public humiliation leaderboards. If you practice together, use the same duration and praise eyes-up streaks.</p>
+<h2 id="common-beginner-problems">Common beginner problems</h2>
+<ul>
+<li><strong>Looking down constantly.</strong> Normal at first. Slow your speed so you can afford to keep your eyes up.</li>
+<li><strong>Weak little fingers.</strong> Errors on Q, A, Z, P, the semicolon and the slash can point to the little fingers. Check your weakest keys on the <a href="/typing-progress">progress page</a> and drill them in <a href="/typing-practice">typing practice</a>.</li>
+<li><strong>Accuracy dropping when you add speed.</strong> Go back to the pace where you were clean and increase in small steps. More on this in <a href="/blog/improve-typing-accuracy">how to improve typing accuracy</a>.</li>
+<li><strong>Feeling stuck.</strong> Progress is rarely smooth. Look at the trend across ten or more runs on the progress page, not at any single result.</li>
+<li><strong>Aching hands or wrists.</strong> Stop and check your setup. If you have pain, numbness or tingling that does not go away, see a doctor.</li>
+</ul>
 
-<h2 id="closing">Day 0 Is the Only Day That Matters First</h2>
-<p>A 30-day plan only works if Day 0 happens. Take a baseline, open lessons, keep your eyes up, and follow the week in front of you. Not the fantasy of a perfect Day 30.</p>
-<p><a href="/">Baseline test</a>, then <a href="/typing-lessons">Day 1 home-row lessons</a>. In 30 days, retest with the same duration and compare both numbers, and how often your eyes stayed on the screen.</p>
+<h2 id="after-the-lessons">After the lessons</h2>
+<p>When you can complete all seven lessons accurately, move to <a href="/typing-practice">typing practice</a> for volume and weak-key work, and take the <a href="/">typing speed test</a> every week or two to see how you are doing. For the science behind why repetition works, read <a href="/blog/muscle-memory-and-touch-typing">muscle memory and touch typing</a>.</p>
+
+<h2 id="sources">Sources</h2>
+<ul class="article-sources">
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Touch_typing" rel="noopener" target="_blank">Touch typing</a>: definition, home row, the F and J markers, the 1888 contest and the 60 to 80 WPM remark.</li>
+<li>Dhakal V, Feit AM, Kristensson PO, Oulasvirta A. <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>. CHI 2018. Training and finger-count figures are taken from the paper's results.</li>
+<li>University of Cambridge, <a href="https://www.cam.ac.uk/research/news/what-makes-a-faster-typist" rel="noopener" target="_blank">What makes a faster typist?</a> The researchers' remarks on finger use and deliberate practice.</li>
+<li>The lesson order and the unlock behaviour are described in our <a href="/typing-lessons">typing lessons guide</a>. The 95% bar, the session length and the checkpoints are FreeTyper's own suggestions.</li>
+</ul>
+<p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
 
   'muscle-memory-and-touch-typing': `<p><strong>Muscle memory</strong> is everyday language for procedural skill: your nervous system learns a movement well enough that it runs with less conscious micromanagement. Touch typing is a clean adult example. First every key is a decision. Later, words leave your fingers while attention stays on meaning.</p>
