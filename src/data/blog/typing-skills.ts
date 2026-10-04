@@ -34,13 +34,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'improve-typing-accuracy',
-    title: 'How to Improve Typing Accuracy From 90% to 99%',
-    excerpt:
-      'A practical plan to raise typing accuracy from 90% to 95% and toward 99% — weak-key drills, pace control, and FreeTyper tools that make clean speed stick.',
+    title: 'How to Improve Typing Accuracy: What 168,960 Typists Show',
+    excerpt: 'What accuracy numbers really measure, how typical mistakes are, what the research says about errors, and a practical routine. Every figure is sourced.',
     date: '2026-07-27',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Typing Speed',
-    readTime: '16 min',
+    readTime: '7 min',
   },
   {
     slug: 'touch-typing-for-beginners',
