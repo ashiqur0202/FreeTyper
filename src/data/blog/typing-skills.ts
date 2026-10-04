@@ -74,13 +74,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'data-entry-typing-test',
-    title: 'How to Pass a Data Entry Typing Test for Job Interviews',
-    excerpt:
-      'Pass data entry typing tests with a clear prep plan — score targets, accuracy and net WPM, 7- and 14-day FreeTyper schedules, digits, and test-day protocol.',
+    title: 'Data Entry Typing Tests: How They Are Scored and How to Prepare',
+    excerpt: 'How WPM converts to keystrokes per hour, how one vendor scores errors, real requirements from an official government notice, and how to prepare. No invented thresholds.',
     date: '2026-08-07',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Practice',
-    readTime: '17 min',
+    readTime: '6 min',
   },
   {
     slug: 'typing-speed-for-programmers',
