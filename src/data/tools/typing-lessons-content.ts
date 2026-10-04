@@ -7,7 +7,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-03
+ * Last real edit: 2026-10-04
  */
 
 export const meta = {
@@ -72,7 +72,7 @@ export const previewHtml = `
 <h2>Free Typing Lessons — Learn Touch Typing Step by Step</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-03">October 3, 2026</time></span>
+  <span>Last updated <time datetime="2026-10-04">October 4, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>These free typing lessons teach touch typing in seven short steps. You begin on the home row, add the top and bottom rows, then move on to common words, full sentences, numbers and symbols, and a final longer passage for building speed. A live keyboard above the text shows which key comes next, and your progress is saved in your browser without an account.</p>
@@ -138,7 +138,7 @@ export const bodyHtml = `
 
 <h2 id="what-lessons-do-for-your-speed">What do typing lessons actually do for your speed?</h2>
 <p>Less than most lesson pages claim, and it is worth knowing. In <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">a study of 168,000 online typists</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018), people who reported formal typing training were on average about 5 WPM faster than people who did not, and they left slightly fewer errors uncorrected. The effect was modest and the training was self-reported, so it does not prove that lessons cause speed.</p>
-<p>The same study found that how long a key is held down is nearly the same for fast and slow typists. The authors point out that this implies most speed gains come from elsewhere, which fits what typists describe: fast typists are ahead of their fingers, reading the next word while typing the current one. Lessons support that by making finger positions automatic, so your attention is free to look ahead.</p>
+<p>The same study found that how long a key is held down differs by only about 20 ms between fast and slow typists, while the average gap between keystrokes is about 120 ms for fast typists and over 480 ms for slow ones. The authors point out that this implies most speed gains come from elsewhere, which fits what typists describe: fast typists are ahead of their fingers, reading the next word while typing the current one. Lessons support that by making finger positions automatic, so your attention is free to look ahead.</p>
 
 <h2 id="limits-of-these-lessons">Limits of these lessons</h2>
 <ul>

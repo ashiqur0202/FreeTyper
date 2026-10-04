@@ -14,12 +14,13 @@ export interface BlogPost {
 export const blogPosts: BlogPost[] = [
   {
     slug: 'how-to-type-faster',
-    title: 'How to Type Faster: 15 Proven Techniques to Increase Your WPM',
-    excerpt: 'Practical, proven techniques to increase your typing speed — from touch typing fundamentals to daily practice plans. Learn how to go from 45 WPM to 75 WPM in 60 days.',
+    title: 'How to Type Faster: What the Research Supports',
+    excerpt: 'What fast typists actually do differently, six habits backed by a 168,960-person study, what to treat with caution, and a four-week practice plan you can try. Sourced, with no promised gains.',
     date: '2026-06-08',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Typing Speed',
-    readTime: '18 min',
+    readTime: '8 min',
   },
   {
     slug: 'good-typing-speed',

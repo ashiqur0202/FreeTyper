@@ -288,7 +288,7 @@ Index: `src/data/blog/typing-skills.ts` · Bodies: `src/data/blog/articles/*.ts`
 
 | # | Slug | Why kept | Pre-rewrite risk (from the audit scan) | Status |
 |---|------|----------|----------------------------------------|--------|
-| 1 | `how-to-type-faster` | core intent; 8 H2s, no templated TOC | 10 % figures, 0 sources | rewrite pending |
+| 1 | `how-to-type-faster` | core intent; 8 H2s, no templated TOC | 10 % figures, 0 sources | **REWRITTEN 2026-10-04** (~1.3k words; “What the Research Supports”: Dhakal et al. inter-key interval, finger-use, rollover, error figures verified in the paper + Cambridge write-up advice; correlations flagged as such; 4-week plan labelled as our own suggestion; no promised gains) |
 | 2 | `good-typing-speed` | the one benchmark post (absorbs average / how-many / for-work topics) | 9 % figures, 6 “study” mentions, 0 sources | **REWRITTEN 2026-10-04** (~1.2k words; Dhakal et al. figures verified in the paper incl. sample caveats; Karat 1999 + job ranges via Wikipedia WPM; no age table — no reliable source found; retitled “What Large-Scale Data Shows”) |
 | 3 | `improve-typing-accuracy` | distinct intent | **64 % figures**, 0 sources | rewrite pending — strip invented numbers |
 | 4 | `touch-typing-for-beginners` | practical plan (absorbs touch-typing guide / adult posts) | 17 % figures | rewrite pending |
