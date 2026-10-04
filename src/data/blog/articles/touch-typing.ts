@@ -1,341 +1,4 @@
 export const touchTypingArticles: Record<string, string> = {
-  'touch-typing-guide': `<p>Touch typing is not a talent contest. It is a habit: eyes on the screen, fingers with jobs, hands that can find home without a peek. If you still hunt for keys, you are paying a tax on every email and every exam.</p>
-
-<p>I am not going to promise you 120 WPM in a weekend. I will walk through the map (home row and finger ownership), how to stop looking at the keyboard, what to practice first, and how to know the skill is sticking. When you want drills, use <a href="/typing-lessons">lessons</a> and the <a href="/keyboard-guide">keyboard guide</a>. When you want a number, use the <a href="/">speed test</a>.</p>
-
-<h2 id="toc">Table of Contents</h2>
-<ol>
-<li><a href="#what-is">What Is Touch Typing?</a></li>
-<li><a href="#why">Why Learn Touch Typing (Real Benefits)</a></li>
-<li><a href="#vs-hunt">Touch Typing vs Hunt-and-Peck</a></li>
-<li><a href="#home-row">The Home Row: Your Home Base</a></li>
-<li><a href="#finger-map">The Finger Map (Who Owns Which Keys)</a></li>
-<li><a href="#posture">Posture, Hands, and Setup</a></li>
-<li><a href="#learn-path">How to Learn Touch Typing Step by Step</a></li>
-<li><a href="#looking">How to Stop Looking at the Keyboard</a></li>
-<li><a href="#accuracy">Accuracy First, Speed Later</a></li>
-<li><a href="#practice">What to Practice Each Day</a></li>
-<li><a href="#plateau">The Awkward Middle (When You Feel Slower)</a></li>
-<li><a href="#adults">Touch Typing as an Adult</a></li>
-<li><a href="#tools">Which Tools Fit This Guide</a></li>
-<li><a href="#mistakes">Common Touch Typing Mistakes</a></li>
-<li><a href="#checklist">Proof You Are Touch Typing</a></li>
-<li><a href="#faq">Touch Typing Guide FAQ</a></li>
-</ol>
-
-<h2 id="what-is">What Is Touch Typing?</h2>
-<p>Touch typing is a method of keyboard input where:</p>
-<ul>
-<li>Your fingers rest on a <strong>home row</strong> between keystrokes</li>
-<li>Each key is assigned to a specific finger (a fixed map)</li>
-<li>You type by feel and spatial memory, not by visual search</li>
-<li>Your eyes stay primarily on the screen or source text</li>
-</ul>
-<p>It is not “typing with your eyes closed for fun.” It is a trained motor skill, like driving a familiar route without staring at the gear stick. Early on it feels clumsy. Later it feels like the keys are under your fingers before you think about them.</p>
-<p>Touch typing is also not the same as “I memorize a few words and still look for numbers and symbols.” Full touch typing includes letters first, then reaches outward to numbers, punctuation, and modifiers with the same no-peek principle. You can stage that. You should not pretend stage one is the finish line forever.</p>
-
-<h2 id="why">Why Learn Touch Typing (Real Benefits)</h2>
-<ul>
-<li><strong>Higher ceiling for speed</strong>: visual search caps how fast you can go; muscle memory does not have the same hard stop</li>
-<li><strong>Better accuracy over time</strong>: consistent finger ownership reduces random adjacent-key chaos once the map is installed</li>
-<li><strong>Less neck and attention tax</strong>: constant look-down/look-up is exhausting across a workday</li>
-<li><strong>Smoother thinking-to-text flow</strong>: eyes on the sentence you are writing helps you catch meaning, not only letters</li>
-<li><strong>Transfer to long sessions</strong>: documents, tickets, chats, and code all get easier when the keyboard stops being a scavenger hunt</li>
-<li><strong>Cleaner test scores</strong>: baselines become about skill, not about how often you glanced at the keys</li>
-</ul>
-<p>People sometimes say “I type fine looking at the keyboard.” Fine for short messages, maybe. For school, work, or any goal above the low 40s WPM with growth potential, touch typing is the upgrade path that actually scales. Benchmarks and targets: <a href="/blog/good-typing-speed">good typing speed</a>, <a href="/blog/how-many-words-per-minute">how many WPM you should type</a>.</p>
-
-<h2 id="vs-hunt">Touch Typing vs Hunt-and-Peck</h2>
-<table>
-<thead><tr><th></th><th>Hunt-and-peck / hybrid</th><th>Touch typing</th></tr></thead>
-<tbody>
-<tr><td>Eyes</td><td>Often on keys</td><td>Mostly on screen</td></tr>
-<tr><td>Fingers</td><td>Few fingers do most work</td><td>All home-row fingers share load</td></tr>
-<tr><td>Speed ceiling</td><td>Lower for most people</td><td>Higher with practice</td></tr>
-<tr><td>Early feeling</td><td>Familiar, “productive”</td><td>Slow, awkward</td></tr>
-<tr><td>Long-session fatigue</td><td>Neck/eye switching cost</td><td>More even if posture is good</td></tr>
-<tr><td>Learning path</td><td>Accident and habit</td><td>Deliberate map + drills</td></tr>
-</tbody>
-</table>
-<p>Many adults are hybrids: home row-ish for common letters, full visual search for everything else, and a constant micro-glance “just to be sure.” That hybrid feels safe and keeps you stuck. This guide is about replacing the hybrid with a real map.</p>
-
-<h2 id="home-row">The Home Row: Your Home Base</h2>
-<p>On a standard QWERTY keyboard, the home row for the main letter block is:</p>
-<blockquote><p><strong>Left:</strong> A S D F &nbsp;&nbsp; <strong>Right:</strong> J K L ;</p></blockquote>
-<p>Index fingers sit on <strong>F</strong> and <strong>J</strong>: those keys usually have small bumps so you can find home by touch without looking). That is not decoration. It is the physical anchor of touch typing.</p>
-<p>Rules that make home row real:</p>
-<ul>
-<li>Return to home after reaches (not after every single letter like a robot, but as your default rest)</li>
-<li>Do not park hands in the air over random keys</li>
-<li>Do not rest only two fingers and “visit” the rest of the board</li>
-<li>Use the bumps on F and J when you get lost. feel, do not peek</li>
-</ul>
-<p>If home row is weak, nothing above it will stabilize. <a href="/typing-lessons">lessons</a> and the home-row mode in the <a href="/keyboard-guide">keyboard guide</a> exist for this reason. Skip them and you will build a faster mess.</p>
-
-<h2 id="finger-map">The Finger Map (Who Owns Which Keys)</h2>
-<p>Touch typing assigns keys to fingers so two fingers are not fighting for the same work and no finger is responsible for half the keyboard.</p>
-<p>A simplified QWERTY ownership picture (standard teaching map):</p>
-<ul>
-<li><strong>Left pinky:</strong> Q A Z, and keys further left (Tab, Caps, Shift, etc. as you expand)</li>
-<li><strong>Left ring:</strong> W S X</li>
-<li><strong>Left middle:</strong> E D C</li>
-<li><strong>Left index:</strong> R F V T G B</li>
-<li><strong>Right index:</strong> Y H N U J M</li>
-<li><strong>Right middle:</strong> I K ,</li>
-<li><strong>Right ring:</strong> O L .</li>
-<li><strong>Right pinky:</strong> P ; / and keys further right (quotes, Enter, Shift, etc.)</li>
-<li><strong>Thumbs:</strong> Space (usually one preferred thumb; consistency beats ideology)</li>
-</ul>
-<p>You do not need to memorize this as a poem on day one. You need to experience it through guided lessons until “E is middle finger” stops being a thought and becomes a reach.</p>
-<p>Numbers and symbols come after letter fluency. Trying to master the entire keyboard on day one is how adults quit on day three.</p>
-<p>Use live keyboard feedback during lessons and practice: gold hints and key flashes help you confirm ownership without staring down at plastic for every stroke. Details on visual feedback live in the product; the habit still has to be no-peek.</p>
-
-<h2 id="posture">Posture, Hands, and Setup</h2>
-<p>Touch typing is a motor skill. Bad setup makes the skill harder than it needs to be.</p>
-<ul>
-<li><strong>Sit so elbows are near 90°</strong> and shoulders can stay down</li>
-<li><strong>Wrists neutral</strong>: not cocked hard up or slammed down; floating or lightly supported, not digging into a sharp desk edge for hours</li>
-<li><strong>Keyboard centered</strong> so you are not twisting your torso toward a side mouse island all day without awareness</li>
-<li><strong>Screen at a height</strong> where your neck is not craned at the keys “just for this email”</li>
-<li><strong>Light key force</strong>: tap, do not mash; heavy pressing adds fatigue and error under longer tests</li>
-</ul>
-<p>If something hurts, stop. Pain is not a badge of practice. Adjust chair, breaks, and session length. Touch typing should reduce strain over time by removing constant look-down motion. it should not introduce new pain from tension.</p>
-
-<h2 id="learn-path">How to Learn Touch Typing Step by Step</h2>
-<p>Use this path whether you are a student or an adult returning to the keyboard.</p>
-<h3>Step 1. Baseline (day 0)</h3>
-<p>Take a <a href="/">typing speed test</a>. Log WPM and accuracy. Do not judge your future self by this number. It is only the “before” photo. If you currently look at the keys, note that honestly.</p>
-<h3>Step 2. Home row only (several days to a week+)</h3>
-<p>Stay on home-row lessons until you can type simple home-row words without looking and with high accuracy. Boring is good. Boring is the point.</p>
-<h3>Step 3. Add top and bottom rows in layers</h3>
-<p>Expand through lessons: home → upper → lower. Do not unlock the whole board and “figure it out.” Layer by layer keeps the map clean.</p>
-<h3>Step 4. Enforce no-peek with a real rule</h3>
-<p>Pick a rule you will keep: cover hands with a light cloth, use a blank keycap phase later if you want, or simply force eyes on screen and accept mistakes. Without a rule, eyes win.</p>
-<h3>Step 5. Accuracy floor before speed</h3>
-<p>Hold about <strong>95%+</strong> on practice runs before you chase WPM. Accuracy is how you know the map is real. See <a href="/blog/typing-accuracy-test">typing accuracy test</a> and <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
-<h3>Step 6. Mixed practice and real text</h3>
-<p>Move into <a href="/typing-practice">typing practice</a> with normal words and sentences. Transfer matters. Lessons alone can become a bubble.</p>
-<h3>Step 7. Numbers, punctuation, then pressure</h3>
-<p>Add symbols and numbers after letters feel automatic. Then optional games for pressure: <a href="/typing-game-falling-words">Falling Words</a>, <a href="/typing-game-word-attack">Word Attack</a>. after form is clean, not instead of form.</p>
-<h3>Step 8. Weekly retest</h3>
-<p>Same duration weekly. Compare averages, not one lucky run. Track in <a href="/typing-progress">progress</a>.</p>
-<p>This is the whole sport. Everything else is commentary.</p>
-
-<h2 id="looking">How to Stop Looking at the Keyboard</h2>
-<p>Looking is the habit that protects your ego and blocks the skill. Break it on purpose.</p>
-<ol>
-<li><strong>Commit to a no-peek block</strong>: even 10 minutes, where eyes stay up no matter what.</li>
-<li><strong>Use F and J bumps</strong> when lost; re-find home by touch.</li>
-<li><strong>Slow down until not looking is possible.</strong> If you must look to go fast, you are not ready for that speed.</li>
-<li><strong>Say the rule out loud once:</strong> “Wrong is fine. Looking is not, during this block.”</li>
-<li><strong>Short blocks beat heroic hours.</strong> Ten clean no-peek minutes daily beats one guilty two-hour session weekly.</li>
-<li><strong>After a peek relapse, do not spiral</strong>: reset hands on home row and continue.</li>
-<li><strong>Measure with accuracy and comfort</strong>, not with shame.</li>
-</ol>
-<p>Some learners use a keyboard cover or a thin towel over the hands for short drills. Use that if it helps. The goal is independence from vision, not a permanent costume.</p>
-<p>Also separate “checking once when completely lost” from “micro-glancing every third word.” The second one is the real addiction.</p>
-
-<h2 id="accuracy">Accuracy First, Speed Later</h2>
-<p>Touch typing fails when people try to keep old hunt-and-peck speed on day two of a new map. Of course you are slower. You changed the control scheme.</p>
-<p>Rules that save learners:</p>
-<ul>
-<li>Target high accuracy on lesson lines before increasing pace</li>
-<li>If accuracy drops under ~95% on checks, slow the practice pace</li>
-<li>Do not compare week-one touch-typing WPM to your old looking-at-keys WPM as if they were the same sport</li>
-<li>Speed returns. usually cleaner. after the map sticks</li>
-</ul>
-<p>When accuracy is the bottleneck, accuracy is the plan. When the map is stable, then use technique work from <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
-
-<h2 id="practice">What to Practice Each Day</h2>
-<p>A realistic beginner session (15–25 minutes):</p>
-<ol>
-<li><strong>2 min</strong>: settle posture, fingers on home row, easy warm-up</li>
-<li><strong>10–15 min</strong>: lessons at the current layer (home row or current expansion)</li>
-<li><strong>5 min</strong>: mixed practice words at a clean pace</li>
-<li><strong>Optional 2–3 min</strong>: one short test for feedback (not for ego)</li>
-</ol>
-<p>Intermediate session once letters are solid:</p>
-<ol>
-<li>Warm-up home row</li>
-<li>Weak-key practice from progress</li>
-<li>Normal passage practice</li>
-<li>Weekly longer test (3 or 5 minutes) for truth</li>
-</ol>
-<p>Frequency beats bingeing. Five days a week for three weeks rewires more than one desperate weekend before a job test.</p>
-
-<h2 id="plateau">The Awkward Middle (When You Feel Slower)</h2>
-<p>Almost every adult hits a phase where:</p>
-<ul>
-<li>Looking felt faster</li>
-<li>Touch typing feels slow and wrong</li>
-<li>Accuracy wobbles</li>
-<li>The brain wants to quit and go back to hybrid</li>
-</ul>
-<p>That phase is not proof you “cannot touch type.” It is proof the old habit is fighting the new map. Expect it. Name it. Continue with short no-peek sessions and high accuracy standards.</p>
-<p>Signs you should keep going (not quit):</p>
-<ul>
-<li>You can find F and J without looking more often</li>
-<li>Common words start to fire as units</li>
-<li>You catch yourself mid-peek and reset</li>
-<li>Accuracy on slow runs is climbing even if WPM is not</li>
-</ul>
-<p>Signs you should adjust method (not quit):</p>
-<ul>
-<li>You practice only fast tests, never lessons</li>
-<li>You peek constantly and never run a true no-peek block</li>
-<li>Sessions are two hours of frustration once a week</li>
-<li>Pain is showing up. fix setup or rest</li>
-</ul>
-
-<h2 id="adults">Touch Typing as an Adult</h2>
-<p>Adults learn touch typing successfully all the time. The obstacles are rarely age. They are:</p>
-<ul>
-<li>Ego (“I should already know this”)</li>
-<li>Time myth (“I need hours daily”)</li>
-<li>Hybrid comfort (“good enough” that is not good enough)</li>
-<li>Impatience with the temporary speed drop</li>
-</ul>
-<p>What works for adults: shorter sessions, clear rules, no-peek blocks, accuracy floors, and weekly measurement. What fails: random websites with no plan, only games, and daily self-judgment against your old looking speed.</p>
-<p>If you want a structured calendar-style plan, the next pillar posts cover beginner plans and adult-specific learning in more depth. This guide is the skill definition and core method; is the daily gym.</p>
-<p>Career context for why the skill pays: <a href="/blog/typing-speed-for-work">typing speed for work</a>.</p>
-
-<h2 id="tools">Which Tools Fit This Guide</h2>
-<table>
-<thead><tr><th>Goal</th><th>tool</th></tr></thead>
-<tbody>
-<tr><td>Learn the map layer by layer</td><td><a href="/typing-lessons">Typing lessons</a></td></tr>
-<tr><td>See finger zones / home-row focus</td><td><a href="/keyboard-guide">Keyboard guide</a></td></tr>
-<tr><td>Build volume and weak keys</td><td><a href="/typing-practice">Typing practice</a></td></tr>
-<tr><td>Measure WPM + accuracy</td><td><a href="/">Speed test</a></td></tr>
-<tr><td>Track trends and weak keys</td><td><a href="/typing-progress">Progress</a></td></tr>
-<tr><td>Pressure after form is clean</td><td><a href="/typing-game-falling-words">Games</a></td></tr>
-</tbody>
-</table>
-<p>Privacy-first design means you can train without creating an account wall for the core test. Local progress helps you see weak keys instead of guessing.</p>
-<p>Related measurement guides: <a href="/blog/free-typing-test">free typing test</a>, <a href="/blog/typing-speed-test">typing speed test</a>.</p>
-
-<h2 id="mistakes">Common Touch Typing Mistakes</h2>
-<ol>
-<li><strong>Keeping old speed as the success metric in week one</strong>: wrong metric; use accuracy and no-peek time</li>
-<li><strong>Looking “just for hard keys” every time</strong>: that freezes hybrid mode</li>
-<li><strong>Using only two fingers with better posture cosplay</strong>: still not touch typing</li>
-<li><strong>Skipping home row</strong>: building on mud</li>
-<li><strong>Practicing only on tests</strong>: tests measure; lessons install</li>
-<li><strong>Games first</strong>: pressure before map = panic pecking</li>
-<li><strong>Inconsistent finger ownership</strong>: hit T with different fingers depending on mood</li>
-<li><strong>Death-grip key force</strong>: fatigue and late-test errors</li>
-<li><strong>No weekly baseline</strong>: feelings instead of data</li>
-<li><strong>All-day practice once, then nothing for ten days</strong>: skill decays; streaks matter</li>
-<li><strong>Ignoring accuracy</strong>: installing a fast wrong map</li>
-<li><strong>Comparing your day-four self to online 120 WPM videos</strong>: irrelevant and toxic</li>
-</ol>
-
-<h2 id="checklist">Proof You Are Touch Typing</h2>
-<p>Use this checklist. You do not need perfection on day ten. You need a direction.</p>
-<ul>
-<li>You can place hands on F/J bumps without looking</li>
-<li>You type at least home-row words with eyes on screen</li>
-<li>You have a default finger for common letters (not random)</li>
-<li>When you get lost, you re-home by touch more often than by sight</li>
-<li>Your accuracy on slow practice is high</li>
-<li>Your weekly test accuracy is trending toward 95%+</li>
-<li>Real writing (email, notes) needs fewer look-downs than a month ago</li>
-<li>Speed is rising again after the awkward middle. or accuracy is clearly better even if speed is flat</li>
-</ul>
-<p>If most boxes are unchecked, you are still early. That is fine. Stay on lessons.</p>
-<p>If boxes are checked but speed is low, you are ready for volume and controlled speed work. not for abandoning the map.</p>
-
-<h2 id="numbers-symbols">Numbers and Symbols (Stage Two)</h2>
-<p>Once letters are trustworthy:</p>
-<ul>
-<li>Practice number row reaches without dropping eyes for every digit</li>
-<li>Learn common punctuation in the same no-peek spirit</li>
-<li>For coders, schedule symbol-heavy practice blocks; prose WPM alone will lie to you</li>
-</ul>
-<p>Do not delay numbers forever if your job is full of them. Do delay them if you still hunt for basic letters. Order prevents chaos.</p>
-
-<h2 id="kids-teens">Notes for Students and Parents</h2>
-<p>Touch typing is one of the highest-leverage school skills that is still taught unevenly. Short daily sessions beat weekend cram. Keep emotional tone light: log accuracy and consistency, not public humiliation leaderboards. no-signup test helps classrooms and home practice with less friction.</p>
-<p>Students under heavy exam load should still protect no-peek practice. hybrid typing steals minutes on every timed essay.</p>
-
-<h2 id="timeline">A Realistic Timeline</h2>
-<table>
-<thead><tr><th>Phase</th><th>What “good” looks like</th><th>Rough time*</th></tr></thead>
-<tbody>
-<tr><td>Home row foundation</td><td>No-peek home-row words, high accuracy</td><td>Several days to 2 weeks</td></tr>
-<tr><td>Full letter map</td><td>All letters with mostly no peeking</td><td>2–6 weeks of steady practice</td></tr>
-<tr><td>Awkward middle exit</td><td>Speed recovering, accuracy stable</td><td>Often weeks 3–8</td></tr>
-<tr><td>Working fluency</td><td>Real writing without constant look-down</td><td>1–3 months common for adults</td></tr>
-<tr><td>Polish</td><td>Numbers/symbols, higher WPM, endurance</td><td>Ongoing</td></tr>
-</tbody>
-</table>
-<p>*Highly variable. Fifteen focused minutes most days beats vague “I’ll practice more.”</p>
-<p>Job-test crammers: you can improve in two weeks, but you cannot always complete a full rewrite of twenty years of hybrid habit in five nights. Start earlier than you think.</p>
-
-<h2 id="faq">Touch Typing Guide FAQ</h2>
-<h3>What is touch typing in simple terms?</h3>
-<p>Typing without looking at the keys, using a home-row base and fixed finger-to-key assignments.</p>
-<h3>Can I teach myself touch typing?</h3>
-<p>Yes. You need a clear map, daily short practice, a no-peek rule, and honest measurement. lessons + practice + weekly tests are enough structure for most self-learners.</p>
-<h3>How long does it take to learn touch typing?</h3>
-<p>Many adults get a usable letter map in a few weeks of consistent practice. Full comfort, numbers/symbols, and higher speed take longer. Consistency matters more than talent stories.</p>
-<h3>Should I cover my hands or keyboard?</h3>
-<p>Optional. Useful for short drills if you cannot stop peeking. Not required if you can enforce eyes-up with discipline.</p>
-<h3>Why am I slower after starting touch typing?</h3>
-<p>Normal. You changed the control scheme. Keep accuracy high and no-peek rules; speed returns cleaner.</p>
-<h3>Is QWERTY required?</h3>
-<p>This guide assumes QWERTY because default layout is QWERTY. The principles (home base, finger ownership, no peek) apply to other layouts too, with different maps.</p>
-<h3>Do I need a special keyboard?</h3>
-<p>No. A working full keyboard is enough. Fancy gear does not replace practice. Keep the same keyboard for trend tracking.</p>
-<h3>Is touch typing worth it if I only type emails?</h3>
-<p>Yes. Email volume adds up. Less look-down and fewer errors still save time and frustration every week.</p>
-<h3>Can kids learn with?</h3>
-<p>Yes, with short sessions and accuracy-focused praise. Pair lessons with occasional fun games after form work.</p>
-<h3>When should I take speed tests?</h3>
-<p>Baseline at the start, light checks during training, and a fixed weekly test for trends. Do not replace lessons with endless tests.</p>
-<h3>What accuracy should I aim for while learning?</h3>
-<p>Practice toward 95%+ on clean runs. Under 90%, slow down and simplify the drill.</p>
-<h3>How do I stop hybrid typing forever?</h3>
-<p>No-peek blocks, consistent finger ownership, and refusing to reward peeking with “success” on hard keys. Hybrid dies when looking stops paying off.</p>
-<h3>Should I learn numbers from day one?</h3>
-<p>Usually no. Letters and home row first, then numbers and symbols.</p>
-<h3>What is the first thing I should do after reading this?</h3>
-<p>Baseline test, then a home-row lesson today, not “someday.”</p>
-
-<h2 id="sample-week">Sample Week One Plan</h2>
-<table>
-<thead><tr><th>Day</th><th>Session</th></tr></thead>
-<tbody>
-<tr><td>Mon</td><td>Baseline test + 15 min home-row lessons</td></tr>
-<tr><td>Tue</td><td>15–20 min home-row lessons, eyes up</td></tr>
-<tr><td>Wed</td><td>Home row + short practice words</td></tr>
-<tr><td>Thu</td><td>Same; note accuracy, ignore ego WPM</td></tr>
-<tr><td>Fri</td><td>Home row; if stable, begin first upper-row lesson layer</td></tr>
-<tr><td>Sat</td><td>Light 10 min or rest</td></tr>
-<tr><td>Sun</td><td>Optional short test + review weak spots in keyboard guide</td></tr>
-</tbody>
-</table>
-<p>Week one success is not a WPM record. Success is: hands know home, eyes stayed up more, accuracy on slow lines improved.</p>
-
-<h2 id="myths">Touch Typing Myths</h2>
-<ul>
-<li><strong>“I’m too old.”</strong> Adults learn this skill constantly with short daily practice.</li>
-<li><strong>“Looking is just my style.”</strong> Styles that cap your ceiling are habits, not identities.</li>
-<li><strong>“I need a blank keyboard to start.”</strong> Helpful for some later; not a day-one requirement.</li>
-<li><strong>“Games will teach me touch typing.”</strong> Games train pressure; lessons teach the map.</li>
-<li><strong>“If I go slow, I’m failing.”</strong> Slow correct is the method.</li>
-<li><strong>“Touch typing means never looking for the rest of my life.”</strong> Rare glances when totally lost happen; constant search is the problem.</li>
-</ul>
-
-<h2 id="transfer">Transfer to Real Life</h2>
-<p>After a good lesson block, immediately type something real: a short email, a journal line, a class note. Transfer teaches your brain that practice is not a separate video game. If test/lesson skill does not show up in real writing, end more sessions with real text.</p>
-<p>For job seekers, keep a weekly test at the duration you will face, and keep no-peek form under that timer. Measurement guides: <a href="/blog/5-minute-typing-test">5 minute typing test</a>, <a href="/blog/free-typing-test">free typing test</a>.</p>
-
-<h2 id="closing">Start Smaller Than You Think</h2>
-<p>You do not need a perfect year-long plan. You need today’s home-row session with a rule that your eyes stay up. Slow is fine. Looking is the habit that keeps you stuck.</p>
-<p>Baseline when you can, open <a href="/typing-lessons">lessons</a>, and retest in a week with the same duration. Track accuracy before you brag about speed.</p>
-`,
-
   'touch-typing-for-beginners': `<p>If you are new to touch typing, skip the pep talk. You need a calendar: what to do today, what “done” looks like this week, and a rule for not staring at the keys.</p>
 
 <p>This is a <strong>30-day beginner plan</strong> for real schedules: about 15–25 minutes a day. Home row first, then the letter map, then no-peek practice, then mixed work. Use <a href="/typing-lessons">lessons</a>, <a href="/typing-practice">practice</a>, the <a href="/keyboard-guide">keyboard guide</a>, and a weekly <a href="/">speed test</a>.</p>
@@ -367,7 +30,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>You prefer clear daily tasks over “just practice more”</li>
 </ul>
 <p>It is still useful if you already type “okay” but want real touch typing. It is <em>not</em> optimized as a two-night cram before a hiring test tomorrow — for that, see job-focused guides and train duration honestly, but start this plan as soon as you can for lasting skill.</p>
-<p>For the concepts behind the plan (home row, finger map, no-peek), read the companion <a href="/blog/touch-typing-guide">touch typing guide</a>. This article is the calendar.</p>
+<p>For the concepts behind the plan (home row, finger map, no-peek), read the companion <a href="/blog/touch-typing-for-beginners">touch typing guide</a>. This article is the calendar.</p>
 
 <h2 id="rules">Rules That Make the Plan Work</h2>
 <ol>
@@ -465,7 +128,7 @@ export const touchTypingArticles: Record<string, string> = {
 </tbody>
 </table>
 <p><strong>Week 2 pass criteria:</strong> Most letters have a default finger. You still get lost sometimes — normal. You recover by touch more often than by staring.</p>
-<p>If you feel slower than your old hunt-and-peck self: expected. Read the awkward-middle notes in the <a href="/blog/touch-typing-guide">touch typing guide</a> and keep going.</p>
+<p>If you feel slower than your old hunt-and-peck self: expected. Read the awkward-middle notes in the <a href="/blog/touch-typing-for-beginners">touch typing guide</a> and keep going.</p>
 
 <h2 id="week3">Week 3 (Days 15–21): No-Peek Fluency + Accuracy Floor</h2>
 <p><strong>Goal:</strong> Make no-peek the default. Push average accuracy toward <strong>95%+</strong> on short checks. Speed is still secondary.</p>
@@ -490,7 +153,7 @@ export const touchTypingArticles: Record<string, string> = {
 </tbody>
 </table>
 <p><strong>Week 3 pass criteria:</strong> Eyes-up is normal, not heroic. Accuracy on weekly checks is near or above 95%, or clearly trending up from Week 1. If accuracy is stuck under 90%, stay in Week 3 rules another week before Week 4 speed toys.</p>
-<p>Deep accuracy help: <a href="/blog/typing-accuracy-test">typing accuracy test</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
+<p>Deep accuracy help: <a href="/blog/improve-typing-accuracy">typing accuracy test</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
 
 <h2 id="week4">Week 4 (Days 22–30): Mixed Practice, Light Speed, Real Transfer</h2>
 <p><strong>Goal:</strong> Use the map in real text. Add light speed only if accuracy holds. Finish with a Day 30 comparison test.</p>
@@ -555,7 +218,7 @@ export const touchTypingArticles: Record<string, string> = {
 <p>Students can align Week 4 transfer with real homework typing so the skill pays rent immediately.</p>
 
 <h2 id="job">If You Have a Job Test During the 30 Days</h2>
-<p>Do not abandon accuracy for panic speed. In the final 7–10 days before a screen, keep this plan’s form rules and add duration matching (3 or 5 minutes) two or three times. Clean averages beat messy spikes. See <a href="/blog/5-minute-typing-test">5 minute typing test</a> and <a href="/blog/typing-speed-for-work">typing speed for work</a>.</p>
+<p>Do not abandon accuracy for panic speed. In the final 7–10 days before a screen, keep this plan’s form rules and add duration matching (3 or 5 minutes) two or three times. Clean averages beat messy spikes. See <a href="/">5 minute typing test</a> and <a href="/blog/good-typing-speed">typing speed for work</a>.</p>
 
 <h2 id="after">After Day 30: Month Two Direction</h2>
 <table>
@@ -583,7 +246,7 @@ export const touchTypingArticles: Record<string, string> = {
 <h3>Should I use games in week one?</h3>
 <p>No. Games are optional in Week 4 after form exists.</p>
 <h3>Is 60 seconds enough for weekly tests?</h3>
-<p>For beginners, yes. Add a 3-minute test in Weeks 3–4 for a calmer read. Guides: <a href="/blog/one-minute-typing-test">1 minute</a>, <a href="/blog/free-typing-test">free typing test</a>.</p>
+<p>For beginners, yes. Add a 3-minute test in Weeks 3–4 for a calmer read. Guides: <a href="/">1 minute</a>, <a href="/">free typing test</a>.</p>
 <h3>What accuracy should I hit by Day 30?</h3>
 <p>Aim toward 95%+ on your check runs. If you started very low, a clear upward trend plus eyes-up skill still counts as success.</p>
 <h3>Can adults use this plan?</h3>
@@ -595,7 +258,7 @@ export const touchTypingArticles: Record<string, string> = {
 <h3>Can I reorder the weeks?</h3>
 <p>Do not skip Week 1 home row. You can stretch any week longer. Compressing all four weeks into ten days usually fails.</p>
 <h3>How do I stop looking at the keys during the plan?</h3>
-<p>Scheduled no-peek blocks, F/J re-home by touch, slower pace, and refusing to reward peeks. Details in the <a href="/blog/touch-typing-guide">touch typing guide</a>.</p>
+<p>Scheduled no-peek blocks, F/J re-home by touch, slower pace, and refusing to reward peeks. Details in the <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
 <h3>Should children follow the same 30 days?</h3>
 <p>Yes with shorter sessions and softer emotional framing. Prioritize consistency and accuracy praise.</p>
 <h3>What page do I open every day?</h3>
@@ -639,327 +302,6 @@ export const touchTypingArticles: Record<string, string> = {
 <h2 id="closing">Day 0 Is the Only Day That Matters First</h2>
 <p>A 30-day plan only works if Day 0 happens. Take a baseline, open lessons, keep your eyes up, and follow the week in front of you. Not the fantasy of a perfect Day 30.</p>
 <p><a href="/">Baseline test</a>, then <a href="/typing-lessons">Day 1 home-row lessons</a>. In 30 days, retest with the same duration and compare both numbers, and how often your eyes stayed on the screen.</p>
-`,
-
-  'how-to-learn-touch-typing-as-an-adult': `
-<p>Adults are not locked out of touch typing. You can rebuild the habit with short sessions, a no-peek rule, and enough patience for the awkward middle when you feel slower than your old hunt-and-peck self.</p>
-
-<p>Age is rarely the real blocker. Ego is. Calendar chaos is. Hybrid comfort is. This page is the adult operating system: barriers, time budgets, workweek schedules, and how to fit practice around a job without turning it into a personality crisis.</p>
-
-<p>Start small today if you can: baseline on the <a href="/">speed test</a>, then one home-row block in <a href="/typing-lessons">lessons</a>.</p>
-
-<h2 id="toc">Table of Contents</h2>
-<ol>
-<li><a href="#truth">The Truth About Adults and Touch Typing</a></li>
-<li><a href="#myths">Adult Myths That Keep You Stuck</a></li>
-<li><a href="#barriers">Real Barriers (And How to Beat Them)</a></li>
-<li><a href="#why-worth">Why It Is Still Worth Learning After 25, 40, or 60</a></li>
-<li><a href="#hybrid">The Hybrid Typist Problem</a></li>
-<li><a href="#method">A Practical Adult Method (Not a School Syllabus)</a></li>
-<li><a href="#time">How Much Time Adults Actually Need</a></li>
-<li><a href="#awkward">Surviving the Awkward Middle</a></li>
-<li><a href="#work">Fitting Practice Around a Job</a></li>
-<li><a href="#job-test">If You Need Speed for Work or Hiring Soon</a></li>
-<li><a href="#body">Body, Pain, and Sustainable Setup</a></li>
-<li><a href="#tools">FreeTyper as an Adult Practice Stack</a></li>
-<li><a href="#plan">Two Adult Paths: Rebuild vs From-Scratch</a></li>
-<li><a href="#mistakes">Mistakes Adults Make More Than Kids</a></li>
-<li><a href="#faq">Learn Touch Typing as an Adult FAQ</a></li>
-</ol>
-
-<h2 id="truth">The Truth About Adults and Touch Typing</h2>
-<p>Adults learn complex motor skills all the time: new software shortcuts, instruments, sports form, driving a different car. Touch typing is the same family of learning — <strong>repetition with correct form under mild discomfort</strong> — not a childhood magic window that closed when you left school.</p>
-<p>What adults bring that kids often lack:</p>
-<ul>
-<li>Clear reasons (job, grad school, less neck pain, faster email days)</li>
-<li>Ability to follow a deliberate plan</li>
-<li>Enough metacognition to notice “I peeked again” and reset</li>
-</ul>
-<p>What adults fight harder:</p>
-<ul>
-<li>An existing habit that already “works” under low standards</li>
-<li>Less free unstructured time</li>
-<li>Shame (“I should already know this”)</li>
-<li>Impatience when WPM drops during rebuild</li>
-</ul>
-<p>If you can keep a 15-minute appointment with yourself most weekdays for a month, you can learn touch typing as an adult. The companion calendar is the <a href="/blog/touch-typing-for-beginners">30-day beginner plan</a>. The skill model is the <a href="/blog/touch-typing-guide">touch typing guide</a>. This article is the adult operating system around both.</p>
-
-<h2 id="myths">Adult Myths That Keep You Stuck</h2>
-<ul>
-<li><strong>“I’m too old to rewire my brain.”</strong> You rewire habits whenever you change a commute or a phone layout. Age is rarely the blocker; consistency is.</li>
-<li><strong>“I type fine looking at the keys.”</strong> Fine for short chat. Weak for long docs, exams, hiring screens, and all-day knowledge work. Fine is not the same as free.</li>
-<li><strong>“I need two hours a day.”</strong> Adults succeed on 15–25 focused minutes. Two-hour guilt sessions usually create burnout and peeking.</li>
-<li><strong>“If I go slow, I’m failing.”</strong> Slow correct is the method. Fast wrong is how hybrids stay hybrids.</li>
-<li><strong>“Blank keyboards / expensive boards will fix me.”</strong> Gear is optional. No-peek practice is not.</li>
-<li><strong>“Games will teach me while I have fun.”</strong> Games are pressure tools after the map exists. Lessons install the map.</li>
-<li><strong>“I missed the class, so I missed the skill.”</strong> School timing is irrelevant. Adult deliberate practice is the class now.</li>
-</ul>
-
-<h2 id="barriers">Real Barriers (And How to Beat Them)</h2>
-<table>
-<thead><tr><th>Barrier</th><th>What it looks like</th><th>Adult fix</th></tr></thead>
-<tbody>
-<tr><td>Ego</td><td>Avoiding lessons because they feel “basic”</td><td>Treat home row as strength training, not humiliation</td></tr>
-<tr><td>Calendar</td><td>Waiting for a free weekend that never comes</td><td>Calendar a 15-min weekday slot like a meeting</td></tr>
-<tr><td>Hybrid comfort</td><td>Looking “just for hard keys” every time</td><td>Timed no-peek blocks with explicit rules</td></tr>
-<tr><td>Metric confusion</td><td>Judging Day 5 by old looking-WPM</td><td>Track accuracy + peeking score first</td></tr>
-<tr><td>All-or-nothing</td><td>Miss two days → quit the month</td><td>Resume rules; no shame restarts from zero unless needed</td></tr>
-<tr><td>Pain/tension</td><td>Mashing keys, shrugged shoulders</td><td>Setup fix, lighter force, shorter sessions</td></tr>
-<tr><td>Job panic</td><td>Only testing, never training</td><td>Split: form practice + duration-matched tests</td></tr>
-</tbody>
-</table>
-<p>Name your top barrier this week. Fix that one. Adults love multi-problem spirals; skill loves single-constraint weeks.</p>
-
-<h2 id="why-worth">Why It Is Still Worth Learning After 25, 40, or 60</h2>
-<ul>
-<li><strong>Time tax:</strong> Email, tickets, docs, and messages are most of modern work. Faster clean output compounds every week.</li>
-<li><strong>Attention tax:</strong> Looking down breaks reading and composition flow. Eyes-up typing keeps meaning on screen.</li>
-<li><strong>Career gates:</strong> Some roles still screen WPM and accuracy. Adult learners who rebuild properly pass cleaner than sprinters with soft accuracy. See <a href="/blog/typing-speed-for-work">typing speed for work</a>.</li>
-<li><strong>Ceiling:</strong> Hunt-and-peck caps growth. Touch typing raises the ceiling even if you never chase 100 WPM.</li>
-<li><strong>Body:</strong> Constant look-down/look-up is its own fatigue. Better form plus light force often feels better across long days.</li>
-<li><strong>Confidence:</strong> Not flinching at a shared document or a timed test is a quiet adult quality-of-life upgrade.</li>
-</ul>
-<p>You do not need to become a competition typist. You need clean, eyes-up fluency that survives real work.</p>
-
-<h2 id="hybrid">The Hybrid Typist Problem</h2>
-<p>Most adults who “already type” are hybrids:</p>
-<ul>
-<li>A few fingers do too much work</li>
-<li>Home row is approximate, not owned</li>
-<li>Eyes micro-glance for confirmation</li>
-<li>Common words are fast; everything else is a search</li>
-<li>Numbers and symbols are full visual scavenger hunts</li>
-</ul>
-<p>Hybrid feels productive, so adults defend it. The cost shows up as plateaus in the 40s–50s WPM, soft accuracy under fatigue, and panic on longer tests.</p>
-<p>Adult fix: stop calling hybrid “your style.” Call it the habit you are replacing. Use FreeTyper lessons even if they feel elementary. Elementary is how you overwrite twenty years of improvisation.</p>
-
-<h2 id="method">A Practical Adult Method (Not a School Syllabus)</h2>
-<ol>
-<li><strong>Baseline</strong> — test, log WPM + accuracy + honest peeking note.</li>
-<li><strong>Home row lock</strong> — lessons until A S D F / J K L ; work eyes-up at high accuracy when slow.</li>
-<li><strong>Expand by layers</strong> — upper row, then lower, through lessons — not random full-board chaos.</li>
-<li><strong>No-peek contracts</strong> — every session includes a block where looking is illegal, errors are allowed.</li>
-<li><strong>Accuracy floor</strong> — aim toward 95%+ before speed pride. See <a href="/blog/typing-accuracy-test">typing accuracy test</a>.</li>
-<li><strong>Mixed practice</strong> — <a href="/typing-practice">practice</a> + weak keys from <a href="/typing-progress">progress</a>.</li>
-<li><strong>Transfer</strong> — immediately type a real email or note after practice so the skill leaves the gym.</li>
-<li><strong>Weekly retest</strong> — same duration; compare averages, not mood.</li>
-<li><strong>Only then</strong> — numbers/symbols polish and optional games for pressure.</li>
-</ol>
-<p>That is the whole method. Adults who skip to step 9 and call it training are collecting entertainment, not skill.</p>
-
-<h2 id="time">How Much Time Adults Actually Need</h2>
-<table>
-<thead><tr><th>Schedule</th><th>What it supports</th></tr></thead>
-<tbody>
-<tr><td>10 min × 5 days</td><td>Maintenance / very early home row; slow progress but real</td></tr>
-<tr><td>15–20 min × 5–6 days</td><td>Best adult default for a rebuild month</td></tr>
-<tr><td>25–30 min × 4 days</td><td>Works if quality stays high; do not fill with rage tests</td></tr>
-<tr><td>2 hours on Sunday only</td><td>Weak for motor learning; better than nothing, worse than distributed practice</td></tr>
-</tbody>
-</table>
-<p>Protect the slot like a standup you cannot skip. Morning before email, lunch away from Slack, or evening before streaming — pick one. “I’ll fit it in” is how months disappear.</p>
-<p>A realistic adult outcome window: usable letter-map touch typing in a few weeks of consistency; crossover past old hybrid comfort over 1–3 months depending on starting point and honesty about peeking.</p>
-
-<h2 id="awkward">Surviving the Awkward Middle</h2>
-<p>Adults quit here more than anywhere else. Symptoms:</p>
-<ul>
-<li>You feel stupid and slow</li>
-<li>Old looking speed was higher</li>
-<li>Coworkers still type “fine” while you drill home row</li>
-<li>You want to abandon the experiment by Day 8</li>
-</ul>
-<p>Reframe: you are not losing skill; you are changing the control scheme. Flight simulators feel worse before they feel better when you change keybinds too.</p>
-<p>Adult survival rules:</p>
-<ul>
-<li>Judge Week 1–2 by accuracy and eyes-up minutes, not WPM</li>
-<li>Keep sessions short so frustration cannot snowball</li>
-<li>Ban public comparison to online 120 WPM videos</li>
-<li>Write Day 0 numbers down so memory cannot gaslight you later</li>
-<li>If you rage-quit a session, still log “showed up 8 minutes” — identity beats drama</li>
-</ul>
-<p>When accuracy on slow runs climbs and F/J re-homes happen by touch, you are winning even if the homepage number looks humble.</p>
-
-<h2 id="work">Fitting Practice Around a Job</h2>
-<ul>
-<li><strong>Calendar block:</strong> 15 minutes titled “typing” so meetings cannot eat it silently.</li>
-<li><strong>Commute-proof:</strong> practice needs a real keyboard; do not count phone typing as transfer.</li>
-<li><strong>Work typing ≠ practice:</strong> answering Slack in hybrid mode does not install home row. Separate deliberate practice from production typing at first.</li>
-<li><strong>After practice transfer:</strong> one real work paragraph eyes-up before you dive back into chaos.</li>
-<li><strong>Travel weeks:</strong> laptop is fine; keep the same duration for weekly tests when you can.</li>
-<li><strong>Energy management:</strong> if you are destroyed at 9pm, practice at 8am. Adults fail tired heroics.</li>
-</ul>
-<p>Managers do not need to know. You do not need a certification montage. You need a quiet streak.</p>
-
-<h2 id="job-test">If You Need Speed for Work or Hiring Soon</h2>
-<p>Two tracks, do not confuse them:</p>
-<ol>
-<li><strong>Skill rebuild</strong> — lessons, no-peek, accuracy (this article’s core)</li>
-<li><strong>Assessment prep</strong> — duration-matched tests, composure, net-score thinking</li>
-</ol>
-<p>If a test is in 10–14 days and you are a deep hunt-and-peck typist, you may not finish a full rewrite — but you can still raise accuracy, reduce panic restarts, and practice the real duration (often 3–5 minutes). See <a href="/blog/5-minute-typing-test">5 minute typing test</a> and <a href="/blog/free-typing-test">free typing test</a>.</p>
-<p>If you have 6–8 weeks, run the full adult method and keep one weekly longer test. Clean 60 WPM averages beat messy 70 WPM spikes for most gatekeepers who watch accuracy. Broader technique later: <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
-
-<h2 id="body">Body, Pain, and Sustainable Setup</h2>
-<p>Adults often bring desk jobs, old tension, and “push through” culture. Touch typing should not add injury.</p>
-<ul>
-<li>Neutral wrists, shoulders down, light taps</li>
-<li>Break if pain appears — adjust chair/keyboard height before “grinding”</li>
-<li>Five minutes of quality beats twenty minutes of shrugged mashing</li>
-<li>Long tests will reveal tension; treat that as data for setup, not proof you cannot learn</li>
-</ul>
-<p>If you have a medical condition or injury history, treat online WPM as training feedback, not a clinical assessment. Comfort first.</p>
-
-<h2 id="tools"> as an Adult Practice Stack</h2>
-<table>
-<thead><tr><th>Need</th><th>Where</th></tr></thead>
-<tbody>
-<tr><td>Measure without account friction</td><td><a href="/">Speed test</a></td></tr>
-<tr><td>Install the map</td><td><a href="/typing-lessons">Lessons</a></td></tr>
-<tr><td>See zones / home-row focus</td><td><a href="/keyboard-guide">Keyboard guide</a></td></tr>
-<tr><td>Volume + weak keys</td><td><a href="/typing-practice">Practice</a></td></tr>
-<tr><td>Trends</td><td><a href="/typing-progress">Progress</a></td></tr>
-<tr><td>Pressure after form</td><td><a href="/typing-game-word-attack">Games</a></td></tr>
-</tbody>
-</table>
-<p>Adults like privacy and low friction. free core test and local-progress philosophy fit that: practice without turning a personal skill project into a marketing funnel.</p>
-
-<h2 id="plan">Two Adult Paths: Rebuild vs From-Scratch</h2>
-<h3>Path A — From-scratch / heavy hunt-and-peck</h3>
-<p>Follow the <a href="/blog/touch-typing-for-beginners">30-day plan</a> almost literally. Do not skip Week 1 home row because you are “a professional.” Professionals still need home row.</p>
-<h3>Path B — Hybrid rebuild (you already type daily)</h3>
-<ul>
-<li>Days 1–5: home row + no-peek enforcement (yes, still)</li>
-<li>Days 6–14: full letter lessons + weak keys; ban PR hunting</li>
-<li>Days 15–30: mixed practice, weekly 3-min tests, transfer to real work text</li>
-<li>Expect a temporary WPM dip; demand accuracy stability</li>
-</ul>
-<p>Hybrids often improve faster <em>if</em> they stop defending peeks. Hybrids who “practice” while looking learn nothing new.</p>
-
-<h2 id="week-sample">Sample Adult Workweek (15–20 Minutes)</h2>
-<table>
-<thead><tr><th>Day</th><th>Session</th></tr></thead>
-<tbody>
-<tr><td>Mon</td><td>Baseline or weekly test (2 runs) + 10 min lessons/practice on the weak constraint</td></tr>
-<tr><td>Tue</td><td>Lessons or weak keys + eyes-up block</td></tr>
-<tr><td>Wed</td><td>Mixed practice + 5-minute real email transfer</td></tr>
-<tr><td>Thu</td><td>Weak keys + clean cool-down</td></tr>
-<tr><td>Fri</td><td>Short practice; optional light game only if accuracy has been solid</td></tr>
-<tr><td>Sat</td><td>Optional 10 min or rest</td></tr>
-<tr><td>Sun</td><td>Rest or gentle review — protect Monday energy</td></tr>
-</tbody>
-</table>
-<p>Copy it into your calendar once. Reuse for four weeks. Boring systems beat inspired chaos.</p>
-
-<h2 id="mistakes">Mistakes Adults Make More Than Kids</h2>
-<ol>
-<li>Treating lessons as beneath them</li>
-<li>Only taking tests because tests feel like “real work”</li>
-<li>Comparing rebuild WPM to old hybrid WPM daily</li>
-<li>Practicing angry after a bad workday without a time cap</li>
-<li>Buying gear instead of scheduling practice</li>
-<li>Secret peeking while claiming touch typing identity</li>
-<li>Ignoring accuracy because job postings mention WPM first</li>
-<li>Quitting in the awkward middle and saying “I tried touch typing”</li>
-<li>Using phone typing volume as evidence of keyboard skill</li>
-<li>No written Day 0 baseline — progress becomes a mood</li>
-</ol>
-
-<h2 id="mindset">Adult Mindset That Works</h2>
-<p>Trade identity stories for process stories.</p>
-<ul>
-<li>Old: “I’m not a computer person.” New: “I practice fifteen minutes on weekdays.”</li>
-<li>Old: “I failed at this in school.” New: “School was not deliberate practice with a timer and a log.”</li>
-<li>Old: “I need motivation.” New: “I need a recurring calendar event.”</li>
-</ul>
-<p>Motivation follows evidence. Evidence follows logs. Logs follow showing up when you do not feel like it.</p>
-
-<h2 id="metrics">What Adults Should Track</h2>
-<ul>
-<li>Weekly average WPM (same duration)</li>
-<li>Weekly average accuracy (column one when under 95%)</li>
-<li>Peeking self-score 1–5 after sessions</li>
-<li>Minutes practiced (streak awareness)</li>
-<li>One qualitative note: “real email eyes-up?” yes/no</li>
-</ul>
-<p>If accuracy and peeking improve for three weeks, the project is working even when WPM is flat. Flat WPM during form rebuild is common. Panic is optional.</p>
-<p>Benchmarks for later goals: <a href="/blog/good-typing-speed">good typing speed</a>, <a href="/blog/how-many-words-per-minute">how many WPM you should type</a>, <a href="/blog/average-typing-speed">average typing speed</a>.</p>
-
-<h2 id="faq">Learn Touch Typing as an Adult FAQ</h2>
-<h3>Can adults really learn touch typing?</h3>
-<p>Yes. Adults learn it constantly with short, consistent practice and a no-peek rule. Age is rarely the limiting factor.</p>
-<h3>How long does it take for an adult?</h3>
-<p>Many adults get a usable letter map in a few weeks of 15–20 minute sessions. Passing old hybrid speed while staying eyes-up often takes longer — think weeks to a few months, not one weekend.</p>
-<h3>I already type for work. Do I still need lessons?</h3>
-<p>If you look at the keys or lack a stable finger map, yes. Work volume without deliberate form often freezes hybrid habits.</p>
-<h3>Why did my speed drop when I started?</h3>
-<p>Normal. You changed technique. Keep accuracy high; speed returns cleaner. Do not abandon the map to protect ego WPM.</p>
-<h3>What is the best daily time for adults?</h3>
-<p>Whatever you will keep. Morning before inbox chaos works for many. Consistency beats “optimal” theory.</p>
-<h3>Should I quit hybrid cold turkey at work?</h3>
-<p>Use deliberate practice blocks for cold turkey no-peek. Production work can lag a little while the map forms — then transfer eyes-up into real tasks increasingly.</p>
-<h3>Is 15 minutes enough?</h3>
-<p>Yes for real progress if eyes stay up and accuracy is intentional. Zero minutes is the only truly ineffective dose.</p>
-<h3>Do I need an expensive keyboard?</h3>
-<p>No. Use the keyboard you type on daily. Keep it consistent for weekly tests.</p>
-<h3>Can I learn if I only have a laptop?</h3>
-<p>Yes. Laptop keyboards are valid training devices for laptop-centered work.</p>
-<h3>What accuracy should adults target?</h3>
-<p>Build toward 95%+ on checks. Under 92%, prioritize accuracy over speed goals. Guide: <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
-<h3>How do I stop looking at the keyboard?</h3>
-<p>Timed no-peek blocks, F/J bumps to re-home, slower pace, and refusing to reward peeks. Full habits: <a href="/blog/touch-typing-guide">touch typing guide</a>.</p>
-<h3>I’m preparing for a hiring typing test — help?</h3>
-<p>Match duration, protect accuracy, average multiple runs, and keep form practice daily. Do not only screenshot best 60-second attempts.</p>
-<h3>What tools should adults use first?</h3>
-<p>Test → lessons → keyboard guide → practice → progress. Games last.</p>
-<h3>What should I do in the next 24 hours?</h3>
-<p>Baseline test, write numbers down, schedule five calendar blocks, complete one home-row lesson session today.</p>
-
-<h2 id="stories">Three Adult Starting Profiles</h2>
-<p><strong>The office hybrid (48 WPM, looks often):</strong> Home row week, then no-peek enforcement, expect a dip, retest at day 21 with accuracy as the headline.</p>
-<p><strong>The career switcher under a deadline:</strong> 20 minutes daily, duration-matched tests twice a week, accuracy floor non-negotiable, lessons every day even when tests feel more “important.”</p>
-<p><strong>The returner after years away:</strong> Treat yourself as a beginner without shame. 30-day plan, shorter sessions if fatigue hits, celebrate eyes-up streaks.</p>
-<p>Different stories, same mechanics: map, reps, honesty.</p>
-
-<h2 id="remote">Remote Workers and All-Day Keyboard Jobs</h2>
-<p>If your job is already eight hours of typing, you might think practice is redundant. It is not. Production typing under deadlines usually reinforces whatever hybrid mess you already have. Deliberate blocks are where you change the map; Slack is where you currently spend the map.</p>
-<p>Practical split for remote adults:</p>
-<ul>
-<li>Protect a pre-standup or post-lunch 15-minute lesson/practice block</li>
-<li>After the block, send one real work message eyes-up on purpose</li>
-<li>Once a week, run a 3- or 5-minute test when your brain is fresh — not at 6pm after meetings</li>
-<li>Watch accuracy on longer tests; remote fatigue shows up as late-test error storms</li>
-</ul>
-<p>Remote work also means you can practice without office self-consciousness. Use that privacy. Nobody needs to watch you relearn home row.</p>
-
-<h2 id="family-home">Learning at Home With Family Around</h2>
-<p>Adults with kids or shared spaces often abandon practice because the house is loud. Solutions that work:</p>
-<ul>
-<li>Headphones even without music — a “do not interrupt” signal</li>
-<li>Ten-minute micro-sessions instead of waiting for a mythical quiet hour</li>
-<li>Early morning or after bedtime blocks</li>
-<li>Explain to family: “I’m training a skill for fifteen minutes,” same as a workout</li>
-</ul>
-<p>If a session gets interrupted, log the minutes you completed. Partial sessions still count. Waiting for perfect silence is another adult procrastination costume.</p>
-
-<h2 id="plateau-adult">When Progress Flatlines After a Good Start</h2>
-<p>Many adults improve for ten days, then flatline. Checklist:</p>
-<ul>
-<li>Are you still peeking on hard keys? Hybrid relapse is common.</li>
-<li>Are sessions only tests now? Return to lessons and weak keys.</li>
-<li>Is accuracy stuck under 95%? Speed work is premature.</li>
-<li>Are you comparing every day to the best day? Use weekly averages.</li>
-<li>Did hardware or posture change? Reset the baseline week.</li>
-<li>Are you sleeping poorly? Motor learning hates chronic sleep debt.</li>
-</ul>
-<p>Flatlines are information. Change one variable for seven days. Do not burn the plan down because Tuesday felt average.</p>
-
-<h2 id="numbers-adult">Numbers, Symbols, and “I Only Struggle With the Hard Stuff”</h2>
-<p>Adults often say letters are fine and only numbers/symbols are the problem. Sometimes that is true. Sometimes letters are only fine because you look. Test it: do a letter-heavy run eyes-up with honesty. If accuracy collapses, you still need the core map.</p>
-<p>If letters truly are solid, schedule two short symbol/number blocks a week after the main letter practice — not instead of it. Coders and analysts should treat symbol fluency as part of adult touch typing, not an optional side quest.</p>
-
-<h2 id="closing">You Do Not Need Permission</h2>
-<p>Nobody is going to assign you typing homework as an adult. That is the trap and the opportunity. Set the block, run the session, log accuracy, keep going through the week you feel silly.</p>
-<p>Ordinary deliberate practice is enough. Open <a href="/typing-lessons">lessons</a> for a home-row block and put four more sessions on your calendar this week. For a day-by-day structure, use the <a href="/blog/touch-typing-for-beginners">30-day beginner plan</a> with the adult rules from this page.</p>
 `,
 
   'muscle-memory-and-touch-typing': `<p><strong>Muscle memory</strong> is everyday language for procedural skill: your nervous system learns a movement well enough that it runs with less conscious micromanagement. Touch typing is a clean adult example. First every key is a decision. Later, words leave your fingers while attention stays on meaning.</p>
@@ -1021,7 +363,7 @@ export const touchTypingArticles: Record<string, string> = {
 </tbody>
 </table>
 <p>Beginners try to force autonomous-stage speed while still in the cognitive stage. That mismatch is why FreeTyper lessons exist: they keep you in the stage-appropriate drill instead of a leaderboard fantasy.</p>
-<p>Practical guides for those stages: <a href="/blog/touch-typing-guide">touch typing guide</a>, <a href="/blog/touch-typing-for-beginners">30-day plan</a>.</p>
+<p>Practical guides for those stages: <a href="/blog/touch-typing-for-beginners">touch typing guide</a>, <a href="/blog/touch-typing-for-beginners">30-day plan</a>.</p>
 
 <h2 id="chunks">Chunking: From Letters to Words to Flow</h2>
 <p>Motor skill does not stay as “26 separate letter programs” forever. With practice, the system <strong>chunks</strong> sequences:</p>
@@ -1047,7 +389,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>High error rates at max speed can entrench junk</li>
 <li>Feedback should help you notice <em>which</em> errors repeat (weak keys)</li>
 </ul>
-<p> accuracy is not a moral grade. It is a signal of pattern quality. When accuracy sits under ~95% on honest runs, the scientific priority is pattern cleanup, not another adrenaline PR. See <a href="/blog/typing-accuracy-test">typing accuracy test</a> and <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
+<p> accuracy is not a moral grade. It is a signal of pattern quality. When accuracy sits under ~95% on honest runs, the scientific priority is pattern cleanup, not another adrenaline PR. See <a href="/blog/improve-typing-accuracy">typing accuracy test</a> and <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
 <p>Backspace culture can hide this. Fixing a word after the fact is not the same as having produced the correct motor sequence. Some scoring systems still care; real work always cares via rework time.</p>
 
 <h2 id="speed-accuracy">The Speed–Accuracy Tradeoff</h2>
@@ -1059,7 +401,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Nudge speed in small layers.</li>
 <li>If accuracy breaks, you outran the map — step back.</li>
 </ol>
-<p>This is why “just type faster every day” fails. Speed without a stable program is noise. Clean intermediate WPM often produces more usable output than messy “fast” WPM — which matches what employers care about when they use net scoring. Context: <a href="/blog/typing-speed-test">typing speed test guide</a>.</p>
+<p>This is why “just type faster every day” fails. Speed without a stable program is noise. Clean intermediate WPM often produces more usable output than messy “fast” WPM — which matches what employers care about when they use net scoring. Context: <a href="/">typing speed test guide</a>.</p>
 
 <h2 id="feedback">Feedback, Vision, and Why Looking Blocks Learning</h2>
 <p>Feedback trains the system. Touch typing wants <strong>kinesthetic and spatial</strong> feedback relative to home row — how the reach felt — not constant visual confirmation of keycaps.</p>
@@ -1100,7 +442,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>If you can, place hard learning earlier when attention is available</li>
 <li>Protect sleep if you care about learning rate — unglamorous, effective</li>
 </ul>
-<p>Cramming before a hiring test can still raise familiarity with timers. It is a weak substitute for weeks of map building. Assessment prep guides: <a href="/blog/5-minute-typing-test">5 minute typing test</a>, <a href="/blog/free-typing-test">free typing test</a>.</p>
+<p>Cramming before a hiring test can still raise familiarity with timers. It is a weak substitute for weeks of map building. Assessment prep guides: <a href="/">5 minute typing test</a>, <a href="/">free typing test</a>.</p>
 
 <h2 id="interference">Interference: Old Habits Fighting New Maps</h2>
 <p>Adults already have a typing program — often hybrid hunt-and-peck. When you introduce touch typing, two programs compete. That competition is why the awkward middle feels like betrayal.</p>
@@ -1113,7 +455,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Avoid max-speed testing as your only practice while rebuilding</li>
 <li>Expect regression under stress; retrain composure separately later</li>
 </ul>
-<p>Adult-specific framing: <a href="/blog/how-to-learn-touch-typing-as-an-adult">how to learn touch typing as an adult</a>.</p>
+<p>Adult-specific framing: <a href="/blog/touch-typing-for-beginners">how to learn touch typing as an adult</a>.</p>
 
 <h2 id="variability">Variability, Contextual Interference, and Transfer</h2>
 <p>Skills need to transfer out of the training context. If you only ever type one lesson line, you may look skilled there and fall apart in email.</p>
@@ -1153,7 +495,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Cognitive monitoring drifts</li>
 <li>Error recovery becomes emotional and costly</li>
 </ul>
-<p>Light keystrokes, posture resets, and progressive duration training are not wellness fluff — they are performance variables. If your science-minded goal is “true sustainable WPM,” longer tests are the better instrument than a single adrenaline minute. Comparison reading: <a href="/blog/3-minute-typing-test-vs-5-minute-typing-test">3 vs 5 minute tests</a>, <a href="/blog/one-minute-typing-test">1 minute tests</a>.</p>
+<p>Light keystrokes, posture resets, and progressive duration training are not wellness fluff — they are performance variables. If your science-minded goal is “true sustainable WPM,” longer tests are the better instrument than a single adrenaline minute. Comparison reading: <a href="/">3 vs 5 minute tests</a>, <a href="/">1 minute tests</a>.</p>
 
 <h2 id="apply">How to Practice on Using the Science</h2>
 <table>
@@ -1245,7 +587,7 @@ export const touchTypingArticles: Record<string, string> = {
 
 <h2 id="closing">Science Is Permission to Go Slow Enough to Learn</h2>
 <p>The useful takeaway is unfashionable: the fastest long-term path often looks slow in week one. Correct maps, honest feedback, spaced practice, and transfer beat adrenaline screenshots.</p>
-<p>Put it into practice with a baseline, map work in <a href="/typing-lessons">lessons</a> or <a href="/typing-practice">practice</a>, weekly retests, and a schedule you can keep. For structure, see the <a href="/blog/touch-typing-for-beginners">30-day plan</a> and the <a href="/blog/touch-typing-guide">touch typing guide</a>.</p>
+<p>Put it into practice with a baseline, map work in <a href="/typing-lessons">lessons</a> or <a href="/typing-practice">practice</a>, weekly retests, and a schedule you can keep. For structure, see the <a href="/blog/touch-typing-for-beginners">30-day plan</a> and the <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
 `,
 
   '10-bad-typing-habits': `
@@ -1282,7 +624,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Slow down until eyes-up is possible — if you must look to go fast, that speed is fake skill.</li>
 <li>Use <a href="/typing-lessons">lessons</a> and the <a href="/keyboard-guide">keyboard guide</a> to rebuild the map.</li>
 </ul>
-<p>Deep dive: <a href="/blog/touch-typing-guide">touch typing guide</a>.</p>
+<p>Deep dive: <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
 
 <h2 id="habit-2">2. Hunt-and-Peck / Two-Finger Default</h2>
 <p><strong>Why it slows you down:</strong> A few fingers do most of the work. Reach distances stay long. Load is uneven. Your ceiling stays lower than a full finger map allows, and fatigue hits earlier on long FreeTyper tests.</p>
@@ -1293,7 +635,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Start with home-row ownership before “full freestyle.”</li>
 <li>Accept a temporary WPM dip — that is the rebuild tax, not proof you should quit.</li>
 </ul>
-<p>Adults defending two-finger “style” are usually defending comfort. Comfort is not the same as capacity. Adult framing: <a href="/blog/how-to-learn-touch-typing-as-an-adult">learn touch typing as an adult</a>.</p>
+<p>Adults defending two-finger “style” are usually defending comfort. Comfort is not the same as capacity. Adult framing: <a href="/blog/touch-typing-for-beginners">learn touch typing as an adult</a>.</p>
 
 <h2 id="habit-3">3. Ignoring Home Row</h2>
 <p><strong>Why it slows you down:</strong> Without a home base, every keystroke is a new navigation problem. Hands float. Ownership gets fuzzy. You cannot build reliable muscle memory on a moving origin point.</p>
@@ -1315,7 +657,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Cap speed: if a run falls under 95%, treat it as training data, not a brag.</li>
 <li>Drill weak keys slowly before another speed interval.</li>
 </ul>
-<p>Guides: <a href="/blog/typing-accuracy-test">typing accuracy test</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
+<p>Guides: <a href="/blog/improve-typing-accuracy">typing accuracy test</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
 <p>A clean 58 WPM often beats a messy 70 in real output. That sentence should live on your monitor if this habit is yours.</p>
 
 <h2 id="habit-5">5. Mashing Keys and Death-Grip Tension</h2>
@@ -1328,7 +670,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Shorten sessions if pain appears; pain is a stop signal.</li>
 <li>Compare a relaxed 3-minute test to a tense one; log both.</li>
 </ul>
-<p>Endurance gaps between 1-minute and 5-minute scores often shrink when force and posture improve. See <a href="/blog/5-minute-typing-test">5 minute typing test</a>.</p>
+<p>Endurance gaps between 1-minute and 5-minute scores often shrink when force and posture improve. See <a href="/">5 minute typing test</a>.</p>
 
 <h2 id="habit-6">6. Practicing Only Tests (Or Only Games)</h2>
 <p><strong>Why it slows you down:</strong> Tests measure. Games pressure. Neither replaces map installation. Endless homepage restarts train restarting and adrenaline, not home-row ownership. Games-first learning often freezes peeking and panic corrections.</p>
@@ -1339,7 +681,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Limit pure testing to scheduled check-ins (e.g., weekly averages).</li>
 <li>Use <a href="/typing-game-falling-words">games</a> only after accuracy is trustworthy.</li>
 </ul>
-<p>Measurement still matters — just not as the whole diet. Overview: <a href="/blog/typing-speed-test">typing speed test</a>, <a href="/blog/free-typing-test">free typing test</a>.</p>
+<p>Measurement still matters — just not as the whole diet. Overview: <a href="/">typing speed test</a>, <a href="/">free typing test</a>.</p>
 
 <h2 id="habit-7">7. Restarting Every Mistake</h2>
 <p><strong>Why it slows you down:</strong> You build a fantasy history of perfect openings and never practice recovery. Real work and employer tests do not offer infinite restarts. Emotionally, restart addiction trains fragility: one error = abort mission.</p>
@@ -1450,7 +792,7 @@ export const touchTypingArticles: Record<string, string> = {
 <li>Never using a real keyboard on “laptop days” then wondering why scores swing</li>
 <li>Skipping breaks until fatigue destroys afternoon accuracy</li>
 </ul>
-<p>Work volume without deliberate form freezes bad habits faster because reps are high. Separate 15 minutes of form work from eight hours of production chaos. Career context: <a href="/blog/typing-speed-for-work">typing speed for work</a>.</p>
+<p>Work volume without deliberate form freezes bad habits faster because reps are high. Separate 15 minutes of form work from eight hours of production chaos. Career context: <a href="/blog/good-typing-speed">typing speed for work</a>.</p>
 
 <h2 id="emotional">The Emotional Habits Under the Finger Habits</h2>
 <p>Bad technique often sits on bad stories:</p>
@@ -1555,7 +897,7 @@ export const touchTypingArticles: Record<string, string> = {
 <h2 id="closing">Slow Is What You Rehearse When You Rehearse Mess</h2>
 <p>Bad typing habits slow you down twice: once in the moment (errors, peeks, tension), and again over months (a ceiling you call permanent). The fix is not mysterious. Name the habit, cut the reps that feed it, install better reps, and measure with accuracy and honesty — not only vanity WPM.</p>
 <p>You do not need a new personality. You need a shorter list of automatic mistakes.</p>
-<p>Start the audit: take a <a href="/">typing test</a>, note accuracy and whether you looked, then attack your top habit with <a href="/typing-lessons">lessons</a> or <a href="/typing-practice">practice</a>. For a full rebuild, use the <a href="/blog/touch-typing-guide">touch typing guide</a> and the <a href="/blog/touch-typing-for-beginners">30-day plan</a>.</p>
+<p>Start the audit: take a <a href="/">typing test</a>, note accuracy and whether you looked, then attack your top habit with <a href="/typing-lessons">lessons</a> or <a href="/typing-practice">practice</a>. For a full rebuild, use the <a href="/blog/touch-typing-for-beginners">touch typing guide</a> and the <a href="/blog/touch-typing-for-beginners">30-day plan</a>.</p>
 `,
 };
 

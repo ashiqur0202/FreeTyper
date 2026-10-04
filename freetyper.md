@@ -2,7 +2,7 @@
 
 Standalone typing platform. No login, privacy-first, monetized via ads & affiliates.
 
-> **Status (2026-10-03):** AdSense rejected (“Low value content”). All 7 tool-page guides were rewritten from the real code + verified sources, and ~10 bugs/inaccuracies found along the way were fixed. Browser-tested before release (32/32 checks: speed test, keyboard guide, Word Attack rounds/progress, Falling Words speed and game over, progress page, schema, no console errors) — that run also caught and fixed a hydration error on `/keyboard-guide` for users with saved stats. Merged to `master` and pushed for the Coolify deploy on 2026-10-04. Still open: Verify site ownership (AdSense UI), the blog cut/rewrite, indexing + traffic, then reapply. See **TODO — AdSense fix plan**.
+> **Status (2026-10-04):** AdSense rejected (“Low value content”). **Everything below marked done is LIVE on freetyper.com** (master `c74eb2d`): all 7 tool guides rewritten from the real code + verified sources, ~10 tool bugs fixed, real author/date bylines, BlogPosting schema, and pinned (sticky) left/right sidebars. Release was browser-tested first (32/32 functional checks + 46/46 sidebar checks, re-run against the live site; no console errors) — testing caught a hydration error on `/keyboard-guide` for users with saved stats, fixed before release. **Blog (2026-10-04, branch `content/blog-consolidation`, not deployed yet):** cut from 25 to 10 posts (15 deleted, 74 internal links remapped, sitemap 38 → 23 URLs); the 10 kept posts still carry the OLD templated bodies and are next to be rewritten. **Still open:** Verify site ownership (AdSense UI), the blog cut/rewrite, Search Console indexing + traffic, then reapply. See **TODO — AdSense fix plan**.
 
 ## Tech Stack
 - **Next.js 16** (App Router, TS) + **Tailwind v4** + **lucide-react**
@@ -38,14 +38,14 @@ src/data/
 ├── home/typing-speed-content.ts          # Home guide — REWRITTEN 2026-10-03 (~2k words, verified facts, FAQ list feeds visible FAQ + JSON-LD)
 ├── tools/*-content.ts (6 files)          # REWRITTEN 2026-10-03, ~1.6–1.7k words each: lessons, practice, keyboard-guide, progress, falling-words, word-attack. Each exports meta, faqs (feeds visible FAQ + JSON-LD), previewHtml, bodyHtml, howToSteps; header comment names the code files it describes — update guide + code together
 └── blog/
-    ├── typing-skills.ts                  # Post index (slug, title, meta) — 25 live
+    ├── typing-skills.ts                  # Post index (slug, title, meta) — 10 kept (cut from 25 on 2026-10-04)
     ├── article-content.ts                # Re-exports articles/*
     └── articles/
-        ├── typing-speed.ts               # Pillar 1 bodies (6 posts)
-        ├── typing-tests.ts               # Pillar 2 bodies (6 posts)
-        ├── touch-typing.ts               # Pillar 3 bodies (5 posts)
-        ├── practice.ts                   # Pillar 4 bodies (5 posts)
-        └── productivity.ts               # Pillar 5 bodies (3 posts)
+        ├── typing-speed.ts               # how-to-type-faster, good-typing-speed, improve-typing-accuracy
+        ├── touch-typing.ts               # touch-typing-for-beginners, muscle-memory-and-touch-typing, 10-bad-typing-habits
+        ├── practice.ts                   # data-entry-typing-test, typing-speed-for-programmers
+        └── productivity.ts               # mechanical-vs-membrane-keyboards, fix-typing-posture-and-avoid-wrist-pain
+        (typing-tests.ts deleted — all 6 test posts removed; the speed-test topic lives on the home guide)
 src/app/ → page (speed test + SEO), [slug] (all 7 tools + SEO),
            settings, blog, about, contact, privacy, terms, disclaimer, opengraph-image
 ```
@@ -96,7 +96,8 @@ Tool SEO pages: full-viewport tool above the fold → guide below (visible H1 = 
 `/typing-speed-test` **308 redirect → `/`** (home owns the keyword; slug is not in the sitemap).  
 Bylines: every tool guide and the home page use a **real fixed date** (“Last updated October 3, 2026”) + author Ashiqur Rahman → `/about#author`. **When you change a guide, bump its date** (the `<time datetime>` in `previewHtml` + the “Last real edit” header comment). Never fake freshness.  
 Guide rules: describe only what the code does; cite only sources actually opened (Dhakal et al., CHI 2018 — verified: 168,000 volunteers, mean 51.56 WPM SD 20.2, fastest 10% above ~78, slowest 10% below ~26, uncorrected error rate 1.167%, trained typists ~+5 WPM; Wikipedia “Words per minute”); no invented stats; state the tool’s limits.  
-Tool pages use the **full middle column** (between left nav and right rail). Right sidebar is visible (200px) with on-site links + a short tip — not an empty ad slot.
+Tool pages use the **full middle column** (between left nav and right rail). Right sidebar is visible (200px) with on-site links + a short tip — not an empty ad slot.  
+**Sidebars are pinned (2026-10-04):** on desktop both `<aside>`s are `md:sticky md:top-0 md:h-screen md:self-start` (+ `overflow-y-auto`). Root cause of the old behaviour: the `main` flex row stretched each aside to the full page height, so `sticky` had no room to move — never give them `h-auto`/`min-h-screen` or drop `self-start`. Mobile drawer (`fixed`) is unchanged. If an ad is ever placed in the right rail, check AdSense’s policy on sticky placement first.
 
 ## Settings (localStorage: `freetyper-settings`)
 | Setting | Values | Default |
@@ -121,7 +122,7 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - JSON-LD: Org + WebSite (layout); WebApplication + FAQPage + HowTo on home + tools (FAQ text = the visible FAQ); Breadcrumb on home; **BlogPosting + Breadcrumb on every blog post** (author → `/about#author`); JSON-LD escapes `<`. Note: Google no longer shows HowTo rich results and limits FAQ rich results — kept as harmless, accurate markup, not a ranking lever
 - Org logo → `/opengraph-image` (not the old 404 `/og-image.png`). No fake SearchAction (`/?q=` does not exist)
 - Guides: real author byline + date, honest “Limits” and “Sources and method” sections, open by default (no collapsed body)
-- OG/Twitter cards · dynamic `opengraph-image.tsx` (1200×630) · sitemap (tools + blog, **no** `/typing-speed-test`) · `app/robots.ts` (Allow + Sitemap) · RSS (tools + 25 posts) · PWA
+- OG/Twitter cards · dynamic `opengraph-image.tsx` (1200×630) · sitemap (tools + blog, **no** `/typing-speed-test`) · `app/robots.ts` (Allow + Sitemap) · RSS (tools + 10 posts) · PWA
 - **Do not** put ads.txt in `public/robots.txt` — that file was blocking a real robots.txt; ads stay in `public/ads.txt`
 - Settings `/settings` is `noindex`. About/contact/legal have unique titles + canonicals
 - GA4 `G-QC5509TVSF` · Google Search Console verified
@@ -132,9 +133,9 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - Expandable SEO guide is **open by default** (changed 2026-10-03 after the “low value content” rejection; supersedes the earlier collapsed product call)
 - Login: **not now**. Guest + localStorage stays the product. Optional magic-link sync is a later conversation, not this round
 - Site title: `FreeTyper — Type Faster. Free Forever.` (no decorative unicode)
-- Blog: **25 evergreen posts** live (pillars 1–5); de-AI voice pass done site-wide on bodies
+- Blog: **10 posts** (cut from 25 on 2026-10-04 — see Blog section); bodies are still the old long templated drafts until each is rewritten
 - Legal: /about, /contact, /privacy, /terms, /disclaimer
-- Deploy: GitHub → Coolify (Docker) → Hetzner · Repo: `github.com/ashiqur0202/FreeTyper`
+- Deploy: GitHub → Coolify (Docker) → Hetzner · Repo: `github.com/ashiqur0202/FreeTyper` · push to `master` auto-deploys (~3 min). Workflow used 2026-10-03/04: work on a branch → `tsc` + `npm run build` + headless-browser tests on `next start` → fast-forward `master` → push → poll the live site to confirm
 
 ## Done
 - [x] Live keyboard visualizer (full layout, hint, flash, focusKeys)
@@ -178,8 +179,10 @@ Theme + accent are **wired** (sidebar Theme modal + Settings → Appearance → 
 - [x] Product call: **no login this round** — guest + localStorage only
 - [x] Right sidebar filled (tool links + tip) so the site does not look unfinished
 - [x] Fixed broken leftover sentences in `improve-typing-accuracy`
-- [x] **2026-10-03 batch (uncommitted):** all 7 tool guides rewritten from the code (see 3a) · real author/date bylines · `BlogPosting` schema · sitemap no fake lastmod · 23 redirect links fixed · dead `ResultCard.tsx` / stray draft deleted · README replaced
-- [x] **Bugs found and fixed while writing the guides:** unsupported “top 5%” result label removed · keyboard guide: 6 keys had no finger + space labelled “right index” · streak used UTC day (now local) · Falling Words fall speed was per-frame (now time-based) · Word Attack double-counted progress and logged cumulative snapshots, WPM counted idle screens (now per-round delta, active time only)
+- [x] **2026-10-03 batch (live since 2026-10-04):** all 7 tool guides rewritten from the code (see 3a) · real author/date bylines · `BlogPosting` schema · sitemap no fake lastmod · 23 redirect links fixed · dead `ResultCard.tsx` / stray draft deleted · README replaced
+- [x] **Bugs found and fixed while writing the guides (live):** unsupported “top 5%” result label removed · keyboard guide: 6 keys had no finger + space labelled “right index” · streak used UTC day (now local) · Falling Words fall speed was per-frame (now time-based) · Word Attack double-counted progress and logged cumulative snapshots, WPM counted idle screens (now per-round delta, active time only)
+- [x] **Release 2026-10-04:** merged to `master` + pushed → Coolify; verified live (new H1, guide dates, BlogPosting, either-thumb label, sitemap `lastmod` only on posts). Pre-release browser tests caught + fixed a `/keyboard-guide` hydration mismatch (stats read from localStorage on first paint → now rendered after hydration via `useSyncExternalStore`)
+- [x] **Sticky sidebars** (2026-10-04): left + right rails stay pinned on long pages (see layout note); verified 46/46 locally and on the live site at 900px and 560px viewport heights, plus mobile drawer unchanged
 
 ## Audit — AdSense rejection (2026-10-03)
 Full code + live-site audit. **Status: AdSense application rejected — “Low value content”** (dashboard: “Your site isn't ready to show ads · Verify site ownership · policy violation”). Only ~4 pages are in Google's index.
@@ -187,13 +190,13 @@ Full code + live-site audit. **Status: AdSense application rejected — “Low v
 **Google's stated bar (verbatim criteria):** a site must (1) provide authentic, high-quality information, tools or services; (2) exhibit **ongoing curation and structural maintenance**; (3) **generate and sustain genuine user interest**. Wording also asks for “a consistent presence on the web”.
 → Maps to: (1) content quality/originality, (2) posts all published in a few batches then frozen, (3) no traffic yet. Also, the dashboard still shows **“Verify site ownership”** as an open step — do that first (meta tag + ads.txt are live; click Verify in AdSense → Sites).
 
-**Verified OK (live):** AdSense `<script>` + `google-adsense-account` meta in `<head>` on every page · `/ads.txt` correct · `robots.txt` allows all + sitemap · sitemap has 38 URLs (7 static, 6 tools, 25 posts) · canonicals correct · legal pages + working `contact@` address. The deploy is done; it is not a technical-setup problem.
+**Verified OK (live, re-checked 2026-10-04):** AdSense `<script>` + `google-adsense-account` meta in `<head>` on every page · `/ads.txt` correct · `robots.txt` allows all + sitemap · sitemap had 38 URLs when checked (7 static, 6 tools, 25 posts) — 23 after the blog cut · canonicals correct · legal pages + working `contact@` address. The deploy is done; it is not a technical-setup problem.
 
 **Likely causes (ranked, inferred — not confirmed by Google):**
 1. **Scaled / AI-looking content.** 25 posts × ~3k words + 7 tool guides (~815 KB text), one generic author (“FreeTyper Team”), batch dates (5 on Jun 8–12, 4 on Jul 27, 16 on Aug 7), repeated structure (23/25 have a “Table of Contents” H2; repeated “From Article to Action” / “Bottom Line” closers). The “de-AI pass” changed wording, not substance — no first-hand experience, original data or screenshots.
 2. **Weak sourcing.** Home guide “Sources” are mostly “commonly reported across typing platforms…” — vague, few verifiable links. Unsupported benchmark tables read as low-value. → **FIXED for the 7 tool pages 2026-10-03; blog posts still have it.**
 3. **No real author entity.** Bylines are “FreeTyper Editorial/Team”; no bio/author page/credentials on posts (About does name Ashiqur Rahman). → byline + schema now point to `/about#author`; **posts are only truthful once you review/rewrite them.**
-4. **Tool pages are an app with the guide collapsed** behind “Read more”, H1 is `sr-only`, so visitors see little publisher content. → **FIXED in code 2026-10-03 (uncommitted):** visible H1, guide open, guides rewritten.
+4. **Tool pages are an app with the guide collapsed** behind “Read more”, H1 is `sr-only`, so visitors see little publisher content. → **FIXED and live 2026-10-04:** visible H1, guide open, guides rewritten.
 5. **New domain, no authority/traffic, poor indexing** (rest are “Discovered – not indexed”). AdSense wants indexed pages and real visitors.
 
 **Small defects found:**
@@ -234,7 +237,8 @@ Not a code problem — nothing to change in the repo for this item.
 - [x] Deleted `ResultCard.tsx`, `typing_speed_test.md`; real `README.md`
 - [x] Reviewed `privacy/page.tsx:56`: it is Google’s required cookie wording, not a claim about us — left as is
 - [x] `tsc` clean, `npm run build` passes, changed files lint-clean (repo has ~57 pre-existing lint errors, e.g. `useTypingEngine.ts` refs-in-render — separate cleanup)
-- [ ] **Commit + push + Coolify deploy** (not committed yet)
+- [x] **Commit + push + Coolify deploy** — done 2026-10-04 (5 commits + sticky-sidebar fix; live)
+- [ ] Optional [C]: delete unused `content-dates.ts` + placeholder injection; address the ~57 pre-existing lint errors (see Next Up)
 
 ### 3a. Tool-page guide rewrites — [C] (one page at a time, review before moving on)
 Rules: describe only what the tool really does (read its code first); every number either comes from the code or a source that was actually opened and checked; no invented stats/benchmarks; no templated TOC/closers; ~1–2k words; short keywords in title/H1/intro, long-tail as question H2s + FAQ; FAQ list feeds both visible FAQ and JSON-LD; real fixed “last updated” date; byline Ashiqur Rahman.
@@ -246,12 +250,13 @@ Rules: describe only what the tool really does (read its code first); every numb
 - [x] `/typing-game-falling-words` — done 2026-10-03. Code fix alongside: fall speed now scaled by real elapsed time (was per-frame → faster on 120/144 Hz; closes the “Falling Words frame-rate speed” known bug). Documented: score by word length (10/25/50, no combos), tier thresholds 10/20/36/48/75/90/126/144/180 cumulative words, fall time ~3.2s→0.6s, accuracy = words cleared ÷ (cleared+dropped) not keystrokes, pools are 60×3-letter / 80×5-letter / 258×5–10-letter words. Difficulty curve is very steep (product note)
 - [x] `/typing-game-word-attack` — done 2026-10-03. **Code fixes alongside (found while reading the code):** (1) each round-end save used to prepend a *new cumulative* log entry and add a *cumulative* session, so latest-5 filled with one game’s snapshots and progress double-counted sessions/time/words (and unlocked session badges early) — now one log entry per game (updated each round) and each round adds only its own delta session (`Word Attack - Round N`); (2) WPM/time counted the “get ready”/“round complete” screens — now only active play time. Documented: 8 rounds (5/6/6/7/7/8/8/10 words; 6/5/5/5/5/5/5/4.5 s per word), points by word length 10/25/50 × combo (x1 ≤2, x1.5 3–5, x2 6–8, x2.5 9–11, x3 12+), combo only resets on timeout (not typos), accuracy = words cleared ÷ attempted. Unused config in gameData: wordAttackRounds.duration/basePoints, scoringRules.speedBonus*
 - [ ] Optional [A]: add one real screenshot of a FreeTyper result card to the home guide (most “genuine” signal); rename sidebar link “start” → “speed test” (better anchor text)
+- [ ] [A] After the deploy: Search Console → request indexing for `/`, `/blog`, `/typing-practice`, `/typing-lessons`, `/keyboard-guide`, `/typing-progress`, both game pages (Google must re-crawl the rewritten pages)
 
 ### 3. Blog content quality — [A] + [C] (needs your real experience; Claude must not invent first-hand claims)
-- [ ] Decide which ~8–10 posts to keep (proposal: `how-to-type-faster`, `good-typing-speed`, `touch-typing-for-beginners`, `improve-typing-accuracy`, `data-entry-typing-test`, `typing-speed-for-programmers`, `best-keyboards-for-fast-typing`, `fix-typing-posture-and-avoid-wrist-pain`)
-- [ ] [C] `noindex` + remove from sitemap/RSS/blog list the posts not kept (keep URLs alive; no 404s)
-- [ ] [A] Rewrite each kept post’s intro/body in your own voice: your own tests, your own numbers, real screenshots of FreeTyper results
-- [ ] [C] Replace vague “commonly reported…” sources with real, linkable citations — or delete the claim (`typing-speed-content.ts` Sources section + posts)
+- [x] Decide which posts to keep — **10 chosen 2026-10-04** (list in the Blog section)
+- [x] [C] Remove the 15 other posts — **deleted outright** (Ashiqur’s call: they were not indexed yet, so no redirects/noindex); gone from blog list, sitemap, RSS; internal links to them remapped (74) to the nearest kept post or tool; no broken internal links in the built site. Removed URLs now 404
+- [ ] [C] Rewrite each of the 10 kept posts from scratch (see rules in the Blog section) — then [A] review under your name
+- [ ] [C] Zero external sources currently exist in any post; every rewritten post must cite real, opened sources (rewrite step covers this)
 - [ ] [C] Remove templated repeats (“Table of Contents” H2, “From Article to Action”, “Bottom Line” closers)
 
 ### 4. Ongoing presence + traffic — [A]
@@ -265,8 +270,9 @@ Rules: describe only what the tool really does (read its code first); every numb
 - [ ] Once approved: turn **off** overlay / anchor / vignette Auto ads so they miss the typing area
 
 ## Next Up (product backlog, after AdSense)
-- [x] ~~Commit the 2026-10-03 batch~~ (done; merged + pushed 2026-10-04) (suggested split: 1 site/SEO fixes [layout schema, sitemap, bylines, links, README, deletions]; 2 tool-guide rewrites [`src/data/**`]; 3 tool bug fixes [keyboard map, streak, Falling Words, Word Attack, percentile label]) → push → Coolify; then verify live `/` H1, `/blog/*` BlogPosting, sitemap
+- [x] ~~Commit + deploy the 2026-10-03 batch~~ — done 2026-10-04
 - [ ] Product decisions raised by the guides: (a) lessons unlock without any accuracy check — add a 95% gate? (b) Falling Words tiers 7–10 fall in under 1 s (very steep) — ease the speed curve? (c) only 20 practice passages — add more; (d) progress export/import; (e) unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`)
+- [ ] Add the browser checks to the repo: this session’s headless-Chrome scripts (functional + sticky sidebars) lived in a temp folder and are not saved. Recreate as Playwright tests in the repo (`tests/`) so every release can run them (cover: speed-test run, keyboard-guide labels, Word Attack per-round progress, Falling Words speed, hydration on pages with stored data, sticky rails)
 - [ ] Cleanup: ~57 pre-existing lint errors (e.g. `useTypingEngine.ts` refs read/written during render, set-state-in-effect in the games); delete unused `src/lib/content-dates.ts` + the placeholder injection in `ExpandableSeoContent`
 - [ ] Wire remaining settings into tools: font size → `.typing-text`; sound → key beeps; hints → LiveKeyboard gold pulse
 - [ ] Known bugs (next coding pass): command palette vs typing on `/`; Esc in focus mode; mobile `keydown` vs input; LiveKeyboard missing shift glyphs
@@ -275,101 +281,31 @@ Rules: describe only what the tool really does (read its code first); every numb
 - [ ] Multiplayer races · Leaderboards · School mode (needs optional login later)
 - [ ] More games (Type Racer, Zombie Typing)
 
-## Blog Posts (25 — SEO Strategy)
-- **Live: 25** · Planned: 25 · Remaining: 0
-- Content Type: Evergreen
-- Goal: SEO, Topical Authority, AdSense, Organic Traffic
-- Target length: **3,000+ words** per article (current live posts meet this bar)
-- Include FAQs, Internal Links to tools (`/`, lessons, practice, progress, games), Practical Examples
-- Index: `src/data/blog/typing-skills.ts` · Bodies: `src/data/blog/articles/*.ts`
-- **Voice pass (2026-08):** all pillars de-templated for AdSense/quality optics; keep product links; avoid claiming “never AI” unless fully rewritten by hand
+## Blog (10 posts — consolidated 2026-10-04)
+Index: `src/data/blog/typing-skills.ts` · Bodies: `src/data/blog/articles/*.ts` · Posts render at `/blog/[slug]` with BlogPosting + Breadcrumb JSON-LD.
 
-### Live posts (25)
+**State:** the 10 posts below were kept because each has a distinct search intent that the tool pages do not already answer. Their bodies are still the **old ~3k-word templated drafts** (no external sources; some with heavy unsupported percentages) — they are the next job. 15 others were deleted.
 
-| # | Slug | Title | Pillar | ~Words |
-|---|------|--------|--------|--------|
-| 1 | `how-to-type-faster` | How to Type Faster: 15 Proven Techniques… | 1 Speed | long |
-| 2 | `good-typing-speed` | What Is a Good Typing Speed?… | 1 Speed | long |
-| 3 | `average-typing-speed` | Average Typing Speed: Statistics… | 1 Speed | long |
-| 4 | `how-many-words-per-minute` | How Many Words Per Minute Should You Type? | 1 Speed | long |
-| 5 | `typing-speed-for-work` | What Is a Good Typing Speed for Work? | 1 Speed | long |
-| 6 | `improve-typing-accuracy` | How to Improve Typing Accuracy From 90% to 99% | 1 Speed | ~3.0k |
-| 7 | `free-typing-test` | Free Typing Test: Complete Guide to Measuring Your WPM | 2 Tests | ~3.3k |
-| 8 | `typing-speed-test` | Typing Speed Test: Everything You Need to Know | 2 Tests | ~3.5k |
-| 9 | `one-minute-typing-test` | 1 Minute Typing Test: What Is a Good Score? | 2 Tests | ~3.1k |
-| 10 | `3-minute-typing-test-vs-5-minute-typing-test` | 3 Min vs 5 Min Typing Test: Which Is More Accurate? | 2 Tests | ~4.4k |
-| 11 | `5-minute-typing-test` | 5 Minute Typing Test: What Is a Good WPM? | 2 Tests | ~3.5k |
-| 12 | `typing-accuracy-test` | Typing Accuracy Test: Why Accuracy Matters More Than Speed | 2 Tests | ~3.5k |
-| 13 | `touch-typing-guide` | Touch Typing Guide: Learn to Type Without Looking… | 3 Touch | ~3.5k |
-| 14 | `touch-typing-for-beginners` | Touch Typing for Beginners: A Complete 30-Day Plan | 3 Touch | ~3.2k |
-| 15 | `how-to-learn-touch-typing-as-an-adult` | How to Learn Touch Typing as an Adult | 3 Touch | ~3.3k |
-| 16 | `muscle-memory-and-touch-typing` | The Science Behind Muscle Memory and Touch Typing | 3 Touch | ~3.3k |
-| 17 | `10-bad-typing-habits` | 10 Bad Typing Habits That Are Slowing You Down | 3 Touch | ~3.2k |
-| 18 | `typing-practice` | Typing Practice: Daily Exercises to Build Speed… | 4 Practice | ~3.2k |
-| 19 | `best-free-typing-games` | Best Free Typing Games to Improve Your Speed | 4 Practice | ~3.1k |
-| 20 | `type-numbers-and-symbols-without-looking` | How to Type Numbers and Symbols Without Looking | 4 Practice | ~3.1k |
-| 21 | `data-entry-typing-test` | How to Pass a Data Entry Typing Test for Job Interviews | 4 Practice | ~3.1k |
-| 22 | `typing-speed-for-programmers` | Typing Speed for Programmers: How Fast Should Coders Type? | 4 Practice | ~3.1k |
-| 23 | `best-keyboards-for-fast-typing` | Best Keyboards for Fast Typing | 5 Productivity | ~3.1k |
-| 24 | `mechanical-vs-membrane-keyboards` | Mechanical vs Membrane Keyboards: Which Is Better for Typing? | 5 Productivity | ~3.1k |
-| 25 | `fix-typing-posture-and-avoid-wrist-pain` | How to Fix Your Typing Posture and Avoid Wrist Pain | 5 Productivity | ~3.1k |
+| # | Slug | Why kept | Pre-rewrite risk (from the audit scan) | Status |
+|---|------|----------|----------------------------------------|--------|
+| 1 | `how-to-type-faster` | core intent; 8 H2s, no templated TOC | 10 % figures, 0 sources | rewrite pending |
+| 2 | `good-typing-speed` | the one benchmark post (absorbs average / how-many / for-work topics) | 9 % figures, 6 “study” mentions, 0 sources | rewrite pending — ground in Dhakal et al. + our rank bands |
+| 3 | `improve-typing-accuracy` | distinct intent | **64 % figures**, 0 sources | rewrite pending — strip invented numbers |
+| 4 | `touch-typing-for-beginners` | practical plan (absorbs touch-typing guide / adult posts) | 17 % figures | rewrite pending |
+| 5 | `muscle-memory-and-touch-typing` | motor-learning angle, citable | 3 “study” mentions, 0 sources | rewrite pending — needs real literature |
+| 6 | `10-bad-typing-habits` | distinct, low-claim | 4 % figures | rewrite pending |
+| 7 | `typing-speed-for-programmers` | niche intent (our code mode) | 8 % figures | rewrite pending |
+| 8 | `data-entry-typing-test` | job-test intent | 14 % figures, employer claims unverified | rewrite pending — verify how such tests score (net WPM, KSPH) |
+| 9 | `mechanical-vs-membrane-keyboards` | honest “how to choose” (absorbs best-keyboards) | thin hard evidence | rewrite pending — say what is and isn’t known |
+| 10 | `fix-typing-posture-and-avoid-wrist-pain` | highest value; public guidance exists | 0 % figures, 0 sources | rewrite pending — cite OSHA / CDC-NIOSH-type guidance actually opened |
 
----
+**Deleted 2026-10-04 (15):** `typing-practice`, `best-free-typing-games`, `type-numbers-and-symbols-without-looking`, `best-keyboards-for-fast-typing`, `touch-typing-guide`, `how-to-learn-touch-typing-as-an-adult`, `average-typing-speed`, `how-many-words-per-minute`, `typing-speed-for-work`, `free-typing-test`, `one-minute-typing-test`, `3-minute-typing-test-vs-5-minute-typing-test`, `5-minute-typing-test`, `typing-accuracy-test`, `typing-speed-test` (blog). Reasons: overlapped the home/tool guides (6 test posts; practice; games; numbers) or each other (4 benchmark posts, 3 touch-typing, 2 keyboards). Their old text stays in git history (`git log -- src/data/blog`).
 
-# Pillar 1: Typing Speed
+**Rewrite rules (same bar as the tool guides):**
+- 1.2–2k words, answer first, one clear question per post; no templated “Table of Contents”, “From Article to Action”, “Bottom Line”
+- Facts only from sources actually opened and checked, linked inline; no invented statistics; no fake first-hand stories — say what is unknown
+- Use the site’s own measured behaviour where relevant (scoring rules, rank bands) and link to the right tool
+- Real `date` (first published) and an updated date when edited; never batch-backdate; byline Ashiqur Rahman
+- Then **1 new post per week** (ongoing curation is an AdSense criterion); keep a topic queue here
 
-## Priority: High · Status: **Complete (6/6)**
-
-1. [x] How to Type Faster: 15 Proven Techniques to Increase Your WPM → `/blog/how-to-type-faster`
-2. [x] What Is a Good Typing Speed? WPM Benchmarks by Age and Profession → `/blog/good-typing-speed`
-3. [x] Average Typing Speed: Statistics and How You Compare → `/blog/average-typing-speed`
-4. [x] How Many Words Per Minute Should You Type? → `/blog/how-many-words-per-minute`
-5. [x] What Is a Good Typing Speed for Work? → `/blog/typing-speed-for-work`
-6. [x] How to Improve Typing Accuracy From 90% to 99% → `/blog/improve-typing-accuracy`
-
----
-
-# Pillar 2: Typing Tests
-
-## Priority: High · Status: **Complete (6/6)**
-
-7. [x] Free Typing Test: Complete Guide to Measuring Your WPM → `/blog/free-typing-test`
-8. [x] Typing Speed Test: Everything You Need to Know → `/blog/typing-speed-test`
-9. [x] 1 Minute Typing Test: What Is a Good Score? → `/blog/one-minute-typing-test`
-10. [x] 3 Minute Typing Test vs 5 Minute Typing Test: Which Is More Accurate? → `/blog/3-minute-typing-test-vs-5-minute-typing-test`
-11. [x] 5 Minute Typing Test: What Is a Good WPM? → `/blog/5-minute-typing-test`
-12. [x] Typing Accuracy Test: Why Accuracy Matters More Than Speed → `/blog/typing-accuracy-test`
-
----
-
-# Pillar 3: Touch Typing & Learning
-
-## Priority: High · Status: **Complete (5/5)**
-
-13. [x] Touch Typing Guide: Learn to Type Without Looking at the Keyboard → `/blog/touch-typing-guide`
-14. [x] Touch Typing for Beginners: A Complete 30-Day Learning Plan → `/blog/touch-typing-for-beginners`
-15. [x] How to Learn Touch Typing as an Adult → `/blog/how-to-learn-touch-typing-as-an-adult`
-16. [x] The Science Behind Muscle Memory and Touch Typing → `/blog/muscle-memory-and-touch-typing`
-17. [x] 10 Bad Typing Habits That Are Slowing You Down → `/blog/10-bad-typing-habits`
-
----
-
-# Pillar 4: Practice & Improvement
-
-## Priority: Medium · Status: **Complete (5/5)**
-
-18. [x] Typing Practice: Daily Exercises to Build Speed and Muscle Memory → `/blog/typing-practice`
-19. [x] Best Free Typing Games to Improve Your Speed → `/blog/best-free-typing-games`
-20. [x] How to Type Numbers and Symbols Without Looking → `/blog/type-numbers-and-symbols-without-looking`
-21. [x] How to Pass a Data Entry Typing Test for Job Interviews → `/blog/data-entry-typing-test`
-22. [x] Typing Speed for Programmers: How Fast Should Coders Type? → `/blog/typing-speed-for-programmers`
-
----
-
-# Pillar 5: Productivity & Hardware
-
-## Priority: Medium · Status: **Complete (3/3)**
-
-23. [x] Best Keyboards for Fast Typing → `/blog/best-keyboards-for-fast-typing`
-24. [x] Mechanical vs Membrane Keyboards: Which Is Better for Typing? → `/blog/mechanical-vs-membrane-keyboards`
-25. [x] How to Fix Your Typing Posture and Avoid Wrist Pain → `/blog/fix-typing-posture-and-avoid-wrist-pain`
+**Topic queue (draft ideas, none written):** how typing speed is scored by employers (net vs gross, accuracy floors) · typing on a laptop vs external keyboard · how to practice typing 10 minutes a day · does typing speed matter for programmers (with evidence) · common typing errors by key pair (from the Dhakal et al. error data)

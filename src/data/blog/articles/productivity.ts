@@ -1,294 +1,4 @@
 export const productivityArticles: Record<string, string> = {
-  'best-keyboards-for-fast-typing': `
-<p>People ask for the “best keyboard for fast typing” like there is a single winner. There is not. The best board is the one your hands can live on for hours without fighting you. Loud and expensive does not equal fast. Quiet and boring can be excellent.</p>
-
-<p>Hardware can reduce fatigue and make consistent keystrokes easier. It cannot install home row for you. If your map is weak, buy practice time before you buy a flagship board.</p>
-
-<p>This page covers what actually matters (feel, stability, noise, layout), how mechanical and membrane differ in real life, and how to A/B test a new board without fooling yourself. Baseline on your current keyboard with the <a href="/">homepage speed test</a>, train a bit on <a href="/typing-practice">practice</a>, then retest after a swap under the same duration.</p>
-
-<h2 id="toc">Table of Contents</h2>
-<ol>
-<li><a href="#truth">The Truth: Keyboard vs Skill</a></li>
-<li><a href="#features">Features That Actually Help Fast Typing</a></li>
-<li><a href="#types">Keyboard Types Compared for Typing</a></li>
-<li><a href="#switches">Switches and Feel (Without the Hype Spiral)</a></li>
-<li><a href="#layout">Layout and Form Factor</a></li>
-<li><a href="#ergonomics">Ergonomic and Split Options</a></li>
-<li><a href="#laptop">Laptop Keyboards: When to Externalize</a></li>
-<li><a href="#who">Best Keyboard Direction by User Type</a></li>
-<li><a href="#test">How to Test a Keyboard Fairly on FreeTyper</a></li>
-<li><a href="#buy">Buying Checklist</a></li>
-<li><a href="#mistakes">Hardware Mistakes That Do Not Raise WPM</a></li>
-<li><a href="#faq">Best Keyboards for Fast Typing FAQ</a></li>
-</ol>
-
-<h2 id="truth">The Truth: Keyboard vs Skill</h2>
-<p>A great keyboard can:</p>
-<ul>
-<li>Reduce finger fatigue over long FreeTyper sessions and workdays</li>
-<li>Improve consistency of key actuation (less accidental light misses or heavy mashing)</li>
-<li>Make light force easier — supporting accuracy under endurance tests</li>
-<li>Improve comfort so you practice more days per week</li>
-</ul>
-<p>A great keyboard cannot:</p>
-<ul>
-<li>Teach touch typing while you stare at the keys</li>
-<li>Fix 88% accuracy</li>
-<li>Replace weak-key practice</li>
-<li>Turn 35 WPM into 90 WPM overnight</li>
-</ul>
-<p>If your map is weak, buy time for <a href="/typing-lessons">lessons</a> before you buy a flagship board. Skill guides: <a href="/blog/touch-typing-guide">touch typing guide</a>, <a href="/blog/typing-practice">typing practice</a>, <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
-<p>When you do upgrade, keep hardware constant during improvement weeks so FreeTyper trends mean something. Changing boards mid-program without a new baseline creates fake plateaus and fake breakthroughs.</p>
-
-<h2 id="features">Features That Actually Help Fast Typing</h2>
-<table>
-<thead><tr><th>Feature</th><th>Why it matters for speed/accuracy</th></tr></thead>
-<tbody>
-<tr><td>Consistent actuation</td><td>Same force each key reduces surprise misses</td></tr>
-<tr><td>Reasonable key travel for you</td><td>Too short or too long can hurt rhythm if mismatched</td></tr>
-<tr><td>Stable cases / little flex</td><td>Wobbly boards steal confidence at speed</td></tr>
-<tr><td>Clear key legends (while learning)</td><td>Beginners still glance; blank keys are advanced cosplay</td></tr>
-<tr><td>Comfortable angle / wrist story</td><td>Pain ends practice streaks</td></tr>
-<tr><td>N-key or solid anti-ghosting</td><td>Chords and fast rolls register correctly</td></tr>
-<tr><td>Reliable connection</td><td>Wireless lag or drops destroy timed tests</td></tr>
-<tr><td>Layout you already know</td><td>Novel ortholinear mid-job-hunt is a skill tax</td></tr>
-</tbody>
-</table>
-<p>RGB lighting, aircraft aluminum mystique, and influencer sound tests are optional. Comfort + consistency + reliability are not.</p>
-
-<h2 id="types">Keyboard Types Compared for Typing</h2>
-<h3>Membrane / scissor laptop-style</h3>
-<p>Quiet, cheap, everywhere. Many people type fine on them. Limits: mushy feedback for some typists, flex on budget units, laptop scissor keys can feel shallow for long sessions. Fine for starting skill work. Upgrade if fatigue or inconsistency is obvious.</p>
-<h3>Traditional mechanical</h3>
-<p>Discrete switches, strong enthusiast ecosystem. Can feel precise and durable. Tradeoffs: noise (depending on switch), price, weight, and endless configuration rabbit holes. Excellent for typists who like tactile or deep feedback — if sound is acceptable at home/office.</p>
-<h3>Low-profile mechanical / chiclet hybrids</h3>
-<p>Shallower travel, modern laptop-adjacent feel with better switches than pure mush. Good for desk setups that want speed without full-height clack. Try before you commit if possible — travel preference is personal.</p>
-<h3>Membrane “office” full-size boards</h3>
-<p>Often underrated. Quiet open-office friendly. Quality varies wildly. A solid office board you do not hate will beat a loud mechanical you feel guilty using.</p>
-<p>Deeper mechanical vs membrane discussion belongs with the companion pillar post on that head-to-head; here the takeaway is: match environment and fatigue profile first.</p>
-
-<h2 id="switches">Switches and Feel (Without the Hype Spiral)</h2>
-<p>If you go mechanical, you will hear about linear, tactile, and clicky switches:</p>
-<ul>
-<li><strong>Linear:</strong> smooth press; some speed typists love them; can feel “slippery” if you bottom out hard</li>
-<li><strong>Tactile:</strong> bump feedback without requiring a loud click; popular for typing accuracy feel</li>
-<li><strong>Clicky:</strong> audible click; satisfying for some, banned for others nearby</li>
-</ul>
-<p>None magically add 20 WPM. Pick a feel you can maintain lightly for 5-minute tests without mashing. Light-to-medium force often supports endurance better than ultra-heavy springs that tire pinkies on symbols. Symbol work matters: <a href="/blog/type-numbers-and-symbols-without-looking">numbers and symbols guide</a>.</p>
-<p>If you cannot try switches in person, buy from vendors with returns when possible, or start with a well-reviewed mid-range board rather than a custom endgame build on week one of touch typing.</p>
-
-<h2 id="layout">Layout and Form Factor</h2>
-<table>
-<thead><tr><th>Form</th><th>Typing notes</th></tr></thead>
-<tbody>
-<tr><td>Full-size</td><td>Numpad helps pure numeric entry; mouse reaches farther</td></tr>
-<tr><td>TKL (tenkeyless)</td><td>Less desk span; great general typing/coding balance</td></tr>
-<tr><td>75% / 65% / 60%</td><td>Compact; layers for missing keys; learning tax</td></tr>
-<tr><td>Ortholinear / columnar</td><td>Can help some hands; expect adaptation weeks</td></tr>
-<tr><td>Split / tented</td><td>Ergonomics focus; setup learning curve</td></tr>
-</tbody>
-</table>
-<p>For pure typing speed improvement here, a familiar QWERTY staggered board is the path of least resistance. Exotic layouts are projects. Do not combine “new layout + new switches + new keycaps + job typing test next week.” One variable at a time. Data entry numpad needs: <a href="/blog/data-entry-typing-test">data entry typing test prep</a>.</p>
-
-<h2 id="ergonomics">Ergonomic and Split Options</h2>
-<p>If pain, numbness, or shoulder shrug is part of your story, ergonomics outrank peak WPM fantasies. Split boards, negative tilt, tenting, and better chair/desk height can keep you practicing. Pain is a stop signal — not a badge. A test should measure skill, not willingness to ignore wrists.</p>
-<p>Ergonomic keyboards often require a temporary speed dip while you adapt. Budget adaptation time. If you are mid hiring screen prep, maybe wait until after the assessment to reinvent your geometry — unless pain forces the issue.</p>
-<p>Posture habits still matter on any board: <a href="/blog/10-bad-typing-habits">bad typing habits</a>.</p>
-
-<h2 id="laptop">Laptop Keyboards: When to Externalize</h2>
-<p>Laptop keyboards are valid training devices if that is your life machine. Externalize when:</p>
-<ul>
-<li>You type multi-hour days and feel fatigue early</li>
-<li>Key travel feels inconsistent or cramped</li>
-<li>You want a stable desktop training station</li>
-<li>Your laptop sits too low and forces neck/key staring</li>
-</ul>
-<p>If you test for jobs on a desktop but practice only on a mushy laptop, expect score swings. Match practice hardware to performance hardware when stakes are high. Programmers: <a href="/blog/typing-speed-for-programmers">typing speed for programmers</a>.</p>
-
-<h2 id="who">Best Keyboard Direction by User Type</h2>
-<p><strong>Students / beginners:</strong> reliable, quiet enough, legends readable, not blank artisan. Spend energy on lessons, not switch samples.</p>
-<p><strong>Office open plan:</strong> quiet membrane or silent mechanical; avoid loud clickies unless headphones culture is universal (it is not).</p>
-<p><strong>Home power typist:</strong> mechanical or low-profile mechanical you enjoy; prioritize comfort for long practice + writing sessions.</p>
-<p><strong>Data entry:</strong> consider full-size with numpad quality; train top row too for laptop days.</p>
-<p><strong>Developers:</strong> TKL or full depending on numpad need; stable keys for symbols; wireless only if latency is trustworthy.</p>
-<p><strong>Travel:</strong> compact durable board; accept tradeoffs; keep one “home baseline” keyboard for trend tracking.</p>
-
-<h2 id="test">How to Test a Keyboard Fairly here</h2>
-<p>Marketing will not tell you how <em>you</em> type on a board. Run a protocol:</p>
-<ol>
-<li>Baseline your old keyboard: 3 test runs at a fixed duration; average WPM + accuracy.</li>
-<li>Warm up 5 minutes on the new board (do not judge the first minute).</li>
-<li>3 runs same duration, same text mode assumptions, same posture goals.</li>
-<li>Repeat on day 2 and day 5 — adaptation matters.</li>
-<li>Log comfort 1–5 and fatigue after 20 minutes practice.</li>
-<li>Keep the board only if accuracy holds or improves and fatigue drops or stays acceptable.</li>
-</ol>
-<p>If WPM spikes but accuracy collapses, you may be bottoming out excitedly — not actually better. Accuracy guide: <a href="/blog/typing-accuracy-test">typing accuracy test</a>. Duration choices: <a href="/blog/5-minute-typing-test">5 minute test</a>, <a href="/blog/one-minute-typing-test">1 minute test</a>.</p>
-<p>Never compare a rested Sunday on Board A to a exhausted Friday on Board B and call it science.</p>
-
-<h2 id="buy">Buying Checklist</h2>
-<ul>
-<li>Environment noise constraints known</li>
-<li>Budget includes the possibility you will not love feel #1</li>
-<li>Return policy checked</li>
-<li>Layout familiar enough for your goals this quarter</li>
-<li>Connection reliable (cable in bag for wireless boards)</li>
-<li>Keycaps not so slippery or tall that they fight you</li>
-<li>You have a baseline plan before and after</li>
-<li>You still scheduled practice — hardware is not the plan</li>
-</ul>
-
-<h2 id="budget">Budget Tiers (Mindset, Not SKUs)</h2>
-<p>Product SKUs age quickly; mindsets do not.</p>
-<ul>
-<li><strong>Low budget:</strong> solid used/office board or basic reliable membrane; invest hours in skill work</li>
-<li><strong>Mid budget:</strong> reputable prebuilt mechanical or quality low-profile; best ROI for many typists</li>
-<li><strong>High budget:</strong> premium materials, custom feel; buy only after you know what you like</li>
-<li><strong>Endgame custom:</strong> hobby, not a requirement for 70 WPM</li>
-</ul>
-<p>A mid-tier board plus three months of deliberate practice beats an unfinished custom project and zero lessons.</p>
-
-<h2 id="wireless">Wireless Latency and Timed Tests</h2>
-<p>Modern wireless can be excellent. It can also drop, hitch, or compete with congested 2.4 GHz environments. For weekly official averages and job-test simulations, prefer a known-stable link. Keep a cable option. One invisible hitch mid 5-minute test creates a fake “I got worse” story.</p>
-
-<h2 id="keycaps">Keycaps and Legends</h2>
-<p>While learning touch typing, readable legends help when you get truly lost (even if your rule is no-peek during blocks). Blank keycaps are a late-stage training tool or aesthetic choice — not a day-one requirement. Sculpted profiles change hand feel; give adaptation days before judging test scores.</p>
-
-<h2 id="mistakes">Hardware Mistakes That Do Not Raise WPM</h2>
-<ol>
-<li>Buying a board instead of practicing</li>
-<li>Switching hardware every week</li>
-<li>Loud clickies in shared spaces (social failure mode)</li>
-<li>Blank keycaps during early learning</li>
-<li>Ultra-compact layout right before a timed hiring test</li>
-<li>Ignoring pain because the board was expensive</li>
-<li>Comparing scores across different durations and boards simultaneously</li>
-<li>Assuming heavier actuation equals more “pro”</li>
-<li>Gaming-only marketing features as typing requirements</li>
-<li>Never re-baselining after the swap</li>
-</ol>
-
-<h2 id="skill-stack">The Stack That Beats Gear Obsession</h2>
-<ol>
-<li>Touch typing map and no-peek habits</li>
-<li>Accuracy floor ~95%+</li>
-<li>Daily short practice</li>
-<li>Weekly measurement</li>
-<li>Then hardware polish for comfort and consistency</li>
-</ol>
-<p>Order matters. Gear last among equals — unless injury forces ergonomic intervention earlier.</p>
-
-<h2 id="office-politics">Keyboards at Work</h2>
-<p>Bring a personal board only if policy allows. Prefer quiet. Label it. Do not assume IT supports exotic firmware. For shared machines, skill transfer matters more than your home endgame — practice eyes-up so a random office membrane does not erase you.</p>
-
-<h2 id="faq">Best Keyboards for Fast Typing FAQ</h2>
-<h3>What is the best keyboard for fast typing?</h3>
-<p>The best one is consistent, comfortable for long sessions, reliable, and paired with real skill. For many people that is a quality mid-range board in a familiar layout — mechanical or not — tested with your test averages, not hype alone.</p>
-<h3>Do mechanical keyboards make you type faster?</h3>
-<p>They can feel better and support consistency; they do not automatically raise WPM without practice. Some typists are faster on good membranes.</p>
-<h3>Is a laptop keyboard enough?</h3>
-<p>Yes for learning and many jobs. Externalize if fatigue or inconsistency shows up.</p>
-<h3>Should beginners buy expensive keyboards?</h3>
-<p>No. Buy adequate and invest time in lessons and practice.</p>
-<h3>What switch is best for typing?</h3>
-<p>Personal. Tactile and light-medium linear are common typing favorites; try before stacking inventory.</p>
-<h3>Does a numpad help typing speed?</h3>
-<p>Helps pure numeric entry. Mixed typing depends more on top-row skill.</p>
-<h3>Are split keyboards better for speed?</h3>
-<p>Better for some people’s comfort and sustainability. Expect adaptation. Speed may dip before it stabilizes.</p>
-<h3>How do I know if a new keyboard helped?</h3>
-<p>Same test duration, multi-day averages, accuracy stable/up, fatigue down.</p>
-<h3>Should I use blank keycaps to learn faster?</h3>
-<p>Optional later. Not required; can frustrate beginners.</p>
-<h3>Is wireless bad for typing tests?</h3>
-<p>Not inherently. Unreliable wireless is bad. Verify stability.</p>
-<h3>What matters more: keyboard or practice?</h3>
-<p>Practice. Keyboard is a multiplier.</p>
-<h3>Can a bad keyboard cause low accuracy?</h3>
-<p>Sticky keys, chatter, and huge flex can. Most soft accuracy is still technique.</p>
-<h3>Should I change keyboards before a job typing test?</h3>
-<p>Only if the current one is broken or painful. Otherwise keep familiarity.</p>
-<h3>What should I do after reading?</h3>
-<p>Baseline on your current board, list comfort issues, then decide if hardware or skill is the real bottleneck.</p>
-
-<h2 id="scenarios">Quick Scenarios</h2>
-<p><strong>“I type 42 WPM and want 70.”</strong> Skill plan first. Keyboard later.</p>
-<p><strong>“I type 75 WPM but my wrists hate my laptop.”</strong> Ergonomics and external board now; retest weekly.</p>
-<p><strong>“I bought a custom board and got slower.”</strong> Normal adaptation — or bad fit. Give it structured days; retest; return if needed.</p>
-<p><strong>“Open office hates noise.”</strong> Silent/quiet solutions beat social capital loss.</p>
-
-<h2 id="maintenance">Maintaining a Typing Keyboard</h2>
-<ul>
-<li>Keep crumbs out; intermittent keys destroy timed tests</li>
-<li>Replace dying wireless batteries before weekly checks</li>
-<li>If one key chatters, fix it — do not “type around it” for months</li>
-<li>Log major hardware changes next to your WPM history</li>
-</ul>
-
-<h2 id="sound">Sound, Neighbors, and the Hidden Performance Tax</h2>
-<p>Sound is not only etiquette. If you are self-conscious about clacking on calls or in a quiet house at night, you will shorten practice sessions — and shortened streaks hurt WPM more than switch theory helps. Choose a noise profile you will actually use daily. Silent or quiet boards that get 20 minutes of practice five days a week outperform loud “dream boards” that stay unplugged.</p>
-<p>Foam mods, lubing, and case work change sound and feel; treat them as optional hobbies after you already type cleanly. They are not prerequisites for 60 WPM.</p>
-
-<h2 id="size-desk">Desk Geometry, Mouse Reach, and Shoulder Fatigue</h2>
-<p>Full-size boards push the mouse outward. For some people that creates shoulder fatigue that shows up as late-test errors even though “the keyboard is fine.” TKL or 75% can reduce reach. Conversely, if you live in Excel with a numpad all day, forcing 60% pure aesthetics may cost more than it gives. Match the board to your actual desk tasks, not only to typing-test photography.</p>
-<p>Also match chair height and desk height. A perfect switch on a desk that forces wrist extension is still a bad system. Hardware is a stack: board + surface + chair + lighting + habit.</p>
-
-<h2 id="adaptation">How Long to Adapt to a New Keyboard</h2>
-<p>Give a seriously different board <strong>3–10 focused days</strong> before final judgment — with daily short practice, not one emotional evening. Adaptation signs:</p>
-<ul>
-<li>Fewer surprise misses on common letters</li>
-<li>Shoulders lower</li>
-<li>Accuracy returning to baseline or better</li>
-<li>Less conscious thought about “this feels weird”</li>
-</ul>
-<p>If day 10 still feels wrong and accuracy is worse with higher fatigue, return it. Stubbornness is not a training plan. If day 3 is only “unfamiliar,” keep going.</p>
-
-<h2 id="hot-swap">Hot-Swap and Experimentation</h2>
-<p>Hot-swap boards let you try switch families without soldering. Useful if you are exploring feel. Dangerous if you change switches every other day and destroy trend lines. Experiment in defined windows: e.g., one week linear, log results; one week tactile, log results. Same duration tests, same warm-up rules. Otherwise you will not know what helped.</p>
-
-<h2 id="kids-schools">Keyboards for Students and Shared Labs</h2>
-<p>Schools and shared labs rarely allow personal endgame boards. Teach students a skill that transfers to whatever membrane is installed. If buying for a student at home, prioritize durability, readable legends, and moderate noise parents can live with. Skill habits beat RGB dragon keycaps for exam writing speed.</p>
-
-<h2 id="travel-kit">A Practical Two-Keyboard Life</h2>
-<p>Many fast typists end up with:</p>
-<ul>
-<li><strong>Home board:</strong> comfort-first, baseline machine</li>
-<li><strong>Travel/work board:</strong> quieter/compact, “good enough” consistency</li>
-</ul>
-<p>Keep separate mental baselines. Do not panic when travel-board scores sit a few WPM lower. Practice on the board that matches the next high-stakes context (home office job test vs onsite unknown desktop).</p>
-
-<h2 id="red-flags">Red Flags When Shopping Online</h2>
-<ul>
-<li>No clear return policy and no way to try feel</li>
-<li>Reviews that only talk about unboxing ASMR, never long typing sessions</li>
-<li>Claims like “guaranteed +20 WPM”</li>
-<li>Wireless-only with widespread lag complaints</li>
-<li>Exotic layout marketed as instant ergonomic magic with zero adaptation warning</li>
-<li>Budget boards with widespread key chatter reports</li>
-</ul>
-<p>Believe multi-week typing reviews over one-minute switch ASMR clips.</p>
-
-<h2 id="pair-with-training">Sample Month: Hardware + Skill Together</h2>
-<table>
-<thead><tr><th>Week</th><th>Focus</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>baseline on current board; accuracy + weak keys; note pain points</td></tr>
-<tr><td>2</td><td>If hardware is the bottleneck (pain/inconsistency), select and receive new board; else continue skill only</td></tr>
-<tr><td>3</td><td>Adaptation practice daily; no layout experiments; log comfort</td></tr>
-<tr><td>4</td><td>New multi-run average; compare accuracy and fatigue to week 1</td></tr>
-</tbody>
-</table>
-<p>If week 4 is better only because you also practiced more, great — that is still success. Attribute honestly so you do not buy another board to chase a high that was actually consistency.</p>
-
-<h2 id="accessibility">Accessibility and Fit</h2>
-<p>Hand size, mobility differences, tremor, and prior injuries change what “best” means. Some people need larger targets, lighter force, or alternative input strategies. remains a training aid, not a medical assessment. Choose hardware with fit and comfort first; interpret WPM in context. If standard boards fail you, explore ergonomic or assistive options with professionals when appropriate rather than forcing influencer defaults.</p>
-
-<h2 id="closing">Buy Comfort. Train Speed.</h2>
-<p>A good typing keyboard supports light, consistent practice without pain. It does not replace lessons, accuracy work, or weekly measurement. Fit the board to your room and hands, test it with multi-run averages, and put most of your money into skill. RGB does not raise sustainable WPM.</p>
-<p>If your accuracy sits under about 95% or you still stare at the keys, technique is still the upgrade. Hardware helps most when it removes friction from a skill you already own: longer clean sessions, fewer random misses, a connection that does not drop mid-test.</p>
-<p>Baseline on the <a href="/">speed test</a> with your current board. Train on <a href="/typing-practice">practice</a> or <a href="/typing-lessons">lessons</a>. Only then judge a new keyboard, with the same test duration after the swap.</p>
-`,
-
   'mechanical-vs-membrane-keyboards': `<p><strong>Mechanical vs membrane</strong> is one of the most argued typing-hardware topics, and one of the most oversimplified. Mechanical fans talk precision and longevity. Membrane fans talk quiet comfort and value. Both can be right.</p>
 
 <p>For speed and accuracy, the better board is the one that lets you type lightly, consistently, and often, then prove it with multi-run averages, not forum loyalty.</p>
@@ -319,7 +29,7 @@ export const productivityArticles: Record<string, string> = {
 <li><strong>Pick membrane (or good scissor)</strong> if you need quiet, lower cost, simpler reliability, or you already type well on that feel.</li>
 <li><strong>Pick based on FreeTyper results + comfort</strong> after a fair multi-day trial — not based on which side of the internet is louder.</li>
 </ul>
-<p>Skill still dominates. A membrane board plus deliberate practice beats an unused mechanical endgame. Skill path: <a href="/blog/typing-practice">typing practice</a>, <a href="/blog/touch-typing-guide">touch typing guide</a>, broader gear framing: <a href="/blog/best-keyboards-for-fast-typing">best keyboards for fast typing</a>.</p>
+<p>Skill still dominates. A membrane board plus deliberate practice beats an unused mechanical endgame. Skill path: <a href="/typing-practice">typing practice</a>, <a href="/blog/touch-typing-for-beginners">touch typing guide</a>, broader gear framing: <a href="/blog/mechanical-vs-membrane-keyboards">best keyboards for fast typing</a>.</p>
 
 <h2 id="how-membrane">How Membrane Keyboards Work</h2>
 <p>Most membrane keyboards use layered plastic membranes with conductive pads. Pressing a key pushes layers together to complete a circuit. Rubber domes often provide the springy return feel. Laptop-style scissor switches are a related family: short travel, stable keycaps, usually quiet, built for thin devices.</p>
@@ -376,8 +86,8 @@ export const productivityArticles: Record<string, string> = {
 <li><strong>Novelty:</strong> week-one scores on a new mechanical are not destiny</li>
 <li><strong>Stability:</strong> flexy cheap membranes can reduce confidence at speed</li>
 </ul>
-<p>Accuracy is still mostly technique. If you are at 90% accuracy, neither membrane nor mechanical is the root cause — practice is. Accuracy guides: <a href="/blog/typing-accuracy-test">typing accuracy test</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
-<p>Endurance differences show more on 3–5 minute tests than on 15-second bursts. See <a href="/blog/5-minute-typing-test">5 minute typing test</a>.</p>
+<p>Accuracy is still mostly technique. If you are at 90% accuracy, neither membrane nor mechanical is the root cause — practice is. Accuracy guides: <a href="/blog/improve-typing-accuracy">typing accuracy test</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
+<p>Endurance differences show more on 3–5 minute tests than on 15-second bursts. See <a href="/">5 minute typing test</a>.</p>
 
 <h2 id="noise">Noise, Offices, and Shared Spaces</h2>
 <p>This factor alone decides many real-world choices.</p>
@@ -439,7 +149,7 @@ export const productivityArticles: Record<string, string> = {
 <li>Prefer the board with better or equal accuracy, acceptable WPM, lower fatigue, and a noise profile you will actually use.</li>
 </ol>
 <p>If mechanical wins WPM by 2 but loses accuracy by 3 points and annoys your team, it did not win typing — it won a screenshot.</p>
-<p>Measurement mindset: <a href="/blog/typing-speed-test">typing speed test guide</a>, <a href="/blog/free-typing-test">free typing test</a>.</p>
+<p>Measurement mindset: <a href="/">typing speed test guide</a>, <a href="/">free typing test</a>.</p>
 
 <h2 id="switching">Switching From Membrane to Mechanical (Or Back)</h2>
 <p><strong>Membrane → mechanical:</strong> expect a few days of over-force and bottom-out noise. Consciously lighten strikes. Keep accuracy as the boss metric.</p>
@@ -454,7 +164,7 @@ export const productivityArticles: Record<string, string> = {
 <li><strong>“Heavier switches build finger strength for speed.”</strong> Fatigue often hurts timed accuracy.</li>
 <li><strong>“You need a custom mechanical to hit 70 WPM.”</strong> False.</li>
 <li><strong>“All membranes feel the same.”</strong> Quality range is enormous.</li>
-<li><strong>“Games prove which board is better.”</strong> Calm averages + fatigue tell more for work typing. Games guide: <a href="/blog/best-free-typing-games">free typing games</a>.</li>
+<li><strong>“Games prove which board is better.”</strong> Calm averages + fatigue tell more for work typing. Games guide: <a href="/typing-game-falling-words">free typing games</a>.</li>
 </ul>
 
 <h2 id="gaming">Gaming Keyboards and Typing</h2>
@@ -500,7 +210,7 @@ export const productivityArticles: Record<string, string> = {
 </ol>
 
 <h2 id="both">Owning Both Is Normal</h2>
-<p>Many people keep a quiet work board and a mechanical home board. That is rational. Keep separate expectations for scores. Train skill that transfers — eyes-up touch typing — so neither board becomes a crutch. Adult practice habits: <a href="/blog/how-to-learn-touch-typing-as-an-adult">touch typing as an adult</a>.</p>
+<p>Many people keep a quiet work board and a mechanical home board. That is rational. Keep separate expectations for scores. Train skill that transfers — eyes-up touch typing — so neither board becomes a crutch. Adult practice habits: <a href="/blog/touch-typing-for-beginners">touch typing as an adult</a>.</p>
 
 <h2 id="bottom-line-skill">Remember What Changes Scores Most</h2>
 <p>In controlled comparisons, board family might move you a little. Weak-key practice, accuracy caps, and no-peek blocks often move you more. If you only have energy for one project this month, choose skill unless hardware is broken or painful. Speed methods: <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
@@ -554,7 +264,7 @@ export const productivityArticles: Record<string, string> = {
 <p>If you only own one board, use a library laptop, office loaner, or friend board carefully — hygiene and permission first — or rely on store return windows for home trials.</p>
 
 <h2 id="numbers">Numeric Work: Does Family Matter?</h2>
-<p>For heavy number entry, switch family matters less than whether you have a solid numpad (if you use one) and whether top-row digits feel consistent. A mushy number row on either family will push you to peek. Train digits either way: <a href="/blog/type-numbers-and-symbols-without-looking">numbers and symbols guide</a>. Data entry candidates should not change board families mid prep week unless necessary.</p>
+<p>For heavy number entry, switch family matters less than whether you have a solid numpad (if you use one) and whether top-row digits feel consistent. A mushy number row on either family will push you to peek. Train digits either way: <a href="/typing-lessons">numbers and symbols guide</a>. Data entry candidates should not change board families mid prep week unless necessary.</p>
 
 <h2 id="learners">Beginners: Do Not Let the Debate Delay Lessons</h2>
 <p>The mechanical vs membrane argument is a premium procrastination flavor. If you cannot touch type yet, start lessons on whatever keyboard you have tonight. Upgrade after you know your hands and your noise constraints. Beginner plan: <a href="/blog/touch-typing-for-beginners">30-day touch typing plan</a>.</p>
@@ -584,7 +294,7 @@ export const productivityArticles: Record<string, string> = {
 <p>Mechanical vs membrane is not a moral contest. Mechanical offers feel options and customization; membrane and scissor offer quiet value and familiarity. For typing, run comfort and accuracy as the judges. Then practice on the winner until the skill is real — because no switch type types for you.</p>
 <p>If you remember only one line from the whole debate, make it this: <strong>the better typing keyboard is the one that keeps your accuracy high and your practice streak alive.</strong> Mechanical and membrane are just two common roads to that outcome. Multi-run averages are how you check which road you are actually on, with WPM and accuracy logged like an adult, not with a single excited first run after unboxing.</p>
 <p>When the comparison is done, stop shopping for a while. Pick a daily driver, put weak-key practice back on the calendar, and let skill compound. Hardware choices matter; homework matters more. Come back to the gear question only when pain, failure, or a real environment change forces it, not when a new switch video hits your feed.</p>
-<p>Compare boards with the <a href="/">speed test</a> (same duration, multi-run averages), train on <a href="/typing-practice">practice</a>, and see <a href="/blog/best-keyboards-for-fast-typing">best keyboards for fast typing</a> for the wider buying framework.</p>
+<p>Compare boards with the <a href="/">speed test</a> (same duration, multi-run averages), train on <a href="/typing-practice">practice</a>, and see <a href="/blog/mechanical-vs-membrane-keyboards">best keyboards for fast typing</a> for the wider buying framework.</p>
 `,
 
   'fix-typing-posture-and-avoid-wrist-pain': `
@@ -618,7 +328,7 @@ export const productivityArticles: Record<string, string> = {
 <li>Cramped laptop setups encourage looking down at keys — fighting touch typing</li>
 <li>Fatigue in minutes 3–5 of a FreeTyper test looks like “low endurance WPM” when it is partly tension</li>
 </ul>
-<p>Clean technique and comfortable geometry support each other. Habit cleanup: <a href="/blog/10-bad-typing-habits">10 bad typing habits</a>. Endurance measurement: <a href="/blog/5-minute-typing-test">5 minute typing test</a>.</p>
+<p>Clean technique and comfortable geometry support each other. Habit cleanup: <a href="/blog/10-bad-typing-habits">10 bad typing habits</a>. Endurance measurement: <a href="/">5 minute typing test</a>.</p>
 
 <h2 id="neutral">What “Neutral” Typing Posture Means</h2>
 <p>Think “stacked and relaxed,” not military rigid.</p>
@@ -642,12 +352,12 @@ export const productivityArticles: Record<string, string> = {
 <h3>Negative tilt vs positive tilt</h3>
 <p>Legs that prop the back of the keyboard up can increase wrist extension for some people. Flat or slight negative tilt (front higher than back) helps others. Experiment gently; comfort and neutral wrists win.</p>
 <h3>Screen height</h3>
-<p>Raise laptops with a stand and use an external keyboard when possible for long sessions. Looking down at a low laptop encourages neck flexion and key staring — bad for posture and touch typing. Touch typing guide: <a href="/blog/touch-typing-guide">touch typing guide</a>.</p>
+<p>Raise laptops with a stand and use an external keyboard when possible for long sessions. Looking down at a low laptop encourages neck flexion and key staring — bad for posture and touch typing. Touch typing guide: <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
 <h3>Mouse placement</h3>
 <p>Keep the mouse close. Overreaching sideways every few seconds loads the shoulder. If you mouse more than you type, posture still matters.</p>
 
 <h2 id="hands">Hands, Wrists, and Key Force</h2>
-<p><strong>Light force</strong> is one of the highest-ROI comfort skills. Mashy typing multiplies impact. On FreeTyper, practice the lightest press that still registers. Mechanical vs membrane feel differs, but mashing is optional on both. Comparison: <a href="/blog/mechanical-vs-membrane-keyboards">mechanical vs membrane</a>, buying frame: <a href="/blog/best-keyboards-for-fast-typing">best keyboards for fast typing</a>.</p>
+<p><strong>Light force</strong> is one of the highest-ROI comfort skills. Mashy typing multiplies impact. On FreeTyper, practice the lightest press that still registers. Mechanical vs membrane feel differs, but mashing is optional on both. Comparison: <a href="/blog/mechanical-vs-membrane-keyboards">mechanical vs membrane</a>, buying frame: <a href="/blog/mechanical-vs-membrane-keyboards">best keyboards for fast typing</a>.</p>
 <p><strong>Wrist posture while typing:</strong></p>
 <ul>
 <li>Avoid planting the heel of your hand hard on a sharp desk edge for hours</li>
@@ -678,8 +388,8 @@ export const productivityArticles: Record<string, string> = {
 <li><strong>Task variety:</strong> alternate typing with reading, walking, calls</li>
 <li><strong>Timers:</strong> standing reminders help if you forget your body exists during deep work</li>
 </ul>
-<p>Daily practice design: <a href="/blog/typing-practice">typing practice guide</a>. Adults and schedules: <a href="/blog/how-to-learn-touch-typing-as-an-adult">touch typing as an adult</a>.</p>
-<p>If a game session tilts you into mashing, stop. Games after form: <a href="/blog/best-free-typing-games">free typing games</a>.</p>
+<p>Daily practice design: <a href="/typing-practice">typing practice guide</a>. Adults and schedules: <a href="/blog/touch-typing-for-beginners">touch typing as an adult</a>.</p>
+<p>If a game session tilts you into mashing, stop. Games after form: <a href="/typing-game-falling-words">free typing games</a>.</p>
 
 <h2 id="pain">If You Already Have Discomfort</h2>
 <p><strong>Stop or reduce</strong> activities that clearly worsen symptoms. “Push through” is not a typing strategy.</p>
@@ -703,7 +413,7 @@ export const productivityArticles: Record<string, string> = {
 <ol>
 <li><strong>Warm up gently</strong> 1–2 minutes easy words, light force</li>
 <li><strong>Cap sessions</strong> at a comfortable length; stop while form is still clean</li>
-<li><strong>Accuracy over ego speed</strong> — rushing increases mash and tension. Accuracy guide: <a href="/blog/typing-accuracy-test">typing accuracy test</a></li>
+<li><strong>Accuracy over ego speed</strong> — rushing increases mash and tension. Accuracy guide: <a href="/blog/improve-typing-accuracy">typing accuracy test</a></li>
 <li><strong>Skip restart addiction</strong> — emotional thrashing tightens shoulders</li>
 <li><strong>Prefer practice quality</strong> over endless tests on sore days</li>
 <li><strong>Log comfort 1–5</strong> next to WPM so you notice trends</li>

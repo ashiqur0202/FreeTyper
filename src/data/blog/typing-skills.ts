@@ -28,33 +28,6 @@ export const blogPosts: BlogPost[] = [
     readTime: '16 min',
   },
   {
-    slug: 'average-typing-speed',
-    title: 'Average Typing Speed: Statistics and How You Compare',
-    excerpt: 'The real data on average typing speed — by global population, age, generation, skill level, and profession. See where most people land and exactly where you stand.',
-    date: '2026-06-10',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Speed',
-    readTime: '17 min',
-  },
-  {
-    slug: 'how-many-words-per-minute',
-    title: 'How Many Words Per Minute Should You Type?',
-    excerpt: 'Specific WPM targets by role, age, goal, and situation — students, office workers, writers, programmers, data entry, customer service, and transcription. Stop guessing your target.',
-    date: '2026-06-11',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Speed',
-    readTime: '15 min',
-  },
-  {
-    slug: 'typing-speed-for-work',
-    title: 'What Is a Good Typing Speed for Work?',
-    excerpt: 'The actual WPM benchmarks employers use across industries — minimum, competitive, and elite tiers for administrative, data entry, legal, medical, customer service, and tech roles.',
-    date: '2026-06-12',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Speed',
-    readTime: '17 min',
-  },
-  {
     slug: 'improve-typing-accuracy',
     title: 'How to Improve Typing Accuracy From 90% to 99%',
     excerpt:
@@ -65,76 +38,6 @@ export const blogPosts: BlogPost[] = [
     readTime: '16 min',
   },
   {
-    slug: 'free-typing-test',
-    title: 'Free Typing Test: Complete Guide to Measuring Your WPM',
-    excerpt:
-      'How free typing tests work, what WPM and accuracy mean, how to test fairly, and what to do after your score — with FreeTyper’s free no-signup test.',
-    date: '2026-07-27',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Tests',
-    readTime: '17 min',
-  },
-  {
-    slug: 'one-minute-typing-test',
-    title: '1 Minute Typing Test: What Is a Good Score?',
-    excerpt:
-      'What a good 1 minute typing test score looks like, how to run a fair 60-second test, and when to use longer 3- and 5-minute tests instead.',
-    date: '2026-07-27',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Tests',
-    readTime: '16 min',
-  },
-  {
-    slug: '3-minute-typing-test-vs-5-minute-typing-test',
-    title: '3 Minute Typing Test vs 5 Minute Typing Test: Which Is More Accurate?',
-    excerpt:
-      '3 minute or 5 minute typing test — which gives a more accurate WPM score? Duration science, use cases, employer tests, and which length you should use.',
-    date: '2026-07-27',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Tests',
-    readTime: '22 min',
-  },
-  {
-    slug: 'typing-speed-test',
-    title: 'Typing Speed Test: Everything You Need to Know',
-    excerpt:
-      'What a typing speed test measures, how WPM and accuracy work, which duration to use, what a good score looks like, and how to improve after you finish.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Tests',
-    readTime: '18 min',
-  },
-  {
-    slug: '5-minute-typing-test',
-    title: '5 Minute Typing Test: What Is a Good WPM?',
-    excerpt:
-      'What a good WPM looks like on a 5 minute typing test, how five minutes differs from shorter runs, employer prep, and how to raise your sustained score.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Tests',
-    readTime: '18 min',
-  },
-  {
-    slug: 'typing-accuracy-test',
-    title: 'Typing Accuracy Test: Why Accuracy Matters More Than Speed',
-    excerpt:
-      'What a typing accuracy test measures, what good accuracy looks like, why clean moderate speed beats messy high WPM, and how to train accuracy first on FreeTyper.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Typing Tests',
-    readTime: '18 min',
-  },
-  {
-    slug: 'touch-typing-guide',
-    title: 'Touch Typing Guide: Learn to Type Without Looking at the Keyboard',
-    excerpt:
-      'Learn touch typing from home row to full finger map — how to stop looking at the keys, practice daily on FreeTyper, and build clean speed that lasts.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Touch Typing',
-    readTime: '18 min',
-  },
-  {
     slug: 'touch-typing-for-beginners',
     title: 'Touch Typing for Beginners: A Complete 30-Day Learning Plan',
     excerpt:
@@ -143,16 +46,6 @@ export const blogPosts: BlogPost[] = [
     author: 'Ashiqur Rahman',
     category: 'Touch Typing',
     readTime: '18 min',
-  },
-  {
-    slug: 'how-to-learn-touch-typing-as-an-adult',
-    title: 'How to Learn Touch Typing as an Adult',
-    excerpt:
-      'Yes, adults can learn touch typing — how to beat hybrid habits, fit 15-minute practice into work weeks, survive the awkward middle, and rebuild on FreeTyper.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Touch Typing',
-    readTime: '17 min',
   },
   {
     slug: 'muscle-memory-and-touch-typing',
@@ -175,36 +68,6 @@ export const blogPosts: BlogPost[] = [
     readTime: '17 min',
   },
   {
-    slug: 'typing-practice',
-    title: 'Typing Practice: Daily Exercises to Build Speed and Muscle Memory',
-    excerpt:
-      'Daily typing practice that works — session templates, weak-key drills, accuracy caps, speed intervals, and weekly FreeTyper plans for beginners and intermediates.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Practice',
-    readTime: '17 min',
-  },
-  {
-    slug: 'best-free-typing-games',
-    title: 'Best Free Typing Games to Improve Your Speed',
-    excerpt:
-      'How free typing games raise WPM for real — when to play, when to wait, FreeTyper Falling Words and Word Attack training plans, and accuracy rules that stick.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Practice',
-    readTime: '16 min',
-  },
-  {
-    slug: 'type-numbers-and-symbols-without-looking',
-    title: 'How to Type Numbers and Symbols Without Looking',
-    excerpt:
-      'Stop peeking at the number row — digit maps, Shift symbols, daily drills, a 2-week plan, and FreeTyper practice for emails, code, and real work strings.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Practice',
-    readTime: '17 min',
-  },
-  {
     slug: 'data-entry-typing-test',
     title: 'How to Pass a Data Entry Typing Test for Job Interviews',
     excerpt:
@@ -222,16 +85,6 @@ export const blogPosts: BlogPost[] = [
     date: '2026-08-07',
     author: 'Ashiqur Rahman',
     category: 'Practice',
-    readTime: '17 min',
-  },
-  {
-    slug: 'best-keyboards-for-fast-typing',
-    title: 'Best Keyboards for Fast Typing',
-    excerpt:
-      'What actually makes a keyboard good for speed — feel, layout, ergonomics, how to test boards on FreeTyper, and why practice still beats expensive gear.',
-    date: '2026-08-07',
-    author: 'Ashiqur Rahman',
-    category: 'Productivity',
     readTime: '17 min',
   },
   {
