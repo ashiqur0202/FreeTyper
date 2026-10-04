@@ -2,7 +2,10 @@ export interface BlogPost {
   slug: string;
   title: string;
   excerpt: string;
+  /** First published (ISO date). */
   date: string;
+  /** Last substantive rewrite (ISO date), if the post was rewritten after publishing. */
+  updated?: string;
   author: string;
   category: string;
   readTime: string;
@@ -101,11 +104,12 @@ export const blogPosts: BlogPost[] = [
     slug: 'fix-typing-posture-and-avoid-wrist-pain',
     title: 'How to Fix Your Typing Posture and Avoid Wrist Pain',
     excerpt:
-      'Practical typing posture setup, wrist-friendly FreeTyper practice, breaks, hardware notes, and when to seek professional help — not a medical diagnosis.',
+      'A desk setup that follows OSHA guidance, what the research really says about typing and wrist problems, and when to see a doctor. General information, not medical advice.',
     date: '2026-08-07',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Productivity',
-    readTime: '17 min',
+    readTime: '7 min',
   },
 ];
 

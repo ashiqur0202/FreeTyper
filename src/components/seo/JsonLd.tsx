@@ -96,6 +96,7 @@ export function blogPostingSchema(post: {
   excerpt: string;
   slug: string;
   date: string;
+  updated?: string;
   author: string;
 }) {
   const url = `${siteConfig.url}/blog/${post.slug}`;
@@ -107,6 +108,7 @@ export function blogPostingSchema(post: {
     url,
     mainEntityOfPage: url,
     datePublished: post.date,
+    dateModified: post.updated ?? post.date,
     author: {
       '@type': 'Person',
       name: post.author,

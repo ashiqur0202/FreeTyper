@@ -297,297 +297,85 @@ export const productivityArticles: Record<string, string> = {
 <p>Compare boards with the <a href="/">speed test</a> (same duration, multi-run averages), train on <a href="/typing-practice">practice</a>, and see <a href="/blog/mechanical-vs-membrane-keyboards">best keyboards for fast typing</a> for the wider buying framework.</p>
 `,
 
-  'fix-typing-posture-and-avoid-wrist-pain': `
-<p>Fast typing that wrecks your wrists is a bad trade. Posture and hand mechanics show up in comfort first, then in longer tests: tension turns into errors before it turns into a diagnosis. Fixing setup is not anti-speed advice. It is how speed lasts.</p>
+  'fix-typing-posture-and-avoid-wrist-pain': `<p>Set your desk so your elbows sit near keyboard height and close to your body, your wrists stay straight, your feet are supported and the top of your screen is no higher than your eyes. Then change position now and then and take short breaks. Those are the main points of the US Occupational Safety and Health Administration's computer workstation guidance, and they are a sound way to set up for long typing sessions.</p>
 
-<p><strong>Important:</strong> This is general ergonomics education, not medical diagnosis or treatment. If you have pain, numbness, weakness, night symptoms, or injury history, see a qualified professional. A typing site is not a clinic.</p>
+<p>What the research does <em>not</em> show is that typing, by itself, reliably causes wrist injuries. The best systematic reviews describe the evidence as limited or insufficient. This guide therefore treats good posture as sensible prevention, not as a guarantee, and says plainly where the evidence stops.</p>
 
-<p>When you practice, keep sessions short and force light. <a href="/typing-practice">Practice</a> and the <a href="/">speed test</a> are fine tools if they do not cost you comfort. Stop if pain increases.</p>
+<p class="article-note">This is general information, not medical advice. If you have pain, numbness or tingling that does not go away, see a doctor or physiotherapist.</p>
 
-<h2 id="toc">Table of Contents</h2>
+<h2 id="what-good-typing-posture-looks-like">What good typing posture looks like</h2>
+<p>OSHA's <a href="https://www.osha.gov/etools/computer-workstations/checklists/evaluation" rel="noopener" target="_blank">workstation checklist</a> and its <a href="https://www.osha.gov/etools/computer-workstations/components/keyboards" rel="noopener" target="_blank">keyboard guidance</a> describe a neutral seated position. In plain terms:</p>
+<ul>
+<li><strong>Elbows</strong> about the same height as the keyboard, hanging comfortably at your sides and close to your body, not reaching forward or out.</li>
+<li><strong>Wrists and hands</strong> straight and in line with your forearms. They should not bend up, down or sideways while you type.</li>
+<li><strong>Shoulders</strong> relaxed, not hunched up toward your ears.</li>
+<li><strong>Thighs</strong> roughly parallel to the floor, with room under the desk.</li>
+<li><strong>Feet</strong> flat on the floor or on a stable footrest.</li>
+<li><strong>Back</strong> supported by the chair, including the curve of the lower back.</li>
+<li><strong>Screen</strong> with its top at or below eye level, at a distance where you can read without leaning or bending your neck.</li>
+</ul>
+
+<h2 id="set-up-your-desk-in-five-minutes">Set up your desk in five minutes</h2>
 <ol>
-<li><a href="#why">Why Posture Matters for Typing Speed and Accuracy</a></li>
-<li><a href="#neutral">What “Neutral” Typing Posture Means</a></li>
-<li><a href="#setup">Desk, Chair, Screen, and Keyboard Setup</a></li>
-<li><a href="#hands">Hands, Wrists, and Key Force</a></li>
-<li><a href="#mistakes">Posture Mistakes That Invite Pain</a></li>
-<li><a href="#breaks">Breaks, Micro-Pauses, and Session Design</a></li>
-<li><a href="#pain">If You Already Have Discomfort</a></li>
-<li><a href="#hardware">When Hardware Helps (and When It Does Not)</a></li>
-<li><a href="#freetyper">How to Practice on FreeTyper Without Aggravating Wrists</a></li>
-<li><a href="#checklist">Daily Posture Checklist</a></li>
-<li><a href="#faq">Typing Posture and Wrist Pain FAQ</a></li>
+<li><strong>Start with the chair.</strong> Adjust the height until your feet rest flat (use a footrest if the desk is too high for that) and your thighs are about level. Sit back so the chair supports your lower back.</li>
+<li><strong>Bring the keyboard to your elbows, not your elbows to the keyboard.</strong> With your upper arms relaxed at your sides, your forearms should run roughly parallel to the floor and your hands should reach the keys without lifting your shoulders. If the desk is too high, raise the chair and use a footrest.</li>
+<li><strong>Place the keyboard directly in front of you,</strong> close enough that your elbows can stay near your body.</li>
+<li><strong>Check your wrists.</strong> A keyboard that is too low tends to bend the wrists upward, and one that is too high pushes the shoulders up. Adjust height until your wrists look straight in a side view.</li>
+<li><strong>Look at the keyboard feet.</strong> OSHA says the tilt may need to be raised or lowered to keep wrists straight, and that you should not use the feet if they increase bending of the wrist.</li>
+<li><strong>Set the screen last.</strong> The top edge at or below eye level, straight in front of you.</li>
 </ol>
 
-<h2 id="why">Why Posture Matters for Typing Speed and Accuracy</h2>
-<p>Poor posture does not only feel bad. It changes how you type:</p>
+<h2 id="wrist-rests-and-floating-hands">Wrist rests and floating hands</h2>
+<p>OSHA's <a href="https://www.osha.gov/etools/computer-workstations/components/wrist-palm-support" rel="noopener" target="_blank">guidance on wrist and palm supports</a> is more specific than most advice online:</p>
 <ul>
-<li>Raised shoulders and shrugged traps waste energy</li>
-<li>Extreme wrist extension or deviation stresses soft tissue</li>
-<li>Heavy key force multiplies load every minute</li>
-<li>Cramped laptop setups encourage looking down at keys — fighting touch typing</li>
-<li>Fatigue in minutes 3–5 of a FreeTyper test looks like “low endurance WPM” when it is partly tension</li>
+<li>A rest is for keeping wrists straight and reducing contact pressure, not for anchoring your hands while you type.</li>
+<li>While typing, your hands should move freely and stay above the rest.</li>
+<li>When you pause, the pad should contact the heel or palm of your hand, not the wrist itself.</li>
+<li>Choose a rest that is fairly soft and rounded, at least about 1.5 inches (3.8 cm) deep, and avoid resting your wrists on hard or sharp edges.</li>
 </ul>
-<p>Clean technique and comfortable geometry support each other. Habit cleanup: <a href="/blog/10-bad-typing-habits">10 bad typing habits</a>. Endurance measurement: <a href="/">5 minute typing test</a>.</p>
+<p>In practice: let your hands float while you type, and rest them on the pad between bursts.</p>
 
-<h2 id="neutral">What “Neutral” Typing Posture Means</h2>
-<p>Think “stacked and relaxed,” not military rigid.</p>
+<h2 id="technique-habits-worth-trying">Technique habits worth trying</h2>
+<p>These are common-sense suggestions rather than findings from the studies below:</p>
 <ul>
-<li><strong>Feet:</strong> supported on floor or footrest; avoid long-term perching on toes only</li>
-<li><strong>Hips and back:</strong> sit back enough that the chair supports you; slight recline can be fine if supported</li>
-<li><strong>Shoulders:</strong> down and loose, not earrings for your ears</li>
-<li><strong>Elbows:</strong> roughly near your sides; about open right-angle territory is a common starting target — adjust for comfort</li>
-<li><strong>Forearms:</strong> roughly parallel to the floor or a slight downward slope toward the keyboard for many setups</li>
-<li><strong>Wrists:</strong> close to straight — not cocked hard up, down, or sideways for long periods</li>
-<li><strong>Hands:</strong> float or rest lightly; avoid grinding the desk edge into the wrist crease for hours</li>
-<li><strong>Head:</strong> screen high enough that you are not turtling down toward the laptop keys</li>
-</ul>
-<p>Neutral is a range, not a single photo pose. If a cue increases pain, stop and get personalized advice.</p>
-
-<h2 id="setup">Desk, Chair, Screen, and Keyboard Setup</h2>
-<h3>Chair and desk height</h3>
-<p>If the desk is too high, shoulders shrug and wrists extend. If too low, you hunch. Adjust chair height, desk height, or keyboard tray so forearms and shoulders can relax. A footrest helps when the chair is raised for elbow height but feet dangle.</p>
-<h3>Keyboard position</h3>
-<p>Place the keyboard so you are not reaching forward. Center the main alphanumeric section with your body (not necessarily the whole board including numpad — many people center B/space, not the geometric middle of a full-size board).</p>
-<h3>Negative tilt vs positive tilt</h3>
-<p>Legs that prop the back of the keyboard up can increase wrist extension for some people. Flat or slight negative tilt (front higher than back) helps others. Experiment gently; comfort and neutral wrists win.</p>
-<h3>Screen height</h3>
-<p>Raise laptops with a stand and use an external keyboard when possible for long sessions. Looking down at a low laptop encourages neck flexion and key staring — bad for posture and touch typing. Touch typing guide: <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
-<h3>Mouse placement</h3>
-<p>Keep the mouse close. Overreaching sideways every few seconds loads the shoulder. If you mouse more than you type, posture still matters.</p>
-
-<h2 id="hands">Hands, Wrists, and Key Force</h2>
-<p><strong>Light force</strong> is one of the highest-ROI comfort skills. Mashy typing multiplies impact. On FreeTyper, practice the lightest press that still registers. Mechanical vs membrane feel differs, but mashing is optional on both. Comparison: <a href="/blog/mechanical-vs-membrane-keyboards">mechanical vs membrane</a>, buying frame: <a href="/blog/mechanical-vs-membrane-keyboards">best keyboards for fast typing</a>.</p>
-<p><strong>Wrist posture while typing:</strong></p>
-<ul>
-<li>Avoid planting the heel of your hand hard on a sharp desk edge for hours</li>
-<li>Wrist rests can support during pauses; many people do better not planting hard during active keystrokes — find what keeps wrists nearer neutral</li>
-<li>Watch ulnar/radial deviation (bending sideways) from reaching awkward keys or angled boards</li>
-</ul>
-<p><strong>Home row ownership</strong> reduces wild reaches and peeking contortions. Lessons help: <a href="/typing-lessons">typing lessons</a>, <a href="/keyboard-guide">keyboard guide</a>.</p>
-
-<h2 id="mistakes">Posture Mistakes That Invite Pain</h2>
-<ol>
-<li>Laptop on couch, wrists bent, screen low</li>
-<li>Shrugged shoulders all afternoon</li>
-<li>Death-grip key force and bottoming out every key</li>
-<li>Wallet or phone under one hip twisting the pelvis for hours</li>
-<li>Phone-between-ear-and-shoulder while typing (classic trap)</li>
-<li>No breaks during marathhere rage sessions</li>
-<li>Ignoring early ache because a PR is “so close”</li>
-<li>Cold hands, no warm-up, maximum force from second one</li>
-<li>Keyboard too high on a standing desk without elbow support strategy</li>
-<li>Twisting torso toward a side-placed laptop for hours</li>
-</ol>
-
-<h2 id="breaks">Breaks, Micro-Pauses, and Session Design</h2>
-<p>Tissue load is dose × time × force. Reduce dose with:</p>
-<ul>
-<li><strong>Micro-pauses:</strong> drop hands to lap for a few seconds every few minutes during heavy work</li>
-<li><strong>Session caps:</strong> blocks of 15–25 minutes beat two-hour pain marathons for skill and comfort</li>
-<li><strong>Task variety:</strong> alternate typing with reading, walking, calls</li>
-<li><strong>Timers:</strong> standing reminders help if you forget your body exists during deep work</li>
-</ul>
-<p>Daily practice design: <a href="/typing-practice">typing practice guide</a>. Adults and schedules: <a href="/blog/touch-typing-for-beginners">touch typing as an adult</a>.</p>
-<p>If a game session tilts you into mashing, stop. Games after form: <a href="/typing-game-falling-words">free typing games</a>.</p>
-
-<h2 id="pain">If You Already Have Discomfort</h2>
-<p><strong>Stop or reduce</strong> activities that clearly worsen symptoms. “Push through” is not a typing strategy.</p>
-<p>General self-care ideas people use while arranging professional care (not prescriptions):</p>
-<ul>
-<li>Shorten sessions; increase rest between them</li>
-<li>Lighten key force deliberately</li>
-<li>Fix obvious setup faults (height, reach, laptop stand)</li>
-<li>Avoid late-night two-hour grinding</li>
-<li>Note which tasks trigger symptoms (mouse vs typing vs phone)</li>
-</ul>
-<p><strong>See a professional promptly</strong> for numbness, tingling, night pain, weakness, swelling, trauma, or symptoms that persist or worsen. Early evaluation beats months of forum diagnosis.</p>
-<p>Do not use scores as proof you are fine. Pain is data; ignore it at your peril.</p>
-
-<h2 id="hardware">When Hardware Helps (and When It Does Not)</h2>
-<p>Hardware can help when it reduces reach, force, or awkward angles: external keyboard at better height, lighter switches, split/tented boards for some people, quieter boards that reduce tension from noise anxiety. Hardware cannot fix infinite hours without breaks or a job that never pauses.</p>
-<p>Adaptation to ergonomic boards can temporarily change WPM. Budget time. Do not switch boards the week of a high-stakes typing test unless pain forces it. Data entry prep: <a href="/blog/data-entry-typing-test">data entry typing test</a>.</p>
-<p>Programmers on long days: <a href="/blog/typing-speed-for-programmers">typing speed for programmers</a>.</p>
-
-<h2 id="freetyper">How to Practice here Without Aggravating Wrists</h2>
-<ol>
-<li><strong>Warm up gently</strong> 1–2 minutes easy words, light force</li>
-<li><strong>Cap sessions</strong> at a comfortable length; stop while form is still clean</li>
-<li><strong>Accuracy over ego speed</strong> — rushing increases mash and tension. Accuracy guide: <a href="/blog/improve-typing-accuracy">typing accuracy test</a></li>
-<li><strong>Skip restart addiction</strong> — emotional thrashing tightens shoulders</li>
-<li><strong>Prefer practice quality</strong> over endless tests on sore days</li>
-<li><strong>Log comfort 1–5</strong> next to WPM so you notice trends</li>
-<li><strong>End with real writing only if comfortable</strong></li>
-<li><strong>Never “earn” a PR through pain</strong></li>
-</ol>
-<p>Speed methods when healthy: <a href="/blog/how-to-type-faster">how to type faster</a>. Muscle memory and spacing: <a href="/blog/muscle-memory-and-touch-typing">muscle memory and touch typing</a>.</p>
-
-<h2 id="standing">Standing Desks and Typing</h2>
-<p>Standing can help some people vary load. It can also create locked knees, shrugged shoulders, and a keyboard that is too high. If you stand:</p>
-<ul>
-<li>Match keyboard height to elbows</li>
-<li>Soften knees; shift weight</li>
-<li>Use an anti-fatigue mat if it helps you</li>
-<li>Alternate sit/stand instead of all-day frozen standing</li>
-</ul>
-<p>scores may change with posture shifts; keep conditions consistent when measuring skill trends.</p>
-
-<h2 id="checklist">Daily Posture Checklist</h2>
-<ul>
-<li>Feet supported</li>
-<li>Shoulders down</li>
-<li>Elbows roughly comfortable</li>
-<li>Wrists nearer neutral</li>
-<li>Screen not forcing a deep turtle neck</li>
-<li>Keyboard close; centered alphanumerics</li>
-<li>Light key force</li>
-<li>Breaks exist on the calendar, not only in theory</li>
-<li>Pain → stop and reassess (professional help if needed)</li>
-</ul>
-<p>Run this checklist before a weekly test so you measure skill, not a random sofa session.</p>
-
-<h2 id="students">Students and Exam Typing</h2>
-<p>Students often type on beds and couches. For exam seasons, prioritize a table setup even if imperfect. Short daily practice with good posture beats weekend cram in a bad shape. Eyes-up touch typing also reduces neck bobbing between keys and screen. Beginner plan: <a href="/blog/touch-typing-for-beginners">30-day plan</a>.</p>
-
-<h2 id="remote">Remote Work Reality</h2>
-<p>Home offices range from perfect to dining-chair chaos. If budget is limited, prioritize: external keyboard + raised screen + chair that allows feet support. That trio fixes a large share of remote posture disasters before any luxury chair purchase.</p>
-
-<h2 id="faq">Typing Posture and Wrist Pain FAQ</h2>
-<h3>What is proper typing posture?</h3>
-<p>A relaxed, supported position with shoulders down, comfortable elbow height, wrists near neutral, and a screen that does not force constant looking down. Exact angles vary by body and setup.</p>
-<h3>How do I avoid wrist pain while typing?</h3>
-<p>Reduce awkward angles and force, improve desk/chair/keyboard geometry, take breaks, stop when pain increases, and get professional care for persistent symptoms.</p>
-<h3>Should I use a wrist rest?</h3>
-<p>Some people like them for rest pauses. Avoid hard pressure on the wrist crease during active typing if it increases symptoms. Experiment carefully.</p>
-<h3>Is pain normal when learning touch typing?</h3>
-<p>Mild fatigue can happen when building a new skill; sharp pain, numbness, or lasting symptoms are not “just part of learning.” Stop and seek advice if needed.</p>
-<h3>Can cause wrist pain?</h3>
-<p>Any intensive typing can aggravate issues if force is high, sessions are too long, or setup is poor. Use short sessions and light force; stop if pain worsens.</p>
-<h3>Do mechanical keyboards help wrist pain?</h3>
-<p>Sometimes via lighter or more comfortable feel; sometimes noise or travel worsens tension. Personal trial with comfort logging beats assumptions.</p>
-<h3>Should I type through discomfort to get faster?</h3>
-<p>No. Speed built on injury is not a win.</p>
-<h3>How often should I take breaks?</h3>
-<p>Frequent short breaks beat rare long ones for many people. Match to your symptoms and job design; clinicians may give individualized guidance.</p>
-<h3>Does posture affect WPM?</h3>
-<p>Yes indirectly — via fatigue, accuracy, and sustainable practice volume.</p>
-<h3>What about split ergonomic keyboards?</h3>
-<p>Helpful for some; adaptation required. Comfort first if pain is the issue.</p>
-<h3>Can kids have typing-related pain?</h3>
-<p>Yes. Keep sessions short, setup reasonable, and avoid shame-driven marathon practice.</p>
-<h3>Is this medical advice?</h3>
-<p>No. Educational only. See a professional for personal medical questions.</p>
-<h3>What should I do right now if my wrists hurt?</h3>
-<p>Stop aggravating activity, reduce load, note symptoms, and arrange appropriate care if they persist or are severe.</p>
-<h3>How do I keep improving typing while being careful?</h3>
-<p>Shorter practice sessions, accuracy focus, light force, better setup, and patience with WPM timelines.</p>
-
-<h2 id="warm-up">A Gentle Pre-Typing Warm-Up (Non-Medical)</h2>
-<p>Before a block, many people feel better if they:</p>
-<ul>
-<li>Shake out hands loosely</li>
-<li>Roll shoulders down and back gently</li>
-<li>Type easy words for 60–90 seconds at low force</li>
-<li>Check chair and keyboard position once</li>
-</ul>
-<p>Skip anything that hurts. Warm-up is arousal and awareness, not aggressive stretching contests.</p>
-
-<h2 id="red-flags">Red Flags — Seek Care Rather Than Self-Coaching Alone</h2>
-<ul>
-<li>Numbness or tingling in fingers or hands</li>
-<li>Night symptoms that wake you</li>
-<li>Weakness or dropping objects</li>
-<li>Swelling, discoloration, or sudden severe pain</li>
-<li>Symptoms after injury</li>
-<li>Pain spreading up the arm or into the neck with neurological signs</li>
-<li>Symptoms lasting despite rest and setup fixes</li>
-</ul>
-<p>This list is not exhaustive. When in doubt, get checked.</p>
-
-<h2 id="work">Talking to Employers About Setup</h2>
-<p>If work equipment causes pain, document issues and ask about adjustments (keyboard tray, chair, breaks, external keyboard). Many workplaces have ergonomic assessment resources. You do not need to be a hero on a broken setup to prove dedication.</p>
-
-<h2 id="mindset">Sustainable Ambition</h2>
-<p>Wanting higher WPM is fine. Wanting it at the cost of chronic pain is not clever. The fastest long-term typists are often the ones who can still practice next month. Build skill with spacing, accuracy, and geometry that your body can tolerate. Science of practice spacing: <a href="/blog/muscle-memory-and-touch-typing">muscle memory article</a>.</p>
-
-<h2 id="sample-day">Sample Comfortable Practice Day</h2>
-<ol>
-<li>Adjust setup (2 minutes)</li>
-<li>Gentle warm-up typing (2 minutes)</li>
-<li>practice focused on weak keys or accuracy (12 minutes), light force</li>
-<li>Stand/walk micro-break (3 minutes)</li>
-<li>Optional short speed test if comfortable (3–5 minutes max)</li>
-<li>Log WPM, accuracy, comfort 1–5</li>
-</ol>
-<p>That is enough to improve without treating your wrists like a disposable resource.</p>
-
-<h2 id="myths">Posture Myths</h2>
-<ul>
-<li><strong>“Pain means growth.”</strong> Not in typing.</li>
-<li><strong>“Wrist rests fix everything.”</strong> Setup and force still matter.</li>
-<li><strong>“Only bad typists get pain.”</strong> Load and geometry affect anyone.</li>
-<li><strong>“Standing all day eliminates risk.”</strong> Poor standing setups exist too.</li>
-<li><strong>“Expensive chairs replace breaks.”</strong> They do not.</li>
-<li><strong>“If I ignore it, it will go away mid-PR season.”</strong> Sometimes it gets louder instead.</li>
+<li><strong>Reach with your fingers.</strong> Starting from the home row, let each finger move to its own keys instead of twisting the whole hand. The <a href="/keyboard-guide">keyboard guide</a> shows which finger owns which key.</li>
+<li><strong>Relax between sentences.</strong> If your shoulders, forearms or fingers feel tight, pause and loosen them before you carry on.</li>
+<li><strong>Stop when accuracy slips.</strong> A run of errors is often a sign of tiredness. On FreeTyper we suggest short sessions, such as 10 to 20 minutes, and stopping when your accuracy starts to fall.</li>
 </ul>
 
-<h2 id="cold">Cold Hands, Warm-Up, and Morning Sessions</h2>
-<p>Cold hands often lead to harder striking and higher tension. If you practice first thing in a cold room, give yourself longer easy warm-up lines and keep force low. A warmer room or a minute of gentle movement before typing helps some people. Avoid aggressive “stretch until it hurts” routines — especially if you already have symptoms.</p>
-
-<h2 id="one-side">One-Sided Pain and Asymmetry</h2>
-<p>Symptoms on one side more than the other can come from mouse-heavy work, wallet-in-back-pocket hip tilt, reaching for a side laptop, or always using one thumb for space with extreme tension. Notice asymmetry in your setup photos. Centering the alphanumeric cluster, bringing the mouse closer, and balancing sit posture can help mechanical load even before any change. Persistent one-sided neurological symptoms still deserve professional evaluation.</p>
-
-<h2 id="double">Double Duty: Chat, Code, and Games the Same Evening</h2>
-<p>Your wrists do not care that Slack,, coding, and a gaming session feel like different hobbies. They sum the keystrokes and mouse miles. If evenings are packed with input, shorten ambition that day. Skill compounds across weeks; tissue irritation can spike in a single stacked night.</p>
-
-<h2 id="photo">The Phone Photo Audit</h2>
-<p>Once, have someone photo you from the side and from above while you type (or use a timer selfie carefully). Look for:</p>
+<h2 id="what-the-research-says">Does typing actually cause wrist problems?</h2>
+<p>Less clearly than the internet suggests. Two systematic reviews, which search and weigh all the studies they can find, give the most useful picture.</p>
 <ul>
-<li>Head poked forward</li>
-<li>Shoulders raised</li>
-<li>Wrists extended like a seal on a desk edge</li>
-<li>Keyboard too far away</li>
-<li>Screen far below eye level</li>
+<li><strong>Carpal tunnel syndrome.</strong> A 2008 review by Thomsen, Gerr and Atroshi in <em>BMC Musculoskeletal Disorders</em> found eight epidemiological studies of computer work and carpal tunnel syndrome. All eight had at least one limitation, such as imprecise measurement, low statistical power or possible bias. The authors concluded that there is <strong>insufficient epidemiological evidence that computer work causes carpal tunnel syndrome</strong>. They also noted that pressure measurements under typical computer use were below levels considered harmful, although one study found that actual mouse use raised the pressure to potentially harmful levels, and the long-term effects of such pressure are not known.</li>
+<li><strong>Other neck and arm conditions.</strong> A 2010 review by Waersted, Hanvold and Veiersted covered 22 studies. It found <strong>limited</strong> evidence linking computer work, mouse time and keyboard time to wrist tendonitis, and linking mouse time to forearm disorders. For keyboard time and tension neck syndrome the evidence was insufficient. None of the evidence was rated moderate or strong.</li>
 </ul>
-<p>Fix the obvious geometry before buying exotic accessories. Then re-photo in a week. Visual feedback beats vague “I think I sit fine.”</p>
+<p>Read these results carefully. They do not say typing is safe. They say the studies done so far are not good enough to show either way. That is a reason to keep a sensible setup and watch your body, and also a reason to be sceptical of anyone who claims one gadget or one stretch will prevent injury.</p>
 
-<h2 id="job-test">Job Typing Tests and Pain</h2>
-<p>Do not prepare for a data entry or admin typing test by destroying your hands for seven nights. Use the 14-day style plans with rest, light force, and duration match — not pain marathons. If symptoms flare before a scheduled assessment, prioritize health and medical advice over a score. Career prep without injury: <a href="/blog/data-entry-typing-test">data entry typing test guide</a>.</p>
+<h2 id="breaks-and-variety">Breaks and variety</h2>
+<p>OSHA's checklist asks whether you can alternate between sitting and standing, and whether your computer tasks are organised so that you can vary keyboard work with other activities or take micro-breaks. In the pages we checked, OSHA does not give a fixed break interval, and we will not invent one. A practical approach is to pick a rhythm you will actually keep: stand up when you finish a task, look away from the screen, and shake out your hands.</p>
 
-<h2 id="kids-parents">Parents: Protect Young Typists</h2>
-<p>Kids on tablets and laptops in bed can pick up the same contortions. Keep practice short, use a table when possible, and never use pain jokes as motivation. Praise eyes-up form and consistency. should stay a game-like skill builder, not a youth injury pipeline.</p>
+<h2 id="symptoms-and-when-to-get-help">Symptoms and when to get help</h2>
+<p>The UK's National Health Service describes <a href="https://www.nhs.uk/conditions/carpal-tunnel-syndrome/" rel="noopener" target="_blank">carpal tunnel syndrome</a> as pressure on a nerve in the wrist. Symptoms include pain or aching in the fingers, hand or arm, numb hands, tingling or pins and needles, a weak thumb or difficulty gripping, and symptoms that are usually worse at night. The NHS lists repeated wrist bending or hard gripping at work or in hobbies among the risk factors, alongside others such as pregnancy, arthritis, diabetes, a family history and a previous wrist injury. Its page names vibrating tools as an example and does not single out keyboard use.</p>
+<p>The NHS page on <a href="https://www.nhs.uk/conditions/repetitive-strain-injury-rsi/" rel="noopener" target="_blank">repetitive strain injury</a> describes pain that may burn, ache or throb, stiffness, weakness, tingling or numbness, cramps and swelling, caused by repeated use of a body part. For both conditions it advises seeing a GP if symptoms are not going away or are getting worse. For carpal tunnel syndrome, its self-help advice includes wearing a wrist splint at night for up to six weeks, cutting down on activities that may be causing it, and hand exercises. If you notice symptoms, get them checked rather than diagnosing yourself from a web page, including this one.</p>
 
-<h2 id="travel">Travel Setups Without Wrecking Wrists</h2>
-<p>Airport lounges and hotel desks are hostile. Strategies:</p>
+<h2 id="what-this-article-cannot-tell-you">What this article cannot tell you</h2>
 <ul>
-<li>Raise the laptop on a bag and use a compact external keyboard when you can</li>
-<li>Shorten practice sessions on travel days</li>
-<li>Avoid typing for an hour on a bed with wrists fully extended</li>
-<li>Accept slightly lower scores on unfamiliar travel boards without panic-grinding</li>
+<li>It cannot diagnose anything or replace a clinician.</li>
+<li>It cannot tell you which keyboard, chair or exercise is best for you. The research does not support strong claims about specific products.</li>
+<li>Bodies differ. Treat the numbers and positions above as a starting point and adjust to what feels comfortable and neutral for you.</li>
 </ul>
+<p>When you are ready to practice, set up your desk first, then try the <a href="/typing-lessons">typing lessons</a> or a short <a href="/typing-practice">practice</a> run.</p>
 
-<h2 id="metrics">Log Comfort Like You Log WPM</h2>
-<p>Add a comfort column to your notes: 1 (bad) to 5 (great). If WPM rises while comfort falls for two weeks, you are borrowing from the future. Successful months raise or hold comfort while accuracy stays healthy. That is elite self-coaching.</p>
-
-<h2 id="ergonomics-pro">When to Seek an Ergonomics Assessment</h2>
-<p>If your employer offers ergonomic evaluations, use them — especially when symptoms start. Independent clinicians (PT, OT, sports med, hand specialists depending on region and need) can individualize what a blog cannot. Bring photos of your setup and a symptom diary. logs of when pain appears (after 5 minutes vs after 50) can be useful context for a clinician; they are not a diagnosis.</p>
-
-<h2 id="return">Returning After a Break From Pain</h2>
-<p>When cleared to resume activity (follow your clinician’s guidance), ease back:</p>
-<ul>
-<li>Halve previous duration at first</li>
-<li>Accuracy and light force only — no speed heroics week one</li>
-<li>Stop at the first warning sign you were taught to respect</li>
-<li>Rebuild map gently if you took a long break — hybrid peeking may return</li>
+<h2 id="sources">Sources</h2>
+<ul class="article-sources">
+<li>OSHA, <a href="https://www.osha.gov/etools/computer-workstations/components/keyboards" rel="noopener" target="_blank">Computer Workstations eTool: Keyboards</a>.</li>
+<li>OSHA, <a href="https://www.osha.gov/etools/computer-workstations/components/wrist-palm-support" rel="noopener" target="_blank">Computer Workstations eTool: Wrist/Palm Supports</a>.</li>
+<li>OSHA, <a href="https://www.osha.gov/etools/computer-workstations/checklists/evaluation" rel="noopener" target="_blank">Computer Workstations eTool: Evaluation checklist</a>.</li>
+<li>Thomsen JF, Gerr F, Atroshi I. <a href="https://pubmed.ncbi.nlm.nih.gov/18838001/" rel="noopener" target="_blank">Carpal tunnel syndrome and the use of computer mouse and keyboard: a systematic review</a>. BMC Musculoskeletal Disorders, 2008.</li>
+<li>Waersted M, Hanvold TN, Veiersted KB. <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2874766/" rel="noopener" target="_blank">Computer work and musculoskeletal disorders of the neck and upper extremity: a systematic review</a>. BMC Musculoskeletal Disorders, 2010.</li>
+<li>NHS, <a href="https://www.nhs.uk/conditions/carpal-tunnel-syndrome/" rel="noopener" target="_blank">Carpal tunnel syndrome</a> and <a href="https://www.nhs.uk/conditions/repetitive-strain-injury-rsi/" rel="noopener" target="_blank">Repetitive strain injury</a>.</li>
 </ul>
-<p>Ego wants revenge PRs. Tendons prefer progressive loading.</p>
-
-<h2 id="team-culture">Team Culture That Prevents Heroic Damage</h2>
-<p>If you lead a team, do not praise “I typed 14 hours straight.” Praise sustainable delivery and smart breaks. Provide equipment pathways. Typing culture that mocks discomfort produces quiet injuries and quiet attrition.</p>
-
-<h2 id="closing">Comfort Is Part of the Skill</h2>
-<p>Good posture and sane load keep accuracy, endurance, and practice streaks alive. Set the desk so shoulders and wrists can stay nearer neutral. Type lighter. Break more often. Stop for pain. Get professional help when symptoms are real. Speed is allowed. Pain as fuel is not.</p>
-<p>Check your setup, open a short <a href="/typing-practice">practice</a> session with light force, and skip any grind that costs comfort. Skill grows on days you can repeat tomorrow.</p>
+<p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Every claim above that is attributed to a source was checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
 };
 

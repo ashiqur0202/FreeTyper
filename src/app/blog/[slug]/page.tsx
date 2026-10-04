@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: `${siteConfig.url}/blog/${post.slug}`,
       type: 'article',
       publishedTime: post.date,
+      modifiedTime: post.updated ?? post.date,
       authors: [post.author],
     },
     twitter: {
@@ -67,6 +68,14 @@ export default async function BlogPostPage({ params }: PageProps) {
           <Link href="/about#author" className="hover:text-accent">{post.author}</Link>
           <span>·</span>
           <time dateTime={post.date}>{post.date}</time>
+          {post.updated && post.updated !== post.date && (
+            <>
+              <span>·</span>
+              <span>
+                Updated <time dateTime={post.updated}>{post.updated}</time>
+              </span>
+            </>
+          )}
           <span>·</span>
           <span>{post.readTime} read</span>
         </div>
