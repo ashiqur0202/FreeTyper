@@ -289,7 +289,7 @@ Index: `src/data/blog/typing-skills.ts` · Bodies: `src/data/blog/articles/*.ts`
 | # | Slug | Why kept | Pre-rewrite risk (from the audit scan) | Status |
 |---|------|----------|----------------------------------------|--------|
 | 1 | `how-to-type-faster` | core intent; 8 H2s, no templated TOC | 10 % figures, 0 sources | rewrite pending |
-| 2 | `good-typing-speed` | the one benchmark post (absorbs average / how-many / for-work topics) | 9 % figures, 6 “study” mentions, 0 sources | rewrite pending — ground in Dhakal et al. + our rank bands |
+| 2 | `good-typing-speed` | the one benchmark post (absorbs average / how-many / for-work topics) | 9 % figures, 6 “study” mentions, 0 sources | **REWRITTEN 2026-10-04** (~1.2k words; Dhakal et al. figures verified in the paper incl. sample caveats; Karat 1999 + job ranges via Wikipedia WPM; no age table — no reliable source found; retitled “What Large-Scale Data Shows”) |
 | 3 | `improve-typing-accuracy` | distinct intent | **64 % figures**, 0 sources | rewrite pending — strip invented numbers |
 | 4 | `touch-typing-for-beginners` | practical plan (absorbs touch-typing guide / adult posts) | 17 % figures | rewrite pending |
 | 5 | `muscle-memory-and-touch-typing` | motor-learning angle, citable | 3 “study” mentions, 0 sources | rewrite pending — needs real literature |
@@ -297,7 +297,7 @@ Index: `src/data/blog/typing-skills.ts` · Bodies: `src/data/blog/articles/*.ts`
 | 7 | `typing-speed-for-programmers` | niche intent (our code mode) | 8 % figures | rewrite pending |
 | 8 | `data-entry-typing-test` | job-test intent | 14 % figures, employer claims unverified | rewrite pending — verify how such tests score (net WPM, KSPH) |
 | 9 | `mechanical-vs-membrane-keyboards` | honest “how to choose” (absorbs best-keyboards) | thin hard evidence | rewrite pending — say what is and isn’t known |
-| 10 | `fix-typing-posture-and-avoid-wrist-pain` | highest value; public guidance exists | 0 % figures, 0 sources | rewrite pending — cite OSHA / CDC-NIOSH-type guidance actually opened |
+| 10 | `fix-typing-posture-and-avoid-wrist-pain` | highest value; public guidance exists | 0 % figures, 0 sources | **REWRITTEN 2026-10-04** (~1.5k words; OSHA keyboard / wrist-rest / checklist pages, Thomsen 2008 + Waersted 2010 reviews, NHS CTS + RSI pages; says what evidence does not show) |
 
 **Deleted 2026-10-04 (15):** `typing-practice`, `best-free-typing-games`, `type-numbers-and-symbols-without-looking`, `best-keyboards-for-fast-typing`, `touch-typing-guide`, `how-to-learn-touch-typing-as-an-adult`, `average-typing-speed`, `how-many-words-per-minute`, `typing-speed-for-work`, `free-typing-test`, `one-minute-typing-test`, `3-minute-typing-test-vs-5-minute-typing-test`, `5-minute-typing-test`, `typing-accuracy-test`, `typing-speed-test` (blog). Reasons: overlapped the home/tool guides (6 test posts; practice; games; numbers) or each other (4 benchmark posts, 3 touch-typing, 2 keyboards). Their old text stays in git history (`git log -- src/data/blog`).
 
@@ -305,7 +305,7 @@ Index: `src/data/blog/typing-skills.ts` · Bodies: `src/data/blog/articles/*.ts`
 - 1.2–2k words, answer first, one clear question per post; no templated “Table of Contents”, “From Article to Action”, “Bottom Line”
 - Facts only from sources actually opened and checked, linked inline; no invented statistics; no fake first-hand stories — say what is unknown
 - Use the site’s own measured behaviour where relevant (scoring rules, rank bands) and link to the right tool
-- Real `date` (first published) and an updated date when edited; never batch-backdate; byline Ashiqur Rahman
+- Real `date` (first published) and `updated` (BlogPost field, shown on the page, feeds `dateModified` + sitemap) when substantively rewritten; never batch-backdate; byline Ashiqur Rahman
 - Then **1 new post per week** (ongoing curation is an AdSense criterion); keep a topic queue here
 
 **Topic queue (draft ideas, none written):** how typing speed is scored by employers (net vs gross, accuracy floors) · typing on a laptop vs external keyboard · how to practice typing 10 minutes a day · does typing speed matter for programmers (with evidence) · common typing errors by key pair (from the Dhakal et al. error data)

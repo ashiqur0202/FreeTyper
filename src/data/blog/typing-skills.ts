@@ -23,12 +23,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'good-typing-speed',
-    title: 'What Is a Good Typing Speed? WPM Benchmarks by Age and Profession',
-    excerpt: 'Exact WPM benchmarks by skill level, age group, and profession — so you know where you actually stand, what to aim for, and whether your typing speed is holding you back.',
+    title: 'What Is a Good Typing Speed? What Large-Scale Data Shows',
+    excerpt: 'What 168,960 typists actually scored, how to read your own WPM, what jobs usually ask for, and why accuracy matters as much as speed. Every figure is sourced.',
     date: '2026-06-09',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Typing Speed',
-    readTime: '16 min',
+    readTime: '7 min',
   },
   {
     slug: 'improve-typing-accuracy',

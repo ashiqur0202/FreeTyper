@@ -409,358 +409,72 @@ export const typingSpeedArticles: Record<string, string> = {
 <p>If you want guided finger drills after the test, the <a href="/typing-lessons">typing lessons</a> are built for that next step.</p>
 `,
 
-  'good-typing-speed': `
-<p>"Am I a fast typist?" It sounds like a simple question. It isn't.</p>
+  'good-typing-speed': `<p>There is no official line between a good and a bad typing speed, but there is good data on where people actually land. In the largest typing study we know of, 168,960 volunteers averaged <strong>51.56 WPM</strong>. The fastest tenth typed above roughly <strong>78 WPM</strong> and the slowest tenth below roughly <strong>26 WPM</strong>. So about 50 WPM is typical for people who take typing tests, 70 to 80 is fast, and below about 25 is slow.</p>
 
-<p>The answer depends entirely on who you're comparing yourself to, what your job demands, and what you're actually trying to accomplish. A 45 WPM speed is perfectly fine for someone who writes a few emails a day and does most of their work on the phone. That same speed would be a serious liability for a court transcriptionist, a journalist on a two-hour deadline, or a data entry specialist whose output is measured by the record.</p>
+<p>Speed is only half the answer. Errors cost time to fix and credibility when they slip through, so a good score is a fast one that stays accurate. This guide explains what the data does and does not say, how to read your own result, and what jobs usually ask for.</p>
 
-<p>Context is everything.</p>
+<h2 id="what-the-biggest-study-found">What the biggest study found</h2>
+<p>In 2018, researchers at Aalto University and the University of Cambridge published <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018). Volunteers copied 15 English sentences on a keyboard, and the researchers measured how fast and how accurately they typed. Their reported figures:</p>
+<ul>
+<li>The average speed was <strong>51.56 WPM</strong>, with a standard deviation of 20.2.</li>
+<li>The <strong>fastest 10%</strong> typed above about <strong>78 WPM</strong>. The <strong>slowest 10%</strong> typed below about <strong>26 WPM</strong>.</li>
+<li>The fastest typists in the data reached <strong>120 WPM or more</strong>.</li>
+<li>The average <strong>uncorrected error rate was 1.167%</strong>.</li>
+<li>Participants who reported formal typing training were on average about <strong>5 WPM faster</strong> than those who did not, and left slightly fewer errors uncorrected (1.02% against 1.23%). The authors describe the difference as small.</li>
+<li>Faster typists generally made fewer errors.</li>
+</ul>
 
-<p>Most articles wave at "good" without saying good for what. This one gets specific. You'll see exact WPM benchmarks broken down by skill level, age group, and profession — so you can find out where you actually stand, what you should be aiming for, and whether your current typing speed is holding you back.</p>
+<h2 id="how-to-read-those-numbers">How to read those numbers</h2>
+<p>These figures are the best public benchmark, but they come with limits that matter when you compare yourself:</p>
+<ul>
+<li><strong>The volunteers chose to take a typing test.</strong> They were recruited from the users of a company that offers online typing courses and tests, and were mainly teenagers and young adults (75% were aged 11 to 30), with about two thirds from the United States. People who enjoy typing tests are probably faster than people in general, so the true average for everyone is likely lower than 51.56.</li>
+<li><strong>It was copying, not composing.</strong> Typing sentences you have just read is faster than typing your own thoughts. A 1999 study by Karat and colleagues, as summarised in Wikipedia's <a href="https://en.wikipedia.org/wiki/Words_per_minute" rel="noopener" target="_blank">Words per minute</a> article, found an average of 32.5 WPM for transcription and 19.0 WPM for composition among ordinary computer users.</li>
+<li><strong>Speed was measured within each sentence,</strong> from the first to the last keypress, so pauses before you start a sentence are not counted. Real writing has many more pauses.</li>
+</ul>
+<p>The takeaway is that a test score is a measure of your keyboard skill when you are copying text. It is not the speed at which you will produce an email or an essay.</p>
 
-<h2 id="table-of-contents">Table of Contents</h2>
+<h2 id="freetyper-speed-bands">The FreeTyper speed bands</h2>
+<p>To make a result easier to read, the <a href="/">FreeTyper speed test</a> puts a label on your net WPM. These bands are our own shorthand, not an official standard:</p>
+<table>
+<thead><tr><th>Net WPM</th><th>Label</th><th>Compared with the study</th></tr></thead>
+<tbody>
+<tr><td>Under 40</td><td>Beginner</td><td>Below the study average</td></tr>
+<tr><td>40&ndash;59</td><td>Average</td><td>Contains the study average of 51.56</td></tr>
+<tr><td>60&ndash;79</td><td>Skilled</td><td>Above average, just below the fastest tenth</td></tr>
+<tr><td>80&ndash;99</td><td>Pro</td><td>Within the fastest tenth of the study</td></tr>
+<tr><td>100 and above</td><td>Elite</td><td>Well inside the fastest tenth</td></tr>
+</tbody>
+</table>
+<p>The last column is only a rough guide, because the study measured different text under different conditions.</p>
 
+<h2 id="what-speed-do-jobs-need">What speed do jobs need?</h2>
+<p>It depends on the employer and the role, and the honest answer is to read the job posting. For general orientation, Wikipedia's <a href="https://en.wikipedia.org/wiki/Words_per_minute" rel="noopener" target="_blank">Words per minute</a> article reports that professional typists type at 43 to 80 WPM, that some positions require 80 to 95 WPM (typically the minimum for dispatch and other time-sensitive typing jobs), and that some advanced typists exceed 120 WPM.</p>
+<p>When a posting names a number, ask three questions: whether it means net or gross WPM, whether corrections are allowed, and what accuracy minimum applies. FreeTyper reports <strong>net WPM</strong>, which counts only correct characters, and shows gross WPM beside it. For test-specific advice, see our guide to <a href="/blog/data-entry-typing-test">data entry typing tests</a>.</p>
+
+<h2 id="accuracy-matters-as-much-as-speed">Accuracy matters as much as speed</h2>
+<p>In the same study, typists who were faster also tended to be more accurate, and slower typists left more errors uncorrected, which the authors suggest may mean they are less able to spot their own mistakes. So chasing speed at the cost of accuracy is not how fast typists got there. The FreeTyper coach reflects this: below 95% accuracy it tells you to hold accuracy before chasing speed, and below 88% it calls the run not a real score. If accuracy is your weak point, read <a href="/blog/improve-typing-accuracy">how to improve typing accuracy</a>.</p>
+
+<h2 id="what-about-age">What about age?</h2>
+<p>You will find many "typing speed by age" tables online. We looked for reliable data to build one and did not find a source that shows how its figures were measured, so we do not publish an age table. The study above had mostly young participants and does not give a trustworthy breakdown by age in the figures we checked. If you are older or younger than the typical typist, use the labels above as a rough guide and track your own progress instead.</p>
+
+<h2 id="find-your-own-number">How to find your own number</h2>
 <ol>
-<li><a href="#how-typing-speed-is-measured">How Typing Speed Is Measured</a></li>
-<li><a href="#wpm-benchmarks-by-skill-level">WPM Benchmarks by Skill Level</a></li>
-<li><a href="#average-typing-speed-by-age-group">Average Typing Speed by Age Group</a></li>
-<li><a href="#typing-speed-by-profession">Typing Speed by Profession</a></li>
-<li><a href="#what-about-accuracy">What About Accuracy?</a></li>
-<li><a href="#gross-wpm-vs-net-wpm">Gross WPM vs. Net WPM</a></li>
-<li><a href="#is-your-typing-speed-holding-you-back">Is Your Typing Speed Holding You Back?</a></li>
-<li><a href="#how-to-find-your-current-wpm">How to Find Your Current WPM</a></li>
-<li><a href="#how-to-improve-your-typing-speed">How to Improve Your Typing Speed</a></li>
-<li><a href="#frequently-asked-questions">Frequently Asked Questions</a></li>
-<li><a href="#conclusion">Conclusion</a></li>
+<li><strong>Take at least three runs</strong> of the same length, using the same text type, and use the middle result.</li>
+<li><strong>Use runs of a minute or more.</strong> Very short tests are dominated by your first few words.</li>
+<li><strong>Compare like with like.</strong> Word lists, sentences and code give different scores for the same person.</li>
+<li><strong>Read accuracy before speed.</strong> A fast run with many errors is not a good score.</li>
 </ol>
 
-<h2 id="how-typing-speed-is-measured">How Typing Speed Is Measured</h2>
-
-<p>Before comparing numbers, it helps to understand what those numbers actually mean.</p>
-
-<p><strong>WPM (words per minute)</strong> doesn't count individual words — it counts characters. The universal standard defines one "word" as <strong>five characters</strong>, including spaces and punctuation. So if you type the phrase "I love to type" — that's 14 characters, including the spaces — it counts as 2.8 words for WPM purposes, not 4.</p>
-
-<p>The formula is straightforward:</p>
-
-<blockquote><p><strong>WPM = (Total characters typed ÷ 5) ÷ Minutes elapsed</strong></p></blockquote>
-
-<p>For example: if you type 1,500 characters in 5 minutes, that's 300 characters per minute, which equals <strong>60 WPM</strong>.</p>
-
-<p>You might also see <strong>CPM (characters per minute)</strong> on some platforms. To convert: divide CPM by 5 to get WPM, or multiply WPM by 5 to get CPM. A 60 WPM typist types 300 CPM.</p>
-
-<p>Some job postings — especially in data entry and government administration — list requirements in <strong>KPH (keystrokes per hour)</strong>. To convert to WPM: divide KPH by 300. So a job requiring 18,000 KPH is asking for 60 WPM.</p>
-
-<h2 id="wpm-benchmarks-by-skill-level">WPM Benchmarks by Skill Level</h2>
-
-<p>Here's the clearest way to interpret any typing speed: where does it fall on the skill spectrum?</p>
-
-<table>
-<thead><tr><th>Skill Tier</th><th>WPM Range</th><th>What It Looks Like</th></tr></thead>
-<tbody>
-<tr><td>Beginner</td><td>10–25 WPM</td><td>Hunt-and-peck, looking at keyboard frequently</td></tr>
-<tr><td>Below Average</td><td>26–38 WPM</td><td>Some familiarity, no consistent technique</td></tr>
-<tr><td>Average</td><td>39–55 WPM</td><td>Most untrained adults who type regularly</td></tr>
-<tr><td>Above Average</td><td>56–70 WPM</td><td>Comfortable touch typist, office-ready</td></tr>
-<tr><td>Proficient</td><td>71–90 WPM</td><td>Experienced typist, competitive for most jobs</td></tr>
-<tr><td>Advanced</td><td>91–110 WPM</td><td>Top-tier for standard keyboard typists</td></tr>
-<tr><td>Expert</td><td>111–130 WPM</td><td>Competitive typist, achieved through sustained training</td></tr>
-<tr><td>World-Class</td><td>130+ WPM</td><td>Less than 1% of typists; competition-level</td></tr>
-</tbody>
-</table>
-
-<blockquote><p><strong>Where do most people actually fall?</strong> Studies consistently place the global average adult typing speed between 38 and 44 WPM. A 2023 Aalto University analysis of over 136,000 typists found a median of around 52 WPM — but that group was self-selected (people who sought out a typing test tend to type more than average). The true general-population average is likely closer to 38–42 WPM.</p></blockquote>
-
-<p>The number to keep in mind: <strong>anything above 60 WPM puts you ahead of the majority of desk workers</strong>. Above 80 WPM, you're at the level expected of professional typists and journalism graduates. Above 100 WPM, you're in the top few percent of all typists worldwide.</p>
-
-<h2 id="average-typing-speed-by-age-group">Average Typing Speed by Age Group</h2>
-
-<p>Age has a measurable effect on typing speed — but probably not in the way you'd expect.</p>
-
-<p>Raw speed peaks in young adulthood. That's the period when motor learning is fastest, screen time is highest, and the sheer volume of typing (academic work, social media, gaming) drives rapid improvement. But older typists often have a significant edge in <strong>accuracy and consistency</strong> — they make fewer mistakes and require less correction time, which matters in real-world work.</p>
-
-<p>Here's how typing speed typically breaks down by age:</p>
-
-<table>
-<thead><tr><th>Age Group</th><th>Average WPM Range</th><th>Notes</th></tr></thead>
-<tbody>
-<tr><td>Children (6–11)</td><td>5–20 WPM</td><td>Learning fundamentals; keyboarding in school</td></tr>
-<tr><td>Early Teens (12–14)</td><td>20–40 WPM</td><td>Rapid growth; heavy social media and gaming use</td></tr>
-<tr><td>Teenagers (15–19)</td><td>35–60 WPM</td><td>Often fast but accuracy varies widely</td></tr>
-<tr><td>Young Adults (20–30)</td><td>55–80 WPM</td><td>Peak raw speed; high screen time and academic/professional use</td></tr>
-<tr><td>Adults (31–45)</td><td>45–70 WPM</td><td>Speed stable or slightly reduced; accuracy often improves</td></tr>
-<tr><td>Adults (46–60)</td><td>38–60 WPM</td><td>Gradual slowdown begins; precision remains strong</td></tr>
-<tr><td>Seniors (61–75)</td><td>28–50 WPM</td><td>Speed lower, but error rates often better than younger typists</td></tr>
-<tr><td>Seniors (75+)</td><td>20–35 WPM</td><td>Motor slowdown more significant; accuracy-focused</td></tr>
-</tbody>
-</table>
-
-<p>A few things worth noting about this data:</p>
-
-<p><strong>Speed doesn't tell the whole story at any age.</strong> Research consistently shows that younger typists — particularly teens and young adults — type faster on average but make substantially more errors. Older adults tend to produce cleaner text, which often means their <em>effective</em> output is closer to younger typists than raw WPM suggests.</p>
-
-<p><strong>The peak years are 18–30, driven by specific factors.</strong> This period combines high neural plasticity (the ability to form new motor patterns quickly) with the highest total typing volume for most people. After 30, speed tends to plateau rather than drop sharply — and for people who type professionally every day, speed often continues to improve well into their 40s.</p>
-
-<p><strong>You can improve at any age.</strong> Typing speed is a motor skill, and motor skills respond to deliberate practice at any age. Adults in their 50s and 60s who take up structured typing practice regularly make meaningful gains, even if their ceiling is somewhat lower than it would be at 25.</p>
-
-<blockquote><p><strong>Not sure where you stand for your age group?</strong> Take a <a href="/">free typing speed test</a> and get your WPM and accuracy in under two minutes.</p></blockquote>
-
-<h2 id="typing-speed-by-profession">Typing Speed by Profession</h2>
-
-<p>This is where benchmarks get genuinely useful. The question isn't just "what's average" — it's "what does my job actually need?"</p>
-
-<p>Here's a breakdown of typing speed expectations across the most common professional categories:</p>
-
-<h3 id="general-office-administrative">General Office &amp; Administrative</h3>
-
-<table>
-<thead><tr><th>Role</th><th>Typical WPM Range</th><th>Minimum Expected</th></tr></thead>
-<tbody>
-<tr><td>General office worker</td><td>40–60 WPM</td><td>40 WPM</td></tr>
-<tr><td>Administrative assistant</td><td>50–70 WPM</td><td>50–55 WPM</td></tr>
-<tr><td>Executive assistant</td><td>65–85 WPM</td><td>60–70 WPM</td></tr>
-<tr><td>Receptionist</td><td>40–55 WPM</td><td>40 WPM</td></tr>
-<tr><td>Customer service rep (email/chat)</td><td>55–75 WPM</td><td>55–65 WPM</td></tr>
-</tbody>
-</table>
-
-<p>For most standard office roles, the most commonly listed minimum is 40–50 WPM. Executive and senior administrative roles where document production is a core function typically list 60–70 WPM as a baseline, with top performers reaching 75–85 WPM.</p>
-
-<h3 id="data-entry">Data Entry</h3>
-
-<table>
-<thead><tr><th>Role</th><th>Typical WPM Range</th><th>Notes</th></tr></thead>
-<tbody>
-<tr><td>Basic data entry</td><td>45–65 WPM</td><td>Structured forms, spreadsheets</td></tr>
-<tr><td>High-volume data entry</td><td>70–85 WPM</td><td>Output directly tied to WPM</td></tr>
-<tr><td>Numeric keypad entry</td><td>Measured in KPH</td><td>10,000–18,000 KPH typical</td></tr>
-</tbody>
-</table>
-
-<p>Data entry is one of the few professions where typing speed functions as a direct productivity metric. Output is often measured in records per hour, which maps directly to WPM. The practical difference: a 60 WPM typist processes roughly 3,600 words per hour; an 80 WPM typist processes 4,800. Over a full workday, that gap is substantial.</p>
-
-<p>Data entry job postings frequently list KPH requirements. A standard benchmark: 8,000 KPH (about 27 WPM) is a basic threshold; 12,000 KPH (40 WPM) is standard; 18,000 KPH (60 WPM) is considered proficient.</p>
-
-<h3 id="writing-journalism-content">Writing, Journalism &amp; Content</h3>
-
-<table>
-<thead><tr><th>Role</th><th>Typical WPM Range</th><th>Minimum for Comfort</th></tr></thead>
-<tbody>
-<tr><td>Content writer / blogger</td><td>55–80 WPM</td><td>55 WPM</td></tr>
-<tr><td>Journalist</td><td>60–90 WPM</td><td>50–60 WPM</td></tr>
-<tr><td>Copy editor</td><td>50–70 WPM</td><td>50 WPM</td></tr>
-<tr><td>Technical writer</td><td>55–75 WPM</td><td>55 WPM</td></tr>
-<tr><td>Screenwriter / novelist</td><td>50–80 WPM</td><td>No formal minimum</td></tr>
-</tbody>
-</table>
-
-<p>Writers benefit from typing fast enough to keep pace with their thinking. When the gap between thought and text is large, it disrupts creative flow and can actually reduce the quality of the final output — not just the speed of production. Research on writing behavior suggests that faster typists produce longer, more developed drafts because lower physical friction means fewer interruptions to thought.</p>
-
-<p>For journalists specifically, the pressure of real-time note-taking during interviews and tight publication deadlines makes 60+ WPM a practical floor for working comfortably under pressure.</p>
-
-<h3 id="technology-programming">Technology &amp; Programming</h3>
-
-<table>
-<thead><tr><th>Role</th><th>Typical WPM Range</th><th>Notes</th></tr></thead>
-<tbody>
-<tr><td>Software developer</td><td>50–75 WPM</td><td>Accuracy with symbols matters more than raw speed</td></tr>
-<tr><td>System administrator</td><td>55–75 WPM</td><td>Command-line work rewards speed</td></tr>
-<tr><td>Database administrator</td><td>50–70 WPM</td><td>High precision required</td></tr>
-<tr><td>UX/UI designer</td><td>45–65 WPM</td><td>Less typing-intensive role</td></tr>
-</tbody>
-</table>
-
-<p>Programmers are an interesting case. Raw typing speed matters less in software development than in almost any other knowledge-work profession — because the bottleneck in coding is almost never physical typing. It's thinking: reading code, debugging, planning architecture.</p>
-
-<p>That said, typing speed still has a real effect. When implementation does require significant typing, faster fingers reduce the friction between idea and code. Developers who type 65–70 WPM report noticeably less context-switching friction than those who type 40–45 WPM. And accuracy with symbols — parentheses, brackets, semicolons, underscores — matters far more than prose WPM for most programmers.</p>
-
-<h3 id="transcription-legal">Transcription &amp; Legal</h3>
-
-<table>
-<thead><tr><th>Role</th><th>Typical WPM Range</th><th>Minimum Expected</th></tr></thead>
-<tbody>
-<tr><td>General transcriptionist</td><td>65–85 WPM</td><td>75 WPM minimum</td></tr>
-<tr><td>Medical transcriptionist</td><td>65–90 WPM</td><td>65–80 WPM</td></tr>
-<tr><td>Legal secretary</td><td>70–90 WPM</td><td>70–80 WPM</td></tr>
-<tr><td>Paralegal</td><td>60–80 WPM</td><td>60 WPM</td></tr>
-<tr><td>Court reporter (stenotype)</td><td>225+ WPM</td><td>Stenotype machine, not standard keyboard</td></tr>
-</tbody>
-</table>
-
-<p>These roles sit at the high end of practical WPM requirements. Legal secretaries have among the highest documented average speeds of any professional category — around 60–70 WPM in aggregate data — reflecting both high typing volume and pressure for precise output. Errors in legal documents carry real consequences. Legal secretary job postings frequently list 70–80 WPM as a minimum, with some firms requiring 90 WPM for dictation-heavy roles.</p>
-
-<p>Medical transcription is similar: high accuracy demands, specialized vocabulary, and turnaround-time pressure make 65–80 WPM the realistic professional standard.</p>
-
-<p>Note on court reporters: their 225+ WPM requirement applies to stenotype machines, which use chord-based shorthand rather than standard QWERTY typing. These numbers are not comparable to standard keyboard speeds and shouldn't be used as a benchmark for general typists.</p>
-
-<h3 id="healthcare">Healthcare</h3>
-
-<table>
-<thead><tr><th>Role</th><th>Typical WPM Range</th><th>Notes</th></tr></thead>
-<tbody>
-<tr><td>Medical scribe</td><td>40–70 WPM</td><td>Higher speed required in fast-paced settings like ERs</td></tr>
-<tr><td>Medical transcriptionist</td><td>65–80 WPM</td><td>Audio-to-text; accuracy critical</td></tr>
-<tr><td>Healthcare administrator</td><td>45–65 WPM</td><td>Standard office work requirements</td></tr>
-<tr><td>Clinical documentation</td><td>50–70 WPM</td><td>EHR system entry</td></tr>
-</tbody>
-</table>
-
-<p>Medical scribes document healthcare professionals' patient encounters in real time. In fast-paced settings like emergency departments, the physical pace of patient care demands faster typing to keep up without creating documentation backlogs. 40–50 WPM is manageable in slower clinic settings; 60+ WPM is a meaningful advantage in high-volume environments.</p>
-
-<h3 id="education-academia">Education &amp; Academia</h3>
-
-<table>
-<thead><tr><th>Role</th><th>Typical WPM Range</th><th>Notes</th></tr></thead>
-<tbody>
-<tr><td>Student (secondary school)</td><td>30–55 WPM</td><td>Highly variable; improves rapidly with practice</td></tr>
-<tr><td>University student</td><td>45–70 WPM</td><td>Heavy essay writing rewards higher speed</td></tr>
-<tr><td>Teacher / professor</td><td>40–65 WPM</td><td>Emails, reports, lesson materials</td></tr>
-<tr><td>Researcher</td><td>50–70 WPM</td><td>Publication writing benefits from faster speed</td></tr>
-</tbody>
-</table>
-
-<p>There's no formal WPM requirement for most academic roles, but students who type faster have a real and measurable advantage. Writing longer, more developed essays under timed exam conditions, taking complete lecture notes, and producing research papers quickly all benefit from speed. Students at 60+ WPM routinely report that typing no longer feels like a barrier to getting their ideas onto the page.</p>
-
-<h2 id="what-about-accuracy">What About Accuracy?</h2>
-
-<p>Speed without accuracy is nearly useless in professional contexts.</p>
-
-<p>A typist at 70 WPM with 90% accuracy is producing 7 errors per 100 words. In a 1,000-word document, that's 70 errors to find and fix. In many cases, that error-correction overhead makes them slower in <em>effective</em> output than a 55 WPM typist at 98% accuracy who barely needs to edit.</p>
-
-<p>This is why most professional typing standards list <strong>both</strong> a WPM minimum and an accuracy requirement. The most common accuracy benchmark across professions is <strong>95%</strong>, with many legal and medical roles requiring 98–99%.</p>
-
-<p>The practical takeaway: <strong>when evaluating your typing speed, always note your accuracy alongside your WPM.</strong> A "clean" 60 WPM (at 97% accuracy) is more valuable than a "noisy" 75 WPM (at 88% accuracy) in almost any real-world context.</p>
-
-<blockquote><p><strong>Check both numbers at once:</strong> the <a href="/">FreeTyper typing test</a> reports your WPM and accuracy side by side at the end of every test.</p></blockquote>
-
-<h2 id="gross-wpm-vs-net-wpm">Gross WPM vs. Net WPM</h2>
-
-<p>You'll see both terms on typing platforms. Here's the difference:</p>
-
-<p><strong>Gross WPM</strong> counts every character you typed, including incorrect ones, divided by the standard formula. It's your raw speed, ignoring errors.</p>
-
-<p><strong>Net WPM</strong> subtracts a penalty for errors — typically one word per error — from your gross WPM. It reflects your <em>productive</em> typing speed: how much usable output you actually generated.</p>
-
-<blockquote><p><strong>Net WPM = Gross WPM − (Errors ÷ Time in minutes)</strong></p></blockquote>
-
-<p>Most professional typing tests and job assessments use Net WPM, because that's what actually matters in practice. If your typing platform only shows one number, check whether it's penalizing errors. If it isn't, your real effective speed may be lower than the displayed number suggests.</p>
-
-<p>For practice purposes, tracking both numbers is useful. If your gross WPM is significantly higher than your net WPM, that's a signal: you're typing fast but inaccurately, and slowing down slightly to improve accuracy would likely raise your effective output.</p>
-
-<h2 id="is-your-typing-speed-holding-you-back">Is Your Typing Speed Holding You Back?</h2>
-
-<p>A useful framework: typing speed becomes a meaningful bottleneck when your fingers can't keep pace with your thinking.</p>
-
-<p>Here's a quick self-assessment:</p>
-
-<p><strong>Typing speed is not your bottleneck if:</strong></p>
-<ul>
-<li>You type mostly casual messages and short emails</li>
-<li>You spend more time thinking than typing in your work</li>
-<li>You feel no frustration when transcribing your thoughts</li>
-<li>Your job doesn't require sustained document production</li>
+<h2 id="how-to-get-faster">How to get faster</h2>
+<p>Most of the gain comes from clean, regular practice and good finger habits. The <a href="/typing-lessons">typing lessons</a> teach the keys in order, <a href="/typing-practice">typing practice</a> gives you volume and drills your weak keys, and our post on <a href="/blog/how-to-type-faster">how to type faster</a> covers technique in detail.</p>
+
+<h2 id="sources">Sources</h2>
+<ul class="article-sources">
+<li>Dhakal V, Feit AM, Kristensson PO, Oulasvirta A. <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>. CHI 2018. Figures for average speed, percentile speeds, error rate and training effect are taken from the paper's results.</li>
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Words_per_minute" rel="noopener" target="_blank">Words per minute</a>: the five-characters-per-word convention, the Karat et al. 1999 transcription and composition averages, and the professional and job-related speed ranges.</li>
+<li>The FreeTyper speed bands and the 95% and 88% accuracy thresholds are our own, as described in the <a href="/">typing speed test guide</a>.</li>
 </ul>
-
-<p><strong>Typing speed is likely a bottleneck if:</strong></p>
-<ul>
-<li>You lose your train of thought while typing because the physical act is too slow</li>
-<li>You feel rushed during timed tasks (exams, live note-taking, customer chat)</li>
-<li>You finish work sessions feeling like typing was effortful rather than automatic</li>
-<li>Job postings you're targeting list minimum WPM requirements you don't currently meet</li>
-<li>You type the same things repeatedly and wish it were faster</li>
-</ul>
-
-<p>A general threshold to keep in mind: research consistently finds that above <strong>70–80 WPM</strong>, typing speed stops being a meaningful constraint for most knowledge workers. At that level, the bottleneck shifts from fingers to thinking — and that's exactly where it should be. Below that threshold, slow typing creates real friction that compounds across an entire workday.</p>
-
-<h2 id="how-to-find-your-current-wpm">How to Find Your Current WPM</h2>
-
-<p>Before you can improve, you need an accurate baseline.</p>
-
-<p>A few important notes on getting a reliable number:</p>
-
-<p><strong>Take multiple tests, not just one.</strong> A single typing test has high variance — you might catch yourself on an exceptionally good or bad run. Take 3–5 tests and use your average. Your average of multiple tests is a far more honest picture of your actual speed than your single best score.</p>
-
-<p><strong>Use a consistent test length.</strong> Most casual tests default to one minute. This is useful for quick benchmarks but doesn't reflect endurance. If your work involves sustained typing, also test yourself at 2–5 minutes to see how your speed holds up over time.</p>
-
-<p><strong>Don't "practice" the test.</strong> Take the test with text you haven't seen before. Re-reading the same passage skews your score upward because you're partially typing from short-term memory.</p>
-
-<p><strong>Note both numbers.</strong> Record both your WPM and your accuracy percentage every time you test. You need both to understand your actual performance.</p>
-
-<blockquote><p>Take your baseline <a href="/">typing speed test</a> now — it takes less than two minutes and gives you both WPM and accuracy instantly.</p></blockquote>
-
-<h2 id="how-to-improve-your-typing-speed">How to Improve Your Typing Speed</h2>
-
-<p>Once you know your benchmark, improving it is mostly a matter of consistent, deliberate practice applied to the right areas.</p>
-
-<p>The highest-leverage changes for most typists:</p>
-
-<p><strong>If you're under 40 WPM:</strong> The priority is technique, not speed drills. Most typists in this range are still hunt-and-pecking or using two to four fingers. Switching to proper touch typing — all ten fingers, eyes on the screen — will double or triple your speed ceiling before speed drills even become relevant. Start with <a href="/typing-lessons">structured typing lessons</a> and commit to not looking at the keyboard.</p>
-
-<p><strong>If you're between 40 and 60 WPM:</strong> You likely have the basics of touch typing but muscle memory isn't fully automated yet. Targeted <a href="/typing-practice">typing practice</a> on your weak keys and common word patterns will drive the next phase of improvement. Focus on accuracy: most people in this range make more errors than they realize.</p>
-
-<p><strong>If you're between 60 and 80 WPM:</strong> You're a solid typist. Getting to 80+ requires a combination of speed drills (pushing slightly past your comfortable pace), endurance training (longer sessions), and eliminating the last remaining hesitation points on specific keys or letter combinations. Regular <a href="/">typing tests</a> to track your trend are essential at this stage.</p>
-
-<p><strong>If you're above 80 WPM:</strong> You're already proficient by professional standards. Further improvement is possible but requires increasingly deliberate effort. Competition-level typists at this range typically use custom training regimens focused on specific n-gram patterns and rhythm optimization.</p>
-
-<p>For a complete breakdown of every technique that works — including daily practice plans and common mistakes — see our full guide: <a href="/blog/how-to-type-faster">How to Type Faster: 15 Proven Techniques to Increase Your WPM</a>.</p>
-
-<h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
-
-<h3 id="what-is-a-good-typing-speed-for-the-average-person">What is a good typing speed for the average person?</h3>
-<p>For general everyday use — emails, messages, browsing, casual documents — anything above 40 WPM is functional. A genuinely comfortable speed for most computer users is 55–65 WPM. At that level, typing rarely feels like a bottleneck. If you type frequently for work or study, pushing toward 70+ WPM is worth the effort.</p>
-
-<h3 id="is-40-wpm-a-good-typing-speed">Is 40 WPM a good typing speed?</h3>
-<p>40 WPM is the global average, so it's "normal" — but it depends on your context. For occasional typing, 40 WPM is fine. For office work involving regular document production, it's on the low end. For typing-intensive roles like data entry or transcription, 40 WPM is below the minimum requirement. If you type for work regularly, targeting 60+ WPM is a practical goal.</p>
-
-<h3 id="is-60-wpm-fast">Is 60 WPM fast?</h3>
-<p>60 WPM is above average and comfortably ahead of most untrained typists. For general office work, it's solid. For typing-heavy professions like transcription, data entry, or journalism, 60 WPM would be considered slow to average. So: 60 WPM is fast relative to the general population, but not by professional standards for roles where typing is a primary job function.</p>
-
-<h3 id="is-80-wpm-good">Is 80 WPM good?</h3>
-<p>Yes — 80 WPM is very good by any standard. It puts you in the proficient tier, well above the national average, and meets or exceeds the minimum requirements for almost every professional role that lists a WPM requirement. For most knowledge workers, 80 WPM means typing is no longer a meaningful bottleneck in their day.</p>
-
-<h3 id="what-typing-speed-do-i-need-to-get-a-job">What typing speed do I need to get a job?</h3>
-<p>It depends on the role. Most general office jobs expect 40–55 WPM. Administrative and executive assistant roles typically require 55–70 WPM. Data entry positions commonly need 60–80 WPM. Transcription and legal secretary roles often require 70–90 WPM. If a job posting lists a minimum WPM, take that as a hard requirement — many employers test applicants.</p>
-
-<h3 id="how-fast-do-professional-typists-type">How fast do professional typists type?</h3>
-<p>Professional typists — court reporters, legal secretaries, medical transcriptionists — typically type between 75 and 100 WPM on standard keyboards, with 95%+ accuracy. Court reporters use stenotype machines and operate at 225+ WPM, but that's an entirely different system from standard keyboard typing.</p>
-
-<h3 id="do-programmers-need-to-type-fast">Do programmers need to type fast?</h3>
-<p>Not as much as other professionals. Programmers spend more time reading, thinking, and debugging than they do typing. That said, typing faster does reduce friction during implementation-heavy work, and many experienced developers naturally reach 65–80 WPM from years of keyboard use. Accuracy with symbols, brackets, and special characters matters more in programming than raw WPM.</p>
-
-<h3 id="does-typing-speed-decrease-with-age">Does typing speed decrease with age?</h3>
-<p>Gradually, yes. Raw typing speed typically peaks in the 20–30 age range and decreases slowly afterward. However, accuracy and consistency often hold up or even improve into the late 50s, because older typists make fewer impulsive errors. The practical impact of age-related speed decline is smaller than most people assume — and consistent typing practice significantly slows any decline.</p>
-
-<h3 id="what-is-the-fastest-typing-speed-ever-recorded">What is the fastest typing speed ever recorded?</h3>
-<p>Barbara Blackburn holds the Guinness World Record for sustained typing on a standard keyboard, maintaining 150 WPM for 50 minutes and reaching a peak of 212 WPM in shorter bursts. Using the Dvorak keyboard layout, she consistently outperformed QWERTY typists in competition. For QWERTY typists specifically, speeds above 150 WPM are extraordinarily rare and represent years of dedicated training.</p>
-
-<h3 id="how-do-i-know-if-my-typing-speed-is-accurate">How do I know if my typing speed is accurate?</h3>
-<p>The most reliable method: take 3–5 standardized tests using text you haven't seen before, and average the results. Single-test scores have high variance. Also make sure the test is reporting Net WPM (which subtracts error penalties) rather than Gross WPM, since Gross WPM overstates your usable speed if your accuracy isn't high. The <a href="/">FreeTyper typing speed test</a> reports both metrics so you can see the full picture.</p>
-
-<h2 id="conclusion">Conclusion</h2>
-
-<p>The honest answer to "what is a good typing speed?" is: it depends on what you do and who you're comparing yourself to.</p>
-
-<p>Here's the summary version:</p>
-<ul>
-<li>The global average is <strong>38–44 WPM</strong> for adults</li>
-<li><strong>60 WPM</strong> puts you ahead of most desk workers and is a solid everyday target</li>
-<li><strong>70–80 WPM</strong> is the professional standard for typing-intensive office roles</li>
-<li><strong>80–100 WPM</strong> is expected for transcription, legal, and data entry roles</li>
-<li><strong>Accuracy matters as much as speed</strong> — 95%+ is the standard benchmark in professional contexts</li>
-</ul>
-
-<p>Younger typists tend to be faster but less accurate. Older typists produce cleaner output. And for almost every professional role that lists a WPM minimum, accuracy is evaluated just as seriously as speed.</p>
-
-<p>Whatever your current number, there's a clear path to improving it. The benchmarks in this article give you a target. The next steps are straightforward:</p>
-<ul>
-<li>Find your baseline with a <a href="/">typing speed test</a></li>
-<li>Work through <a href="/typing-lessons">structured typing lessons</a> to build or refine your technique</li>
-<li>Practice consistently with <a href="/typing-practice">daily typing exercises</a></li>
-<li>Test regularly to track your progress over time</li>
-</ul>
-
-<p>The gap between 45 WPM and 70 WPM is smaller than most people think. With focused practice, it's typically a matter of weeks — not months.</p>
-
-<p>If you want a number to attach these benchmarks to, take a <a href="/">free typing speed test</a>. Then use <a href="/typing-lessons">typing lessons</a> or <a href="/blog/how-to-type-faster">how to type faster</a> to move toward the band that matches your goal.</p>
+<p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
 
   'improve-typing-accuracy': `
