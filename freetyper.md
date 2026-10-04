@@ -6,7 +6,7 @@ No login, no database, privacy-first (all data stays in the browser), to be fund
 This is the living reference. History lives in git. Per-guide detail lives in the header comment of each content file.
 
 ## 1. Status (updated 2026-10-04)
-- **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built and browser-tested. All settings work.
+- **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work.
 - **AdSense:** application rejected — **“Low value content”**. The setup is correct and live. “Verify site ownership” is still open in the dashboard.
 - **Done because of the rejection:**
   - every guide rewritten from the real code, with verified sources
@@ -18,6 +18,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
   - **Google has barely indexed the site:** 13 clicks / 44 impressions in 3 months; Pages report (to 21 Sep): 4 indexed, 34 not (32 “Discovered – currently not indexed”). Sitemap last read 28 Sep (old 38-URL version).
   - Visitors engage (organic ≈ 232 s per session). 93 % of views are tool pages; blog only 3.4 %. Lessons and practice are the 2nd and 3rd most visited pages.
   - Top countries: India 27.5 %, US 24 %, then Canada, China, Philippines, Pakistan, UK. **Key events were 0** (no conversions tracked) until the events below shipped.
+- **GA4 events are live from the 2026-10-04 release.** Key events and custom dimensions still have to be registered in GA4 (§8) before WPM/category breakdowns appear.
 - **Still open (needs Ashiqur):** see the TODO in §8.
 
 ## 2. Stack and release
@@ -149,9 +150,10 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 
 ## 8. TODO (owner: **[A]** Ashiqur · **[C]** Claude in code)
 **Now — growth is limited by distribution, not features**
+- [ ] **[A]** Confirm the events arrive: GA4 → Reports → Realtime, finish a test on freetyper.com and look for `test_complete` under “Event count by Event name” (DebugView with the GA Debugger extension shows the parameters).
 - [ ] **[A]** Set up **Bing Webmaster Tools** (free): import the site from Search Console, submit `sitemap.xml`, read its queries. Bing is ~70 % of traffic.
 - [ ] **[A]** Search Console: **resubmit the sitemap** (23 URLs) and **request indexing** for `/`, `/blog`, the 6 tool pages and the 10 posts.
-- [ ] **[A]** GA4, after this release has run for a day: Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`.
+- [ ] **[A]** GA4, once each event has appeared at least once (register the custom definitions first — they are not retroactive): Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`.
 - [ ] **[A]** Publish 1 sourced post a week; share honestly (Reddit r/typing, Show HN, Product Hunt); look for a few real links.
 - [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) so progress can be compared.
 
