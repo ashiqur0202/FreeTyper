@@ -1,17 +1,21 @@
 import Link from 'next/link';
 import type { BlogPost } from '@/data/blog/typing-skills';
+import { visiblePostDate } from '@/lib/post-dates';
 
 interface BlogCardProps {
   post: BlogPost;
 }
 
 export default function BlogCard({ post }: BlogCardProps) {
+  const shownDate = visiblePostDate(post);
   return (
     <Link
       href={`/blog/${post.slug}`}
       className="group block rounded-xl border border-surface-border bg-surface-raised p-5 transition-all hover:border-accent/30 hover:bg-surface"
     >
-      <p className="text-xs text-text-dim">{post.date} · {post.readTime}</p>
+      <p className="text-xs text-text-dim">
+        {shownDate.label} {shownDate.text} · {post.readTime}
+      </p>
       <h3 className="mt-2 text-lg font-semibold text-text-bright group-hover:text-accent transition-colors">
         {post.title}
       </h3>

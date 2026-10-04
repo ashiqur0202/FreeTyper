@@ -6,6 +6,7 @@ import { siteConfig } from '@/config/site';
 import { blogPosts, getBlogPost } from '@/data/blog/typing-skills';
 import { articleContent } from '@/data/blog/article-content';
 import BlogContent from '@/components/blog/BlogContent';
+import { visiblePostDate } from '@/lib/post-dates';
 import JsonLd, { blogPostingSchema, breadcrumbSchema } from '@/components/seo/JsonLd';
 
 interface PageProps {
@@ -50,6 +51,8 @@ export default async function BlogPostPage({ params }: PageProps) {
   const content = articleContent[slug];
   if (!content) notFound();
 
+  const shownDate = visiblePostDate(post);
+
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       {/* Breadcrumbs */}
@@ -67,15 +70,9 @@ export default async function BlogPostPage({ params }: PageProps) {
         <div className="mt-4 flex items-center gap-3 text-sm text-text-dim">
           <Link href="/about#author" className="hover:text-accent">{post.author}</Link>
           <span>·</span>
-          <time dateTime={post.date}>{post.date}</time>
-          {post.updated && post.updated !== post.date && (
-            <>
-              <span>·</span>
-              <span>
-                Updated <time dateTime={post.updated}>{post.updated}</time>
-              </span>
-            </>
-          )}
+          <time dateTime={shownDate.iso}>
+            {shownDate.label} {shownDate.text}
+          </time>
           <span>·</span>
           <span>{post.readTime} read</span>
         </div>
