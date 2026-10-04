@@ -17,7 +17,7 @@ export default function AboutPage() {
         <Keyboard className="h-8 w-8 text-accent" />
         <h1 className="text-3xl font-bold text-text-bright">About {siteConfig.name}</h1>
       </div>
-      <p className="text-sm text-text-dim">Last updated: September 2026</p>
+      <p className="text-sm text-text-dim">Last updated: October 2026</p>
 
       <div className="mt-8 max-w-3xl space-y-8 text-text leading-relaxed">
         <section>
@@ -55,9 +55,12 @@ export default function AboutPage() {
           <p className="mt-2">
             The home test uses the same <strong>5-characters-per-word</strong> convention used in a
             lot of job tests and older typewriter scoring. A “word” is five characters, including
-            spaces and punctuation — not a dictionary word. Accuracy is the share of keystrokes that
-            matched the expected character. Both numbers are shown because a fast messy run is not
-            useful output.
+            spaces and punctuation — not a dictionary word. Net WPM counts only the correct
+            characters; gross WPM counts everything you typed. Accuracy is correct characters
+            divided by characters typed. When you press Backspace, the character you step back over
+            is removed from the count, so a mistake you fix stops counting as an error, but the time
+            you spent fixing it still counts. Speed and accuracy are both shown because a fast
+            messy run is not useful output.
           </p>
           <p className="mt-2">
             The timer starts on the first keystroke. Backspace is allowed. We do not require a login
@@ -110,7 +113,8 @@ export default function AboutPage() {
               <Link href="/blog" className="text-accent hover:underline">
                 blog
               </Link>{' '}
-              of long-form guides on speed, tests, touch typing, practice, and hardware
+              of ten sourced guides on typing speed, accuracy, touch typing, programmers, data-entry
+              tests, keyboards, and posture
             </li>
           </ul>
         </section>
@@ -138,8 +142,8 @@ export default function AboutPage() {
           <h2 className="text-xl font-bold text-text-bright">What we don&apos;t claim</h2>
           <p className="mt-2 text-text-dim">
             {siteConfig.name} will not make you a court reporter in a weekend. WPM bands on the site
-            are coaching ranges from commonly cited industry figures, not a medical or hiring
-            standard. If a job posting lists a number, that listing wins. Pain while typing is a
+            (beginner to elite) are our own shorthand, not a medical, school, or hiring standard.
+            The research figures we do quote come from published studies that the guides link to. If a job posting lists a number, that listing wins. Pain while typing is a
             reason to stop and talk to a clinician, not to grind another lesson — see the{' '}
             <Link href="/disclaimer" className="text-accent hover:underline">
               disclaimer

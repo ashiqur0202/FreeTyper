@@ -12,7 +12,7 @@ export default function DisclaimerPage() {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       <h1 className="text-3xl font-bold text-text-bright">Disclaimer</h1>
-      <p className="mt-2 text-sm text-text-dim">Last updated: September 2026</p>
+      <p className="mt-2 text-sm text-text-dim">Last updated: October 2026</p>
 
       <div className="mt-8 space-y-8 text-text leading-relaxed">
         <section>
@@ -22,8 +22,8 @@ export default function DisclaimerPage() {
 
         <section>
           <h2 className="text-xl font-bold text-text-bright">Typing Speed Claims</h2>
-          <p className="mt-2 text-text-dim">Any WPM benchmarks, speed ranges, or percentile estimates shown on {siteConfig.name} are based on commonly cited industry data and should be considered approximate. Individual typing speed depends on many factors including practice history, keyboard familiarity, text complexity, and physical condition.</p>
-          <p className="mt-2 text-text-dim">The percentile rankings and speed comparisons on our site are provided as motivational context, not as scientifically validated measurements.</p>
+          <p className="mt-2 text-text-dim">The rank labels on {siteConfig.name} (beginner to elite) are our own shorthand and are not an official standard. Any research figures we quote in the guides come from published studies that we link to, and they describe the volunteers in those studies, not everyone. Individual typing speed depends on many factors including practice history, keyboard familiarity, text complexity, and physical condition.</p>
+          <p className="mt-2 text-text-dim">Speed comparisons on our site are provided as context and motivation, not as validated assessments.</p>
         </section>
 
         <section>
@@ -38,7 +38,7 @@ export default function DisclaimerPage() {
 
         <section>
           <h2 className="text-xl font-bold text-text-bright">Data Accuracy</h2>
-          <p className="mt-2 text-text-dim">Your typing statistics (WPM, accuracy, etc.) are calculated locally in your browser. While we use industry-standard formulas, results may vary slightly due to browser performance, input latency, and other technical factors.</p>
+          <p className="mt-2 text-text-dim">Your typing statistics (WPM, accuracy, etc.) are calculated locally in your browser. We use the standard five-characters-per-word formula, and results may vary slightly due to browser performance, input latency, and other technical factors.</p>
         </section>
 
         <section>
