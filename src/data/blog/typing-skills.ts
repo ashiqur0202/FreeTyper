@@ -94,13 +94,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'mechanical-vs-membrane-keyboards',
-    title: 'Mechanical vs Membrane Keyboards: Which Is Better for Typing?',
-    excerpt:
-      'Mechanical vs membrane for real typing — speed, accuracy, noise, fatigue, cost, and a FreeTyper A/B test so you pick with data instead of forum wars.',
+    title: 'Mechanical vs Membrane Keyboards: What Is Actually Known',
+    excerpt: 'No solid evidence that either type is faster. What lab studies did measure (key force and finger muscle effort), a conversion table to grams-force, and a practical way to choose.',
     date: '2026-08-07',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Productivity',
-    readTime: '17 min',
+    readTime: '6 min',
   },
   {
     slug: 'fix-typing-posture-and-avoid-wrist-pain',
