@@ -79,7 +79,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full dark" data-theme="dark" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="en" className="h-full dark" data-theme="dark" data-font-size="default" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#323234" />
         {/* AdSense requires this snippet in <head> (site-wide, every page). */}
@@ -91,7 +91,7 @@ export default function RootLayout({
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} flex min-h-full flex-col`}>
         <Script id="theme-init" strategy="beforeInteractive">
-          {`(function(){try{var s=JSON.parse(localStorage.getItem('freetyper-settings')||'{}');var t=s.theme||'dark';var dark=t==='dark'||t==='midnight';var light=t==='light'||t==='paper';document.documentElement.setAttribute('data-theme',t);document.documentElement.classList.toggle('dark',dark);var accents={gold:'#e2b714',blue:'#519aba',green:'#8a8a6e',red:'#c44250',purple:'#a37acc',cyan:'#56b6c2'};var lightAccents={gold:'#b08912',blue:'#3d738c',green:'#5c6350',red:'#b44a4a',purple:'#6e5a88',cyan:'#3d7d82'};var a=(light?lightAccents:accents)[s.accentColor]||(light?lightAccents:accents).gold;var r=document.documentElement;r.style.setProperty('--color-accent',a);r.style.setProperty('--color-accent-dim',a+'99');r.style.setProperty('--color-accent-bg',a+(light?'22':'15'));var meta={dark:'#323234',light:'#e8e9e4',midnight:'#0e0e10',paper:'#e2d3b8'};var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',meta[t]||meta.dark);}catch(e){}})();`}
+          {`(function(){try{var s=JSON.parse(localStorage.getItem('freetyper-settings')||'{}');var t=s.theme||'dark';var dark=t==='dark'||t==='midnight';var light=t==='light'||t==='paper';document.documentElement.setAttribute('data-theme',t);document.documentElement.setAttribute('data-font-size',s.fontSize||'default');document.documentElement.classList.toggle('dark',dark);var accents={gold:'#e2b714',blue:'#519aba',green:'#8a8a6e',red:'#c44250',purple:'#a37acc',cyan:'#56b6c2'};var lightAccents={gold:'#b08912',blue:'#3d738c',green:'#5c6350',red:'#b44a4a',purple:'#6e5a88',cyan:'#3d7d82'};var a=(light?lightAccents:accents)[s.accentColor]||(light?lightAccents:accents).gold;var r=document.documentElement;r.style.setProperty('--color-accent',a);r.style.setProperty('--color-accent-dim',a+'99');r.style.setProperty('--color-accent-bg',a+(light?'22':'15'));var meta={dark:'#323234',light:'#e8e9e4',midnight:'#0e0e10',paper:'#e2d3b8'};var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',meta[t]||meta.dark);}catch(e){}})();`}
         </Script>
         <SidebarProvider>
           <SettingsProvider>

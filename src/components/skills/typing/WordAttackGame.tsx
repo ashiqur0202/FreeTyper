@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Play, Zap, Clock, Crosshair } from 'lucide-react';
 import { wordAttackRounds, getRandomWords, getWordDifficulty, scoringRules } from './gameData';
 import { useTypingProgress } from './useTypingProgress';
+import { useKeySound } from './useKeySound';
 import GameFeedback, {
   attackCoachNote,
   loadGameLog,
@@ -46,6 +47,8 @@ export default function WordAttackGame() {
   const [log, setLog] = useState<GameLogEntry[]>([]);
 
   const { addSession, updateKeyStats } = useTypingProgress();
+  const playKeySound = useKeySound();
+  const prevInputLenRef = useRef(0);
   const startTimeRef = useRef(0);
   const totalCharsRef = useRef(0);
   const timerRef = useRef<number | null>(null);
@@ -296,7 +299,14 @@ export default function WordAttackGame() {
       setInput(value);
       const typed = value.toLowerCase().trim();
       const target = roundWordsRef.current[currentWordIndexRef.current]?.toLowerCase();
+
+      // Key sound (only if enabled in Settings): tick while the typing still fits the word.
+      const grew = value.length > prevInputLenRef.current;
+      prevInputLenRef.current = value.length;
+      if (grew && typed) playKeySound(Boolean(target) && target.startsWith(typed));
+
       if (!typed || typed !== target) return;
+      prevInputLenRef.current = 0;
 
       const diff = getWordDifficulty(target);
       const base = scoringRules.basePoints[diff];
@@ -315,7 +325,7 @@ export default function WordAttackGame() {
       setInput('');
       advanceWord(true);
     },
-    [advanceWord, updateKeyStats],
+    [advanceWord, updateKeyStats, playKeySound],
   );
 
   useEffect(() => {

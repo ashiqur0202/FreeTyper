@@ -82,16 +82,10 @@ export default function SettingsPage() {
               <Keyboard className="h-4 w-4 text-text-dim" />
               <div>
                 <p className="text-sm text-text">Keyboard layout</p>
-                <p className="text-xs text-text-dim">Select your keyboard layout</p>
+                <p className="text-xs text-text-dim">QWERTY is the only layout available for now</p>
               </div>
             </div>
-            <select
-              value={settings.keyboardLayout}
-              onChange={(e) => updateSetting('keyboardLayout', e.target.value as 'qwerty')}
-              className="rounded-md border border-surface-border bg-surface-raised px-3 py-1 text-xs text-text focus:border-accent focus:outline-none"
-            >
-              <option value="qwerty">QWERTY</option>
-            </select>
+            <span className="rounded-md bg-surface-raised px-3 py-1 text-xs text-text-dim">QWERTY</span>
           </div>
 
           {/* Keyboard hints */}
@@ -103,7 +97,7 @@ export default function SettingsPage() {
               }
               <div>
                 <p className="text-sm text-text">Keyboard hints</p>
-                <p className="text-xs text-text-dim">Show finger placement guides</p>
+                <p className="text-xs text-text-dim">Highlight the next key on the on-screen keyboard</p>
               </div>
             </div>
             <button

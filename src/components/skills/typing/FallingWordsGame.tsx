@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Play, Heart, ArrowDown } from 'lucide-react';
 import { fallingWordsTiers, getRandomWords, getWordDifficulty, scoringRules } from './gameData';
 import { useTypingProgress } from './useTypingProgress';
+import { useKeySound } from './useKeySound';
 import GameFeedback, {
   fallingCoachNote,
   loadGameLog,
@@ -39,6 +40,8 @@ export default function FallingWordsGame() {
   const [log, setLog] = useState<GameLogEntry[]>([]);
 
   const { addSession, updateKeyStats } = useTypingProgress();
+  const playKeySound = useKeySound();
+  const prevInputLenRef = useRef(0);
   const startTimeRef = useRef(0);
   const totalCharsRef = useRef(0);
   const frameRef = useRef(0);
@@ -255,6 +258,16 @@ export default function FallingWordsGame() {
       setInput(matched ? '' : value);
       setWords([...wordsRef.current]);
 
+      // Key sound (only if enabled in Settings): tick when the typing still fits a falling word.
+      const grew = value.length > prevInputLenRef.current;
+      prevInputLenRef.current = matched ? 0 : value.length;
+      if (grew && typed) {
+        playKeySound(
+          matched ||
+            wordsRef.current.some((w) => !w.exploding && w.word.toLowerCase().startsWith(typed)),
+        );
+      }
+
       if (matched) {
         window.setTimeout(() => {
           wordsRef.current = wordsRef.current.filter((w) => !w.exploding);
@@ -263,7 +276,7 @@ export default function FallingWordsGame() {
         }, 300);
       }
     },
-    [updateKeyStats],
+    [updateKeyStats, playKeySound],
   );
 
   useEffect(() => {

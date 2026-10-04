@@ -77,6 +77,12 @@ export function applyAppearance(theme: ThemeMode, accent: AccentColor) {
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content', THEME_META[theme]);
 }
 
+/** Typing text size is applied by CSS through this attribute (see globals.css). */
+export function applyFontSize(size: FontSize) {
+  if (typeof document === 'undefined') return;
+  document.documentElement.setAttribute('data-font-size', size);
+}
+
 type SettingsContextType = {
   settings: UserSettings;
   updateSetting: <K extends keyof UserSettings>(key: K, value: UserSettings[K]) => void;
@@ -99,11 +105,14 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         const next = { ...defaultSettings, ...parsed };
         setSettings(next);
         applyAppearance(next.theme, next.accentColor);
+        applyFontSize(next.fontSize);
       } else {
         applyAppearance(defaultSettings.theme, defaultSettings.accentColor);
+        applyFontSize(defaultSettings.fontSize);
       }
     } catch {
       applyAppearance(defaultSettings.theme, defaultSettings.accentColor);
+      applyFontSize(defaultSettings.fontSize);
     }
     setLoaded(true);
   }, []);
@@ -114,6 +123,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
     } catch {}
     applyAppearance(settings.theme, settings.accentColor);
+    applyFontSize(settings.fontSize);
   }, [settings, loaded]);
 
   const updateSetting = useCallback(<K extends keyof UserSettings>(key: K, value: UserSettings[K]) => {

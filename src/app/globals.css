@@ -129,6 +129,16 @@ html { scroll-behavior: smooth; }
   line-height: 2.25rem;
 }
 
+/* Settings → Font size (default is Tailwind text-lg, 18px). */
+html[data-font-size="small"] .typing-text {
+  font-size: 0.875rem;
+  line-height: 1.8rem;
+}
+html[data-font-size="large"] .typing-text {
+  font-size: 1.375rem;
+  line-height: 2.8rem;
+}
+
 /* Letters stay together; spaces between words are what justify stretches. */
 .word {
   display: inline-block;
