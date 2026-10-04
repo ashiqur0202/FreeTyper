@@ -100,7 +100,7 @@ export const bodyHtml = `
 <li><strong>Locked in order.</strong> Only lesson 1 is open at the start. Reaching the end of a lesson unlocks the next one, and the next lesson loads straight away so you can keep typing.</li>
 <li><strong>No accuracy gate.</strong> Finishing a lesson unlocks the next, even with mistakes. The coach note under the keyboard tells you whether to repeat. Treat 95% accuracy as the bar before you move on.</li>
 <li><strong>Repeat any unlocked lesson.</strong> Click its name in the row at the top (not while a run is in progress). Completed lessons show a tick and locked ones show a padlock.</li>
-<li><strong>A live keyboard.</strong> The next key pulses, the key you press flashes green when right and red when wrong, and keys outside the current lesson are dimmed so your eyes stay on the keys that matter.</li>
+<li><strong>A live keyboard.</strong> The next key pulses (you can switch that off in Settings), the key you press flashes green when right and red when wrong, and keys outside the current lesson are dimmed so your eyes stay on the keys that matter.</li>
 <li><strong>Same scoring as the speed test.</strong> WPM counts five characters as a word, accuracy is correct characters out of characters typed, and Backspace removes the character you step back over. The <a href="/">typing speed test guide</a> explains this in full.</li>
 <li><strong>Your last five lesson runs</strong> are listed under the keyboard, newest first, with a short coach note on each.</li>
 </ul>

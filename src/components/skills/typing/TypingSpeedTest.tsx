@@ -10,6 +10,8 @@ import { wordPools } from './gameData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
+import { useKeySound } from './useKeySound';
+import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import PracticeFeedback, {
   speedTestCoachNote,
   type PracticeLogEntry,
@@ -177,6 +179,19 @@ export default function TypingSpeedTest() {
     setLog(loadSpeedLog());
   }, []);
 
+  // One path for every typed character: keyboard events and touch/IME input both use it.
+  const playKeySound = useKeySound();
+  const processChar = useCallback(
+    (ch: string) => {
+      const expectedChar = charsRef.current[currentIndexRef.current]?.char;
+      handleInput(ch);
+      const correct = ch === expectedChar;
+      setLastKeyFlash({ key: ch, correct });
+      playKeySound(correct);
+    },
+    [handleInput, playKeySound],
+  );
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (showCommandPaletteRef.current) {
@@ -195,13 +210,18 @@ export default function TypingSpeedTest() {
         return;
       }
 
-      if (e.key === 'Escape' && !isRunningRef.current && focusModeRef.current) {
+      if (e.key === 'Escape' && focusModeRef.current) {
         e.preventDefault();
         setFocusMode(false);
         return;
       }
 
-      if (e.key === '/' && !isRunningRef.current) {
+      // '/' opens the command palette, unless the passage itself starts with '/'.
+      if (
+        e.key === '/' &&
+        !isRunningRef.current &&
+        charsRef.current[currentIndexRef.current]?.char !== '/'
+      ) {
         e.preventDefault();
         setShowCommandPalette(true);
         setTimeout(() => commandRef.current?.focus(), 50);
@@ -221,17 +241,12 @@ export default function TypingSpeedTest() {
 
       if (e.key.length === 1) {
         e.preventDefault();
-        const expectedChar = charsRef.current[currentIndexRef.current]?.char;
-        handleInput(e.key);
-        setLastKeyFlash({
-          key: e.key === ' ' ? ' ' : e.key.toLowerCase(),
-          correct: e.key === expectedChar,
-        });
+        processChar(e.key);
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [handleInput, handleBackspace]);
+  }, [processChar, handleBackspace]);
 
   // Line-tracking scroll: recalculate from DOM on every index change (idempotent)
   useLayoutEffect(() => {
@@ -511,7 +526,18 @@ export default function TypingSpeedTest() {
             />
           </div>
 
-          <input ref={inputRef} className="sr-only" autoFocus />
+          <input
+          ref={inputRef}
+          className="sr-only"
+          autoFocus
+          defaultValue={INPUT_SENTINEL}
+          autoCapitalize="off"
+          autoCorrect="off"
+          autoComplete="off"
+          spellCheck={false}
+          onFocus={resetMobileInput}
+          onInput={(e) => handleMobileInput(e, processChar, handleBackspace)}
+        />
 
           <div className="mt-4 flex h-8 items-center justify-center">
             {!isRunning ? (

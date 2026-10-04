@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useSettings } from '@/components/layout/SettingsProvider';
 
 /* ── Full QWERTY layout with modifier keys ── */
 interface KeyDef {
@@ -103,6 +104,38 @@ Object.entries(CHAR_TO_KEY).forEach(([k]) => {
 });
 CHAR_TO_KEY[' '] = 'space';
 
+/** Shifted symbol -> the key it lives on, e.g. '!' -> '1', '{' -> '['. */
+const SHIFT_TO_BASE: Record<string, string> = {};
+ALL_ROWS.forEach(row => row.forEach(k => {
+  if (k.shift && k.id.length === 1) SHIFT_TO_BASE[k.shift] = k.id;
+}));
+
+/** Keys pressed by the left hand: their capitals/symbols use the RIGHT shift, and vice versa. */
+const LEFT_HAND_KEYS = new Set('`12345qwertasdfgzxcvb'.split(''));
+
+/**
+ * Work out which key a typed character lives on and whether Shift is needed.
+ * 'A' -> key a + shift, '!' -> key 1 + shift, ' ' -> space, 'a' -> key a.
+ */
+function resolveChar(ch: string | undefined): { id: string; shiftId: string | null } | null {
+  if (!ch) return null;
+  if (ch === ' ') return { id: 'space', shiftId: null };
+
+  let id: string | undefined;
+  let shifted = false;
+  if (SHIFT_TO_BASE[ch]) {
+    id = SHIFT_TO_BASE[ch];
+    shifted = true;
+  } else if (ch.length === 1 && ch !== ch.toLowerCase() && CHAR_TO_KEY[ch.toLowerCase()]) {
+    id = ch.toLowerCase();
+    shifted = true;
+  } else if (CHAR_TO_KEY[ch]) {
+    id = CHAR_TO_KEY[ch];
+  }
+  if (!id) return null;
+  return { id, shiftId: shifted ? (LEFT_HAND_KEYS.has(id) ? 'shift-r' : 'shift-l') : null };
+}
+
 type KeyFlash = { key: string; correct: boolean; ts: number };
 
 interface LiveKeyboardProps {
@@ -114,16 +147,21 @@ interface LiveKeyboardProps {
 }
 
 export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusKeys }: LiveKeyboardProps) {
+  const { settings } = useSettings();
   const [flashes, setFlashes] = useState<Map<string, KeyFlash>>(new Map());
   const cleanupRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   useEffect(() => {
     if (!lastKeyCorrect) return;
     const { key, correct } = lastKeyCorrect;
+    const target = resolveChar(key);
+    if (!target) return;
 
     setFlashes(prev => {
       const next = new Map(prev);
-      next.set(key, { key, correct, ts: Date.now() });
+      const ts = Date.now();
+      next.set(target.id, { key: target.id, correct, ts });
+      if (target.shiftId) next.set(target.shiftId, { key: target.shiftId, correct, ts });
       return next;
     });
 
@@ -133,7 +171,10 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusK
     }, 400);
   }, [lastKeyCorrect]);
 
-  const hintKey = nextChar ? (CHAR_TO_KEY[nextChar] || CHAR_TO_KEY[nextChar.toLowerCase()]) : null;
+  // Settings → Keyboard hints: when off, the next key is not highlighted.
+  const hintTarget = settings.showKeyboardHints ? resolveChar(nextChar) : null;
+  const hintKey = hintTarget?.id ?? null;
+  const hintShiftKey = hintTarget?.shiftId ?? null;
 
   const focusSet = focusKeys && focusKeys.length > 0 && !focusKeys.includes('all')
     ? new Set(focusKeys.map((k) => k.toLowerCase()))
@@ -159,7 +200,7 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusK
           <div key={ri} className="flex" style={{ gap }}>
             {row.map((kd, ki) => {
               const flash = flashes.get(kd.id);
-              const isHint = hintKey === kd.id;
+              const isHint = hintKey === kd.id || hintShiftKey === kd.id;
               const isFlashCorrect = flash?.correct === true;
               const isFlashIncorrect = flash?.correct === false;
               const keyW = kd.w ?? 1;
