@@ -6,7 +6,7 @@ No login, no database, privacy-first (all data stays in the browser), to be fund
 This is the living reference. History lives in git. Per-guide detail lives in the header comment of each content file.
 
 ## 1. Status (updated 2026-10-05)
-- **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. **Branch `feat/lessons-course`: the 34-lesson course is built and tested, awaiting review before it is merged and deployed.**
+- **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-05: the 34-lesson course with a 95 % gate; before it 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. Live course test: 30/30 passed.
 - **AdSense:** application rejected — **“Low value content”**. The setup is correct and live. “Verify site ownership” is still open in the dashboard.
 - **Done because of the rejection:**
   - every guide rewritten from the real code, with verified sources
@@ -158,12 +158,13 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Confirm the events arrive: GA4 → Reports → Realtime, finish a test on freetyper.com and look for `test_complete` under “Event count by Event name” (DebugView with the GA Debugger extension shows the parameters).
 - [ ] **[A]** Set up **Bing Webmaster Tools** (free): import the site from Search Console, submit `sitemap.xml`, read its queries. Bing is ~70 % of traffic.
 - [ ] **[A]** Search Console: **resubmit the sitemap** (23 URLs) and **request indexing** for `/`, `/blog`, the 6 tool pages and the 10 posts.
+- [ ] **[A]** Request indexing for `/typing-lessons` in Search Console (content changed a lot on 2026-10-05).
 - [ ] **[A]** GA4, once each event has appeared at least once (register the custom definitions first — they are not retroactive): Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `passed`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`, `lesson_number`, `attempt`.
 - [ ] **[A]** Publish 1 sourced post a week; share honestly (Reddit r/typing, Show HN, Product Hunt); look for a few real links.
 - [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) so progress can be compared.
 
 **Next — product work the data supports**
-- [x] Longer lessons course (34 lessons, 95 % gate) built on `feat/lessons-course` — review, then merge and deploy. Afterwards watch `lesson_attempt` (pass rate per lesson) in GA4 to find lessons that are too hard.
+- [x] Longer lessons course (34 lessons, 95 % gate) — **live since 2026-10-05**. Now watch `lesson_attempt` (pass rate per lesson) in GA4 to find lessons that are too hard.
 - [ ] **[C]** A clear, printable **touch-typing finger chart** (people already search “keyboard finger chart / touch typing diagram”; the keyboard guide ranks ~position 47–73 for it).
 - [ ] **[C]** Preset **duration pages** (e.g. 1-minute, 5-minute test) as real working tools with a short unique intro — only after pages are being indexed, and never thin duplicates.
 - [ ] **[C]** Save the browser checks as **Playwright tests** in `tests/` (speed run, finger labels, Word Attack progress, Falling Words speed, hydration, sticky rails, touch input, GA4 events, redirects).
@@ -175,7 +176,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - Accounts, leaderboards, multiplayer races, Dvorak/Colemak, more games, progress export/import, ease Falling Words tiers 7–10, more than 20 practice passages.
 - Cleanup: ~57 older lint errors · delete `content-dates.ts` · unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`).
 
-**Recently done (2026-10-03/04):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (branch, not deployed yet).
+**Recently done (2026-10-03/04):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (live 2026-10-05).
 
 ## 9. Gotchas
 - **Sidebars:** keep `md:sticky md:top-0 md:h-screen md:self-start` on both asides. `h-auto` or `min-h-screen` stretches them in the flex row and breaks sticky.
