@@ -3,3 +3,6 @@
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
+
+## Project context
+Read `freetyper.md` first: it holds the product rules, content standards, release routine and current status. Keep it under about 250 lines and update it with each release.
