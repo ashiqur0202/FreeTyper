@@ -14,6 +14,12 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        // People also try /typing-test; the home page is that test.
+        source: "/typing-test",
+        destination: "/",
+        permanent: true,
+      },
     ];
   },
 };
