@@ -120,314 +120,71 @@ export const touchTypingArticles: Record<string, string> = {
 <p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
 
-  '10-bad-typing-habits': `
-<p>Most people who feel stuck at the keyboard are not missing a secret hotkey. They are repeating <strong>bad typing habits</strong> that quietly cap speed, accuracy, and comfort: looking at keys, mashing, chasing WPM while accuracy bleeds, practicing only tests, ignoring weak keys.</p>
+  '10-bad-typing-habits': `<p>The typing habits most worth fixing fall into three groups: how you type (looking at the keys, inconsistent fingers, rushing, ignoring errors, practising without a plan), how you sit (bent wrists, a badly placed keyboard, poor posture) and how you work (no breaks, typing through pain). For each one below we say what the evidence supports and what is only our suggestion, because the two are easy to mix up in typing advice.</p>
 
-<p>Those patterns feel normal because they are familiar, not because they are efficient. Below are ten habits that slow you down, how to spot each one, and a concrete fix. You do not need to fix all ten tomorrow. Pick the two that describe you and attack those first.</p>
+<p>Where we cite research, it is mainly the large typing study <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018, 168,960 volunteers) and the US Occupational Safety and Health Administration's <a href="https://www.osha.gov/etools/computer-workstations/checklists/evaluation" rel="noopener" target="_blank">computer workstation guidance</a>. These studies describe what fast typists do and what a neutral workstation looks like. They cannot prove that any single habit is the cause of slow typing or pain.</p>
 
-<p>Honesty check: take a <a href="/">speed test</a>, log WPM and accuracy, then open <a href="/typing-progress">progress</a> after practice so weak keys stop being a mystery.</p>
+<h2 id="technique-habits">Technique habits</h2>
 
-<h2 id="toc">Table of Contents</h2>
-<ol>
-<li><a href="#habit-1">1. Looking at the Keyboard Constantly</a></li>
-<li><a href="#habit-2">2. Hunt-and-Peck / Two-Finger Default</a></li>
-<li><a href="#habit-3">3. Ignoring Home Row</a></li>
-<li><a href="#habit-4">4. Chasing Speed While Accuracy Is Soft</a></li>
-<li><a href="#habit-5">5. Mashing Keys and Death-Grip Tension</a></li>
-<li><a href="#habit-6">6. Practicing Only Tests (Or Only Games)</a></li>
-<li><a href="#habit-7">7. Restarting Every Mistake</a></li>
-<li><a href="#habit-8">8. Never Training Weak Keys</a></li>
-<li><a href="#habit-9">9. Skipping Posture and Setup</a></li>
-<li><a href="#habit-10">10. Inconsistent Practice and Metric Chaos</a></li>
-<li><a href="#audit">30-Minute Habit Audit</a></li>
-<li><a href="#week">One-Week Fix Plan</a></li>
-<li><a href="#faq">Bad Typing Habits FAQ</a></li>
-</ol>
+<h3 id="looking-at-the-keys">1. Looking at the keys</h3>
+<p><strong>Evidence:</strong> In the University of Cambridge's <a href="https://www.cam.ac.uk/research/news/what-makes-a-faster-typist" rel="noopener" target="_blank">write-up of the study</a>, the researchers advise learning to type without looking at your fingers, because the motor system then picks up fast sequences for common letter combinations on its own. <strong>Instead:</strong> keep your eyes on the text. The live keyboard in the <a href="/typing-lessons">lessons</a> shows the next key so you do not need to look down, and slowing down helps you resist the urge.</p>
 
-<h2 id="habit-1">1. Looking at the Keyboard Constantly</h2>
-<p><strong>Why it slows you down:</strong> Every glance is a context switch. Your eyes leave the sentence, find a key, return, re-find your place, and hope you did not lose the thought. It also prevents true touch typing: the spatial map never has to stand on its own.</p>
-<p><strong>How to spot it:</strong> You cannot type a full FreeTyper line with a sheet of paper lightly covering your hands. You “just check” hard keys every few words. Neck fatigue shows up on long writing days.</p>
-<p><strong>Fix:</strong></p>
+<h3 id="inconsistent-fingers">2. Using your fingers inconsistently</h3>
+<p><strong>Evidence:</strong> In the study, participants who reported using more fingers tended to be faster (correlation r = 0.38), and fast typists reported about 8.4 fingers against 5.3 for slow typists. The same Cambridge write-up notes that some self-taught typists with fewer than ten fingers are as fast as touch typists, so the real issue is consistency, not a magic number. The authors also hypothesise that the many wrong-letter errors among slow typists come from being less consistent and having a weaker mental map of finger positions. <strong>Instead:</strong> pick one finger per key and stick to it. The <a href="/keyboard-guide">keyboard guide</a> shows the standard map.</p>
+
+<h3 id="rushing-past-accuracy">3. Rushing past your accuracy</h3>
+<p><strong>Evidence:</strong> Across the study, faster typists made fewer mistakes: speed was negatively correlated with uncorrected errors (r = &minus;0.21), error corrections (r = &minus;0.36) and keystrokes per character (r = &minus;0.4). Speed bought with errors is not how the fast typists got there. <strong>Instead:</strong> ease off until you can finish runs at 95% accuracy or better. That 95% bar is our suggestion. More in <a href="/blog/improve-typing-accuracy">how to improve typing accuracy</a>.</p>
+
+<h3 id="ignoring-errors">4. Not noticing or fixing errors</h3>
+<p><strong>Evidence:</strong> Slow typists left significantly more errors uncorrected in the study, which the authors suggest could mean they are less able to detect their mistakes, and they note that correcting errors is costly because you have to find them in the text. <strong>Instead:</strong> fix mistakes when you notice them, and look at your weakest keys on the <a href="/typing-progress">progress page</a> so you can work on the cause.</p>
+
+<h3 id="practising-without-a-plan">5. Practising without a plan</h3>
+<p><strong>Evidence:</strong> The researchers advise practising deliberately, because people can slip back into less efficient habits. <strong>Instead (our suggestion):</strong> short sessions of 10 to 20 minutes on most days, mixing lessons, <a href="/typing-practice">practice</a> and the occasional <a href="/">speed test</a>, and checking your trend over weeks.</p>
+
+<h2 id="setup-habits">Setup habits</h2>
+
+<h3 id="bent-or-anchored-wrists">6. Bent or anchored wrists</h3>
+<p><strong>Evidence:</strong> OSHA's <a href="https://www.osha.gov/etools/computer-workstations/components/keyboards" rel="noopener" target="_blank">keyboard guidance</a> says wrists should be straight and in line with the forearms and should not bend up, down or sideways while you type. Its guidance on <a href="https://www.osha.gov/etools/computer-workstations/components/wrist-palm-support" rel="noopener" target="_blank">wrist and palm supports</a> says hands should move freely and stay above the rest while typing, and that the pad should touch the heel or palm of the hand when you pause, not the wrist itself. <strong>Instead:</strong> let your hands float while you type, and rest them between bursts.</p>
+
+<h3 id="keyboard-too-high-or-low">7. A keyboard that is too high or too low</h3>
+<p><strong>Evidence:</strong> OSHA says elbows should be about the same height as the keyboard and hang comfortably at your sides. A keyboard that is too low tends to bend the wrists upward, and one that is too high pushes the shoulders up. OSHA adds that the keyboard feet may need to be raised or lowered to keep wrists straight, but should not be used if they increase wrist bending. <strong>Instead:</strong> set the chair and desk height so your elbows meet the keyboard.</p>
+
+<h3 id="poor-seated-posture">8. Poor seated posture and screen height</h3>
+<p><strong>Evidence:</strong> OSHA's checklist asks for thighs roughly parallel to the floor, feet flat or on a footrest, the back supported by the chair, and the top of the screen at or below eye level. <strong>Instead:</strong> work through that checklist once. Our <a href="/blog/fix-typing-posture-and-avoid-wrist-pain">posture and wrist pain guide</a> turns it into a five-minute setup.</p>
+
+<h2 id="working-habits">Working habits</h2>
+
+<h3 id="no-breaks">9. Sitting and typing without breaks</h3>
+<p><strong>Evidence:</strong> OSHA's checklist asks whether you can alternate between sitting and standing and vary keyboard work with other tasks or micro-breaks. In the pages we checked it gives no fixed interval. <strong>Instead:</strong> pick a rhythm you will keep, such as standing and shaking out your hands when you finish a task.</p>
+
+<h3 id="typing-through-pain">10. Typing through pain or tiredness</h3>
+<p><strong>Evidence:</strong> The UK's National Health Service advises seeing a GP if symptoms of <a href="https://www.nhs.uk/conditions/repetitive-strain-injury-rsi/" rel="noopener" target="_blank">repetitive strain injury</a> or <a href="https://www.nhs.uk/conditions/carpal-tunnel-syndrome/" rel="noopener" target="_blank">carpal tunnel syndrome</a> are not going away or are getting worse. <strong>Instead:</strong> stop when you notice pain, numbness or tingling, and get it checked. When you are merely tired, our suggestion is to stop practising once accuracy drops sharply, since you are mostly rehearsing errors by then.</p>
+
+<h2 id="advice-with-weak-support">Advice with weak support</h2>
+<p>Some familiar typing advice we could not back up with the sources above:</p>
 <ul>
-<li>Run timed no-peek blocks (even 8–10 minutes) where looking is illegal and errors are allowed.</li>
-<li>Re-home on the F and J bumps by feel when lost.</li>
-<li>Slow down until eyes-up is possible — if you must look to go fast, that speed is fake skill.</li>
-<li>Use <a href="/typing-lessons">lessons</a> and the <a href="/keyboard-guide">keyboard guide</a> to rebuild the map.</li>
-</ul>
-<p>Deep dive: <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
-
-<h2 id="habit-2">2. Hunt-and-Peck / Two-Finger Default</h2>
-<p><strong>Why it slows you down:</strong> A few fingers do most of the work. Reach distances stay long. Load is uneven. Your ceiling stays lower than a full finger map allows, and fatigue hits earlier on long FreeTyper tests.</p>
-<p><strong>How to spot it:</strong> Index fingers travel the board like tour guides. Pinkies barely work. Common letters feel fine; everything else is a search party.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>Commit to a finger-to-key map even when it feels slower this week.</li>
-<li>Start with home-row ownership before “full freestyle.”</li>
-<li>Accept a temporary WPM dip — that is the rebuild tax, not proof you should quit.</li>
-</ul>
-<p>Adults defending two-finger “style” are usually defending comfort. Comfort is not the same as capacity. Adult framing: <a href="/blog/touch-typing-for-beginners">learn touch typing as an adult</a>.</p>
-
-<h2 id="habit-3">3. Ignoring Home Row</h2>
-<p><strong>Why it slows you down:</strong> Without a home base, every keystroke is a new navigation problem. Hands float. Ownership gets fuzzy. You cannot build reliable muscle memory on a moving origin point.</p>
-<p><strong>How to spot it:</strong> You cannot find F/J bumps without looking. After a mistake, your hands are nowhere consistent. Lessons feel pointless because you skip them.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>Park on A S D F / J K L ; between thoughts.</li>
-<li>Spend several sessions on home-row-only work if needed — ego optional, results not.</li>
-<li>Use keyboard guide home-row mode as a visual checklist, then execute eyes-up.</li>
-</ul>
-<p>Home row is not elementary school cosplay. It is the coordinate system for the rest of the board.</p>
-
-<h2 id="habit-4">4. Chasing Speed While Accuracy Is Soft</h2>
-<p><strong>Why it slows you down:</strong> Errors create rework. On tests, soft accuracy means your WPM is not usable throughput. On employer-style scoring, net WPM punishes mess. You also automate wrong patterns when you repeat fast junk. Science of that loop: <a href="/blog/muscle-memory-and-touch-typing">muscle memory and touch typing</a>.</p>
-<p><strong>How to spot it:</strong> You remember best WPM, not average accuracy. FreeTyper accuracy sits under ~95% while you still hunt PRs. You backspace constantly in real writing.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>Make accuracy column one in your log until it holds at 95%+.</li>
-<li>Cap speed: if a run falls under 95%, treat it as training data, not a brag.</li>
-<li>Drill weak keys slowly before another speed interval.</li>
-</ul>
-<p>Guides: <a href="/blog/improve-typing-accuracy">typing accuracy test</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
-<p>A clean 58 WPM often beats a messy 70 in real output. That sentence should live on your monitor if this habit is yours.</p>
-
-<h2 id="habit-5">5. Mashing Keys and Death-Grip Tension</h2>
-<p><strong>Why it slows you down:</strong> Heavy force burns energy, raises fatigue on 3–5 minute tests, and increases bounce/extra-character errors. Raised shoulders and locked wrists also degrade late-test accuracy. You feel “effort” and confuse it with “progress.”</p>
-<p><strong>How to spot it:</strong> Keyboard noise is aggressive. Forearms pump after a short session. Accuracy falls off a cliff after minute three. You finish runs more tired than the duration justifies.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>Practice a deliberate light tap — minimum force that still registers.</li>
-<li>Reset shoulders down every minute or two during longer runs.</li>
-<li>Shorten sessions if pain appears; pain is a stop signal.</li>
-<li>Compare a relaxed 3-minute test to a tense one; log both.</li>
-</ul>
-<p>Endurance gaps between 1-minute and 5-minute scores often shrink when force and posture improve. See <a href="/">5 minute typing test</a>.</p>
-
-<h2 id="habit-6">6. Practicing Only Tests (Or Only Games)</h2>
-<p><strong>Why it slows you down:</strong> Tests measure. Games pressure. Neither replaces map installation. Endless homepage restarts train restarting and adrenaline, not home-row ownership. Games-first learning often freezes peeking and panic corrections.</p>
-<p><strong>How to spot it:</strong> Your history is twenty tests and zero lessons. You “practice” by chasing a high score. Weak keys never change because you never isolate them.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>Adopt the stack: lessons → practice/weak keys → occasional test → optional game.</li>
-<li>Limit pure testing to scheduled check-ins (e.g., weekly averages).</li>
-<li>Use <a href="/typing-game-falling-words">games</a> only after accuracy is trustworthy.</li>
-</ul>
-<p>Measurement still matters — just not as the whole diet. Overview: <a href="/">typing speed test</a>, <a href="/">free typing test</a>.</p>
-
-<h2 id="habit-7">7. Restarting Every Mistake</h2>
-<p><strong>Why it slows you down:</strong> You build a fantasy history of perfect openings and never practice recovery. Real work and employer tests do not offer infinite restarts. Emotionally, restart addiction trains fragility: one error = abort mission.</p>
-<p><strong>How to spot it:</strong> You cannot finish a run if minute one wobbles. Your “best scores” required seven abandoned attempts. You feel cheated by any test that forces completion.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>Label sessions: diagnostic (always finish) vs training (may stop for form).</li>
-<li>For weekly baselines, finish every run; average 2–3.</li>
-<li>Practice error recovery: correct cleanly, return to pace within about a second, continue.</li>
-</ul>
-<p>Composure is a skill. Restarting is a way to avoid training it.</p>
-
-<h2 id="habit-8">8. Never Training Weak Keys</h2>
-<p><strong>Why it slows you down:</strong> Overall WPM is dragged by a small set of hesitation letters and pairs. You can grind random volume for months and still stumble on the same keys. Without isolation, the weak pattern keeps winning.</p>
-<p><strong>How to spot it:</strong> progress shows the same offenders. You fear certain letters mid-word. Accuracy cliffs appear on words with P, Q, Z, punctuation, or your personal nemesis list.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>After sessions, note top error keys.</li>
-<li>Spend 5–10 minutes in <a href="/typing-practice">practice</a> on those keys before general volume.</li>
-<li>One weak-key theme per week beats random chaos.</li>
-</ul>
-<p>Targeted practice is how intermediates break plateaus when “just type more” stops working. Technique library later: <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
-
-<h2 id="habit-9">9. Skipping Posture and Setup</h2>
-<p><strong>Why it slows you down:</strong> Twisted torso, low laptop, sharp desk edge into wrists, screen that forces you to look down at keys “because it’s easier” — all of it taxes endurance and attention. Bad setup makes good form harder than the skill already is.</p>
-<p><strong>How to spot it:</strong> Neck or wrist complaints after typing blocks. You hunch harder as a test continues. Scores swing wildly when you change couches and cafés without admitting environment is a variable.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>Elbows near comfortable right angles; shoulders down; wrists closer to neutral.</li>
-<li>Raise laptop or use an external keyboard if you type seriously on a low laptop.</li>
-<li>Keep the same hardware for weekly comparison tests when possible.</li>
-<li>Stop for pain; adjust before grinding.</li>
-</ul>
-<p>Setup will not replace practice. Bad setup will sabotage practice you already did.</p>
-
-<h2 id="habit-10">10. Inconsistent Practice and Metric Chaos</h2>
-<p><strong>Why it slows you down:</strong> Motor skill wants spacing and consistency. Random bursts, no log, and comparing 15-second phone bursts to 5-minute desktop tests creates false stories — “I got worse overnight,” “this site is broken,” “talent issue.”</p>
-<p><strong>How to spot it:</strong> You practice hard for two days, disappear for twelve, then rage-test. You change duration every session. You have no Day 0 numbers. You switch keyboards mid-program and blame the tool.</p>
-<p><strong>Fix:</strong></p>
-<ul>
-<li>Pick a default: 15–20 minutes, 5 days a week.</li>
-<li>One duration for weekly official averages.</li>
-<li>Log date, WPM, accuracy, peeking note.</li>
-<li>Miss a day → resume, do not double-punish tomorrow.</li>
-</ul>
-<p>Calendar plans help: <a href="/blog/touch-typing-for-beginners">30-day beginner plan</a>. Science of spacing: muscle memory article above.</p>
-
-<h2 id="bonus-habits">Bonus Habits That Also Quietly Hurt</h2>
-<p>These did not make the top ten headline, but they show up constantly:</p>
-<ul>
-<li><strong>Phone-only “practice” for desktop goals</strong> — different skill; weak transfer.</li>
-<li><strong>Comparing yourself to internet 120 WPM clips daily</strong> — toxic and irrelevant to your stage.</li>
-<li><strong>Ignoring numbers and symbols forever</strong> — fine early; career friction later.</li>
-<li><strong>Typing angry</strong> — tension up, accuracy down; end the session.</li>
-<li><strong>No transfer to real writing</strong> — skill stays siloed; always finish with a real paragraph when you can.</li>
+<li><strong>"Don't hit the keys so hard."</strong> It sounds sensible, but the OSHA keyboard page we checked gives no guidance on typing force, so we make no claim either way.</li>
+<li><strong>"Typing causes carpal tunnel syndrome."</strong> Two systematic reviews describe the evidence as limited or insufficient. See <a href="/blog/fix-typing-posture-and-avoid-wrist-pain">our posture guide</a> for the details.</li>
+<li><strong>"You must use all ten fingers."</strong> The research suggests consistency matters more than a specific count, though a fixed finger map is the easiest way to get consistency.</li>
 </ul>
 
-<h2 id="audit">30-Minute Habit Audit</h2>
-<p>Run this once and write the answers down:</p>
-<ol>
-<li>3-minute test — WPM, accuracy, did you look at keys? (Y/N/how often)</li>
-<li>Which fingers did most of the work? Be honest.</li>
-<li>Top 3 error keys from the run or from progress.</li>
-<li>Did you want to restart after the first mistake?</li>
-<li>How hard were you pressing? (light / medium / mash)</li>
-<li>When did you last do a lesson (not a test)?</li>
-<li>How many days last week did you practice deliberately?</li>
-<li>Circle your top 2 habits from the list of 10.</li>
-</ol>
-<p>That circle is your curriculum for the next seven days. Everything else is noise.</p>
-
-<h2 id="week">One-Week Fix Plan (Pick Two Habits Max)</h2>
-<table>
-<thead><tr><th>Day</th><th>Action</th></tr></thead>
-<tbody>
-<tr><td>Mon</td><td>Audit + baseline log. Choose two habits.</td></tr>
-<tr><td>Tue–Thu</td><td>15–20 min focused on those two only (example: no-peek + weak keys).</td></tr>
-<tr><td>Fri</td><td>Same practice + one diagnostic test you must finish.</td></tr>
-<tr><td>Sat</td><td>Light day or transfer writing only.</td></tr>
-<tr><td>Sun</td><td>Retest same duration; compare accuracy and peeking, not just WPM.</td></tr>
-</tbody>
-</table>
-<p>Examples of pairings:</p>
+<h2 id="how-to-check-your-own-habits">How to check your own habits</h2>
 <ul>
-<li>Looking + home row ignore → lessons + no-peek blocks</li>
-<li>Soft accuracy + restart addiction → accuracy-capped practice + forced finishes</li>
-<li>Only tests + no weak keys → ban extra tests; practice offenders daily</li>
-<li>Mashing + late collapse → light force + one longer test midweek</li>
+<li>Look at your <a href="/typing-progress">progress page</a>: the heatmap and weakest keys point to technique problems.</li>
+<li>Take three speed tests of the same length and compare accuracy as well as WPM.</li>
+<li>Run through the posture checklist above once.</li>
 </ul>
-<p>After one week, keep what worked. Add a third habit only if the first two are clearly improving.</p>
+<p>To go further, read <a href="/blog/how-to-type-faster">how to type faster</a> and <a href="/blog/touch-typing-for-beginners">touch typing for beginners</a>.</p>
 
-<h2 id="stage">Which Habits Dominate at Each Stage</h2>
-<table>
-<thead><tr><th>Stage</th><th>Most common brakes</th></tr></thead>
-<tbody>
-<tr><td>Beginner / hunt-and-peck</td><td>Looking, two-finger default, no home row, inconsistent practice</td></tr>
-<tr><td>Early touch typist</td><td>Peeking hybrid, speed before accuracy, test-only practice</td></tr>
-<tr><td>Intermediate (45–70 WPM)</td><td>Weak keys ignored, restart addiction, tension, metric chaos</td></tr>
-<tr><td>Advanced plateau</td><td>No endurance work, symbol neglect, ego PRs over averages</td></tr>
-</tbody>
-</table>
-<p>Match the fix to the stage. Beginners do not need advanced symbol theory on day two. Advanced typists do not need to re-read home row forever if they already own it — unless hybrid peeking returned under stress.</p>
-
-<h2 id="workplace">Habits That Show Up at Work Specifically</h2>
-<ul>
-<li>Sloppy chat speed that never gets cleaned up in docs</li>
-<li>Copy-paste avoidance by retyping badly under time pressure</li>
-<li>Never using a real keyboard on “laptop days” then wondering why scores swing</li>
-<li>Skipping breaks until fatigue destroys afternoon accuracy</li>
+<h2 id="sources">Sources</h2>
+<ul class="article-sources">
+<li>Dhakal V, Feit AM, Kristensson PO, Oulasvirta A. <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>. CHI 2018.</li>
+<li>University of Cambridge, <a href="https://www.cam.ac.uk/research/news/what-makes-a-faster-typist" rel="noopener" target="_blank">What makes a faster typist?</a></li>
+<li>OSHA, Computer Workstations eTool: <a href="https://www.osha.gov/etools/computer-workstations/components/keyboards" rel="noopener" target="_blank">Keyboards</a>, <a href="https://www.osha.gov/etools/computer-workstations/components/wrist-palm-support" rel="noopener" target="_blank">Wrist/Palm Supports</a> and <a href="https://www.osha.gov/etools/computer-workstations/checklists/evaluation" rel="noopener" target="_blank">Evaluation checklist</a>.</li>
+<li>NHS, <a href="https://www.nhs.uk/conditions/repetitive-strain-injury-rsi/" rel="noopener" target="_blank">Repetitive strain injury</a> and <a href="https://www.nhs.uk/conditions/carpal-tunnel-syndrome/" rel="noopener" target="_blank">Carpal tunnel syndrome</a>.</li>
+<li>Items marked as our suggestion, including the 95% accuracy bar and the 10 to 20 minute sessions, are FreeTyper's own.</li>
 </ul>
-<p>Work volume without deliberate form freezes bad habits faster because reps are high. Separate 15 minutes of form work from eight hours of production chaos. Career context: <a href="/blog/good-typing-speed">typing speed for work</a>.</p>
-
-<h2 id="emotional">The Emotional Habits Under the Finger Habits</h2>
-<p>Bad technique often sits on bad stories:</p>
-<ul>
-<li>“I’m just not a computer person.”</li>
-<li>“I don’t have time to relearn.”</li>
-<li>“Slow practice is embarrassing.”</li>
-<li>“If I’m not faster this week, it’s pointless.”</li>
-</ul>
-<p>Those stories produce metric chaos, skipped lessons, and restart addiction. Replace them with process identity: “I practice eyes-up fifteen minutes on weekdays.” Feelings can tag along later when the log moves.</p>
-
-<h2 id="faq">Bad Typing Habits FAQ</h2>
-<h3>What are the most common bad typing habits?</h3>
-<p>Looking at the keys, hunt-and-peck, skipping home row, speed without accuracy, hard mashing, test-only practice, restarting constantly, ignoring weak keys, poor setup, and inconsistent training.</p>
-<h3>Which habit should I fix first?</h3>
-<p>If you look at the keys, start there (with home row). If you already touch type but leak errors, fix accuracy and weak keys before more speed.</p>
-<h3>Can bad habits become permanent?</h3>
-<p>They become automatic with repetition — that is the problem and the hope. New correct reps can overwrite them. Automatic is not destiny.</p>
-<h3>How long to break a typing habit?</h3>
-<p>Noticeable change often appears within 1–3 weeks of daily short practice on one constraint. Deep hybrid rebuilds take longer. Streaks matter more than intensity spikes.</p>
-<h3>Why is my WPM stuck?</h3>
-<p>Usually a mix of soft accuracy, weak keys, peeking, or only measuring sprints. Run the habit audit and fix the actual brake.</p>
-<h3>Are games a bad habit?</h3>
-<p>Games-only is a bad habit. Games after clean form can be useful pressure. Order matters.</p>
-<h3>Is looking sometimes okay?</h3>
-<p>Rare total-loss glances happen. Constant micro-looking is the habit that caps you.</p>
-<h3>Do I need to fix posture if my speed is fine?</h3>
-<p>If you want endurance, comfort, and fewer late errors, yes. Fine short-burst speed can hide setup problems until longer tests or long workdays.</p>
-<h3>How do I stop restarting tests?</h3>
-<p>Pre-commit: this run is diagnostic and will be finished. Average three finishes. Train recovery separately.</p>
-<h3>What’s the fastest way to use against bad habits?</h3>
-<p>Baseline test → identify two habits → lessons/practice targeted at them → weekly retest with accuracy logged.</p>
-<h3>Can kids have the same bad habits?</h3>
-<p>Yes — especially looking, mashing, and leaderboard panic. Teach accuracy and eyes-up early.</p>
-<h3>Will buying a new keyboard fix my habits?</h3>
-<p>Almost never by itself. It can change feel; it will not install home row while you peek.</p>
-<h3>What accuracy means my speed habit is okay?</h3>
-<p>Around 95%+ on honest runs is a practical green light to add controlled speed layers.</p>
-<h3>What should I do today after reading?</h3>
-<p>Audit, circle two habits, schedule five short sessions, start the first one before the day ends.</p>
-
-<h2 id="myths">Myths That Protect Bad Habits</h2>
-<ul>
-<li><strong>“This is just how I type.”</strong> Habits feel like identity. They are still editable.</li>
-<li><strong>“I don’t need touch typing for my job.”</strong> Maybe not for a minimum bar — still useful for ceiling and comfort.</li>
-<li><strong>“More WPM practice always helps.”</strong> More wrong reps helps the wrong program.</li>
-<li><strong>“I’ll fix accuracy later.”</strong> Later rarely arrives without a scheduled floor.</li>
-<li><strong>“One perfect weekend will reset me.”</strong> Spacing beats cramming for durable change.</li>
-</ul>
-
-<h2 id="combos">Habit Combos That Create Fake Plateaus</h2>
-<p>Single habits are bad. Combinations create the “I’ve tried everything” story:</p>
-<ul>
-<li><strong>Looking + only tests:</strong> You measure hybrid adrenaline forever and call it your ceiling.</li>
-<li><strong>Soft accuracy + restarting:</strong> Your highlight reel is clean; your real skill is not.</li>
-<li><strong>Weak keys ignored + speed chasing:</strong> You build a fast highway with potholes on the same three letters.</li>
-<li><strong>Mashing + long workdays:</strong> Afternoon accuracy collapses; you blame “getting worse with age.”</li>
-<li><strong>Inconsistent practice + metric chaos:</strong> Every comeback week feels like starting over because it partly is.</li>
-</ul>
-<p>When you feel stuck, ask which <em>pair</em> is active. Fix the pair for fourteen days. makes the pair visible if you log accuracy, peeking, and weak keys — not WPM alone.</p>
-
-<h2 id="relapse">How Good Habits Relapse (And What to Do)</h2>
-<p>You can fix looking for three weeks and relapse during a stressful job week. That is normal interference, not proof the project failed.</p>
-<ol>
-<li>Notice without drama (“I peeked through that whole email”).</li>
-<li>Return to a short no-peek or accuracy-capped block the same day if possible.</li>
-<li>Do not punish with a two-hour rage session.</li>
-<li>Keep the weekly average ritual so one bad day does not rewrite identity.</li>
-</ol>
-<p>Skills under stress default to the strongest practiced program. If hybrid had twenty years and touch typing had twenty days, stress will vote hybrid until the new reps catch up. Keep stacking clean days.</p>
-
-<h2 id="checklist-print">Anti-Habit Checklist</h2>
-<ul>
-<li>Eyes on screen for the main practice block</li>
-<li>Fingers return to home row</li>
-<li>Accuracy treated as seriously as WPM</li>
-<li>Light key force</li>
-<li>At least one lesson or weak-key block (not only tests)</li>
-<li>Finished diagnostic runs (no restart addiction)</li>
-<li>Noted weak keys after practice</li>
-<li>Setup not actively hurting me</li>
-<li>Practiced on schedule (or logged an honest miss)</li>
-<li>Transferred once to real writing</li>
-</ul>
-<p>Score yourself out of ten twice a week. Rising checklist scores predict rising averages better than mood does.</p>
-
-<h2 id="tools-map">Habit → Fix (Quick Map)</h2>
-<table>
-<thead><tr><th>Habit</th><th>Primary fix</th></tr></thead>
-<tbody>
-<tr><td>Looking / no home row</td><td>Lessons + keyboard guide + no-peek blocks</td></tr>
-<tr><td>Two-finger default</td><td>Lessons with full finger ownership</td></tr>
-<tr><td>Soft accuracy</td><td>Slow practice + accuracy-first tests</td></tr>
-<tr><td>Mashing / tension</td><td>Light-force practice + longer clean runs</td></tr>
-<tr><td>Tests/games only</td><td>Lessons + weak-key practice scheduled</td></tr>
-<tr><td>Restart addiction</td><td>Forced-finish diagnostics; average three runs</td></tr>
-<tr><td>Weak keys ignored</td><td>Practice + progress review daily</td></tr>
-<tr><td>Inconsistent metrics</td><td>Fixed duration weekly log</td></tr>
-</tbody>
-</table>
-
-<h2 id="closing">Slow Is What You Rehearse When You Rehearse Mess</h2>
-<p>Bad typing habits slow you down twice: once in the moment (errors, peeks, tension), and again over months (a ceiling you call permanent). The fix is not mysterious. Name the habit, cut the reps that feed it, install better reps, and measure with accuracy and honesty — not only vanity WPM.</p>
-<p>You do not need a new personality. You need a shorter list of automatic mistakes.</p>
-<p>Start the audit: take a <a href="/">typing test</a>, note accuracy and whether you looked, then attack your top habit with <a href="/typing-lessons">lessons</a> or <a href="/typing-practice">practice</a>. For a full rebuild, use the <a href="/blog/touch-typing-for-beginners">touch typing guide</a> and the <a href="/blog/touch-typing-for-beginners">30-day plan</a>.</p>
+<p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
 };
 

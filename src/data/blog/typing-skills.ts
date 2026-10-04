@@ -64,13 +64,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: '10-bad-typing-habits',
-    title: '10 Bad Typing Habits That Are Slowing You Down',
-    excerpt:
-      'Looking at keys, soft accuracy, mashing, test-only practice, weak keys ignored — ten habits that cap your WPM, how to spot each one, and how to fix them on FreeTyper.',
+    title: '10 Typing Habits to Fix, and the Evidence Behind Each',
+    excerpt: 'Ten common typing habits across technique, desk setup and routine, what the research and OSHA guidance say about each, and what is only our suggestion.',
     date: '2026-08-07',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Touch Typing',
-    readTime: '17 min',
+    readTime: '7 min',
   },
   {
     slug: 'data-entry-typing-test',
