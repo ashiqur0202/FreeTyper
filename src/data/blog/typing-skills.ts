@@ -84,13 +84,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'typing-speed-for-programmers',
-    title: 'Typing Speed for Programmers: How Fast Should Coders Type?',
-    excerpt:
-      'How fast programmers should type — practical WPM ranges, symbols vs prose scores, FreeTyper training for developers, and when more speed stops mattering.',
+    title: 'Typing Speed for Programmers: How Much Does It Matter?',
+    excerpt: 'Two field studies of how developers spend their time show editing is only about 5 percent of it. What that means for typing speed, where typing still matters, and how to practise code typing.',
     date: '2026-08-07',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Practice',
-    readTime: '17 min',
+    readTime: '6 min',
   },
   {
     slug: 'mechanical-vs-membrane-keyboards',

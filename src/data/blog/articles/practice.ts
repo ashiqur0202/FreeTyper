@@ -317,318 +317,59 @@ export const practiceArticles: Record<string, string> = {
 <p>Start now: take three <a href="/">tests</a> at 3 or 5 minutes, log averages, then train the weak constraint in <a href="/typing-practice">practice</a> (accuracy or digits). Retest every two days until your average clears the job bar with room to spare.</p>
 `,
 
-  'typing-speed-for-programmers': `
-<p>Programmers do not lose jobs because they type 58 WPM instead of 90. They lose flow when every symbol is a scavenger hunt, when PR descriptions feel like homework, and when a live coding pad turns into hunt-and-peck under stress.</p>
+  'typing-speed-for-programmers': `<p>Typing speed matters less to programmers than to almost any other keyboard job. In two field studies of how developers spend their time, actually editing code took only about 5% of the working day, while reading and understanding code took 58% to 70%. So the useful goal for a programmer is comfortable, accurate typing, especially on symbols, rather than a high WPM score. We also looked for a study of programmers' typing speeds and found none, so we will not give you a benchmark such as "programmers should type 80 WPM". Anyone who does is guessing.</p>
 
-<p>So how fast should you type? Fast enough that the keyboard is not the bottleneck. That usually means solid accuracy, decent prose speed, and symbol fluency, not transcription-champion WPM. Below are practical ranges, why a pure prose test can lie, and how to train without turning practice into a second job.</p>
-
-<p>If you want numbers, take the <a href="/">homepage speed test</a> for prose WPM and accuracy. Then spend real time on symbols in <a href="/typing-practice">practice</a> or a throwaway file in your editor.</p>
-
-<h2 id="toc">Table of Contents</h2>
-<ol>
-<li><a href="#honest">The Honest Answer: How Fast Should Coders Type?</a></li>
-<li><a href="#why">Why Typing Still Matters in Software Work</a></li>
-<li><a href="#not-bottleneck">When Typing Is Not the Bottleneck</a></li>
-<li><a href="#ranges">Practical WPM Ranges for Developers</a></li>
-<li><a href="#prose-vs-code">Prose WPM vs Code Throughput</a></li>
-<li><a href="#symbols">Symbols, Brackets, and the Real Dev Keyboard</a></li>
-<li><a href="#accuracy">Accuracy for Coders (Bugs Are Expensive)</a></li>
-<li><a href="#shortcuts">Shortcuts vs Raw WPM</a></li>
-<li><a href="#train">How Programmers Should Train on FreeTyper</a></li>
-<li><a href="#plan">A 4-Week Coder Typing Plan</a></li>
-<li><a href="#roles">By Role: Frontend, Backend, Data, Students</a></li>
-<li><a href="#myths">Myths Programmers Tell Themselves</a></li>
-<li><a href="#faq">Typing Speed for Programmers FAQ</a></li>
-</ol>
-
-<h2 id="honest">The Honest Answer: How Fast Should Coders Type?</h2>
-<p>A practical target for most professional developers is roughly:</p>
+<h2 id="what-the-studies-found">What the studies found</h2>
+<p>Two published field studies measured how developers divide their time by recording their computer activity:</p>
 <ul>
-<li><strong>50–70+ WPM</strong> on a calm FreeTyper prose test with <strong>~95%+ accuracy</strong></li>
-<li><strong>Comfortable symbol fluency</strong> so brackets, equals, arrows, and underscores do not force constant looking</li>
-<li><strong>Enough endurance</strong> to write a long PR description, design doc section, or pair-session notes without fading</li>
+<li><strong>Minelli, Mocci and Lanza (2015),</strong> <a href="https://robertominelli.com/assets/downloads/publications/Mine2015b.pdf" rel="noopener" target="_blank">I Know What You Did Last Summer</a>, recorded about 740 development sessions by 18 developers, around 200 hours and 5 million IDE events. They found that program understanding took roughly <strong>70%</strong> of the time, editing roughly <strong>5%</strong> and navigation roughly <strong>4 to 5%</strong>, with the rest spent on interface handling and time outside the IDE.</li>
+<li><strong>Xia and colleagues (2018),</strong> <a href="https://baolingfeng.github.io/papers/tsecomprehension.pdf" rel="noopener" target="_blank">Measuring Program Comprehension: A Large-Scale Field Study with Professionals</a>, followed 79 professional developers on 7 real projects, 3,244 working hours in all, and recorded activity across many applications instead of one IDE. They reported that developers spend up to <strong>58%</strong> of their time on program comprehension. Across five of the projects the averages were 57.62% comprehension, 23.96% navigation, 13.40% other and <strong>5.02% editing</strong>. They also found that senior developers spent a significantly smaller share of their time on comprehension than junior developers.</li>
 </ul>
-<p>Going from 35 → 55 WPM often feels life-changing in an editor. Going from 80 → 100 WPM rarely changes code quality. Past a point, thinking speed, tool fluency, and problem framing dominate. That is not an excuse to stay hunt-and-peck forever — it is a reason to aim for <em>non-blocking</em> typing rather than esports WPM.</p>
-<p>General benchmarks: <a href="/blog/good-typing-speed">good typing speed</a>, <a href="/blog/good-typing-speed">how many WPM you should type</a>, <a href="/blog/good-typing-speed">typing speed for work</a>.</p>
+<p>The two studies disagree on the exact comprehension figure, and Xia and colleagues point out why the earlier one is limited: its dataset was small and mostly from three PhD students working in one IDE. Both agree on the important part: editing is a small slice of a developer's time.</p>
 
-<h2 id="why">Why Typing Still Matters in Software Work</h2>
+<h2 id="what-that-means-for-typing-speed">What that means for typing speed</h2>
+<p>Take the most generous reading: assume all of that roughly 5% of editing time is pure typing, and that you double your typing speed. You would save about half of it, so about <strong>2.5% of your working time</strong> at best. This is our own back-of-the-envelope arithmetic, and the real saving is probably smaller, since editing time includes thinking as well as typing. The point stands: for a developer, going from a comfortable typing speed to a very fast one is a small gain compared with how you spend the other 95%.</p>
+<p>That is a different situation from jobs such as data entry or transcription, where typing is the work. See <a href="/blog/data-entry-typing-test">data entry typing tests</a> for that case.</p>
+
+<h2 id="where-typing-still-matters">Where typing still matters for programmers</h2>
+<p>The studies do not say typing is irrelevant. Three things are worth caring about. They are our reasoning, not findings from those studies:</p>
 <ul>
-<li><strong>Expression lag:</strong> if every idea waits on clumsy fingers, flow dies</li>
-<li><strong>Code review and docs:</strong> engineers write more English than they admit</li>
-<li><strong>Chat-heavy teams:</strong> Slack/Teams volume rewards clean speed</li>
-<li><strong>Live coding / interviews:</strong> nerves plus weak symbols look worse than they are</li>
-<li><strong>Refactors:</strong> renames and mechanical edits still go through your hands (even with tooling)</li>
-<li><strong>Pair programming:</strong> slow drivers frustrate sessions; inaccurate drivers worse</li>
+<li><strong>Accuracy on symbols.</strong> Code is dense with brackets, quotes, operators and punctuation, and a wrong character can break a program. Clean typing of symbols saves debugging time.</li>
+<li><strong>Not breaking your train of thought.</strong> If typing is automatic, you can keep your attention on the problem. The idea behind <a href="/blog/muscle-memory-and-touch-typing">muscle memory</a> is that practised movements need less attention.</li>
+<li><strong>Comfort over long sessions.</strong> Programmers sit and type for hours. A good desk setup matters more than a few extra WPM. See our <a href="/blog/fix-typing-posture-and-avoid-wrist-pain">posture and wrist pain guide</a>.</li>
 </ul>
-<p>Modern IDEs autocomplete aggressively. That reduces some keystrokes and increases the value of accurate navigation and symbol confidence when autocomplete is wrong or unavailable (whiteboards, remote pads, broken setups, plain vim over SSH, etc.).</p>
+<p>There is one more inference. In the Xia study, navigation took nearly a quarter of developers' time, far more than editing. Learning your editor's keyboard shortcuts for moving around code may therefore pay off more than raw typing speed. The studies did not test that, so treat it as a hypothesis worth trying.</p>
 
-<h2 id="not-bottleneck">When Typing Is Not the Bottleneck</h2>
-<p>If you already sit around 60–70+ clean WPM with solid symbols, more FreeTyper grinding may be lower ROI than:</p>
+<h2 id="practising-code-typing-on-freetyper">Practising code typing on FreeTyper</h2>
 <ul>
-<li>Better problem decomposition</li>
-<li>Editor mastery (multi-cursor, structural search, snippets)</li>
-<li>Reading and design skill</li>
-<li>Test discipline and debugging strategy</li>
-<li>Communication clarity in PRs</li>
+<li>The <a href="/">speed test</a> has a <strong>code</strong> text type made of programming snippets. Expect a lower WPM than on words or sentences, because the symbols sit far from the home row. Compare code runs only with other code runs.</li>
+<li><a href="/typing-practice">Typing practice</a> has a code category with five snippets: a React component, a Python function, a TypeScript interface, an SQL query and a CSS grid layout.</li>
+<li>The <a href="/typing-lessons">typing lessons</a> include a numbers and symbols lesson for the number row and common punctuation.</li>
+<li>The heatmap and weakest-keys list on the <a href="/typing-progress">progress page</a> show the physical keys, including the bracket, quote and punctuation keys, so you can see which of those you miss. Shifted symbols such as curly braces are not shown as separate keys.</li>
 </ul>
-<p>Typing is a multiplier on output you already know how to produce. It does not invent architecture. Train typing until it stops embarrassing your thinking speed — then invest elsewhere.</p>
+<p>With only five code snippets, you will see repeats. Use them as a warm-up for symbol accuracy, and keep most of your practice in real work.</p>
 
-<h2 id="ranges">Practical WPM Ranges for Developers</h2>
-<table>
-<thead><tr><th>Prose WPM (≈95%+ acc)</th><th>Developer experience (rough)</th></tr></thead>
-<tbody>
-<tr><td>&lt;35</td><td>Keyboard is often a visible bottleneck; lessons worth it</td></tr>
-<tr><td>35–50</td><td>Common hybrid zone; improvements feel large</td></tr>
-<tr><td>50–65</td><td>Solid for most engineering work if symbols are clean</td></tr>
-<tr><td>65–80</td><td>Comfortable / fast; diminishing returns begin for many</td></tr>
-<tr><td>80+</td><td>Great, not required; maintain accuracy and symbols</td></tr>
-</tbody>
-</table>
-<p>These are coaching bands, not hiring laws. Most coding interviews do not post a WPM minimum the way data entry roles do. They still notice extreme struggle.</p>
-<p>Always attach accuracy. 75 WPM at 90% is not “elite engineer hands.” See <a href="/blog/improve-typing-accuracy">typing accuracy test</a>.</p>
-
-<h2 id="prose-vs-code">Prose WPM vs Code Throughput</h2>
-<p>Prose speed tests measure standardized language speed. Code throughput also depends on:</p>
+<h2 id="what-not-to-do">What not to do</h2>
 <ul>
-<li>Symbol density</li>
-<li>Identifier length and casing styles</li>
-<li>How often you navigate vs insert</li>
-<li>Language (punctuation-heavy vs verbose)</li>
-<li>Tooling (LSP, snippets, copilot-class tools)</li>
-</ul>
-<p>A developer at 55 WPM prose with excellent symbol fluency can outperform a 75 WPM prose typist who hunts for every brace. Track both:</p>
-<ol>
-<li>Weekly prose average (fixed duration)</li>
-<li>Subjective “editor friction” score 1–5 after a real coding hour</li>
-<li>Optional: timed throwaway exercises typing syntax-heavy lines</li>
-</ol>
-<p>If prose rises but editor friction does not, train symbols and navigation — not only more dictionary words.</p>
-
-<h2 id="symbols">Symbols, Brackets, and the Real Dev Keyboard</h2>
-<p>For programmers, the “hard layer” is not optional DLC. Common high-frequency symbols:</p>
-<ul>
-<li><code>() [] {} &lt;&gt;</code></li>
-<li><code>; : = =&gt; -&gt;</code></li>
-<li><code>_</code> and camelCase transitions</li>
-<li><code>&amp; | ! ? * / \\</code></li>
-<li><code>" ' \`</code> depending on language</li>
-</ul>
-<p>Train them as families with no-peek rules, then transfer into real editor files. Full guide: <a href="/typing-lessons">type numbers and symbols without looking</a>.</p>
-<p>Numbers matter too: ports, versions, array indexes, feature flags, HTTP codes. Top-row fluency helps on laptops without a numpad.</p>
-
-<h2 id="accuracy">Accuracy for Coders (Bugs Are Expensive)</h2>
-<p>A wrong character in English is embarrassing. A wrong character in code can be a subtle bug, a failed deploy, or a security footgun. Accuracy culture for developers should be at least as strict as office typing — often stricter in symbol contexts.</p>
-<p>Practice implication: when test accuracy is under ~95%, fix that before speed intervals. When doing symbol drills, prefer slow correct over arcade mash. Games are fine later for pressure; form first. <a href="/typing-game-falling-words">Free typing games</a>, <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
-
-<h2 id="shortcuts">Shortcuts vs Raw WPM</h2>
-<p>Raw WPM is only one interface to the machine. High-leverage complementary skills:</p>
-<ul>
-<li>Jump by word/identifier, not only arrows</li>
-<li>Multi-cursor / column edits</li>
-<li>Structural expand/shrink selection</li>
-<li>Snippet expansion for boilerplate</li>
-<li>Fuzzy file and symbol search</li>
-<li>Terminal fluency</li>
-</ul>
-<p>A 50 WPM developer with excellent navigation can beat a 80 WPM developer who mouse-drives everything. Train both tracks: timed drills for keystrokes, deliberate editor practice for navigation. Do not use shortcuts as an excuse to never learn touch typing — weak fundamentals still show up in chat, docs, and interviews.</p>
-
-<h2 id="train">How Programmers Should Train here</h2>
-<table>
-<thead><tr><th>Goal</th><th>Focus</th></tr></thead>
-<tbody>
-<tr><td>Baseline prose speed/accuracy</td><td>Homepage <a href="/">speed test</a> weekly</td></tr>
-<tr><td>Finger map / peeking</td><td><a href="/typing-lessons">Lessons</a> + <a href="/keyboard-guide">keyboard guide</a></td></tr>
-<tr><td>Volume and weak keys</td><td><a href="/typing-practice">Practice</a></td></tr>
-<tr><td>Symbols/digits</td><td>Targeted practice + real editor transfer</td></tr>
-<tr><td>Pressure</td><td>Short <a href="/typing-game-word-attack">games</a> after clean form</td></tr>
-<tr><td>Trends</td><td><a href="/typing-progress">Progress</a></td></tr>
-</tbody>
-</table>
-<p>Recommended split for busy engineers (15–20 min):</p>
-<ol>
-<li>2 min warm-up</li>
-<li>8 min weak keys or symbol family</li>
-<li>5 min mixed practice</li>
-<li>Optional 60s–3 min test a few times per week</li>
-<li>3 min transfer: type real code lines or a PR paragraph</li>
-</ol>
-<p>Daily practice philosophy: <a href="/typing-practice">typing practice exercises</a>. Touch typing core: <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
-
-<h2 id="plan">A 4-Week Coder Typing Plan</h2>
-<table>
-<thead><tr><th>Week</th><th>Focus</th><th>Success metric</th></tr></thead>
-<tbody>
-<tr><td>1</td><td>Honest baseline + accuracy floor + peeking honesty</td><td>Know true WPM/acc; eyes-up improving</td></tr>
-<tr><td>2</td><td>Weak letter keys + digit row</td><td>Fewer hesitations; digit peeks down</td></tr>
-<tr><td>3</td><td>Symbol families used in your stack</td><td>Brackets/equals feel less visual</td></tr>
-<tr><td>4</td><td>Integration: mixed drills + real editor drills</td><td>Editor friction score improved; accuracy holds</td></tr>
-</tbody>
-</table>
-<p>If week 1 accuracy is under 92%, stay on accuracy and lessons longer. Speed pride is a trap — same as any other role. Bad habits list: <a href="/blog/10-bad-typing-habits">10 bad typing habits</a>.</p>
-
-<h2 id="roles">By Role: Frontend, Backend, Data, Students</h2>
-<p><strong>Frontend:</strong> JSX/HTML-like punctuation and attributes mean frequent quotes, angles, braces. Train <code>&lt;&gt;/{}/()</code> clusters.</p>
-<p><strong>Backend:</strong> varies by language; often braces or significant whitespace plus lots of identifiers. Still need solid <code>()</code> and <code>=</code>.</p>
-<p><strong>Data / notebooks:</strong> mixed prose analysis + code cells; numbers and underscores common. Digit fluency pays.</p>
-<p><strong>CS students:</strong> typing speed will not replace algorithms study, but lab exams and timed assignments punish hunt-and-peck. Build the map early with the <a href="/blog/touch-typing-for-beginners">30-day plan</a>.</p>
-<p><strong>DevOps / platform:</strong> YAML, flags, paths, and CLI strings reward symbol comfort and accuracy under fatigue.</p>
-
-<h2 id="interviews">Live Coding and Take-Homes</h2>
-<p>In live interviews, nerves reduce effective WPM. Prep:</p>
-<ul>
-<li>Practice coding on the same keyboard you will use</li>
-<li>Do a few timed speed tests so timers feel familiar</li>
-<li>Warm up 5 minutes before the call (easy practice + one symbol family)</li>
-<li>Prefer correct code over theatrical speed</li>
-<li>Learn to narrate while typing slowly — communication &gt; WPM flex</li>
-</ul>
-<p>Take-homes are less about WPM and more about clarity. Typing still helps you iterate faster before the deadline.</p>
-
-<h2 id="tools">Autocomplete, AI Assist, and “Do I Still Need to Type?”</h2>
-<p>Assistive coding tools reduce some typing and create new editing patterns (accept, reject, partial accept, rewrite). You still need:</p>
-<ul>
-<li>Fast accurate edits when suggestions are wrong</li>
-<li>Symbol-precise surgery inside generated blocks</li>
-<li>Chat and doc speed for human collaboration</li>
-<li>The ability to work when tools are offline or disallowed</li>
-</ul>
-<p>AI does not make hunt-and-peck a strategy. It changes the mix of keystrokes. Fundamentals remain leverage.</p>
-
-<h2 id="ergonomics">Ergonomics for People Who Type All Day</h2>
-<p>Developers can accumulate strain. Light key force, neutral wrists, breaks, and pain-as-stop-signal matter more than another 5 WPM. Longer endurance tests will expose tension; fix setup before grinding through pain. Long-duration measurement: <a href="/">5 minute typing test</a>.</p>
-
-<h2 id="myths">Myths Programmers Tell Themselves</h2>
-<ul>
-<li><strong>“Real programmers don’t care about WPM.”</strong> Many excellent ones type comfortably; indifference is not a virtue if you are blocked.</li>
-<li><strong>“Autocomplete means typing skill is dead.”</strong> Editing skill is not dead.</li>
-<li><strong>“I’ll just use the mouse more.”</strong> That usually slows navigation and precision.</li>
-<li><strong>“I only need vim motions, not touch typing.”</strong> Motions help; letter/symbol maps still matter.</li>
-<li><strong>“Games will make me a faster coder.”</strong> Games help pressure after form; not a substitute for symbols and accuracy.</li>
-<li><strong>“I’m too senior to relearn home row.”</strong> Seniors bleed time in docs and chat too. Adult guide: <a href="/blog/touch-typing-for-beginners">touch typing as an adult</a>.</li>
+<li><strong>Do not chase a WPM number for its own sake.</strong> No evidence supports a particular target for programmers.</li>
+<li><strong>Do not trade accuracy for speed.</strong> See <a href="/blog/improve-typing-accuracy">how to improve typing accuracy</a>.</li>
+<li><strong>Do not skip the basics.</strong> If you still look at the keyboard, learning to touch type is a one-time investment that makes every later hour easier. Start with <a href="/blog/touch-typing-for-beginners">touch typing for beginners</a>.</li>
 </ul>
 
-<h2 id="measure">What to Log as a Developer</h2>
+<h2 id="limits">Limits of this guide</h2>
 <ul>
-<li>Weekly average WPM + accuracy (same duration)</li>
-<li>Peeking self-score 1–5</li>
-<li>Symbol confidence 1–5 for your top five symbols</li>
-<li>Editor friction 1–5 after a real coding block</li>
-<li>Optional: interview warm-up routine checklist</li>
+<li>Both studies measured activity by observing computer use, so "editing" is an inferred category and the exact percentages should be read as approximate.</li>
+<li>The first study used a single IDE and a small group of developers. The second covered 79 developers on 7 projects, which is larger but still a limited sample of the industry.</li>
+<li>Neither study measured typing speed, so nothing here tells you how fast programmers type.</li>
 </ul>
-<p>If prose WPM is high and editor friction is high, stop chasing prose PRs and train the hard layer.</p>
 
-<h2 id="faq">Typing Speed for Programmers FAQ</h2>
-<h3>How fast should a programmer type?</h3>
-<p>Most developers are in good shape around 50–70+ WPM with 95%+ accuracy and solid symbol fluency. Higher is fine; not mandatory for great engineering.</p>
-<h3>Is 40 WPM too slow for coding?</h3>
-<p>It can work, but many people feel blocked. Lessons and practice often unlock large quality-of-life gains.</p>
-<h3>Is 100 WPM necessary?</h3>
-<p>No. Diminishing returns are real. Accuracy, symbols, and thinking dominate past a comfortable band.</p>
-<h3>Do coding jobs test WPM?</h3>
-<p>Rarely as a formal gate compared with data entry. Live coding still exposes weak typing under stress.</p>
-<h3>Should coders practice here or only in the IDE?</h3>
-<p>Both. Timed practice builds raw map, accuracy, and measurement. IDE transfer makes it useful.</p>
-<h3>What matters more: speed or accuracy?</h3>
-<p>Accuracy first — wrong characters in code are costly. Then speed on a clean base.</p>
-<h3>How do I get faster at typing code symbols?</h3>
-<p>Family drills, no-peek blocks, real-file transfer, high frequency for symbols you actually use.</p>
-<h3>Can vim/Emacs replace touch typing practice?</h3>
-<p>They complement it. They do not install a finger map by magic.</p>
-<h3>How often should developers practice typing?</h3>
-<p>10–20 minutes, 3–5 days a week is enough for most employed engineers until friction drops.</p>
-<h3>Do AI coding tools reduce the need for speed?</h3>
-<p>They change keystroke mix; they do not eliminate the need for accurate editing and communication typing.</p>
-<h3>What mode is best for coders?</h3>
-<p>Practice + weak keys + weekly tests; lessons if map is weak; games only after accuracy is solid.</p>
-<h3>Should I learn numpad as a programmer?</h3>
-<p>Optional. Top-row digits matter more for mixed code and laptop life.</p>
-<h3>How do I warm up before a live coding interview?</h3>
-<p>5 minutes easy practice, one symbol family, light stretch, then start the interview calm — not after ten rage tests.</p>
-<h3>What should I do today?</h3>
-<p>Baseline speed test, list your five worst symbols, drill them for ten minutes, transfer into a throwaway code file.</p>
-
-<h2 id="team">Teams and Pairing Norms</h2>
-<p>On a team, do not weaponize WPM against colleagues. Optimize for clear communication and sustainable pace. If you drive in a pair session, accuracy and narration beat flexing. If you navigate, practice verbal precision so the driver is not guessing.</p>
-
-<h2 id="career">Career Stage Notes</h2>
-<p><strong>Bootcamp / junior:</strong> invest early; compounding is huge across labs and applications.</p>
-<p><strong>Mid-level:</strong> symbols + docs + chat volume; light practice maintenance prevents hybrid relapse under deadline stress.</p>
-<p><strong>Staff / leadership:</strong> more writing, RFCs, and messages; prose accuracy and speed may matter more than raw code WPM — still not an excuse for hunt-and-peck pain.</p>
-
-<h2 id="sample-drills">Sample Coder-Specific Drills</h2>
-<ol>
-<li><strong>Bracket ladder:</strong> type lines of nested <code>()[]{}</code> slowly eyes-up</li>
-<li><strong>Arrow day:</strong> <code>=&gt;</code> <code>-&gt;</code> patterns in your languages</li>
-<li><strong>Snake/camel:</strong> switch casing styles without looking</li>
-<li><strong>Path day:</strong> <code>/usr/local</code>, <code>src/components</code>, Windows-style paths if relevant</li>
-<li><strong>JSON-ish:</strong> quotes, colons, commas carefully</li>
-<li><strong>PR prose:</strong> 10-minute + immediately write a real PR summary paragraph</li>
-</ol>
-
-<h2 id="plateau">When Your Prose WPM Is Fine but Coding Feels Slow</h2>
-<p>Diagnosis checklist:</p>
-<ul>
-<li>Symbols still visual?</li>
-<li>Mouse over-navigation?</li>
-<li>Autocomplete over-trust then slow repair?</li>
-<li>Fatigue/tension late day?</li>
-<li>Thinking time mislabeled as “typing slowness”?</li>
+<h2 id="sources">Sources</h2>
+<ul class="article-sources">
+<li>Minelli R, Mocci A, Lanza M. <a href="https://robertominelli.com/assets/downloads/publications/Mine2015b.pdf" rel="noopener" target="_blank">I Know What You Did Last Summer: An Investigation of How Developers Spend Their Time</a>. IEEE International Conference on Program Comprehension, 2015.</li>
+<li>Xia X, Bao L, Lo D, Xing Z, Hassan AE, Li S. <a href="https://baolingfeng.github.io/papers/tsecomprehension.pdf" rel="noopener" target="_blank">Measuring Program Comprehension: A Large-Scale Field Study with Professionals</a>. IEEE Transactions on Software Engineering, 2018.</li>
+<li>The 2.5% estimate, the reasons typing still matters and the editor-shortcut hypothesis are our own reasoning. Descriptions of the FreeTyper tools come from the <a href="/">speed test</a>, <a href="/typing-practice">practice</a> and <a href="/typing-progress">progress</a> guides.</li>
 </ul>
-<p>Only some of those are problems. Be precise so you do not grind the wrong skill.</p>
-
-<h2 id="languages">Language Flavor: Does Syntax Change the Target?</h2>
-<p>Punctuation-dense languages and formats (C-family braces, JS/TS, JSON, regex-heavy work) punish weak symbols harder than some teaching languages with less ceremony. That does not change the prose target band much — it changes how much of your weekly practice should be symbol transfer. If your day is YAML and Python, you still need solid digits and punctuation, just with a different villain list than a C++ systems week.</p>
-<p>Build your “most wanted” symbol list from the last PR you opened, not from a generic internet chart. Ten minutes on the symbols you actually mistype beats an hour on keys you never hit.</p>
-
-<h2 id="remote-dev">Remote Engineers and Chat Load</h2>
-<p>Remote work increases typed communication: standups in text, design threads, incident channels. Your “coding WPM” might be fine while your “human WPM” is the daily bottleneck. prose practice directly helps that half of the job. Treat chat accuracy seriously too — ambiguous typos in incident response are not cute.</p>
-<p>A simple remote habit: after each session, write the actual update you owe your team instead of a synthetic sentence. Transfer loves real stakes.</p>
-
-<h2 id="open-source">Open Source and Public Typing</h2>
-<p>Public PR descriptions, issue triage, and community answers are writing products. Maintainers with weak typing still succeed, but friction adds up across volume. If you contribute seriously, a comfortable baseline saves hours per year of slow issue hygiene — unglamorous and real.</p>
-
-<h2 id="metrics-example">Example Week Log (Developer)</h2>
-<p>Mon: 3×60s avg 58 WPM / 96%; editor friction 3/5; drilled <code>{}</code> 8 min.</p>
-<p>Wed: practice weak keys 15 min; no test; symbol confidence <code>=&gt;</code> up.</p>
-<p>Fri: 3-min test 55 WPM / 97%; PR prose transfer 10 min; friction 2/5.</p>
-<p>That week is a win even without a viral WPM jump: accuracy held, friction dropped, symbols improved. Programmers who only chase homepage hero numbers miss those signals.</p>
-
-<h2 id="overfit">Avoid Overfitting</h2>
-<p>It is possible to become great at one site’s word list and still clumsy in your monorepo. Prevent overfitting:</p>
-<ul>
-<li>Always transfer to real editor text</li>
-<li>Vary practice categories when available</li>
-<li>Include identifiers that look like your codebase (fake ones)</li>
-<li>Keep one longer duration monthly so endurance is real</li>
-<li>Retest on a different keyboard occasionally if you travel</li>
-</ul>
-<p>is the gym. The job is the sport.</p>
-
-<h2 id="pair-etiquette">If You Are the Slow Typist in a Pair</h2>
-<p>Say so early without self-contempt: “I may type a bit slow — jump in with suggestions.” Optimize for correct thought. Between sessions, run the 4-week plan privately. Do not apologize every keystroke; improve the skill offline. If you are the fast typist, do not hijack the keyboard for ego reasons — offer navigation help and patience.</p>
-
-<h2 id="hiring-managers">Notes for Hiring Managers</h2>
-<p>Do not use raw WPM as a proxy for engineering ability. If you include a timed coding tool, you are partly sampling typing under stress — interpret generously for candidates with strong reasoning and slightly slower hands, especially if the environment is unfamiliar. Prefer evaluating problem solving, communication, and code quality. Candidates: still prepare typing so the sample is not dominated by keyboard panic.</p>
-
-<h2 id="science-link">Why Short Daily Practice Beats Weekend Heroes</h2>
-<p>Procedural skill likes spacing. Engineers who binge on Sunday and ignore it all week reinstall less than peers who protect twelve minutes after lunch. Muscle memory primer: <a href="/blog/muscle-memory-and-touch-typing">muscle memory and touch typing</a>. Consistency is not a soft skill here — it is the mechanism.</p>
-
-<h2 id="minimal">The Minimalist Engineer Program (Forever)</h2>
-<ul>
-<li>Once weekly: average (same duration), log WPM + accuracy</li>
-<li>Twice weekly: 10–15 min weak keys or symbols</li>
-<li>Always: transfer a real PR/chat/code snippet after drills when possible</li>
-<li>Stop grinding pure speed when you hold ~60+ clean WPM and low editor friction</li>
-<li>Restart focused work if hybrid peeking returns under deadline season</li>
-</ul>
-<p>That maintenance plan is enough for most careers once the foundation exists.</p>
-
-<h2 id="speed-after">How to Add Speed After Symbols Are Clean</h2>
-<p>Once accuracy and symbols behave, controlled speed intervals work the same as for anyone else: short bursts above comfort pace, clean recovery, stop if accuracy breaks. Do not skip straight to games-as-diet. Technique library: <a href="/blog/how-to-type-faster">how to type faster</a>. Measurement honesty: <a href="/">typing speed test guide</a>. The coder-specific twist is always re-checking editor friction after a speed-focused week — if only the homepage moved, you trained the gym, not the job.</p>
-
-<h2 id="closing">Fast Enough That Ideas Do Not Queue</h2>
-<p>You do not need world-record WPM. You need typing that does not block thought: accuracy first, symbols you can hit without staring, often somewhere in the 50–70+ WPM band on a calm test, plus real editor skill. Train the map, harden brackets and equals, measure once a week, and stop obsessing when the keyboard is no longer the problem. Spend the leftover attention on design and debugging.</p>
-<p>Baseline on the <a href="/">speed test</a> if you want a number. Drill weak keys and symbols in <a href="/typing-practice">practice</a>. For a deeper symbol plan, see <a href="/typing-lessons">numbers and symbols</a>. For general speed technique, see <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
+<p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
 };
 
