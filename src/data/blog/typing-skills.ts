@@ -54,13 +54,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: 'muscle-memory-and-touch-typing',
-    title: 'The Science Behind Muscle Memory and Touch Typing',
-    excerpt:
-      'How muscle memory really works for typing — motor learning stages, chunking, accuracy, why looking blocks skill, and how to practice on FreeTyper the smart way.',
+    title: 'Muscle Memory and Touch Typing: What the Science Says',
+    excerpt: 'What muscle memory really is, what automatic typing looks like in the data, whether sleep helps you learn a motor skill (and why the evidence is debated), and what the science cannot tell you.',
     date: '2026-08-07',
+    updated: '2026-10-04',
     author: 'Ashiqur Rahman',
     category: 'Touch Typing',
-    readTime: '18 min',
+    readTime: '7 min',
   },
   {
     slug: '10-bad-typing-habits',

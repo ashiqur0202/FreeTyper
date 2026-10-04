@@ -71,290 +71,53 @@ export const touchTypingArticles: Record<string, string> = {
 <p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
 
-  'muscle-memory-and-touch-typing': `<p><strong>Muscle memory</strong> is everyday language for procedural skill: your nervous system learns a movement well enough that it runs with less conscious micromanagement. Touch typing is a clean adult example. First every key is a decision. Later, words leave your fingers while attention stays on meaning.</p>
+  'muscle-memory-and-touch-typing': `<p>"Muscle memory" is a popular name for something that happens in the brain, not the muscles. Repeating a movement over time turns it into a stored, automatic skill, and typing is one of the standard examples. That is why touch typing feels effortful at first and automatic later. Research on motor learning suggests that sleep helps lock such skills in, although how large that effect is remains debated. For typing in particular, there is no rulebook of the form "practice X minutes spaced Y hours apart", and this guide says so where the evidence runs out.</p>
 
-<p>This is not a lab paper. It is a plain-language translation of motor learning for people who want their hands to own the keyboard: why slow correct practice beats frantic speed, why you get worse before better, why peeking blocks the map, and how sleep and spacing help.</p>
+<h2 id="what-muscle-memory-means">What "muscle memory" actually means</h2>
+<p>Wikipedia's <a href="https://en.wikipedia.org/wiki/Muscle_memory" rel="noopener" target="_blank">Muscle memory</a> article describes it as a form of procedural memory in which a specific motor task is consolidated into memory through repetition, and notes that the term is used synonymously with motor learning. It lists touch typing among its examples. It also stresses that the mechanism is neurological rather than muscular, so "muscle memory" is a colloquial label for motor learning and procedural memory.</p>
+<p>The article adds that when a movement is repeated over time, the brain forms a long-term memory for the task, which reduces the amount of attention the task needs. For typing, that is the point: once the keys are automatic, your attention is free for the text.</p>
 
-<p>Baseline on the <a href="/">speed test</a> if you want a number, then train with <a href="/typing-lessons">lessons</a> and <a href="/typing-practice">practice</a>. Accuracy first. Eyes up.</p>
+<h2 id="what-automatic-typing-looks-like">What automatic typing looks like in the data</h2>
+<p>We cannot see anyone's memory directly, but the large typing study <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018) shows what fluent typing looks like from the outside. Fast typists pressed keys at a very steady rhythm, with an average gap of about 120 ms between keystrokes and a variation of only 11 ms. Slow typists averaged over 480 ms between keystrokes, with variation above 120 ms. Reading that as a sign of automatic, well-practised movement is our interpretation, since the study does not measure memory, but it fits the picture. The University of Cambridge's <a href="https://www.cam.ac.uk/research/news/what-makes-a-faster-typist" rel="noopener" target="_blank">write-up of the study</a> also quotes the researchers advising people to learn to type without looking at their fingers, because the motor system then picks up fast sequences for common letter combinations by itself.</p>
 
-<h2 id="toc">Table of Contents</h2>
-<ol>
-<li><a href="#what-mm">What “Muscle Memory” Actually Means</a></li>
-<li><a href="#brain">Brain and Body: Who Learns the Keystrokes?</a></li>
-<li><a href="#stages">Stages of Motor Learning Applied to Typing</a></li>
-<li><a href="#chunks">Chunking: From Letters to Words to Flow</a></li>
-<li><a href="#error">Why Errors Matter More Than You Think</a></li>
-<li><a href="#speed-accuracy">The Speed–Accuracy Tradeoff</a></li>
-<li><a href="#feedback">Feedback, Vision, and Why Looking Blocks Learning</a></li>
-<li><a href="#practice-types">Deliberate Practice vs Mindless Volume</a></li>
-<li><a href="#spacing">Spacing, Sleep, and Why Cramming Fails</a></li>
-<li><a href="#interference">Interference: Old Habits Fighting New Maps</a></li>
-<li><a href="#variability">Variability, Contextual Interference, and Transfer</a></li>
-<li><a href="#plateau">Plateaus, Automatization, and the Awkward Middle</a></li>
-<li><a href="#fatigue">Fatigue, Tension, and Late-Test Collapse</a></li>
-<li><a href="#apply">How to Practice on FreeTyper Using the Science</a></li>
-<li><a href="#myths">Science Myths About Typing Skill</a></li>
-<li><a href="#faq">Muscle Memory and Touch Typing FAQ</a></li>
-</ol>
-
-<h2 id="what-mm">What “Muscle Memory” Actually Means</h2>
-<p>Muscles do not store your QWERTY layout like a USB drive. The phrase <em>muscle memory</em> is useful slang for <strong>procedural memory</strong>: skilled movement sequences retained in motor networks so they can be executed with reduced step-by-step attention.</p>
-<p>When people say “my fingers remember,” they mean:</p>
+<h2 id="does-sleep-help">Does sleep help you learn a skill like typing?</h2>
+<p>This is the part of the science people most often exaggerate, so here is what the studies actually report.</p>
 <ul>
-<li>A stable mapping from intention (“type the”) to a sequence of finger movements</li>
-<li>Timing and force patterns that feel automatic</li>
-<li>Error detection that happens fast enough to correct without a full conscious reset every time</li>
+<li><strong>The encouraging result.</strong> In a 2002 study in <em>Neuron</em>, Walker and colleagues reported that a night of sleep produced a 20% increase in motor speed without any loss of accuracy, while an equal stretch of time spent awake gave no significant benefit. The improvement also correlated with the amount of stage 2 non-REM sleep. The same research group's 2003 paper used a finger-tapping task to argue for several distinct stages of motor memory processing after learning.</li>
+<li><strong>The complication.</strong> In 2010, Brawn and colleagues pointed out that later work had found the sleep-related improvement disappears when the task is modified to reduce the task-related inhibition that builds up during a training session. Their own results showed that when training starts in the morning, performance gets worse over the waking day and recovers after sleep, while with evening training it stays stable across both sleep and the following day. They concluded that existing theories were not enough to explain all of the pattern.</li>
+<li><strong>The overall picture.</strong> A broad 2004 review by Walker and Stickgold found a substantial body of evidence that sleep contributes to memory, and also included a section on unanswered questions and arguments against.</li>
 </ul>
-<p>Touch typing is procedural skill plus spatial mapping. You are not only strengthening finger muscles. You are teaching the nervous system <em>where</em> keys live relative to a home position and <em>which</em> effector (finger) owns each target.</p>
-<p>That is why random mashing does not create good muscle memory. Practice quality writes the map. Practice garbage writes garbage — fluently.</p>
+<p>Reading these carefully: sleep probably helps your brain consolidate a new motor skill, but the size and exact pattern of the effect are still being argued about. All of these were laboratory tasks, not typing, so please do not read "20%" as a promise about your WPM.</p>
 
-<h2 id="brain">Brain and Body: Who Learns the Keystrokes?</h2>
-<p>Modern motor learning research describes skill as a network problem. Simplified for typists:</p>
+<h2 id="what-this-means-for-practice">What this means for how you practice</h2>
+<p>None of the studies above tested typing practice schedules, so the following are our suggestions, reasoned from the findings:</p>
 <ul>
-<li><strong>Cortex</strong> — early learning is attention-heavy: “which finger? which key?” Working memory is busy.</li>
-<li><strong>Basal ganglia and related circuits</strong> — help select and chunk action sequences with practice (habits and skilled routines).</li>
-<li><strong>Cerebellum</strong> — heavily involved in timing, coordination, and refining predictions of movement outcomes (“I meant R, that reach felt off”).</li>
-<li><strong>Spinal and peripheral loops</strong> — contribute to rapid corrections and force control; still not “the map lives in the forearm muscle belly alone.”</li>
-</ul>
-<p>You do not need to memorize anatomy to type better. You need the implication: early touch typing feels cognitively expensive because it <em>is</em>. Later it feels easy because control has shifted toward more automatic routines. That shift is earned by correct, repeated practice — not by wishing for talent.</p>
-<p>Also implied: sleep, attention, and fatigue change learning rates. A destroyed brain after a 12-hour workday is a bad sole training window if every session looks like that.</p>
-
-<h2 id="stages">Stages of Motor Learning Applied to Typing</h2>
-<p>A classic way to talk about skill learning (Fitts &amp; Posner style, still useful pedagogically) maps cleanly onto typing:</p>
-<table>
-<thead><tr><th>Stage</th><th>What it feels like typing</th><th>What to train</th></tr></thead>
-<tbody>
-<tr><td>Cognitive</td><td>Thinking about every key; high attention; lots of errors</td><td>Home row, clear finger rules, slow accuracy</td></tr>
-<tr><td>Associative</td><td>Fewer decisions; still effortful; refining weak keys</td><td>Layered lessons, weak-key drills, no-peek blocks</td></tr>
-<tr><td>Autonomous</td><td>Words flow; attention free for meaning; eyes on screen</td><td>Volume, transfer to real writing, endurance, light speed</td></tr>
-</tbody>
-</table>
-<p>Beginners try to force autonomous-stage speed while still in the cognitive stage. That mismatch is why FreeTyper lessons exist: they keep you in the stage-appropriate drill instead of a leaderboard fantasy.</p>
-<p>Practical guides for those stages: <a href="/blog/touch-typing-for-beginners">touch typing guide</a>, <a href="/blog/touch-typing-for-beginners">30-day plan</a>.</p>
-
-<h2 id="chunks">Chunking: From Letters to Words to Flow</h2>
-<p>Motor skill does not stay as “26 separate letter programs” forever. With practice, the system <strong>chunks</strong> sequences:</p>
-<ul>
-<li>Early: t-h-e as three decisions</li>
-<li>Later: <em>the</em> as a unit</li>
-<li>Later still: common phrases and patterns with less internal segmentation</li>
-</ul>
-<p>This is one reason common-word practice and real language matter after the finger map exists. Pure random letters can train reaches; natural text trains the chunks you actually use in email and docs.</p>
-<p>Implication for FreeTyper:</p>
-<ul>
-<li>Lessons build the elemental map (critical early)</li>
-<li>Practice with words/sentences builds chunks and transfer</li>
-<li>Games add pressure chunks later — after the map is stable</li>
-</ul>
-<p>If you only ever type random chaos, you may under-train the word-level automaticity that real work needs. If you only ever type the same three sentences, you may overfit. Mix with intention.</p>
-
-<h2 id="error">Why Errors Matter More Than You Think</h2>
-<p>Errors are not only “bad scores.” In motor learning, what you repeat is what you stabilize. If you repeatedly hit T with the wrong finger at high speed, you are rehearsing the wrong program.</p>
-<p>That does not mean you must be perfect every minute. It means:</p>
-<ul>
-<li>Early learning should bias toward <strong>correct pattern</strong> at controlled speed</li>
-<li>High error rates at max speed can entrench junk</li>
-<li>Feedback should help you notice <em>which</em> errors repeat (weak keys)</li>
-</ul>
-<p> accuracy is not a moral grade. It is a signal of pattern quality. When accuracy sits under ~95% on honest runs, the scientific priority is pattern cleanup, not another adrenaline PR. See <a href="/blog/improve-typing-accuracy">typing accuracy test</a> and <a href="/blog/improve-typing-accuracy">improve typing accuracy</a>.</p>
-<p>Backspace culture can hide this. Fixing a word after the fact is not the same as having produced the correct motor sequence. Some scoring systems still care; real work always cares via rework time.</p>
-
-<h2 id="speed-accuracy">The Speed–Accuracy Tradeoff</h2>
-<p>Psychology has spent decades on a blunt truth: when you push speed, accuracy tends to fall unless skill level supports both. Typists rediscover this every time they chase WPM and watch the accuracy column collapse.</p>
-<p>Training implication:</p>
-<ol>
-<li>Find a pace where the correct map is available (high accuracy).</li>
-<li>Stabilize it with reps.</li>
-<li>Nudge speed in small layers.</li>
-<li>If accuracy breaks, you outran the map — step back.</li>
-</ol>
-<p>This is why “just type faster every day” fails. Speed without a stable program is noise. Clean intermediate WPM often produces more usable output than messy “fast” WPM — which matches what employers care about when they use net scoring. Context: <a href="/">typing speed test guide</a>.</p>
-
-<h2 id="feedback">Feedback, Vision, and Why Looking Blocks Learning</h2>
-<p>Feedback trains the system. Touch typing wants <strong>kinesthetic and spatial</strong> feedback relative to home row — how the reach felt — not constant visual confirmation of keycaps.</p>
-<p>When you look at the keys:</p>
-<ul>
-<li>You offload the spatial map onto vision</li>
-<li>You reduce pressure on the motor system to own locations</li>
-<li>You reinforce a dependency that will demand more looking under stress</li>
-</ul>
-<p>Occasional total-loss glances happen. Chronic micro-glancing is different: it is continuous reliance on the wrong feedback channel for the skill you claim to want.</p>
-<p>on-screen cues (text, live keyboard hints) can guide without requiring you to stare at the physical keycaps. Use screen feedback; wean off physical-key visual search. The <a href="/keyboard-guide">keyboard guide</a> helps you understand zones; lessons make you execute them eyes-up.</p>
-<p>Science-flavored rule of thumb: <strong>the feedback you depend on becomes the feedback you need.</strong> Depend on keycaps, need keycaps. Depend on home-row feel and screen text, need those instead.</p>
-
-<h2 id="practice-types">Deliberate Practice vs Mindless Volume</h2>
-<p>Not all repetition is equal. Deliberate practice (as popularized in skill research discussions) roughly means:</p>
-<ul>
-<li>A clear goal (e.g., “no peek, home row 98% slow”)</li>
-<li>Focus during the attempt</li>
-<li>Feedback (accuracy, weak keys, feel)</li>
-<li>Repetition of the hard part, not only the comfortable part</li>
-<li>Progressive difficulty</li>
-</ul>
-<p>Mindless volume looks like:</p>
-<ul>
-<li>Restarting tests for dopamine</li>
-<li>Only playing games</li>
-<li>Typing while half-watching a video with no accuracy target</li>
-<li>Repeating what is already easy</li>
-</ul>
-<p>Adults often log “I practiced an hour” when they doom-tested for an hour. Motor learning cares what pattern got rehearsed. structure helps: lessons for map, practice for weak keys, tests for measurement, games for optional pressure after form exists.</p>
-
-<h2 id="spacing">Spacing, Sleep, and Why Cramming Fails</h2>
-<p>Distributed practice generally beats massed cramming for durable skill. Fifteen minutes most days outperforms a single Sunday two-hour guilt spiral for touch typing the same way it does for many motor skills.</p>
-<p>Sleep matters because memory consolidation is not only a classroom slogan. Skill performance often looks better after rest than after an exhausted all-nighter of drills. Practical translation:</p>
-<ul>
-<li>Prefer weekday streaks over heroic weekends alone</li>
-<li>Do not judge a rebuild solely on a late-night test after a brutal day</li>
-<li>If you can, place hard learning earlier when attention is available</li>
-<li>Protect sleep if you care about learning rate — unglamorous, effective</li>
-</ul>
-<p>Cramming before a hiring test can still raise familiarity with timers. It is a weak substitute for weeks of map building. Assessment prep guides: <a href="/">5 minute typing test</a>, <a href="/">free typing test</a>.</p>
-
-<h2 id="interference">Interference: Old Habits Fighting New Maps</h2>
-<p>Adults already have a typing program — often hybrid hunt-and-peck. When you introduce touch typing, two programs compete. That competition is why the awkward middle feels like betrayal.</p>
-<p>This is related to interference in learning: old responses activate under stress, speed pressure, or fatigue. You will peek when rushed. You will return to two-finger habits when accuracy dips.</p>
-<p>Countermeasures that match the science:</p>
-<ul>
-<li>Slow enough that the new map can win</li>
-<li>High awareness early (cognitive stage is allowed)</li>
-<li>Frequent short no-peek blocks so the new program gets clean reps</li>
-<li>Avoid max-speed testing as your only practice while rebuilding</li>
-<li>Expect regression under stress; retrain composure separately later</li>
-</ul>
-<p>Adult-specific framing: <a href="/blog/touch-typing-for-beginners">how to learn touch typing as an adult</a>.</p>
-
-<h2 id="variability">Variability, Contextual Interference, and Transfer</h2>
-<p>Skills need to transfer out of the training context. If you only ever type one lesson line, you may look skilled there and fall apart in email.</p>
-<p>Some variability helps transfer:</p>
-<ul>
-<li>Different words and sentence structures</li>
-<li>Different durations (60s vs 3–5 min)</li>
-<li>Real writing after sessions</li>
-<li>Later: numbers/symbols and specialty categories</li>
-</ul>
-<p>Too much chaos too early hurts. Early cognitive stage needs constrained drills (home row). Later associative/autonomous stages benefit from varied practice so the skill generalizes.</p>
-<p>Order that respects learning:</p>
-<ol>
-<li>Constrained correct map (lessons)</li>
-<li>Controlled variety (practice)</li>
-<li>Real contexts (email, docs)</li>
-<li>Pressure contexts (gamesers, longer tests)</li>
-</ol>
-<p>Skip to pressure first and you train panic with the old habit.</p>
-
-<h2 id="plateau">Plateaus, Automatization, and the Awkward Middle</h2>
-<p>Performance curves are not straight lines. You may improve, flatten, dip during technique change, then rise. Plateaus can mean:</p>
-<ul>
-<li>The easy gains are done; weak keys need targeted work</li>
-<li>You automated a mediocre pattern (fast wrong)</li>
-<li>You are only measuring noise (different durations, different fatigue)</li>
-<li>You are in restructuring (temporary dip while a better program forms)</li>
-</ul>
-<p>Automatization is a double-edged sword. Automatic good form is the goal. Automatic peeking and mashing is the trap. That is why accuracy and eyes-up checks matter even after you “feel fine.”</p>
-<p>When stuck, change the constraint for a week: weak keys, slower accuracy cap, longer duration test, or transfer writing — not ten new websites.</p>
-
-<h2 id="fatigue">Fatigue, Tension, and Late-Test Collapse</h2>
-<p>Five-minute scores often fall below one-minute scores. Part of that is statistics and adrenaline; part is fatigue and attention. Motor output degrades when:</p>
-<ul>
-<li>Key force is excessive (muscle fatigue)</li>
-<li>Posture collapses (shoulders up, wrists bent)</li>
-<li>Cognitive monitoring drifts</li>
-<li>Error recovery becomes emotional and costly</li>
-</ul>
-<p>Light keystrokes, posture resets, and progressive duration training are not wellness fluff — they are performance variables. If your science-minded goal is “true sustainable WPM,” longer tests are the better instrument than a single adrenaline minute. Comparison reading: <a href="/">3 vs 5 minute tests</a>, <a href="/">1 minute tests</a>.</p>
-
-<h2 id="apply">How to Practice on Using the Science</h2>
-<table>
-<thead><tr><th>Science idea</th><th> action</th></tr></thead>
-<tbody>
-<tr><td>Correct map before speed</td><td>Lessons at high accuracy; slow pace</td></tr>
-<tr><td>Reduce visual key dependence</td><td>Eyes on screen; use on-screen text/hints</td></tr>
-<tr><td>Target weak components</td><td>Practice weak keys from progress</td></tr>
-<tr><td>Distributed practice</td><td>15–20 min most days, not rare marathons</td></tr>
-<tr><td>Measure honestly</td><td>Weekly tests, same duration, average runs</td></tr>
-<tr><td>Transfer</td><td>Real writing after sessions</td></tr>
-<tr><td>Pressure after automatization starts</td><td>Optional games; longer tests</td></tr>
-<tr><td>Sleep and recovery</td><td>Do not only train exhausted; rest matters</td></tr>
-</tbody>
-</table>
-<p>Sample science-aligned session (20 minutes):</p>
-<ol>
-<li>2 min easy warm-up (arousal without chaos)</li>
-<li>10 min lessons or weak-key deliberate drills</li>
-<li>5 min mixed practice at accuracy-capped pace</li>
-<li>Optional 1–2 min test for feedback — not identity</li>
-<li>3 min real text transfer</li>
-</ol>
-<p>That structure hits map quality, variety, feedback, and transfer without turning practice into a slot machine.</p>
-
-<h2 id="neuroplasticity">Adult Brains Still Change</h2>
-<p>Adult learning is real. Plasticity is not only for children. Rates differ by person, sleep, attention, and prior habits — but the door is not closed at 30 or 50. What declines for many adults is free time and patience with looking unskilled, not the biological possibility of procedural learning.</p>
-<p>So when someone says “muscle memory only forms in childhood,” they are recycling a myth that excuses skipping practice. Childhood may offer nice conditions; adulthood offers better reasons and better planning tools. Use them.</p>
-
-<h2 id="attention">Attention Is Part of the Motor System</h2>
-<p>You cannot fully outsource early learning to “just the fingers.” Attention selects what gets learned. If attention is on a podcast plot twist and also on not dying in a game, the map quality may suffer.</p>
-<p>Early stages need cleaner attention. Later stages tolerate more dual-tasking because the routine is more automatic. That progression is why beginners should not learn primarily through chaotic multitasking, and why advanced typists can hold a conversation while typing notes — after the skill is built, not instead of building it.</p>
-
-<h2 id="myths">Science Myths About Typing Skill</h2>
-<ul>
-<li><strong>“Practice makes perfect.”</strong> Practice makes permanent. Perfect practice makes better permanence.</li>
-<li><strong>“More speed drills always equal more speed.”</strong> Without accuracy and map stability, you automate mess.</li>
-<li><strong>“Talent is everything.”</strong> Baseline differences exist; deliberate structure still moves almost everyone.</li>
-<li><strong>“If it’s automatic, it’s correct.”</strong> Automatic can be automatically wrong.</li>
-<li><strong>“Looking is harmless feedback.”</strong> Chronic looking trains a different skill than touch typing.</li>
-<li><strong>“One long session equals seven short ones.”</strong> Spacing usually wins for durability.</li>
-<li><strong>“Soreness means growth.”</strong> In typing, pain is a stop signal, not a hypertrophy program.</li>
+<li><strong>Repetition makes any movement automatic, including a wrong one.</strong> That follows from how the definition works, and it is why we keep saying accuracy comes first. Practising a mistake over and over is practice too. If you are making errors, slow down so you are repeating the correct movement. See <a href="/blog/improve-typing-accuracy">how to improve typing accuracy</a>.</li>
+<li><strong>Practice a little, regularly.</strong> We suggest short sessions of about 10 to 20 minutes on most days. We did not find typing-specific evidence on how to space sessions, so treat this as a sensible habit, not a proven schedule. The Cambridge write-up quotes the researchers advising deliberate practice because people can relapse into less efficient habits.</li>
+<li><strong>Do not sacrifice sleep for practice.</strong> Given the research above, a good night's sleep after a session is a cheap and probably helpful thing to protect, even if nobody can tell you how many WPM it is worth.</li>
+<li><strong>Stop when you are tired.</strong> If your accuracy drops sharply, you are mostly rehearsing errors.</li>
+<li><strong>Keep your eyes on the text and your fingers on the home row.</strong> The <a href="/typing-lessons">lessons</a> and the <a href="/keyboard-guide">keyboard guide</a> are built around this. See also <a href="/blog/touch-typing-for-beginners">touch typing for beginners</a>.</li>
 </ul>
 
-<h2 id="research-limits">What This Article Is Not Claiming</h2>
-<p>This is educational synthesis for practice decisions, not a claim that is a medical device or that one blog post replaces peer-reviewed literature. Individual results vary. Motor learning principles are robust at the coaching level: correct reps, feedback, spacing, progressive difficulty, transfer.</p>
-<p>If you want lab-depth reading, search scholarly sources on motor learning, procedural memory, and keyboard skill acquisition. Then come back and do the unglamorous session anyway — papers do not install finger maps.</p>
+<h2 id="what-science-cannot-tell-you">What the science cannot tell you</h2>
+<ul>
+<li>How many hours of practice make typing automatic. Published timelines vary widely and we found no controlled study behind them.</li>
+<li>The best spacing of typing sessions. The motor-learning research above is about other tasks.</li>
+<li>Whether you will keep a skill for life without practice. Claims that "muscle memory never fades" are not something we could verify.</li>
+</ul>
+<p>The practical way to know is to measure yourself. The <a href="/typing-progress">progress page</a> shows your trend over time, and the <a href="/">speed test</a> gives you a repeatable number when you average several runs.</p>
 
-<h2 id="faq">Muscle Memory and Touch Typing FAQ</h2>
-<h3>Is muscle memory real for typing?</h3>
-<p>Yes in the practical sense: procedural motor skill becomes more automatic with correct practice. The memory is in brain–body motor networks, not magic stored only in muscle tissue.</p>
-<h3>How long does typing muscle memory take to form?</h3>
-<p>Elemental maps can start feeling natural within weeks of daily short practice. Strong automatization and high speed take longer. Consistency beats talent stories.</p>
-<h3>Why do I get worse when I switch to touch typing?</h3>
-<p>Interference from the old habit plus a new cognitive load. Expected. Slow down, raise accuracy, keep no-peek reps.</p>
-<h3>Does sleep help typing skill?</h3>
-<p>Rest supports learning and next-day performance. Exhausted-only practice is a weak plan.</p>
-<h3>Should I practice until failure every day?</h3>
-<p>No. Quality patterns matter. End sessions while form is still clean more often than not.</p>
-<h3>Are games good for muscle memory?</h3>
-<p>After a stable map, they add pressure and variety. Before a map, they often rehearse panic and peeking.</p>
-<h3>Why is accuracy so important scientifically?</h3>
-<p>Because repeated errors can stabilize incorrect motor programs. Accuracy is pattern quality feedback.</p>
-<h3>Can adults still build this skill?</h3>
-<p>Yes. Procedural learning continues across adulthood with practice. See the adult guide linked above.</p>
-<h3>Do I need to understand neuroscience to type faster?</h3>
-<p>No. You need stage-appropriate practice. Science here is for better decisions, not trivia points.</p>
-<h3>Why do short tests disagree with long tests?</h3>
-<p>Different demands: arousal, sample size, fatigue, attention. Sustainable skill shows more clearly on longer runs.</p>
-<h3>What is the single best science-based tip?</h3>
-<p>Rehearse the correct map slowly enough to be accurate, often enough to stick, then add speed in layers.</p>
-<h3>How does fit?</h3>
-<p>Lessons install; practice targets; tests measure; progress reveals weak components; games pressure later.</p>
-<h3>Will reading this article build muscle memory?</h3>
-<p>No. Reading updates your plan. Reps update your nervous system.</p>
-<h3>What should I do after reading?</h3>
-<p>Baseline test, one deliberate lesson block eyes-up, log accuracy, schedule tomorrow’s short session.</p>
-
-<h2 id="weekly-loop">A Weekly Loop That Matches How Skill Forms</h2>
-<p>If you want a single recurring structure grounded in the ideas above:</p>
-<ol>
-<li><strong>Same day each week:</strong> 2–3 tests at one fixed duration; average WPM and accuracy.</li>
-<li><strong>Next four practice days:</strong> deliberate map or weak-key work (lessons/practice), eyes up, accuracy cap.</li>
-<li><strong>One transfer moment daily:</strong> real sentences after the drill so chunks leave the gym.</li>
-<li><strong>Optional pressure:</strong> short game or longer test only if the accuracy floor held that week.</li>
-<li><strong>Sleep and spacing:</strong> skip the “I’ll redo my whole life at 1 a.m.” plan.</li>
-</ol>
-<p>That loop is boring on purpose. Motor learning rewards boring consistency more than dramatic overhauls. When the weekly average accuracy rises and peeking falls, muscle memory is doing its job — even before the internet-famous WPM number shows up.</p>
-
-<h2 id="closing">Science Is Permission to Go Slow Enough to Learn</h2>
-<p>The useful takeaway is unfashionable: the fastest long-term path often looks slow in week one. Correct maps, honest feedback, spaced practice, and transfer beat adrenaline screenshots.</p>
-<p>Put it into practice with a baseline, map work in <a href="/typing-lessons">lessons</a> or <a href="/typing-practice">practice</a>, weekly retests, and a schedule you can keep. For structure, see the <a href="/blog/touch-typing-for-beginners">30-day plan</a> and the <a href="/blog/touch-typing-for-beginners">touch typing guide</a>.</p>
+<h2 id="sources">Sources</h2>
+<ul class="article-sources">
+<li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Muscle_memory" rel="noopener" target="_blank">Muscle memory</a>.</li>
+<li>Walker MP, Brakefield T, Morgan A, Hobson JA, Stickgold R. <a href="https://pubmed.ncbi.nlm.nih.gov/12123620/" rel="noopener" target="_blank">Practice with sleep makes perfect: sleep-dependent motor skill learning</a>. Neuron, 2002.</li>
+<li>Walker MP, Brakefield T, Hobson JA, Stickgold R. <a href="https://pubmed.ncbi.nlm.nih.gov/14534587/" rel="noopener" target="_blank">Dissociable stages of human memory consolidation and reconsolidation</a>., 2003.</li>
+<li>Brawn TP, Fenn KM, Nusbaum HC, Margoliash D. <a href="https://pubmed.ncbi.nlm.nih.gov/20962219/" rel="noopener" target="_blank">Consolidating the effects of waking and sleep on motor-sequence learning</a>., 2010.</li>
+<li>Walker MP, Stickgold R. <a href="https://pubmed.ncbi.nlm.nih.gov/15450165/" rel="noopener" target="_blank">Sleep-dependent learning and memory consolidation</a>., 2004.</li>
+<li>Dhakal V, Feit AM, Kristensson PO, Oulasvirta A. <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>. CHI 2018, and the University of Cambridge's <a href="https://www.cam.ac.uk/research/news/what-makes-a-faster-typist" rel="noopener" target="_blank">What makes a faster typist?</a></li>
+<li>The practice suggestions are FreeTyper's own, reasoned from these sources.</li>
+</ul>
+<p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
 
   '10-bad-typing-habits': `
