@@ -34,11 +34,11 @@ export const typingSpeedArticles: Record<string, string> = {
 </ul>
 
 <h2 id="a-four-week-plan">A four-week plan you can try</h2>
-<p>This plan is our own suggestion, not a tested training program. It uses the free tools on this site and makes no promise about how much faster you will get.</p>
+<p>This plan is our own suggestion, not a tested training program. It uses the free tools on this site and makes no promise about how much faster you will get. Treat the weekly targets as a pace to aim for: go slower if you need to, since the lessons ask for 95% accuracy before you move on.</p>
 <ol>
-<li><strong>Week 1: set your foundation.</strong> Do lessons 1 to 3 in the <a href="/typing-lessons">typing lessons</a> until you can finish each at about 95% accuracy or better, eyes on the text. Take one baseline <a href="/">speed test</a> at the end of the week, as the middle of three runs.</li>
-<li><strong>Week 2: finish the lessons.</strong> Work through lessons 4 to 7, repeating any that go below 95% accuracy.</li>
-<li><strong>Week 3: build volume.</strong> Use <a href="/typing-practice">typing practice</a> on most days. Rotate between quotes, news and code, and add the weak-key drill once you have a few clean runs.</li>
+<li><strong>Week 1: set your foundation.</strong> In the <a href="/typing-lessons">typing lessons</a>, work through the home row and top row stages (lessons 1 to 10), passing each at 95% accuracy with your eyes on the text. Take one baseline <a href="/">speed test</a> at the end of the week, as the middle of three runs.</li>
+<li><strong>Week 2: the rest of the keyboard.</strong> Continue with the bottom row and the Shift and punctuation stages (lessons 11 to 22). Lessons you miss restart with new text, so some will take several tries.</li>
+<li><strong>Week 3: numbers, then volume.</strong> Finish the numbers and symbols and speed stages (lessons 23 to 34) as far as you comfortably can, and start <a href="/typing-practice">typing practice</a> on most days. Rotate between quotes, news and code, and add the weak-key drill once you have a few clean runs.</li>
 <li><strong>Week 4: check and adjust.</strong> Take three speed tests of the same length, compare the middle result with your baseline, and look at your <a href="/typing-progress">progress page</a> for the keys that are still red.</li>
 </ol>
 <p>Then keep going with the same loop: practice, check, adjust. The progress page shows your own trend, which is the only reliable answer to how fast you are improving.</p>

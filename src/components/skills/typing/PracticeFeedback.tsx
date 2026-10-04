@@ -265,6 +265,22 @@ export function lessonCoachNote(
     };
   }
 
+  if (name.includes('challenge') && run.accuracy < 98) {
+    return {
+      headline: 'Needs 98%',
+      tip: 'This challenge asks for 98% accuracy. Slow down a little and fix mistakes as you notice them.',
+      tone: 'warn',
+    };
+  }
+
+  if (name.includes('shift')) {
+    return {
+      headline: 'Shift and punctuation',
+      tip: 'Hold Shift with the little finger on the opposite side, press the key, then let go. Keep the other fingers on the home row.',
+      tone: 'focus',
+    };
+  }
+
   if (name.includes('home')) {
     return {
       headline: 'Home row',

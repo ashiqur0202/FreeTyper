@@ -212,6 +212,7 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusK
               const isLetterKey = kd.id.length === 1;
               const inFocus = !focusSet
                 || kd.id === 'space'
+                || focusSet.has(kd.id)
                 || (isLetterKey && focusSet.has(kd.id))
                 || (isLetterKey && focusSet.has(kd.label));
               const isDimmed = Boolean(focusSet && !inFocus && !isHint && !isFlashCorrect && !isFlashIncorrect);

@@ -1,10 +1,29 @@
 'use client';
 
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
-import { Check, Lock, RotateCcw } from 'lucide-react';
+import { Check, Lock, RotateCcw, SkipForward } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
-import { lessons } from './typingData';
+import {
+  courseLessons,
+  STAGES,
+  MAX_FAILED_TRIES,
+  minAccuracyFor,
+  type StageId,
+} from './courseData';
+import { generateLessonText } from './lessonText';
+import {
+  countDone,
+  emptyProgress,
+  firstOpenLesson,
+  isDone,
+  isUnlocked,
+  loadProgress,
+  recordResult,
+  saveProgress,
+  skipLesson,
+  type CourseProgress,
+} from './courseProgress';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
@@ -17,43 +36,13 @@ import PracticeFeedback, {
 } from './PracticeFeedback';
 import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 
-const PROGRESS_KEY = 'freetyper-lessons-progress';
-const LEGACY_KEY = 'freetyper-completed-lessons';
 const LOG_KEY = 'freetyper-lessons-log';
 const LOG_MAX = 5;
 
-interface LessonProgress {
-  unlocked: number[];
-  completed: number[];
-}
-
-function loadProgress(): LessonProgress {
-  if (typeof window === 'undefined') {
-    return { unlocked: [0], completed: [] };
-  }
-  try {
-    const raw = localStorage.getItem(PROGRESS_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw) as LessonProgress;
-      return {
-        unlocked: parsed.unlocked?.length ? parsed.unlocked : [0],
-        completed: parsed.completed ?? [],
-      };
-    }
-    const legacy = localStorage.getItem(LEGACY_KEY);
-    if (legacy) {
-      const unlocked = JSON.parse(legacy) as number[];
-      return { unlocked: unlocked.length ? unlocked : [0], completed: [] };
-    }
-  } catch {
-    /* ignore */
-  }
-  return { unlocked: [0], completed: [] };
-}
-
-function saveProgress(progress: LessonProgress) {
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
-}
+/** What the learner is told after an attempt. */
+type Status =
+  | { kind: 'passed'; lesson: number; accuracy: number; nextTitle?: string }
+  | { kind: 'failed'; lesson: number; accuracy: number; needed: number; attempt: number };
 
 function loadLessonLog(): PracticeLogEntry[] {
   try {
@@ -79,8 +68,11 @@ function loadLessonLog(): PracticeLogEntry[] {
 }
 
 export default function TypingLessons() {
-  const [activeLesson, setActiveLesson] = useState(0);
-  const [progress, setProgress] = useState<LessonProgress>({ unlocked: [0], completed: [] });
+  const [activeNumber, setActiveNumber] = useState(1);
+  const [viewStage, setViewStage] = useState<StageId>('home');
+  const [text, setText] = useState('');
+  const [progress, setProgress] = useState<CourseProgress>(emptyProgress);
+  const [status, setStatus] = useState<Status | null>(null);
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
   const [log, setLog] = useState<PracticeLogEntry[]>([]);
@@ -93,63 +85,93 @@ export default function TypingLessons() {
   const typingAreaRef = useRef<HTMLDivElement>(null);
   const firstCharRef = useRef<HTMLSpanElement>(null);
   const currentCharRef = useRef<HTMLSpanElement>(null);
-  const activeLessonRef = useRef(activeLesson);
+  const activeNumberRef = useRef(activeNumber);
   const progressRef = useRef(progress);
   const isRunningRef = useRef(false);
-  activeLessonRef.current = activeLesson;
+  const outcomeRef = useRef<{ passed: boolean; lesson: number } | null>(null);
+  activeNumberRef.current = activeNumber;
   progressRef.current = progress;
 
   const { addSession, updateKeyStats, checkAchievements } = useTypingProgress();
-  const lesson = lessons[activeLesson];
+  const lesson = courseLessons[activeNumber - 1];
+
+  const stageLessons = (stage: StageId) => courseLessons.filter((l) => l.stage === stage);
 
   useEffect(() => {
     setMounted(true);
-    setProgress(loadProgress());
+    const saved = loadProgress();
+    setProgress(saved);
+    progressRef.current = saved;
     setLog(loadLessonLog());
+    const first = firstOpenLesson(saved);
+    const startLesson = courseLessons[first - 1];
+    setActiveNumber(first);
+    setViewStage(startLesson.stage);
+    setText(generateLessonText(startLesson));
   }, []);
 
-  const handleComplete = useCallback((session: TypingSession) => {
-    const idx = activeLessonRef.current;
-    const current = lessons[idx];
-    const updated = {
-      ...session,
-      mode: 'lesson' as const,
-      modeDetail: current.name,
-    };
-    addSession(updated);
-    trackEvent('lesson_complete', {
-      lesson_number: idx + 1,
-      lesson: current.name,
-      wpm: session.wpm,
-      accuracy: session.accuracy,
-    });
-    setResult(updated);
-    setLog((prev) => {
-      const entry: PracticeLogEntry = {
-        ...updated,
-        ...lessonCoachNote(updated, prev[0], prev),
+  const handleComplete = useCallback(
+    (session: TypingSession) => {
+      const current = courseLessons[activeNumberRef.current - 1];
+      const stageLabel = STAGES.find((s) => s.id === current.stage)?.label ?? '';
+      const needed = minAccuracyFor(current);
+      const passed = session.accuracy >= needed;
+      const updated = {
+        ...session,
+        mode: 'lesson' as const,
+        modeDetail: `${stageLabel} · ${current.title}`,
       };
-      const next = [entry, ...prev].slice(0, LOG_MAX);
-      try {
-        localStorage.setItem(LOG_KEY, JSON.stringify(next));
-      } catch {
-        /* ignore */
-      }
-      return next;
-    });
+      addSession(updated);
 
-    setProgress((prev) => {
-      const completed = prev.completed.includes(idx) ? prev.completed : [...prev.completed, idx];
-      const unlocked =
-        idx < lessons.length - 1 && !prev.unlocked.includes(idx + 1)
-          ? [...prev.unlocked, idx + 1]
-          : prev.unlocked;
-      const next = { unlocked, completed };
-      progressRef.current = next;
-      saveProgress(next);
-      return next;
-    });
-  }, [addSession]);
+      const failedBefore = progressRef.current.attempts[current.id] ?? 0;
+      const nextProgress = recordResult(progressRef.current, current, passed);
+      progressRef.current = nextProgress;
+      setProgress(nextProgress);
+      saveProgress(nextProgress);
+      outcomeRef.current = { passed, lesson: current.number };
+
+      const attempt = failedBefore + 1;
+      trackEvent('lesson_attempt', {
+        lesson_number: current.number,
+        passed,
+        wpm: session.wpm,
+        accuracy: session.accuracy,
+        attempt,
+      });
+      if (passed) {
+        trackEvent('lesson_complete', {
+          lesson_number: current.number,
+          lesson: current.title,
+          wpm: session.wpm,
+          accuracy: session.accuracy,
+        });
+        setStatus({
+          kind: 'passed',
+          lesson: current.number,
+          accuracy: session.accuracy,
+          nextTitle: courseLessons[current.number]?.title,
+        });
+      } else {
+        setStatus({ kind: 'failed', lesson: current.number, accuracy: session.accuracy, needed, attempt });
+      }
+
+      setResult(updated);
+      setLog((prev) => {
+        const entry: PracticeLogEntry = {
+          ...updated,
+          ...lessonCoachNote(updated, prev[0], prev),
+        };
+        const next = [entry, ...prev].slice(0, LOG_MAX);
+        try {
+          localStorage.setItem(LOG_KEY, JSON.stringify(next));
+        } catch {
+          /* ignore */
+        }
+        return next;
+      });
+    },
+    [addSession],
+  );
 
   const {
     chars,
@@ -162,7 +184,7 @@ export default function TypingLessons() {
     handleInput,
     handleBackspace,
   } = useTypingEngine({
-    text: lesson.text,
+    text,
     onComplete: handleComplete,
     onKeyStats: (key, correct) => updateKeyStats(key, correct),
   });
@@ -182,29 +204,54 @@ export default function TypingLessons() {
     setLastKeyFlash(null);
   }, []);
 
-  const retryLesson = useCallback(() => {
-    resetView();
-    restart();
-    isCompleteRef.current = false;
-    inputRef.current?.focus({ preventScroll: true });
-  }, [resetView, restart]);
-
-  const goToLesson = useCallback(
-    (index: number) => {
-      if (!progressRef.current.unlocked.includes(index) || isRunningRef.current) return;
-      setActiveLesson(index);
+  /** Start (or restart) a lesson with fresh text. */
+  const startLesson = useCallback(
+    (number: number) => {
+      const target = courseLessons[number - 1];
+      if (!target) return;
+      const next = generateLessonText(target);
+      setActiveNumber(number);
+      setViewStage(target.stage);
       resetView();
-      restart(lessons[index].text);
+      setText(next);
+      restart(next);
       isCompleteRef.current = false;
       inputRef.current?.focus({ preventScroll: true });
     },
     [resetView, restart],
   );
 
-  const restartRef = useRef(restart);
-  restartRef.current = restart;
+  const retryLesson = useCallback(() => {
+    startLesson(activeNumberRef.current);
+  }, [startLesson]);
+
+  const goToLesson = useCallback(
+    (number: number) => {
+      if (!isUnlocked(progressRef.current, number) || isRunningRef.current) return;
+      setStatus(null);
+      startLesson(number);
+    },
+    [startLesson],
+  );
+
+  const moveOnAnyway = useCallback(() => {
+    const current = courseLessons[activeNumberRef.current - 1];
+    const next = courseLessons[current.number];
+    if (!next || isRunningRef.current) return;
+    const updated = skipLesson(progressRef.current, current);
+    progressRef.current = updated;
+    setProgress(updated);
+    saveProgress(updated);
+    trackEvent('lesson_skip', { lesson_number: current.number });
+    setStatus(null);
+    startLesson(next.number);
+  }, [startLesson]);
+
+  const startLessonRef = useRef(startLesson);
+  startLessonRef.current = startLesson;
   const lastCompleteIdRef = useRef<string | null>(null);
 
+  // After a finished attempt: go on to the next lesson if it was passed, otherwise try again with new text.
   useEffect(() => {
     if (!isComplete || !result) return;
     if (lastCompleteIdRef.current === result.id) return;
@@ -212,18 +259,11 @@ export default function TypingLessons() {
     const newAchievements = checkAchievements();
     if (newAchievements.length > 0) setToasts((t) => [...t, ...newAchievements]);
 
-    const idx = activeLessonRef.current;
-    resetView();
-    if (idx < lessons.length - 1) {
-      const next = lessons[idx + 1];
-      setActiveLesson(idx + 1);
-      restartRef.current(next.text);
-    } else {
-      restartRef.current();
-    }
-    isCompleteRef.current = false;
-    inputRef.current?.focus({ preventScroll: true });
-  }, [isComplete, result, checkAchievements, resetView]);
+    const outcome = outcomeRef.current;
+    const number = outcome?.lesson ?? activeNumberRef.current;
+    const hasNext = number < courseLessons.length;
+    startLessonRef.current(outcome?.passed && hasNext ? number + 1 : number);
+  }, [isComplete, result, checkAchievements]);
 
   // One path for every typed character: keyboard events and touch/IME input both use it.
   const playKeySound = useKeySound();
@@ -302,16 +342,13 @@ export default function TypingLessons() {
     }
   }, [currentIndex, lineHeight, chars.length]);
 
-  const unlockedSet = new Set(progress.unlocked);
-  const completedSet = new Set(progress.completed);
-
   if (!mounted) {
     return (
       <div className="w-full">
         <div className="flex flex-wrap items-center gap-1">
-          {lessons.map((l) => (
-            <span key={l.id} className="px-2.5 py-1 text-xs text-text-dim">
-              {l.name}
+          {STAGES.map((s) => (
+            <span key={s.id} className="px-2.5 py-1 text-xs text-text-dim">
+              {s.label}
             </span>
           ))}
         </div>
@@ -319,6 +356,11 @@ export default function TypingLessons() {
       </div>
     );
   }
+
+  const doneCount = countDone(progress);
+  const nextLesson = courseLessons[lesson.number];
+  const failedTries = progress.attempts[lesson.id] ?? 0;
+  const canMoveOn = Boolean(nextLesson) && failedTries >= MAX_FAILED_TRIES && !isDone(progress, lesson.id);
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -331,40 +373,94 @@ export default function TypingLessons() {
       ))}
 
       <div className="w-full">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-          <div className="flex flex-wrap items-center gap-1">
-            {lessons.map((l, i) => {
-              const unlocked = unlockedSet.has(i);
-              const done = completedSet.has(i);
-              const isActive = i === activeLesson;
-              return (
-                <button
-                  key={l.id}
-                  type="button"
-                  onClick={() => goToLesson(i)}
-                  disabled={!unlocked || isRunning}
-                  title={unlocked ? l.description : 'Complete the previous lesson to unlock'}
-                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs transition-all ${
-                    isActive
-                      ? 'bg-accent-bg font-medium text-text-bright'
-                      : unlocked
-                        ? 'text-text hover:bg-surface-raised hover:text-text-bright'
-                        : 'cursor-not-allowed text-text-dim/40'
-                  } ${isRunning ? 'cursor-not-allowed opacity-30' : ''}`}
-                >
-                  {done ? (
-                    <Check className="h-3 w-3 text-accent" />
-                  ) : !unlocked ? (
-                    <Lock className="h-3 w-3" />
-                  ) : null}
-                  <span>
-                    {i + 1}. {l.name}
-                  </span>
-                </button>
-              );
-            })}
+        {/* Stages */}
+        <div className="mb-2 flex flex-wrap items-center gap-1" role="tablist" aria-label="Course stages">
+          {STAGES.map((s) => {
+            const inStage = stageLessons(s.id);
+            const done = countDone(progress, inStage);
+            const isView = viewStage === s.id;
+            return (
+              <button
+                key={s.id}
+                type="button"
+                role="tab"
+                aria-selected={isView}
+                onClick={() => setViewStage(s.id)}
+                className={`rounded-md px-2.5 py-1 text-xs transition-all ${
+                  isView
+                    ? 'bg-accent-bg font-medium text-text-bright'
+                    : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                }`}
+              >
+                {s.label}{' '}
+                <span className="ml-1 tabular-nums text-text-dim">
+                  {done}/{inStage.length}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Lessons in the chosen stage */}
+        <div className="mb-3 flex flex-wrap items-center gap-1">
+          {stageLessons(viewStage).map((l) => {
+            const unlocked = isUnlocked(progress, l.number);
+            const done = progress.completed.includes(l.id);
+            const skipped = progress.skipped.includes(l.id);
+            const isActive = l.number === activeNumber;
+            return (
+              <button
+                key={l.id}
+                type="button"
+                onClick={() => goToLesson(l.number)}
+                disabled={!unlocked || isRunning}
+                aria-label={`Lesson ${l.number}: ${l.title}${done ? ', passed' : skipped ? ', skipped' : unlocked ? '' : ', locked'}`}
+                title={unlocked ? `${l.number}. ${l.title}` : 'Finish the previous lesson to unlock'}
+                className={`inline-flex min-w-[2rem] items-center justify-center gap-1 rounded-md px-2 py-1 text-xs tabular-nums transition-all ${
+                  isActive
+                    ? 'bg-accent-bg font-medium text-text-bright'
+                    : unlocked
+                      ? 'text-text hover:bg-surface-raised hover:text-text-bright'
+                      : 'cursor-not-allowed text-text-dim/40'
+                } ${isRunning ? 'cursor-not-allowed opacity-30' : ''}`}
+              >
+                {done ? (
+                  <Check className="h-3 w-3 text-accent" />
+                ) : skipped ? (
+                  <SkipForward className="h-3 w-3 text-text-dim" />
+                ) : !unlocked ? (
+                  <Lock className="h-3 w-3" />
+                ) : null}
+                <span>{l.number}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Current lesson */}
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+          <div className="min-w-0 flex-1">
+            <p className="text-sm text-text-bright">
+              <span className="text-text-dim">Lesson {lesson.number} of {courseLessons.length} · </span>
+              {lesson.title}
+              {lesson.newKeys.length > 0 && (
+                <span className="ml-2 inline-flex flex-wrap gap-1 align-middle">
+                  {lesson.newKeys.map((k) => (
+                    <kbd
+                      key={k}
+                      className="rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent"
+                    >
+                      {k}
+                    </kbd>
+                  ))}
+                </span>
+              )}
+            </p>
+            <p className="mt-1 max-w-3xl text-xs leading-relaxed text-text-dim">{lesson.tip}</p>
           </div>
           <div className="flex items-center gap-3 font-mono text-sm text-text">
+            <span className="text-[11px] text-text-dim">{doneCount}/{courseLessons.length} done</span>
+            <span className="text-surface-border">·</span>
             <span className="tabular-nums text-text-bright">
               {isRunning ? wpm : '--'}
               <span className="text-text"> wpm</span>
@@ -419,10 +515,8 @@ export default function TypingLessons() {
           onInput={(e) => handleMobileInput(e, processChar, handleBackspace)}
         />
 
-        <div className="mt-4 flex h-8 items-center justify-center">
-          {!isRunning ? (
-            <p className="text-sm text-text-dim">start typing to begin</p>
-          ) : (
+        <div className="mt-4 flex min-h-8 flex-wrap items-center justify-center gap-x-4 gap-y-1 text-center">
+          {isRunning ? (
             <button
               type="button"
               onClick={retryLesson}
@@ -431,6 +525,34 @@ export default function TypingLessons() {
             >
               <RotateCcw className="h-4 w-4" />
             </button>
+          ) : status ? (
+            <>
+              <p
+                role="status"
+                data-lesson-status={status.kind}
+                className={`text-sm ${status.kind === 'passed' ? 'text-correct' : 'text-text'}`}
+              >
+                {status.kind === 'passed'
+                  ? `Lesson ${status.lesson} passed with ${status.accuracy}% accuracy.${
+                      status.nextTitle ? ` Next: ${status.nextTitle}.` : ' That was the last lesson — repeat any lesson whenever you like.'
+                    }`
+                  : `Lesson ${status.lesson} needs ${status.needed}% accuracy. You got ${status.accuracy}%. Try again with new text (miss ${status.attempt} of ${MAX_FAILED_TRIES}).`}
+              </p>
+              {status.kind === 'failed' && canMoveOn && (
+                <button
+                  type="button"
+                  onClick={moveOnAnyway}
+                  className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-xs text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
+                >
+                  <SkipForward className="h-3 w-3" />
+                  move on anyway
+                </button>
+              )}
+            </>
+          ) : (
+            <p className="text-sm text-text-dim">
+              start typing to begin · {minAccuracyFor(lesson)}% accuracy passes this lesson
+            </p>
           )}
         </div>
 

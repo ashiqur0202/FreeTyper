@@ -1,69 +1,9 @@
-export interface Lesson {
-  id: number;
-  name: string;
-  description: string;
-  keys: string[];
-  text: string;
-}
-
 export interface PracticeText {
   id: string;
   category: 'quotes' | 'news' | 'code' | 'fun';
   title: string;
   text: string;
 }
-
-export const lessons: Lesson[] = [
-  {
-    id: 1,
-    name: 'Home Row',
-    description: 'Master the home row keys: A S D F J K L ;',
-    keys: ['a', 's', 'd', 'f', 'j', 'k', 'l', ';'],
-    text: 'asdf jkl; asdf jkl; fj dk sl aj fj dk sl aj fjdk slaj fjdk slaj sad dad lad fall flask ask salad falls lads fads adds gaff jack lack slack flags jags lags gals hall dall hall flask salad falls lads jack flags slack all lad sad ask dad fall flask salad hall slack',
-  },
-  {
-    id: 2,
-    name: 'Top Row',
-    description: 'Learn the top row keys: Q W E R T Y U I O P',
-    keys: ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-    text: 'we were wet write your trip power quiet pure type quite poetry property question require wire tire rope quote write party type output require poetry query pure your wire quiet quite power require property write your trip wire wet rope type pure output power party poetry quiet question quite',
-  },
-  {
-    id: 3,
-    name: 'Bottom Row',
-    description: 'Master the bottom row keys: Z X C V B N M , .',
-    keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.'],
-    text: 'can box vim zen move van combine black extra next cave gave move back zinc examine move cave combine box exam black next zen vim came van ban man bin mix fix vex maximum combine examine box cave black zen van move next came fix ban mix bin man',
-  },
-  {
-    id: 4,
-    name: 'Common Words',
-    description: 'Practice the most common English words',
-    keys: ['all'],
-    text: 'the be to of and a in that have it for not on with he as you do at this but his by from they we say her she or an will my one all would there their what so up out if about who get which go me when make can like time no just him know take people into year your good some could them see other than then now look only come its over think also back after use two how our work first well way even new want because any these give day most us',
-  },
-  {
-    id: 5,
-    name: 'Sentences',
-    description: 'Type complete sentences mixing all keys',
-    keys: ['all'],
-    text: 'The quick brown fox jumps over the lazy dog. She sold seashells by the seashore. A journey of a thousand miles begins with a single step. Practice makes perfect. Every expert was once a beginner. The only way to do great work is to love what you do. Knowledge is power and practice is the key. Type fast and type well. Your fingers will learn the keyboard through repetition. Good typists do not look at the keyboard while typing.',
-  },
-  {
-    id: 6,
-    name: 'Numbers & Symbols',
-    description: 'Master the number row and common punctuation',
-    keys: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '@', '#', '$', '(', ')', '-', '=', '[', ']', '{', '}', '|', '\\', ':', '"', "'", '<', '>', '?', '/'],
-    text: 'Type 42 numbers: 100, 200, 300, 400, 500. Price is $29.99 (20% off). Email: user@example.com. Score: 95/100 (95%). Date: 2025-01-15. Time: 3:45 PM. Phone: (555) 123-4567. Math: 2 + 3 = 5, 10 - 4 = 6, 3 * 7 = 21, 15 / 3 = 5. Array: [1, 2, 3]. Object: {"key": "value"}. Path: /home/user/docs. Question? Yes! No... maybe.',
-  },
-  {
-    id: 7,
-    name: 'Speed Building',
-    description: 'Build speed with complex paragraphs',
-    keys: ['all'],
-    text: 'Programming is the art of telling a computer what to do. Each line of code is an instruction, carefully crafted to solve a problem. Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it. The best error message is the one that never shows up. Code is like humor. When you have to explain it, it is bad. Experience is the name everyone gives to their mistakes.',
-  },
-];
 
 export const practiceTexts: PracticeText[] = [
   // Quotes

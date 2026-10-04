@@ -84,11 +84,11 @@ export default function AboutPage() {
               on the home page (several durations, words / sentences / code)
             </li>
             <li>
-              Seven{' '}
+              A 34-lesson{' '}
               <Link href="/typing-lessons" className="text-accent hover:underline">
-                typing lessons
+                typing course
               </Link>{' '}
-              from home row to mixed text
+              from the home row to numbers and symbols
             </li>
             <li>
               <Link href="/typing-practice" className="text-accent hover:underline">

@@ -19,23 +19,22 @@ export const touchTypingArticles: Record<string, string> = {
 </ul>
 
 <h2 id="the-beginner-path">The beginner path, step by step</h2>
-<p>The <a href="/typing-lessons">typing lessons</a> follow this order. Each lesson is one short passage, and the keys outside the current lesson are dimmed on the live keyboard.</p>
+<p>The <a href="/typing-lessons">typing lessons</a> are a course of 34 lessons in six stages. Each attempt builds new text from only the keys you have met so far, and keys outside the current lesson are dimmed on the live keyboard.</p>
 <ol>
-<li><strong>Home row.</strong> A S D F J K L ;. Spend as long as you need here, because everything else is a reach from this position.</li>
-<li><strong>Top row.</strong> Q W E R T Y U I O P. Return to the home row after every reach.</li>
-<li><strong>Bottom row.</strong> Z X C V B N M , and the full stop.</li>
-<li><strong>Common words.</strong> Real words using all the letters.</li>
-<li><strong>Sentences.</strong> Capital letters and punctuation join in.</li>
-<li><strong>Numbers and symbols.</strong> The number row, which sits furthest from the home row, and common punctuation.</li>
-<li><strong>Speed building.</strong> A longer passage of ordinary prose.</li>
+<li><strong>Home row (lessons 1 to 5).</strong> F J, D K, S L, A and the semicolon, then G H. Spend as long as you need here, because everything else is a reach from this position.</li>
+<li><strong>Top row (6 to 10).</strong> E I, R U, T Y, O P and W Q, a pair at a time. Return to the home row after every reach.</li>
+<li><strong>Bottom row (11 to 16).</strong> V M, C and the comma, X and the full stop, Z and the slash, B N, then all the letters together.</li>
+<li><strong>Shift and punctuation (17 to 22).</strong> Capitals with each Shift key, full stops, the apostrophe, question and exclamation marks, then quotes, colon, semicolon and hyphen.</li>
+<li><strong>Numbers and symbols (23 to 28).</strong> The number row, which sits furthest from the home row, in two halves, then mixed numbers, shifted symbols and brackets.</li>
+<li><strong>Speed and accuracy (29 to 34).</strong> Common words, sentences, passages, a 98% accuracy challenge, speed practice and a final passage.</li>
 </ol>
-<p>One thing to know: finishing a lesson unlocks the next one even if you made mistakes. The lessons do not check your accuracy, so that discipline is yours. Our suggestion is to repeat a lesson until two runs in a row reach 95% or better. Clicking a lesson's name at the top lets you repeat it at any time.</p>
+<p>To move on you need 95% accuracy. If you miss, the lesson restarts with new text, and after three misses you can choose to move on anyway. The order and the pass mark are our own design, not a proven method. You can repeat any lesson you have opened by choosing it at the top.</p>
 
 <h2 id="how-to-practice">How to practice</h2>
 <p>These are our suggestions, not tested rules.</p>
 <ul>
 <li><strong>Little and often.</strong> About 10 to 20 minutes on most days is easier to keep up than a long session now and then. The researchers behind the study above also advise practising deliberately, because people can slip back into less efficient habits.</li>
-<li><strong>Accuracy before speed.</strong> If you are making mistakes, slow down until the lesson feels clean. Speed grows from control.</li>
+<li><strong>Accuracy before speed.</strong> If you keep missing the pass mark, slow down until the lesson feels clean. Speed grows from control.</li>
 <li><strong>Eyes on the text.</strong> If you catch yourself glancing at the keys, slow down further instead of speeding up. The live keyboard is there so you do not need to look down.</li>
 <li><strong>Stop when tired.</strong> If accuracy drops sharply, come back later.</li>
 </ul>
@@ -43,8 +42,8 @@ export const touchTypingArticles: Record<string, string> = {
 <h2 id="how-long-will-it-take">How long will it take?</h2>
 <p>We cannot say, and neither can anyone who has not measured you. Instead of counting days, use checkpoints:</p>
 <ul>
-<li>You can finish lessons 1 to 3 at about 95% accuracy with your eyes on the text.</li>
-<li>You can finish the sentences lesson at that accuracy.</li>
+<li>You can pass the home row stage (lessons 1 to 5) at 95% accuracy with your eyes on the text.</li>
+<li>You can pass the Shift and punctuation stage (lessons 17 to 22) at that accuracy.</li>
 <li>Your speed test results become steady: the middle of three runs stays within a few WPM from week to week.</li>
 </ul>
 <p>Wikipedia notes that around 60 to 80 WPM is roughly the speed needed to keep up with your thoughts, which gives you a rough long-term target. For the evidence on what typical speeds look like, see <a href="/blog/good-typing-speed">what is a good typing speed</a>, and for a week-by-week practice schedule see the plan in <a href="/blog/how-to-type-faster">how to type faster</a>.</p>
@@ -59,14 +58,14 @@ export const touchTypingArticles: Record<string, string> = {
 </ul>
 
 <h2 id="after-the-lessons">After the lessons</h2>
-<p>When you can complete all seven lessons accurately, move to <a href="/typing-practice">typing practice</a> for volume and weak-key work, and take the <a href="/">typing speed test</a> every week or two to see how you are doing. For the science behind why repetition works, read <a href="/blog/muscle-memory-and-touch-typing">muscle memory and touch typing</a>.</p>
+<p>When you can pass the whole course, move to <a href="/typing-practice">typing practice</a> for volume and weak-key work, and take the <a href="/">typing speed test</a> every week or two to see how you are doing. For the science behind why repetition works, read <a href="/blog/muscle-memory-and-touch-typing">muscle memory and touch typing</a>.</p>
 
 <h2 id="sources">Sources</h2>
 <ul class="article-sources">
 <li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Touch_typing" rel="noopener" target="_blank">Touch typing</a>: definition, home row, the F and J markers, the 1888 contest and the 60 to 80 WPM remark.</li>
 <li>Dhakal V, Feit AM, Kristensson PO, Oulasvirta A. <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>. CHI 2018. Training and finger-count figures are taken from the paper's results.</li>
 <li>University of Cambridge, <a href="https://www.cam.ac.uk/research/news/what-makes-a-faster-typist" rel="noopener" target="_blank">What makes a faster typist?</a> The researchers' remarks on finger use and deliberate practice.</li>
-<li>The lesson order and the unlock behaviour are described in our <a href="/typing-lessons">typing lessons guide</a>. The 95% bar, the session length and the checkpoints are FreeTyper's own suggestions.</li>
+<li>The course structure and the unlock behaviour are described in our <a href="/typing-lessons">typing lessons guide</a>. The lesson order, the 95% pass mark, the session length and the checkpoints are FreeTyper's own design and suggestions.</li>
 </ul>
 <p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,

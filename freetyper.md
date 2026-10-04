@@ -5,8 +5,8 @@ No login, no database, privacy-first (all data stays in the browser), to be fund
 
 This is the living reference. History lives in git. Per-guide detail lives in the header comment of each content file.
 
-## 1. Status (updated 2026-10-04)
-- **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work.
+## 1. Status (updated 2026-10-05)
+- **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. **Branch `feat/lessons-course`: the 34-lesson course is built and tested, awaiting review before it is merged and deployed.**
 - **AdSense:** application rejected — **“Low value content”**. The setup is correct and live. “Verify site ownership” is still open in the dashboard.
 - **Done because of the rejection:**
   - every guide rewritten from the real code, with verified sources
@@ -43,7 +43,9 @@ src/components/skills/typing/
                 FallingWordsGame, WordAttackGame, LiveKeyboard, TypingPassage, PracticeFeedback, GameFeedback
                 useTypingEngine (timer, WPM, Backspace), useTypingProgress (localStorage),
                 useKeySound, mobileInput (touch/IME fallback)
-                typingData (lessons, passages, finger map), gameData (word pools, tiers, rounds, scoring)
+                courseData (6 stages, 34 lessons, pass marks), courseWords (word list, sentences, passages),
+                lessonText (text generator), courseProgress (unlock, skip, migration)
+                typingData (practice passages, finger map), gameData (word pools, tiers, rounds, scoring)
 src/components/layout/   Sidebar, RightSidebar (both pinned), SettingsProvider, Footer, ContactPanel
 src/components/          content/ExpandableSeoContent, seo/JsonLd, blog/BlogContent+BlogCard, tools/ToolClient
 src/config/     tools.ts (7 tools), site.ts (name, author, AdSense id)
@@ -64,9 +66,12 @@ The guides and posts must stay consistent with these.
 - Rank labels (ours, not a standard): beginner <40 · average 40–59 · skilled 60–79 · pro 80–99 · elite 100+.
 - Coach: below 95 % “hold accuracy”, below 88 % “not a real score”.
 
-**Lessons (7)**
-- Home row · top row · bottom row · common words · sentences · numbers & symbols · speed building. One short passage each.
-- Unlock = finishing the lesson. **There is no accuracy gate.**
+**Lessons (34 lessons, 6 stages)**
+- Home row 1–5 · top row 6–10 · bottom row 11–16 · Shift & punctuation 17–22 · numbers & symbols 23–28 · speed & accuracy 29–34.
+- Text is generated at the start of every attempt from only the keys unlocked so far (`lessonText.ts`), so a retry shows new text.
+- **Gate:** 95 % accuracy passes a lesson; lesson 32 (accuracy challenge) needs 98 %. A miss restarts the same lesson with new text; after 3 misses a "move on anyway" button appears (lesson is stored as skipped, which also unlocks the next).
+- Only lesson 1 is open at the start; any opened lesson can be repeated (not mid-run).
+- Migration: old `freetyper-lessons-progress` is converted once (old lesson → matching new range) into `freetyper-course-progress`.
 
 **Practice**
 - 20 built-in passages (5 each: quotes, news, code, fun), plus a weak-key drill. Untimed.
@@ -91,7 +96,7 @@ The guides and posts must stay consistent with these.
 - Sound (soft tick / lower thud, Web Audio) · keyboard hints (next-key highlight) · layout (a fixed “QWERTY” label).
 - Default is dark + gold `#e2b714`.
 
-**Storage keys:** `freetyper-settings`, `-progress`, `-speed-log`, `-practice-log`, `-lessons-log`, `-lessons-progress`, `-fw-log`, `-wa-log`, `-fw-highscore`, `-wa-highscore`.
+**Storage keys:** `freetyper-settings`, `-progress`, `-speed-log`, `-practice-log`, `-lessons-log`, `-course-progress` (old `-lessons-progress` is read once for migration), `-fw-log`, `-wa-log`, `-fw-highscore`, `-wa-highscore`.
 
 **Input:** window `keydown` plus a hidden-input `input` fallback for touch/IME. Capitals and shifted symbols highlight the key and the opposite-hand Shift.
 
@@ -112,7 +117,7 @@ The guides and posts must stay consistent with these.
 - JSON-LD: Organization + WebSite (layout); WebApplication + FAQPage + HowTo on home and tools (FAQ text = the visible FAQ); Breadcrumb; **BlogPosting** on posts (author → `/about#author`). Output escapes `<`.
 - Google has largely retired HowTo/FAQ rich results, so that markup is harmless and accurate, not a ranking lever.
 - **GA4 custom events** (`src/lib/analytics.ts` → `trackEvent`). Numbers and short fixed labels only; never typed text.
-  - `test_complete` {duration_s, text_mode, wpm, accuracy} · `lesson_complete` {lesson_number, lesson, wpm, accuracy} · `practice_complete` {category, wpm, accuracy}
+  - `test_complete` {duration_s, text_mode, wpm, accuracy} · `lesson_attempt` {lesson_number, passed, wpm, accuracy, attempt} · `lesson_complete` (passes only) {lesson_number, lesson, wpm, accuracy} · `lesson_skip` {lesson_number} · `practice_complete` {category, wpm, accuracy}
   - `game_complete` {game, score, wpm, accuracy, level} (Falling Words at game over; Word Attack after round 8) · `game_round_complete` {game, round, score}
   - `setting_change` {setting, value} · `share_result` {source} (counted when the button is used)
   - The privacy page discloses these. Add a new event only if it follows the same rule and is added there.
@@ -153,12 +158,12 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Confirm the events arrive: GA4 → Reports → Realtime, finish a test on freetyper.com and look for `test_complete` under “Event count by Event name” (DebugView with the GA Debugger extension shows the parameters).
 - [ ] **[A]** Set up **Bing Webmaster Tools** (free): import the site from Search Console, submit `sitemap.xml`, read its queries. Bing is ~70 % of traffic.
 - [ ] **[A]** Search Console: **resubmit the sitemap** (23 URLs) and **request indexing** for `/`, `/blog`, the 6 tool pages and the 10 posts.
-- [ ] **[A]** GA4, once each event has appeared at least once (register the custom definitions first — they are not retroactive): Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`.
+- [ ] **[A]** GA4, once each event has appeared at least once (register the custom definitions first — they are not retroactive): Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `passed`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`, `lesson_number`, `attempt`.
 - [ ] **[A]** Publish 1 sourced post a week; share honestly (Reddit r/typing, Show HN, Product Hunt); look for a few real links.
 - [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) so progress can be compared.
 
 **Next — product work the data supports**
-- [ ] **[C]** Proposal for a **longer lessons course** (lessons are the 2nd most visited page and hold people for ~157 s): shift/capitals, punctuation, numbers, left/right-hand drills. Includes the **95 % accuracy gate** decision.
+- [x] Longer lessons course (34 lessons, 95 % gate) built on `feat/lessons-course` — review, then merge and deploy. Afterwards watch `lesson_attempt` (pass rate per lesson) in GA4 to find lessons that are too hard.
 - [ ] **[C]** A clear, printable **touch-typing finger chart** (people already search “keyboard finger chart / touch typing diagram”; the keyboard guide ranks ~position 47–73 for it).
 - [ ] **[C]** Preset **duration pages** (e.g. 1-minute, 5-minute test) as real working tools with a short unique intro — only after pages are being indexed, and never thin duplicates.
 - [ ] **[C]** Save the browser checks as **Playwright tests** in `tests/` (speed run, finger labels, Word Attack progress, Falling Words speed, hydration, sticky rails, touch input, GA4 events, redirects).
@@ -170,7 +175,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - Accounts, leaderboards, multiplayer races, Dvorak/Colemak, more games, progress export/import, ease Falling Words tiers 7–10, more than 20 practice passages.
 - Cleanup: ~57 older lint errors · delete `content-dates.ts` · unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`).
 
-**Recently done (2026-10-03/04):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events.
+**Recently done (2026-10-03/04):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (branch, not deployed yet).
 
 ## 9. Gotchas
 - **Sidebars:** keep `md:sticky md:top-0 md:h-screen md:self-start` on both asides. `h-auto` or `min-h-screen` stretches them in the flex row and breaks sticky.
