@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
+import { trackEvent } from '@/lib/analytics';
 
 export type FontSize = 'small' | 'default' | 'large';
 export type KeyboardLayout = 'qwerty';
@@ -128,6 +129,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
 
   const updateSetting = useCallback(<K extends keyof UserSettings>(key: K, value: UserSettings[K]) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
+    trackEvent('setting_change', { setting: key, value: String(value) });
   }, []);
 
   return (

@@ -6,6 +6,7 @@ import { Play, Heart, ArrowDown } from 'lucide-react';
 import { fallingWordsTiers, getRandomWords, getWordDifficulty, scoringRules } from './gameData';
 import { useTypingProgress } from './useTypingProgress';
 import { useKeySound } from './useKeySound';
+import { trackEvent } from '@/lib/analytics';
 import GameFeedback, {
   fallingCoachNote,
   loadGameLog,
@@ -103,6 +104,13 @@ export default function FallingWordsGame() {
     const accuracy = attempts > 0 ? Math.round((hits / attempts) * 100) : 0;
 
     setWpm(finalWpm);
+    trackEvent('game_complete', {
+      game: 'falling_words',
+      score: scoreRef.current,
+      wpm: finalWpm,
+      accuracy,
+      level: tierRef.current + 1,
+    });
 
     if (scoreRef.current > highScore) {
       setHighScore(scoreRef.current);

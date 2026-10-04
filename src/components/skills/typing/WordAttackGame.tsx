@@ -6,6 +6,7 @@ import { Play, Zap, Clock, Crosshair } from 'lucide-react';
 import { wordAttackRounds, getRandomWords, getWordDifficulty, scoringRules } from './gameData';
 import { useTypingProgress } from './useTypingProgress';
 import { useKeySound } from './useKeySound';
+import { trackEvent } from '@/lib/analytics';
 import GameFeedback, {
   attackCoachNote,
   loadGameLog,
@@ -236,8 +237,22 @@ export default function WordAttackGame() {
       activeMsRef.current += performance.now() - segmentStartRef.current;
       segmentStartRef.current = 0;
     }
-    saveRun();
+    const entry = saveRun();
     const last = currentRoundRef.current >= wordAttackRounds.length - 1;
+    trackEvent('game_round_complete', {
+      game: 'word_attack',
+      round: currentRoundRef.current + 1,
+      score: scoreRef.current,
+    });
+    if (last) {
+      trackEvent('game_complete', {
+        game: 'word_attack',
+        score: scoreRef.current,
+        wpm: entry.wpm,
+        accuracy: entry.accuracy,
+        level: currentRoundRef.current + 1,
+      });
+    }
     setGameState(last ? 'gameover' : 'round-end');
   }, [saveRun, stopTimer]);
 

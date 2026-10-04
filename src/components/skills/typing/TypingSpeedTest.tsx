@@ -11,6 +11,7 @@ import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import { useKeySound } from './useKeySound';
+import { trackEvent } from '@/lib/analytics';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import PracticeFeedback, {
   speedTestCoachNote,
@@ -136,6 +137,12 @@ export default function TypingSpeedTest() {
       modeDetail: `${mode} · ${secs}s`,
     };
     addSession(updated);
+    trackEvent('test_complete', {
+      duration_s: secs,
+      text_mode: mode,
+      wpm: session.wpm,
+      accuracy: session.accuracy,
+    });
     setResult(updated);
     setLog((prev) => {
       const entry: PracticeLogEntry = {
@@ -396,6 +403,8 @@ export default function TypingSpeedTest() {
     const run = log[0];
     if (!run) return;
     const text = `${run.wpm} WPM · ${run.accuracy}% accuracy — FreeTyper`;
+    // Counted when the button is used, even if the browser blocks clipboard access.
+    trackEvent('share_result', { source: 'speed_test' });
     try {
       await navigator.clipboard.writeText(text);
       setCopied(true);

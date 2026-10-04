@@ -12,7 +12,7 @@ export default function PrivacyPage() {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       <h1 className="text-3xl font-bold text-text-bright">Privacy Policy</h1>
-      <p className="mt-2 text-sm text-text-dim">Last updated: September 2026</p>
+      <p className="mt-2 text-sm text-text-dim">Last updated: October 2026</p>
 
       <div className="mt-8 space-y-8 text-text leading-relaxed">
         <section>
@@ -41,6 +41,12 @@ export default function PrivacyPage() {
             We use Google Analytics 4 to measure visits (pages, approximate country, device type,
             session length). Google processes this on our behalf. It is not tied to a FreeTyper
             login because we do not have logins.
+          </p>
+          <p className="mt-2">
+            We also send a few anonymous usage events to Analytics so we can see which tools are
+            used: for example that a test, lesson, practice run or game was finished, with its
+            length, WPM and accuracy numbers, and which setting was changed. We never send what you
+            type.
           </p>
           <p className="mt-2 text-text-dim">
             You can block Analytics with a browser extension or Google&apos;s own opt-out tools.

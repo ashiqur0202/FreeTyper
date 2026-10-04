@@ -9,6 +9,7 @@ import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import { useKeySound } from './useKeySound';
+import { trackEvent } from '@/lib/analytics';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import PracticeFeedback, {
   lessonCoachNote,
@@ -116,6 +117,12 @@ export default function TypingLessons() {
       modeDetail: current.name,
     };
     addSession(updated);
+    trackEvent('lesson_complete', {
+      lesson_number: idx + 1,
+      lesson: current.name,
+      wpm: session.wpm,
+      accuracy: session.accuracy,
+    });
     setResult(updated);
     setLog((prev) => {
       const entry: PracticeLogEntry = {
