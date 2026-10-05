@@ -87,7 +87,7 @@ export const previewHtml = `
   <span>Last updated <time datetime="2026-10-06">October 6, 2026</time></span>
   <span>~9 min read</span>
 </p>
-<p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 10 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
+<p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
 <p>This page explains exactly how those numbers are calculated, so you can judge whether to trust them, what counts as a good typing speed, and how to get a reading that is repeatable instead of a lucky or unlucky single run.</p>
 `;
 
@@ -138,15 +138,15 @@ export const bodyHtml = `
 <p>Read accuracy before you read speed. Below 95%, the test tells you to hold accuracy before chasing speed. Below 88%, it calls the run "not a real score," because that WPM was bought with errors that would have to be fixed or would end up in your work.</p>
 
 <h2 id="the-speed-graph-and-weak-spots">The speed graph, consistency and weak spots</h2>
-<p>Runs of 10 seconds or longer also get a graph under the headline numbers, and the result card adds a consistency score and a short list of weak spots.</p>
+<p>Runs of 5 seconds or longer also get a graph under the headline numbers, and the result card adds a consistency score and a short list of weak spots.</p>
 <ul>
-<li><strong>The gold line is your speed over time</strong>: the WPM of your correct keystrokes, smoothed over about five seconds. The dashed grey line is your raw speed, which counts every key you pressed, smoothed over about three seconds. A wide gap between the two means mistakes are costing you speed.</li>
+<li><strong>The gold line is your speed over time</strong>: the WPM of your correct keystrokes, smoothed over about five seconds (three on runs under 20 seconds). The dashed grey line is your raw speed, which counts every key you pressed, smoothed over about three seconds. A wide gap between the two means mistakes are costing you speed.</li>
 <li><strong>Red dots mark seconds with mistakes</strong>, a larger dot for two or more in the same second. Your fastest point is labelled, and a ring marks where the run ended. Hover or touch the graph, or use the arrow keys, to read one moment.</li>
 <li><strong>It counts keystrokes, not the final text.</strong> A mistake you later corrected with Backspace still appears on the graph, while your net WPM and accuracy above use the rules described earlier. The two will not always agree exactly, and that is expected.</li>
 <li><strong>Consistency</strong> is 100 minus how much your per-second speed varied, measured as the standard deviation divided by the average, in percent, between your first and last key. Steady typing scores high; bursts and stalls score low. It is our own measure, so do not compare it with numbers from other sites.</li>
 <li><strong>Weak spots</strong> lists up to four things from this run: keys you got wrong at least twice, and letter pairs that took at least 1.5 times your median pair for the run and at least 120 ms. Pairs are only judged once five different pairs were each typed twice with a clean timing. The "drill these" button opens the adaptive tab on the <a href="/typing-practice">practice page</a>.</li>
 </ul>
-<p>Only your latest five runs in each tool keep their graph, in your browser; the long progress history stores just the totals. Runs saved before this feature, and runs under 10 seconds, show the card without a graph. A very long run is reduced to at most 120 points on the graph.</p>
+<p>Only your latest five runs in each tool keep their graph, in your browser; the long progress history stores just the totals. Runs saved before this feature, and runs under 5 seconds, show the card without a graph. A very long run is reduced to at most 120 points on the graph.</p>
 
 <h2 id="what-is-a-good-typing-speed">What is a good typing speed, and what is the average?</h2>
 <p>The average typing speed depends on who you ask and how they were measured. The most useful reference we know of is a large academic study, <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018). It recorded 168,000 volunteers copying sentences on a keyboard. Its reported figures:</p>

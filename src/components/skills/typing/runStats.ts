@@ -13,9 +13,13 @@ import type { RunDetail, RunSpot } from './types';
 /** The curve is reduced to at most this many points so saved runs stay small. */
 export const MAX_POINTS = 120;
 /** Runs shorter than this get no graph. */
-export const MIN_GRAPH_SECONDS = 10;
+export const MIN_GRAPH_SECONDS = 5;
+/** Smoothing windows in seconds; runs under 20 s use shorter ones so a short run still shows its shape. */
 const SPEED_WINDOW = 5;
 const RAW_WINDOW = 3;
+const SHORT_RUN_SECONDS = 20;
+const SHORT_SPEED_WINDOW = 3;
+const SHORT_RAW_WINDOW = 2;
 /** A letter pair is "slow" when it is this many times slower than this run's median pair. */
 const SLOW_FACTOR = 1.5;
 const SLOW_MIN_MS = 120;
@@ -153,9 +157,10 @@ export function createRecorder(): Recorder {
         for (const s of slow) spots.push({ kind: 'pair', label: s.pair, detail: `${Math.round(s.ms)} ms` });
       }
 
+      const short = seconds < SHORT_RUN_SECONDS;
       return {
-        speed: shrink(rolling(correctWpm, SPEED_WINDOW), MAX_POINTS).map((v) => Math.round(v)),
-        raw: shrink(rolling(rawWpm, RAW_WINDOW), MAX_POINTS).map((v) => Math.round(v)),
+        speed: shrink(rolling(correctWpm, short ? SHORT_SPEED_WINDOW : SPEED_WINDOW), MAX_POINTS).map((v) => Math.round(v)),
+        raw: shrink(rolling(rawWpm, short ? SHORT_RAW_WINDOW : RAW_WINDOW), MAX_POINTS).map((v) => Math.round(v)),
         errors: shrink(errsPer, MAX_POINTS, true),
         seconds,
         consistency: consistencyOf(active),

@@ -116,7 +116,7 @@ export const bodyHtml = `
 <li><strong>Signs on the numbered buttons.</strong> A tick means passed, a skip icon means you moved on anyway, and a padlock means locked.</li>
 <li><strong>A live keyboard.</strong> The next key pulses (you can switch that off in Settings), the key you press flashes green when right and red when wrong, and keys outside the current lesson are dimmed. When a capital or a shifted symbol is next, the key and the Shift key on the opposite hand are both highlighted.</li>
 <li><strong>Same scoring as the speed test.</strong> WPM counts five characters as a word, accuracy is correct characters out of characters typed, and Backspace removes the character you step back over. The <a href="/">typing speed test guide</a> explains this in full.</li>
-<li><strong>Your last five lesson runs</strong> are listed under the keyboard, newest first, with a short coach note on each. The newest one is a result card; for runs of 10 seconds or longer it includes a graph of your speed, a consistency score and the keys or letter pairs that went wrong, as described in the <a href="/">typing speed test guide</a>. Every attempt also counts as a session in your <a href="/typing-progress">progress</a>.
+<li><strong>Your last five lesson runs</strong> are listed under the keyboard, newest first, with a short coach note on each. The newest one is a result card; for runs of 5 seconds or longer it includes a graph of your speed, a consistency score and the keys or letter pairs that went wrong, as described in the <a href="/">typing speed test guide</a>. Every attempt also counts as a session in your <a href="/typing-progress">progress</a>.
 </ul>
 
 <h2 id="how-to-learn-touch-typing-with-these-lessons">How to learn touch typing with this course</h2>
