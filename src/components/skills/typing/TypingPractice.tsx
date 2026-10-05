@@ -6,7 +6,7 @@ import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
 import { recordPair, getPairStore, weakPairsOf } from './pairStats';
 import { generatePairDrill, generateKeyDrill } from './pairDrill';
-import { scoreLetters, type LetterScore } from './letterStats';
+import { scoreLetters, summarize, pickFocus, MIN_JUDGED_TO_ADAPT, type LetterScore, type LetterLevel } from './letterStats';
 import LetterRow from './LetterRow';
 import { COURSE_WORDS } from './courseWords';
 import { practiceTexts } from './typingData';
@@ -22,14 +22,26 @@ import PracticeFeedback, {
 } from './PracticeFeedback';
 import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 
-type Category = 'quotes' | 'news' | 'code' | 'fun' | 'weak';
+type Category = 'adaptive' | 'quotes' | 'news' | 'code' | 'fun';
+
+type AdaptiveInfo = {
+  kind: 'warmup' | 'auto' | 'pairs' | 'mixed' | 'manual';
+  key?: string;
+  reason?: 'weak' | 'new';
+  level?: LetterLevel;
+  items: string[];
+};
+
+function randomWords(count: number): string {
+  return Array.from({ length: count }, () => COURSE_WORDS[Math.floor(Math.random() * COURSE_WORDS.length)]).join(' ');
+}
 
 const CATEGORIES: { id: Category; label: string }[] = [
+  { id: 'adaptive', label: 'adaptive' },
   { id: 'quotes', label: 'quotes' },
   { id: 'news', label: 'news' },
   { id: 'code', label: 'code' },
   { id: 'fun', label: 'fun' },
-  { id: 'weak', label: 'weak keys' },
 ];
 
 const LOG_KEY = 'freetyper-practice-log';
@@ -59,7 +71,7 @@ function loadPracticeLog(): PracticeLogEntry[] {
 }
 
 export default function TypingPractice() {
-  const [category, setCategory] = useState<Category>('quotes');
+  const [category, setCategory] = useState<Category>('adaptive');
   const [text, setText] = useState('');
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
@@ -68,7 +80,7 @@ export default function TypingPractice() {
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
   const [lineHeight, setLineHeight] = useState(0);
-  const [weakFocus, setWeakFocus] = useState<{ kind: 'pairs' | 'keys' | 'key'; items: string[] } | null>(null);
+  const [weakFocus, setWeakFocus] = useState<AdaptiveInfo | null>(null);
   const [letterScores, setLetterScores] = useState<LetterScore[]>([]);
   const [focusKey, setFocusKey] = useState<string | null>(null);
 
@@ -80,7 +92,7 @@ export default function TypingPractice() {
   const categoryRef = useRef(category);
   categoryRef.current = category;
 
-  const { progress, addSession, updateKeyStats, checkAchievements, getWeakKeys } = useTypingProgress();
+  const { progress, addSession, updateKeyStats, checkAchievements } = useTypingProgress();
   const focusKeyRef = useRef<string | null>(null);
   const keyStatsRef = useRef(progress.keyStats);
   useEffect(() => {
@@ -89,49 +101,47 @@ export default function TypingPractice() {
 
   const generateText = useCallback(
     (cat: Category) => {
-      if (cat !== 'weak') {
+      if (cat !== 'adaptive') {
         setWeakFocus(null);
       } else {
-        // 0. A letter picked in the row above.
+        const store = getPairStore();
+        const weakPairs = weakPairsOf(store, 10).map((p) => p.pair);
+        // A letter picked by hand in the row above.
         const picked = focusKeyRef.current;
         if (picked) {
-          const drill = generateKeyDrill(picked, weakPairsOf(getPairStore(), 10).map((p) => p.pair));
-          setWeakFocus({ kind: 'key', items: [picked] });
+          setWeakFocus({ kind: 'manual', key: picked, items: weakPairs.filter((p) => p[1] === picked) });
+          return generateKeyDrill(picked, weakPairs).text;
+        }
+        const scores = scoreLetters(keyStatsRef.current, store);
+        // Not enough data yet: common words that use every letter, so the data can build up.
+        if (summarize(scores).judged < MIN_JUDGED_TO_ADAPT) {
+          setWeakFocus({ kind: 'warmup', items: [] });
+          return randomWords(40);
+        }
+        // The worst key that is not good yet, or the next key to introduce.
+        const focus = pickFocus(scores);
+        if (focus) {
+          const drill = generateKeyDrill(focus.key, weakPairs);
+          setWeakFocus({ kind: 'auto', key: focus.key, reason: focus.reason, level: focus.level, items: drill.pairs });
           return drill.text;
         }
-        // 1. Letter pairs you are slow or error-prone on (needs enough typing).
-        const pairs = weakPairsOf(getPairStore());
-        if (pairs.length > 0) {
-          const drill = generatePairDrill(pairs.map((p) => p.pair));
+        // Every key is good: your slowest pairs, or a general mix.
+        if (weakPairs.length > 0) {
+          const drill = generatePairDrill(weakPairs.slice(0, 5));
           setWeakFocus({ kind: 'pairs', items: drill.pairs });
           return drill.text;
         }
-        // 2. Single keys with the lowest accuracy.
-        const weak = getWeakKeys();
-        if (weak.length > 0) {
-          const weakChars = weak.map((k) => k.key);
-          const focused = COURSE_WORDS.filter((w) => weakChars.some((c) => w.includes(c)));
-          const pool = focused.length > 5 ? focused : COURSE_WORDS;
-          const words: string[] = [];
-          for (let i = 0; i < 40; i++) {
-            words.push(pool[Math.floor(Math.random() * pool.length)]);
-          }
-          setWeakFocus({ kind: 'keys', items: weakChars });
-          return words.join(' ');
-        }
-        // 3. Not enough data yet: a normal passage.
-        setWeakFocus(null);
-        const random = practiceTexts[Math.floor(Math.random() * practiceTexts.length)];
-        return random.text;
+        setWeakFocus({ kind: 'mixed', items: [] });
+        return randomWords(40);
       }
       const pool = practiceTexts.filter((p) => p.category === cat);
       if (pool.length === 0) return practiceTexts[0].text;
       return pool[Math.floor(Math.random() * pool.length)].text;
     },
-    [getWeakKeys],
+    [],
   );
 
-  // Avoid regenerating text on every keystroke when getWeakKeys identity changes.
+  // Keep the latest generator in a ref so effects do not re-run when it changes.
   const generateTextRef = useRef(generateText);
   useEffect(() => {
     generateTextRef.current = generateText;
@@ -139,7 +149,7 @@ export default function TypingPractice() {
 
   useEffect(() => {
     setMounted(true);
-    setText(generateTextRef.current('quotes'));
+    setText(generateTextRef.current('adaptive'));
     setLog(loadPracticeLog());
   }, []);
 
@@ -342,7 +352,7 @@ export default function TypingPractice() {
     focusKeyRef.current = null;
     setFocusKey(null);
     if (cat === category) {
-      if (cat === 'weak') nextTextRef.current();
+      if (cat === 'adaptive') nextTextRef.current();
       return;
     }
     setCategory(cat);
@@ -354,8 +364,8 @@ export default function TypingPractice() {
     if (isRunningRef.current) return;
     focusKeyRef.current = key;
     setFocusKey(key);
-    if (category !== 'weak') {
-      setCategory('weak');
+    if (category !== 'adaptive') {
+      setCategory('adaptive');
       setResult(null);
     } else {
       nextTextRef.current();
@@ -421,39 +431,54 @@ export default function TypingPractice() {
 
           <LetterRow scores={letterScores} activeKey={focusKey} disabled={isRunning} onPick={pickKey} />
 
-          {category === 'weak' && (
-            <p className="mb-3 text-xs leading-relaxed text-text-dim" data-weak-focus={weakFocus?.kind ?? 'none'}>
-              {weakFocus?.kind === 'key' ? (
+          {category === 'adaptive' && weakFocus && (
+            <p className="mb-3 text-xs leading-relaxed text-text-dim" data-weak-focus={weakFocus.kind}>
+              {weakFocus.kind === 'warmup' && (
+                <>Adaptive practice is warming up with common words that use every letter, so it can learn which keys and letter pairs slow you down. Pick any tab above to practise something else.</>
+              )}
+              {weakFocus.kind === 'auto' && (
+                <>
+                  {weakFocus.reason === 'new' ? 'Next key to learn: ' : `Your ${weakFocus.level === 'bad' ? 'weakest' : weakFocus.level === 'weak' ? 'weak' : 'next'} key: `}
+                  <kbd className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
+                    {weakFocus.key}
+                  </kbd>
+                  {weakFocus.items.length > 0 && (
+                    <>
+                      {' '}with its slow pairs{' '}
+                      {weakFocus.items.map((p) => (
+                        <kbd key={p} className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-accent">
+                          {p}
+                        </kbd>
+                      ))}
+                    </>
+                  )}
+                  . It moves on by itself once this key is good.
+                </>
+              )}
+              {weakFocus.kind === 'manual' && (
                 <>
                   Drilling the key{' '}
                   <kbd className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
-                    {weakFocus.items[0]}
+                    {weakFocus.key}
                   </kbd>
                   in real words.{' '}
-                  <button type="button" onClick={() => changeCategory('weak')} className="text-accent hover:underline">
-                    drill my weakest instead
+                  <button type="button" onClick={() => changeCategory('adaptive')} className="text-accent hover:underline">
+                    back to adaptive
                   </button>
                 </>
-              ) : weakFocus?.kind === 'pairs' ? (
+              )}
+              {weakFocus.kind === 'pairs' && (
                 <>
-                  Drilling your slowest or least accurate letter pairs:{' '}
+                  Every key you have typed enough is good. Drilling your slowest letter pairs:{' '}
                   {weakFocus.items.map((p) => (
                     <kbd key={p} className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-accent">
                       {p}
                     </kbd>
                   ))}
                 </>
-              ) : weakFocus?.kind === 'keys' ? (
-                <>
-                  Not enough pair data yet, so this drill uses your least accurate keys:{' '}
-                  {weakFocus.items.map((k) => (
-                    <kbd key={k} className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
-                      {k}
-                    </kbd>
-                  ))}
-                </>
-              ) : (
-                <>Type a few more runs and this drill will target your weak letter pairs. Until then you get a normal passage.</>
+              )}
+              {weakFocus.kind === 'mixed' && (
+                <>Every key you have typed enough is good and no letter pair stands out. Keep going, or pick a letter above to drill it.</>
               )}
             </p>
           )}
@@ -536,7 +561,7 @@ export default function TypingPractice() {
           <PracticeFeedback
             log={log}
             currentCategory={category}
-            onTryWeakKeys={() => changeCategory('weak')}
+            onTryWeakKeys={() => changeCategory('adaptive')}
           />
         </div>
     </div>

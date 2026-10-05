@@ -2,8 +2,8 @@
  * Guide content for /typing-practice.
  *
  * Describes `TypingPractice.tsx`, `typingData.ts` (`practiceTexts`),
- * `useTypingProgress.ts` (`getWeakKeys`) and the practice coach in
- * `PracticeFeedback.tsx`. If categories, passage counts or the weak-key logic
+ * `useTypingProgress.ts`, `letterStats.ts`, `pairStats.ts`, `pairDrill.ts` and the practice coach in
+ * `PracticeFeedback.tsx`. If categories, passage counts or the adaptive logic
  * change, update this file in the same commit.
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
@@ -26,17 +26,17 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'What is the best way to practice typing?',
     answer:
-      'Keep your accuracy at 95 percent or higher, keep your eyes on the text, and only speed up once your runs are clean. Rotate between categories so you are not memorizing one passage, and use the weak-key drill when the same few keys keep costing you errors.',
+      'Keep your accuracy at 95 percent or higher, keep your eyes on the text, and only speed up once your runs are clean. Rotate between categories so you are not memorizing one passage, and let the adaptive tab handle the keys that keep costing you errors.',
   },
   {
     question: 'Which practice category should I start with?',
     answer:
-      'Start with quotes. They are short, written in normal prose with capital letters and punctuation, and they are the closest to everyday typing. Move to news for slightly longer passages, code if you program, and fun for longer trivia passages.',
+      'Stay on the adaptive tab, which is the default. It starts with plain common words and, once it has seen enough of your typing, drills the key you are weakest on. Switch to quotes for normal prose with capital letters and punctuation, news for slightly longer passages, code if you program, and fun for longer trivia passages.',
   },
   {
-    question: 'How does the weak-key drill choose its words?',
+    question: 'How does adaptive practice choose what to drill?',
     answer:
-      'FreeTyper records which letter pairs you type, like th or er, how often you get each pair wrong and how long it takes you. Pairs with at least five samples are scored, and the weakest few are drilled with 40 common English words that contain them. Speed is compared only with your own typical pair, so a slow typist is not marked weak everywhere. Until there are enough pairs, the drill uses your least accurate single keys, and with no data at all it gives you a normal passage.',
+      'FreeTyper records every key you press and which letter pairs you type, such as th or er, with how often each goes wrong and how long it takes. Each letter gets a score from its error rate and its speed compared with your own typical letter. Adaptive practice drills the worst letter that is not good yet, using real words that contain it and extra weight on its slow pairs. When that letter is good it moves to the next one, then to keys you have hardly typed. Until it has enough data you get plain common words. All of this stays in your browser.',
   },
   {
     question: 'Is typing practice timed?',
@@ -51,7 +51,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Why do I keep seeing the same passages?',
     answer:
-      'The quotes, news, code and fun categories each hold five built-in passages, twenty in all, and the next passage is chosen at random from the category you picked. Repeats are expected. The weak-key drill is generated fresh every time, so it does not repeat in the same way.',
+      'The quotes, news, code and fun categories each hold five built-in passages, twenty in all, and the next passage is chosen at random from the category you picked. Repeats are expected. The adaptive drill is generated fresh every time, so it does not repeat in the same way.',
   },
   {
     question: 'Does typing practice count toward my progress?',
@@ -66,7 +66,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Is typing practice on FreeTyper free?',
     answer:
-      'Yes. All categories and the weak-key drill are free, with no account and no email address needed.',
+      'Yes. All categories and adaptive practice are free, with no account and no email address needed.',
   },
 ];
 
@@ -75,48 +75,51 @@ const faqHtml = faqs
   .join('\n');
 
 export const previewHtml = `
-<h2>Free Typing Practice — Quotes, News, Code and Weak-Key Drills</h2>
+<h2>Free Typing Practice — Adaptive Drills, Quotes, News and Code</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
   <span>Last updated <time datetime="2026-10-05">October 5, 2026</time></span>
   <span>~6 min read</span>
 </p>
-<p>This free typing practice page gives you a short passage to type, scores it when you finish, and immediately loads the next one so you can keep going. You choose the kind of text: quotes, news-style passages, code snippets or fun facts. A fifth option, weak keys, builds a drill from the letter pairs and keys you are slowest or least accurate on.</p>
-<p>Below is how practice works here, what each category contains, exactly how the weak-key drill picks its words, and how to practice in a way that improves your accuracy as well as your speed.</p>
+<p>This free typing practice page gives you a short passage to type, scores it when you finish, and immediately loads the next one so you can keep going. You choose the kind of text: quotes, news-style passages, code snippets or fun facts. The first tab, adaptive, is the default: it builds each drill from the keys and letter pairs you are slowest or least accurate on.</p>
+<p>Below is how practice works here, what each category contains, exactly how adaptive practice decides what to drill, and how to practice in a way that improves your accuracy as well as your speed.</p>
 `;
 
 export const bodyHtml = `
 <h2 id="how-typing-practice-works">How typing practice works here</h2>
 <ul>
-<li><strong>Pick a category</strong> with the pills at the top: quotes, news, code, fun or weak keys. They are locked while a run is in progress.</li>
+<li><strong>Pick a category</strong> with the tabs at the top: adaptive (the default), quotes, news, code or fun. They are locked while a run is in progress.</li>
 <li><strong>Type the passage.</strong> Practice is not timed. The run ends when you reach the end of the passage, and your WPM is measured over the time you took.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and you carry on, or press Backspace to step back. Scoring works exactly as in the <a href="/">typing speed test</a>: five characters make a word, and Backspace removes the character you step back over.</li>
 <li><strong>The next passage loads straight away</strong> so you can type again with no extra click. While a run is in progress, small buttons let you swap to a different passage or restart.</li>
 <li><strong>Your last five runs</strong> are listed under the keyboard, newest first, each with a short coach note.</li>
 </ul>
 
-<h2 id="practice-categories">The five practice categories</h2>
+<h2 id="practice-categories">The five practice tabs</h2>
 <table>
-<thead><tr><th>Category</th><th>What it contains</th><th>Passage length</th></tr></thead>
+<thead><tr><th>Tab</th><th>What it contains</th><th>Passage length</th></tr></thead>
 <tbody>
+<tr><td>Adaptive</td><td>A 40-word drill generated from your own key and pair data</td><td>40 words</td></tr>
 <tr><td>Quotes</td><td>Five short quotations, with capital letters and punctuation</td><td>about 12–31 words</td></tr>
 <tr><td>News</td><td>Five news-style passages on technology, space, climate, health and privacy</td><td>about 24–30 words</td></tr>
 <tr><td>Code</td><td>Five snippets: a React component, Python, TypeScript, SQL and CSS</td><td>about 23–30 words</td></tr>
 <tr><td>Fun</td><td>Five trivia passages, such as facts about octopuses, honey and keyboard history</td><td>about 36–41 words</td></tr>
-<tr><td>Weak keys</td><td>A 40-word drill generated from your own pair and key data</td><td>40 words</td></tr>
 </tbody>
 </table>
-<p>That is twenty built-in passages in the first four categories, and the next one is picked at random from the category you chose. You will see repeats, and that is a limit of the current text library, not a bug. Because the passages are short, a single run is a noisy measure of speed; average several runs before you draw conclusions.</p>
+<p>That is twenty built-in passages in the quotes, news, code and fun tabs, and the next one is picked at random from the category you chose. You will see repeats, and that is a limit of the current text library, not a bug. Because the passages are short, a single run is a noisy measure of speed; average several runs before you draw conclusions.</p>
 
-<h2 id="how-weak-key-drills-work">How the weak-key drill works</h2>
+<h2 id="how-adaptive-practice-works">How adaptive practice works</h2>
 <ol>
-<li><strong>Every letter that follows another letter is recorded as a pair.</strong> Typing "the" records "th" and "he". For each pair FreeTyper keeps how many times you typed it, how many of those were wrong, and the time between the two keystrokes. Spaces, digits and punctuation are not recorded as pairs, and capital and lowercase letters count as the same.</li>
-<li><strong>Only clean timings count.</strong> A time is kept only when the key was right and came within about two seconds of the previous key. A pause, or the key right after a Backspace, adds an error or a sample but no timing.</li>
-<li><strong>Each pair gets a score.</strong> It is four times your recent error rate, plus how much slower the pair is than your own median pair (nothing is added if it is typical or faster). So a pair you miss 10% of the time scores 0.4, and one that takes twice your typical time scores 1.0. Recent typing weighs more than old typing, so a pair you have fixed drops out. A pair needs at least five samples and a score of 0.3 to be listed.</li>
-<li><strong>The drill uses real words.</strong> FreeTyper picks 40 words from a list of about 890 common English words. Each weak pair is guaranteed its own words first, and the rest are chosen at random, with words holding more or weaker pairs more likely. A pair that almost no word contains gets a short repeated chunk instead. The same word never appears twice in a row.</li>
-<li><strong>Fallbacks.</strong> If there are not enough pairs yet, the drill uses your five least accurate single keys (at least five presses each) and says so above the text. With no data at all you get a normal passage.</li>
+<li><strong>Warm-up.</strong> At first there is nothing to adapt to, so you get 40 plain common words that use every letter. Once at least eight letters have been pressed ten times, adaptive practice has something to judge.</li>
+<li><strong>It picks one key.</strong> Each letter gets the score described under the letter row below. Adaptive practice drills the worst letter that is not yet good (okay, weak or weakest). A line above the text names the key. When that key becomes good, the next run automatically moves to the next one.</li>
+<li><strong>New keys come last.</strong> When every key you have typed enough is good, it introduces the most common letter you have hardly typed, in the order e, t, a, o, i, n, s, h, r and so on.</li>
+<li><strong>The drill uses real words.</strong> FreeTyper picks 40 words from a list of about 890 common English words that contain the key, with extra weight on words holding one of your slow or error-prone letter pairs that end in it. A letter that almost no word contains gets a short repeated chunk. The same word never appears twice in a row.</li>
+<li><strong>When everything is good.</strong> It drills your slowest letter pairs, or says that nothing stands out and gives you a general mix.</li>
 </ol>
-<p>The pairs and their timings stay in this browser, are never sent to a server, and are cleared when you reset progress on the <a href="/typing-progress">progress page</a>, which also lists your weakest pairs. The method is our own and is not a validated training program. It finds pairs you are slow or error-prone on and gives you words that contain them. Use the <a href="/keyboard-guide">keyboard guide</a> if a pair keeps failing and you are not sure which fingers type it.</p>
+<h3>Letter pairs</h3>
+<p>Every letter that follows another letter is recorded as a pair. Typing "the" records "th" and "he". For each pair FreeTyper keeps how many times you typed it, how many were wrong, and the time between the two keystrokes. Spaces, digits and punctuation are not recorded as pairs, and capital and lowercase letters count as the same. A time is kept only when the key was right and came within about two seconds of the previous key, so a pause, or the key right after a Backspace, adds an error or a sample but no timing.</p>
+<p>A pair's score is four times your recent error rate plus how much slower it is than your own median pair (nothing is added if it is typical or faster). A pair you miss 10% of the time scores 0.4, and one that takes twice your typical time scores 1.0. Recent typing weighs more than old typing, so a pair you have fixed drops out. A pair needs at least five samples and a score of 0.3 to be listed, and the weakest five are shown on the <a href="/typing-progress">progress page</a>.</p>
+<p>The keys and pairs, with their timings, stay in this browser, are never sent to a server, and are cleared when you reset progress. Typing in any tab counts, including quotes, news, code, the speed test and the lessons, so adaptive practice learns from all of your typing. The games count key presses but not timing. The method is our own and is not a validated training program. Use the <a href="/keyboard-guide">keyboard guide</a> if a key keeps failing and you are not sure which finger types it.</p>
 
 <h2 id="the-letter-row">The letter row</h2>
 <p>Under the category tabs is a row of 26 boxes, one per letter. Each box is coloured from your own typing history, so it shows at a glance which keys are solid and which are not:</p>
@@ -131,12 +134,12 @@ export const bodyHtml = `
 </tbody>
 </table>
 <p>The score is four times the key's error rate, plus how much slower you are into that letter than into your typical letter. The speed part comes from the letter-pair timings described above (the average time of the pairs that end in the letter) and is left out until enough pairs have timings. A key you hit accurately but slowly can therefore show as weak, which accuracy alone would miss. The short bar at the bottom of each box is longer for a cleaner, faster key, so the row still works if you cannot tell the colours apart. Hover or focus a box for its accuracy, average time and number of presses.</p>
-<p>Click a letter to drill it: you get 40 real words that contain that letter, with extra weight on words holding one of your weak pairs that end in it. The same letter keeps being drilled after each run until you pick another letter, choose another tab, or press "drill my weakest instead". Letters are locked while a run is in progress. Only letters a to z are shown; digits and punctuation are counted in your key statistics but have no box yet.</p>
+<p>Click a letter to drill it by hand: you get 40 real words that contain that letter, with extra weight on words holding one of your weak pairs that end in it. The same letter keeps being drilled after each run until you pick another letter, choose another tab, or press "back to adaptive". Letters are locked while a run is in progress. Only letters a to z are shown; digits and punctuation are counted in your key statistics but have no box yet.</p>
 
 <h2 id="practice-vs-lessons-vs-speed-test">Practice, lessons or speed test: which should you use?</h2>
 <ul>
 <li><a href="/typing-lessons">Lessons</a> teach the keyboard in order, from the home row up. Use them if you are learning to touch type.</li>
-<li><strong>Practice</strong> is free choice with real text. Use it once you know the keys and want volume, or to work on weak keys.</li>
+<li><strong>Practice</strong> is free choice with real text. Use it once you know the keys and want volume. The adaptive tab works on your weak keys.</li>
 <li>The <a href="/">speed test</a> is for measuring. It runs for a fixed time and gives you net and gross WPM, so use it to check progress, not to train.</li>
 </ul>
 
@@ -147,16 +150,16 @@ export const bodyHtml = `
 <li><strong>Keep your eyes on the text.</strong> If you keep glancing down, go back to the <a href="/typing-lessons">lessons</a> for a while.</li>
 <li><strong>Do a few clean runs, then add speed.</strong> The coach starts suggesting more speed once you string together clean runs.</li>
 <li><strong>Rotate categories.</strong> Start with quotes, then mix in news and code. Do not compare WPM across categories: code is slower than prose for nearly everyone.</li>
-<li><strong>Bring in the weak-key drill when you are accurate overall.</strong> Once you have at least three logged runs and your latest run is 95% or better, practice offers a "drill weak keys" button.</li>
+<li><strong>Stay on adaptive when you are accurate overall.</strong> It is the default tab. After three logged runs with 95% accuracy or better, the result card also offers an "adaptive practice" button if you have switched to another tab.</li>
 <li><strong>Keep sessions short and regular.</strong> Ten to twenty minutes on most days, and stop when accuracy starts to slip.</li>
 </ol>
 
 <h2 id="limits-of-typing-practice">Limits of this practice tool</h2>
 <ul>
-<li>Twenty fixed passages in four categories, so repeats are normal.</li>
+<li>Twenty fixed passages in the quotes, news, code and fun tabs, so repeats are normal.</li>
 <li>Passages are short, and runs are untimed, so WPM from a single run is rough.</li>
 <li>English text and the QWERTY layout only.</li>
-<li>The weak-key drill targets letters and letter pairs, not fingers, and needs a few hundred keystrokes before the pair data says anything useful. The letter row covers a to z only.</li>
+<li>Adaptive practice targets letters and letter pairs, not fingers, and needs a few hundred keystrokes before the pair data says anything useful. The letter row covers a to z only.</li>
 <li>For a physical keyboard, not a phone.</li>
 </ul>
 
@@ -168,7 +171,7 @@ ${faqHtml}
 
 <h2 id="sources-and-method">Sources and method</h2>
 <ul class="article-sources">
-<li>Categories, passage counts, scoring and the weak-key drill: how this page's tool works, as described above.</li>
+<li>Tabs, passage counts, scoring, adaptive practice and the letter row: how this page's tool works, as described above.</li>
 <li>Error-noticing finding: Dhakal, Feit, Kristensson and Oulasvirta, <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>, CHI 2018.</li>
 <li>The 95% accuracy bar, the session length and the rotation advice are FreeTyper's own recommendations.</li>
 </ul>
@@ -177,8 +180,8 @@ ${faqHtml}
 
 export const howToSteps: { name: string; text: string }[] = [
   {
-    name: 'Choose a category',
-    text: 'Pick quotes, news, code, fun or weak keys with the pills at the top of the practice page.',
+    name: 'Choose a tab',
+    text: 'Stay on adaptive, or pick quotes, news, code or fun with the tabs at the top of the practice page.',
   },
   {
     name: 'Type the passage',
@@ -193,7 +196,7 @@ export const howToSteps: { name: string; text: string }[] = [
     text: 'The next passage loads automatically, so you can keep typing. Rotate categories so you do not memorize one passage.',
   },
   {
-    name: 'Drill your weak keys',
-    text: 'Once you have a few clean runs, choose weak keys to practice words built from the letters you miss most.',
+    name: 'Let adaptive practice drill your weak keys',
+    text: 'Keep typing on the adaptive tab. It picks your weakest key, drills it in real words and moves on when it is good. Click any letter in the row to drill it yourself.',
   },
 ];

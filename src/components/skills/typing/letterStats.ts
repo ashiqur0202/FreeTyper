@@ -89,3 +89,34 @@ export function summarize(scores: LetterScore[]): { good: number; judged: number
   const judged = scores.filter((s) => s.level !== 'none');
   return { good: judged.filter((s) => s.level === 'good').length, judged: judged.length };
 }
+
+/** Adaptive practice waits until this many letters have enough presses to be judged. */
+export const MIN_JUDGED_TO_ADAPT = 8;
+
+/** Letters from most to least common in English, the order new keys are introduced in. */
+const FREQUENCY_ORDER = 'etaoinshrdlcumwfgypbvkjxqz'.split('');
+
+export interface Focus {
+  key: string;
+  /** "weak": a judged key that is not good yet. "new": a key with too few presses to judge. */
+  reason: 'weak' | 'new';
+  level: LetterLevel;
+}
+
+/**
+ * The key adaptive practice should drill next:
+ *  1. the worst judged key that is not good yet (okay, weak or weakest),
+ *  2. otherwise the most common key that still has too few presses,
+ *  3. otherwise null (every key is judged and good).
+ */
+export function pickFocus(scores: LetterScore[]): Focus | null {
+  const notGood = scores
+    .filter((s) => s.level === 'ok' || s.level === 'weak' || s.level === 'bad')
+    .sort((a, b) => b.score - a.score);
+  if (notGood.length > 0) return { key: notGood[0].key, reason: 'weak', level: notGood[0].level };
+  const unjudged = new Set(scores.filter((s) => s.level === 'none').map((s) => s.key));
+  for (const key of FREQUENCY_ORDER) {
+    if (unjudged.has(key)) return { key, reason: 'new', level: 'none' };
+  }
+  return null;
+}

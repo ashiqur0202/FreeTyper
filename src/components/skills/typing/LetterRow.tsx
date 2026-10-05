@@ -81,7 +81,7 @@ export default function LetterRow({ scores, activeKey, disabled, onPick }: Lette
           })}
         </div>
         <p className="text-[11px] tabular-nums text-text-dim" data-letter-summary>
-          {judged === 0 ? 'no keys judged yet' : `${good} of ${judged} judged keys good`}
+          {judged === 0 ? 'no keys judged yet' : `${good} of ${judged} judged keys good${judged < scores.length ? ` · ${scores.length - judged} need more typing` : ''}`}
         </p>
       </div>
       <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] text-text-dim">

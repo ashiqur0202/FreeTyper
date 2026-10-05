@@ -20,6 +20,7 @@ function pick(seed: string, options: string[]): string {
 
 function categoryLabel(detail?: string) {
   if (detail === 'weak') return 'weak keys';
+  if (detail === 'adaptive') return 'adaptive';
   return detail || 'practice';
 }
 
@@ -149,7 +150,7 @@ export function coachNote(
     };
   }
 
-  if (run.modeDetail === 'weak') {
+  if (run.modeDetail === 'weak' || run.modeDetail === 'adaptive') {
     return {
       headline: 'Weak-key work',
       tip: 'Stay accurate even if WPM drops. This is the drill that raises your floor.',
@@ -519,7 +520,7 @@ export default function PracticeFeedback({
   const spark = [...log].reverse().map((r) => r.wpm);
   const history = log.slice(1);
   const showWeakCta =
-    log.length >= 3 && latest.accuracy >= 95 && currentCategory !== 'weak' && !!onTryWeakKeys;
+    log.length >= 3 && latest.accuracy >= 95 && currentCategory !== 'adaptive' && !!onTryWeakKeys;
   const showGuideCta = latest.accuracy < 95;
   const isBest = latest.wpm === bestWpm && log.length > 1;
   const detailed = latest.mode === 'speed-test';
@@ -646,7 +647,7 @@ export default function PracticeFeedback({
                 onClick={onTryWeakKeys}
                 className="rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
               >
-                drill weak keys
+                adaptive practice
               </button>
             )}
             {extraActions}

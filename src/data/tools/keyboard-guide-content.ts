@@ -86,7 +86,7 @@ export const bodyHtml = `
 <li><strong>Filter by finger.</strong> The pills at the top let you light up one finger's keys and dim the rest: left little, ring, middle and index, then right index, middle, ring and little.</li>
 <li><strong>Home row only.</strong> This toggle dims everything except the eight home-row keys (and leaves the space bar lit), so you can focus on the resting position.</li>
 <li><strong>Your stats.</strong> The panel also shows how many times you have pressed that key, your accuracy on it, and your error count. A key where your accuracy is under 90% gets a faint glow around it.</li>
-<li><strong>Weak keys.</strong> Up to five of your least accurate keys are listed as buttons. Click one to jump to it, or follow the link to <a href="/typing-practice">practice a weak-key drill</a>, which targets your slowest or least accurate letter pairs once there is enough data and your weak keys until then.</li>
+<li><strong>Weak keys.</strong> Up to five of your least accurate keys are listed as buttons. Click one to jump to it, or follow the link to <a href="/typing-practice">adaptive practice</a>, which drills your weakest key (and its slow letter pairs) in real words.</li>
 </ul>
 
 <h2 id="which-finger-types-which-key">Which finger types which key? The full finger placement chart</h2>
@@ -174,6 +174,6 @@ export const howToSteps: { name: string; text: string }[] = [
   },
   {
     name: 'Practice the keys you miss',
-    text: 'Follow the link to typing practice for a weak-key drill built from your weakest letter pairs and keys, then repeat.',
+    text: 'Follow the link to the adaptive tab in typing practice, which drills your weakest key in real words, then repeat.',
   },
 ];

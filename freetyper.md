@@ -77,14 +77,17 @@ The guides and posts must stay consistent with these.
 
 **Practice**
 - 20 built-in passages (5 each: quotes, news, code, fun), plus a weak-key drill. Untimed.
-- **Weak-key drill** (category “weak keys”) has three levels:
-  1. **Weak pairs** (`pairStats.ts`, `pairDrill.ts`). Each letter typed after a letter is a sample for that pair (letters a–z only, ≤ 676 pairs). Kept: samples, recent-weighted errors (decay 0.97), and a timing only for a *correct* key whose gap from the previous key is 15–2000 ms and not right after a Backspace (EMA 0.25).
-  2. Score = 4 × recent error rate (shrunk: de ÷ (dn + 2)) + (pair ms ÷ your own median pair ms − 1, floored at 0). Needs ≥ 5 samples; listed from score 0.3; top 5. Speed is only compared once ≥ 8 pairs have ≥ 3 timings.
-  3. Drill = 40 words from `COURSE_WORDS` (~890): each pair gets up to 3 of its own words first, the rest is weighted random (more/weaker pairs = likelier), no immediate repeats; a pair almost no word contains gets a repeated chunk (“qzqz qzqzqz”).
-  4. Fallbacks: ≥ 5-press single-key accuracy (5 lowest) → normal passage. The page names which level is in use.
-- **Letter row** (`LetterRow.tsx`, `letterStats.ts`) under the Practice tabs: 26 boxes a–z. Level from score = 4 × error rate (`keyStats`) + (ms into the letter ÷ your median letter − 1, floored at 0; ms = average of timed pairs ending in the letter). good < 0.15 · okay < 0.3 · weak < 0.6 · weakest ≥ 0.6 · grey under 10 presses. Colours = the heatmap palette; a bar under each letter repeats the level without colour. Scores recompute on load and after each finished run.
-  - Click a letter → weak drill for that key (`generateKeyDrill`: real words with the letter, extra weight on weak pairs ending in it; keeps drilling it until another letter / tab / “drill my weakest instead”). Locked during a run.
+- **Adaptive tab = the default** (category id `adaptive`, first tab; the old `weak` id only survives in old practice logs). Each run is generated from your data:
+  1. **Warm-up:** until ≥ 8 letters have ≥ 10 presses (`MIN_JUDGED_TO_ADAPT`), 40 random `COURSE_WORDS`.
+  2. **Focus key** (`pickFocus`): the worst letter whose level is okay/weak/weakest; else the most common letter still under 10 presses (order e t a o i n s h r d l c u m w f g y p b v k j x q z); else null.
+  3. Focus key → `generateKeyDrill` (40 real words containing it, extra weight on weak pairs ending in it). Null → `generatePairDrill` on the top 5 weak pairs → else a general mix. A line above the text says which case is active (`data-weak-focus` = warmup | auto | manual | pairs | mixed).
+  4. Recomputed for every run, so it moves on by itself when a key turns good. Any other tab = normal text.
+  - **Pairs** (`pairStats.ts`): each letter typed after a letter is a sample (a–z only, ≤ 676 pairs): samples, recent-weighted errors (decay 0.97), and a timing only for a *correct* key whose gap from the previous key is 15–2000 ms and not right after a Backspace (EMA 0.25). Score = 4 × recent error rate (de ÷ (dn + 2)) + (ms ÷ your median pair ms − 1, ≥ 0); needs ≥ 5 samples, listed from 0.3, top 5; speed compared only once ≥ 8 pairs have ≥ 3 timings.
+  - `pairDrill.ts`: each pair gets up to 3 of its own words first, the rest weighted random, no immediate repeats; a pair almost no word contains gets a repeated chunk (“qzqz qzqzqz”).
+  - Typing in any tab (and the speed test and lessons) feeds the data; the games feed key presses only, and Word Attack marks every letter correct (inflates accuracy).
 - Pair data lives in `freetyper-pairs`, written at most every 2 s and on page hide (never per keystroke), cleared by Reset on the progress page. Never sent to GA.
+- **Letter row** (`LetterRow.tsx`, `letterStats.ts`) under the Practice tabs: 26 boxes a–z. Level from score = 4 × error rate (`keyStats`) + (ms into the letter ÷ your median letter − 1, floored at 0; ms = average of timed pairs ending in the letter). good < 0.15 · okay < 0.3 · weak < 0.6 · weakest ≥ 0.6 · grey under 10 presses. Colours = the heatmap palette; a bar under each letter repeats the level without colour. Scores recompute on load and after each finished run.
+  - Click a letter → manual drill for that key (`generateKeyDrill`); it keeps drilling it until another letter, another tab, or “back to adaptive”. Locked during a run. The summary line reads “n of m judged keys good · k need more typing”.
 
 **Progress**
 - A “Weakest letter pairs” card (top 5: ms, × your typical pair, % errors, samples); under ~100 recorded pairs it says more typing is needed.
@@ -129,7 +132,7 @@ The guides and posts must stay consistent with these.
 - JSON-LD: Organization + WebSite (layout); WebApplication + FAQPage + HowTo on home and tools (FAQ text = the visible FAQ); Breadcrumb; **BlogPosting** on posts (author → `/about#author`). Output escapes `<`.
 - Google has largely retired HowTo/FAQ rich results, so that markup is harmless and accurate, not a ranking lever.
 - **GA4 custom events** (`src/lib/analytics.ts` → `trackEvent`). Numbers and short fixed labels only; never typed text.
-  - `test_complete` {duration_s, text_mode, wpm, accuracy} · `lesson_attempt` {lesson_number, passed, wpm, accuracy, attempt} · `lesson_complete` (passes only) {lesson_number, lesson, wpm, accuracy} · `lesson_skip` {lesson_number} · `practice_complete` {category, wpm, accuracy}
+  - `test_complete` {duration_s, text_mode, wpm, accuracy} · `lesson_attempt` {lesson_number, passed, wpm, accuracy, attempt} · `lesson_complete` (passes only) {lesson_number, lesson, wpm, accuracy} · `lesson_skip` {lesson_number} · `practice_complete` {category (adaptive, quotes, news, code, fun), wpm, accuracy}
   - `game_complete` {game, score, wpm, accuracy, level} (Falling Words at game over; Word Attack after round 8) · `game_round_complete` {game, round, score}
   - `setting_change` {setting, value} · `share_result` {source} (counted when the button is used)
   - The privacy page discloses these. Add a new event only if it follows the same rule and is added there.
@@ -183,7 +186,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Test touch typing on a real phone; optional: real screenshot of a result card for the home guide; rename sidebar “start” → “speed test”.
 
 **Planned product work (agreed 2026-10-05; build order)**
-- [x] **[C] 1. Weak-pair drills (bigrams) + the letter row with click-to-drill** — built on `feat/weak-pairs` (awaiting review/deploy). **Step 2 (next): adaptive mode** — a “keep going” loop that always drills the current weakest key and shows “n of 26 keys good”; decide the “good” goal (accuracy + your median speed, or a user-set target WPM; keybr defaults to a target WPM). Other ideas left: show pair progress after a drill (“th 260 → 190 ms”), include punctuation pairs, a Dhakal-style hand/finger-pair view.
+- [x] **[C] 1. Weak-pair drills (bigrams) + the letter row with click-to-drill** — built on `feat/weak-pairs` (awaiting review/deploy). **Adaptive mode is now the default tab** (goal for “good” = score < 0.15, i.e. accuracy plus your own median speed). Ideas left: a user-set target WPM (keybr has one), a “you improved” summary after a drill, adaptive for digits and punctuation, an adaptive card on the home page. Other ideas left: show pair progress after a drill (“th 260 → 190 ms”), include punctuation pairs, a Dhakal-style hand/finger-pair view.
   - *Data:* record, per typed letter, the expected previous letter, correct/wrong, and the time since the previous keystroke (letters only, so ≤ 676 pairs). Local only, never sent to GA. Today `onKeyStats` gets only `(key, correct)` and `KeyStats.averageTime` is always 0, so the engine needs to pass a timestamp and the previous character.
   - *Weak pair:* ≥ 5 samples, ranked by error rate plus slowness against the user's own median; ignore gaps over ~2 s. Say honestly when there is not enough data yet.
   - *Drill:* words from the ~890-word `courseWords` list that contain the weak pairs (most weak pairs first); fewer than 5 matches → short repeated pair drills.
