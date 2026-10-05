@@ -5,8 +5,9 @@ No login, no database, privacy-first (all data stays in the browser), to be fund
 
 This is the living reference. History lives in git. Per-guide detail lives in the header comment of each content file.
 
-## 1. Status (updated 2026-10-05)
+## 1. Status (updated 2026-10-06)
 - **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-05: the 34-lesson course with a 95 % gate; before it 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. Live course test: 30/30 passed.
+- **Built, tested, not deployed — branch `feat/weak-pairs`:** letter-pair statistics, the **adaptive** Practice tab (now the default), the a–z letter row with a focus marker and click-to-drill, a “Weakest letter pairs” card on Progress, and the matching guide/privacy updates. New suites: `pairs` 19/19, `letters` 32/32, plus pure-logic checks; all older suites still pass. Deploy next (after the phone-keyboard fix if wanted).
 - **AdSense:** application rejected — **“Low value content”**. The setup is correct and live. “Verify site ownership” is still open in the dashboard.
 - **Done because of the rejection:**
   - every guide rewritten from the real code, with verified sources
@@ -76,11 +77,11 @@ The guides and posts must stay consistent with these.
 - Migration: old `freetyper-lessons-progress` is converted once (old lesson → matching new range) into `freetyper-course-progress`.
 
 **Practice**
-- 20 built-in passages (5 each: quotes, news, code, fun), plus a weak-key drill. Untimed.
+- 20 built-in passages (5 each: quotes, news, code, fun) on the four text tabs, plus the **adaptive** tab. Untimed.
 - **Adaptive tab = the default** (category id `adaptive`, first tab; the old `weak` id only survives in old practice logs). Each run is generated from your data:
   1. **Warm-up:** until ≥ 8 letters have ≥ 10 presses (`MIN_JUDGED_TO_ADAPT`), 40 random `COURSE_WORDS`.
   2. **Focus key** (`pickFocus`): the worst letter whose level is okay/weak/weakest; else the most common letter still under 10 presses (order e t a o i n s h r d l c u m w f g y p b v k j x q z); else null.
-  3. Focus key → `generateKeyDrill` (40 real words containing it, extra weight on weak pairs ending in it). Null → `generatePairDrill` on the top 5 weak pairs → else a general mix. A line above the text says which case is active (`data-weak-focus` = warmup | auto | manual | pairs | mixed).
+  3. Focus key → `generateKeyDrill` (40 real words containing it, extra weight on weak pairs ending in it). Null → `generatePairDrill` on the top 5 weak pairs → else a general mix. Which case is active is exposed as `data-weak-focus` = warmup | auto | manual | pairs | mixed (visible text only for warmup / pairs / mixed; the key itself is shown by the marker in the letter row).
   4. Recomputed for every run, so it moves on by itself when a key turns good. Any other tab = normal text.
   - **Pairs** (`pairStats.ts`): each letter typed after a letter is a sample (a–z only, ≤ 676 pairs): samples, recent-weighted errors (decay 0.97), and a timing only for a *correct* key whose gap from the previous key is 15–2000 ms and not right after a Backspace (EMA 0.25). Score = 4 × recent error rate (de ÷ (dn + 2)) + (ms ÷ your median pair ms − 1, ≥ 0); needs ≥ 5 samples, listed from 0.3, top 5; speed compared only once ≥ 8 pairs have ≥ 3 timings.
   - `pairDrill.ts`: each pair gets up to 3 of its own words first, the rest weighted random, no immediate repeats; a pair almost no word contains gets a repeated chunk (“qzqz qzqzqz”).
@@ -179,6 +180,8 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) so progress can be compared.
 
 **Next — product work the data supports**
+- [ ] **[C]** **Deploy `feat/weak-pairs`** (merge fast-forward, push, poll, run the `pairs` / `letters` / `course` suites against the live site), then request indexing for `/typing-practice` (guide changed a lot) and check the GA4 `practice_complete` category values (`adaptive` is new).
+- [ ] **[C]** **Fix the phone overflow** (see §9): scale `LiveKeyboard` to the screen width or hide it on touch devices.
 - [x] Longer lessons course (34 lessons, 95 % gate) — **live since 2026-10-05**. Now watch `lesson_attempt` (pass rate per lesson) in GA4 to find lessons that are too hard.
 - [ ] **[C]** A clear, printable **touch-typing finger chart** (people already search “keyboard finger chart / touch typing diagram”; the keyboard guide ranks ~position 47–73 for it).
 - [ ] **[C]** Preset **duration pages** (e.g. 1-minute, 5-minute test) as real working tools with a short unique intro — only after pages are being indexed, and never thin duplicates.
@@ -186,19 +189,15 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Test touch typing on a real phone; optional: real screenshot of a result card for the home guide; rename sidebar “start” → “speed test”.
 
 **Planned product work (agreed 2026-10-05; build order)**
-- [x] **[C] 1. Weak-pair drills (bigrams) + the letter row with click-to-drill** — built on `feat/weak-pairs` (awaiting review/deploy). **Adaptive mode is now the default tab** (goal for “good” = score < 0.15, i.e. accuracy plus your own median speed). Ideas left: a user-set target WPM (keybr has one), a “you improved” summary after a drill, adaptive for digits and punctuation, an adaptive card on the home page. Other ideas left: show pair progress after a drill (“th 260 → 190 ms”), include punctuation pairs, a Dhakal-style hand/finger-pair view.
-  - *Data:* record, per typed letter, the expected previous letter, correct/wrong, and the time since the previous keystroke (letters only, so ≤ 676 pairs). Local only, never sent to GA. Today `onKeyStats` gets only `(key, correct)` and `KeyStats.averageTime` is always 0, so the engine needs to pass a timestamp and the previous character.
-  - *Weak pair:* ≥ 5 samples, ranked by error rate plus slowness against the user's own median; ignore gaps over ~2 s. Say honestly when there is not enough data yet.
-  - *Drill:* words from the ~890-word `courseWords` list that contain the weak pairs (most weak pairs first); fewer than 5 matches → short repeated pair drills.
-  - *Where:* upgrade the Practice weak-key drill; show the top 5 slow pairs on the Progress page. No new route. Update the Practice and Progress guides, the privacy page and bump their dates.
+- [x] **[C] 1. Weak-pair drills (bigrams), letter row, adaptive default** — built on `feat/weak-pairs` (rules in §4 Practice). Ideas left: a user-set target WPM (keybr has one) · a “you improved” summary after a drill (“th 260 → 190 ms”) · adaptive for digits and punctuation (pairs are letters only) · an adaptive entry on the home page · a Dhakal-style hand/finger-pair view.
 - [ ] **[C] 2. Coding tracks.** Start with **one** language, chosen from real Bing Webmaster queries (guess: JavaScript). Four thin tracks would repeat the “low value content” problem.
   - ~15 original snippets, ordered by difficulty, each run or compiled to prove it is correct, each with a note on the symbols it trains.
   - Decide how Enter, Tab and leading indentation work in code (proposal: skip leading indentation automatically after Enter; a setting later). Check the engine first.
   - Start as a Practice category; a route per language only once it has its own guide and enough content.
 - [ ] **[C] 3. Upgrade the result card.** The card is `PracticeFeedback.tsx` (speed test shows the detailed layout).
-  - *Today:* net WPM, accuracy, time, rank pill, ↑/↓ vs the previous run, WPM scale bar, correct / errors / gross WPM / words, coach note, finger-map and weak-key buttons, and a text-only share. Only the last 5 runs are kept, as plain `TypingSession` (no per-keystroke data). The cumulative error heatmap lives on the Progress page (`KeyboardHeatmap.tsx`, from `keyStats`).
+  - *Today:* net WPM, accuracy, time, rank pill, ↑/↓ vs the previous run, WPM scale bar, correct / errors / gross WPM / words, coach note, finger-map and adaptive-practice buttons, and a text-only share. Only the last 5 runs are kept, as plain `TypingSession` (no per-keystroke data). The cumulative error heatmap lives on the Progress page (`KeyboardHeatmap.tsx`, from `keyStats`).
   - *Ideas:* WPM-over-time curve for the run, consistency %, a per-run key heatmap, the run's slowest pairs (from item 1), and a visual share image.
-  - *Needs:* per-keystroke timestamps for a run curve (the engine now passes `gapMs` per key, but nothing keeps a per-run series yet). Decide how much to store per run, since only 5 runs are kept. The run's slowest pairs can use the pair store as is.
+  - *Needs:* per-keystroke timestamps for a run curve (the engine now passes `gapMs` per key, but nothing keeps a per-run series yet). Decide how much to store per run, since only 5 runs are kept. The run's slowest pairs can use the pair store (`pairStats.ts`) as is; the pair store is cumulative, so a per-run view needs its own small record.
   - Build after item 1 and before adding anything else to the card.
 
 **Later — ideas, validate first**
@@ -208,7 +207,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - Accounts, leaderboards, multiplayer races, Dvorak/Colemak, more games, progress export/import, ease Falling Words tiers 7–10, more than 20 practice passages.
 - Cleanup: ~57 older lint errors · delete `content-dates.ts` · unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`).
 
-**Recently done (2026-10-03 to 05):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (live 2026-10-05).
+**Recently done (2026-10-03 to 06):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (live 2026-10-05) · weak pairs, letter row and adaptive practice (built 2026-10-06, branch only).
 
 ## 9. Gotchas
 - **Phone overflow (open bug):** the on-screen `LiveKeyboard` is ~119 px wider than a 390 px screen on `/`, `/typing-lessons` and `/typing-practice`, so the page scrolls sideways. Fix idea: scale the keyboard to the width or hide it on touch devices.
