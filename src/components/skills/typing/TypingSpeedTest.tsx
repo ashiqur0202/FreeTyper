@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { RotateCcw, Settings2, X, Maximize, Minimize, Share2, Check, PenTool } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
+import { withoutRun } from './runStats';
 import { recordPair } from './pairStats';
 import { practiceTexts } from './typingData';
 import { wordPools } from './gameData';
@@ -137,7 +138,7 @@ export default function TypingSpeedTest() {
       mode: 'speed-test' as const,
       modeDetail: `${mode} · ${secs}s`,
     };
-    addSession(updated);
+    addSession(withoutRun(updated));
     trackEvent('test_complete', {
       duration_s: secs,
       text_mode: mode,

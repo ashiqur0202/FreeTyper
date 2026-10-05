@@ -3,6 +3,8 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import type { TypingSession } from './types';
+import RunGraph from './RunGraph';
+import { MIN_GRAPH_SECONDS } from './runStats';
 
 export type CoachTone = 'best' | 'up' | 'warn' | 'focus' | 'steady';
 
@@ -41,10 +43,6 @@ function rankLabel(wpm: number) {
   if (wpm >= 60) return 'skilled';
   if (wpm >= 40) return 'average';
   return 'beginner';
-}
-
-function wpmBarPercent(wpm: number) {
-  return Math.min(100, (wpm / 120) * 100);
 }
 
 function grossWpm(run: TypingSession) {
@@ -478,6 +476,15 @@ function Sparkline({ values }: { values: number[] }) {
   );
 }
 
+function Tile({ value, label, tone, title }: { value: string | number; label: string; tone?: string; title?: string }) {
+  return (
+    <div className="min-w-0 rounded-lg border border-surface-border/60 bg-surface/40 px-2.5 py-2 sm:px-3" title={title}>
+      <p className={`font-mono text-base tabular-nums ${tone ?? 'text-text-bright'}`}>{value}</p>
+      <p className="text-[9px] uppercase tracking-wide text-text-dim sm:text-[10px] sm:tracking-wider">{label}</p>
+    </div>
+  );
+}
+
 function Delta({ label, value }: { label: string; value: number }) {
   if (value === 0) {
     return (
@@ -526,6 +533,9 @@ export default function PracticeFeedback({
   const detailed = latest.mode === 'speed-test';
   const gross = detailed ? grossWpm(latest) : 0;
   const words = detailed ? Math.max(0, Math.round(latest.correctChars / 5)) : 0;
+  const run = latest.run;
+  const hasGraph = !!run && run.seconds >= MIN_GRAPH_SECONDS && run.speed.length >= 2;
+  const spots = run?.spots ?? [];
 
   return (
     <div className="mt-10 w-full">
@@ -543,7 +553,7 @@ export default function PracticeFeedback({
       >
         <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
           <p className="text-[10px] uppercase tracking-[0.18em] text-text-dim">
-            {detailed ? 'result' : 'guide'}
+            result
           </p>
           <p className="text-[11px] text-text-dim">
             {timeAgo(latest.date)}
@@ -597,35 +607,57 @@ export default function PracticeFeedback({
           </div>
         </div>
 
-        {detailed && (
-          <>
-            <div className="mt-4 h-1.5 w-full overflow-hidden rounded-full bg-surface-raised">
-              <div
-                className="h-full rounded-full bg-accent transition-all duration-700 ease-out"
-                style={{ width: `${wpmBarPercent(latest.wpm)}%` }}
-              />
-            </div>
-            <p className="mt-1 text-[10px] text-text-dim">wpm scale · 120</p>
+        {hasGraph && run && (
+          <div className="mt-5 rounded-lg border border-surface-border/70 bg-surface/40 px-3 pb-2.5 pt-3" data-result-graph>
+            <RunGraph run={run} />
+          </div>
+        )}
 
-            <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <div>
-                <p className="font-mono text-base tabular-nums text-correct">{latest.correctChars}</p>
-                <p className="text-[10px] uppercase tracking-wider text-text-dim">correct</p>
-              </div>
-              <div>
-                <p className="font-mono text-base tabular-nums text-error">{latest.incorrectChars}</p>
-                <p className="text-[10px] uppercase tracking-wider text-text-dim">errors</p>
-              </div>
-              <div>
-                <p className="font-mono text-base tabular-nums text-text-bright">{gross}</p>
-                <p className="text-[10px] uppercase tracking-wider text-text-dim">gross wpm</p>
-              </div>
-              <div>
-                <p className="font-mono text-base tabular-nums text-text-bright">{words}</p>
-                <p className="text-[10px] uppercase tracking-wider text-text-dim">words</p>
-              </div>
-            </div>
-          </>
+        {(detailed || run) && (
+          <div className={`mt-4 grid gap-2 ${detailed ? (run ? 'grid-cols-2 sm:grid-cols-5' : 'grid-cols-2 sm:grid-cols-4') : 'grid-cols-3'}`} data-result-stats>
+            <Tile value={latest.correctChars} label="correct" tone="text-correct" />
+            <Tile value={latest.incorrectChars} label="errors" tone="text-error" />
+            {detailed && <Tile value={gross} label="gross wpm" />}
+            {run && (
+              <Tile
+                value={`${run.consistency}%`}
+                label="consistency"
+                title="How steady your speed was: 100 minus how much your per-second speed varied around its average."
+              />
+            )}
+            {detailed && <Tile value={words} label="words" />}
+          </div>
+        )}
+
+        {spots.length > 0 && (
+          <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs" data-result-spots>
+            <span className="text-text-dim">Weak spots in this run:</span>
+            {spots.map((sp) => (
+              <span
+                key={sp.kind + sp.label}
+                className="inline-flex items-baseline gap-1.5 rounded-md border border-surface-border bg-surface-raised px-2 py-0.5 font-mono text-[11px] text-text-bright"
+              >
+                <span className={sp.kind === 'key' ? 'uppercase' : ''}>{sp.label}</span>
+                <span className="text-text-dim">{sp.detail}</span>
+              </span>
+            ))}
+            {onTryWeakKeys ? (
+              <button
+                type="button"
+                onClick={onTryWeakKeys}
+                className="rounded-md border border-surface-border px-2.5 py-0.5 text-[11px] text-accent transition-colors hover:border-accent/50"
+              >
+                drill these
+              </button>
+            ) : (
+              <Link
+                href="/typing-practice"
+                className="rounded-md border border-surface-border px-2.5 py-0.5 text-[11px] text-accent transition-colors hover:border-accent/50"
+              >
+                drill these
+              </Link>
+            )}
+          </div>
         )}
 
         <h3 className="mt-4 text-sm font-medium text-text-bright">{headline}</h3>

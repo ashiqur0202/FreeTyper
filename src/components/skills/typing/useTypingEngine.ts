@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import type { TypingCharState, TypingSession, TypingEngineOptions } from './types';
+import { createRecorder } from './runStats';
 
 export function useTypingEngine(options: TypingEngineOptions) {
   const { text, timed, onStart, onComplete, onKeyStats } = options;
@@ -31,6 +32,7 @@ export function useTypingEngine(options: TypingEngineOptions) {
   const currentIndexRef = useRef(0);
   /** performance.now() of the last keystroke; 0 when there is no usable previous keystroke. */
   const lastKeyAtRef = useRef(0);
+  const recorderRef = useRef(createRecorder());
   const timedRef = useRef(timed ?? 0);
   const textRef = useRef(text);
   textRef.current = text;
@@ -91,6 +93,7 @@ export function useTypingEngine(options: TypingEngineOptions) {
       totalChars: totalTyped,
       duration: Math.round(durationSec),
       mode: 'practice',
+      run: recorderRef.current.finish(durationSec),
     };
 
     onComplete?.(session);
@@ -131,10 +134,10 @@ export function useTypingEngine(options: TypingEngineOptions) {
     }
 
     const now = performance.now();
-    onKeyStats?.(expected.toLowerCase(), isCorrect, {
-      prev: idx > 0 ? chars[idx - 1].char : undefined,
-      gapMs: lastKeyAtRef.current ? now - lastKeyAtRef.current : undefined,
-    });
+    const prev = idx > 0 ? chars[idx - 1].char : undefined;
+    const gapMs = lastKeyAtRef.current ? now - lastKeyAtRef.current : undefined;
+    recorderRef.current.key(now - startTimeRef.current, isCorrect, expected, prev, gapMs);
+    onKeyStats?.(expected.toLowerCase(), isCorrect, { prev, gapMs });
     lastKeyAtRef.current = now;
 
     const nextIdx = idx + 1;
@@ -199,6 +202,7 @@ export function useTypingEngine(options: TypingEngineOptions) {
     currentIndexRef.current = 0;
     startTimeRef.current = 0;
     lastKeyAtRef.current = 0;
+    recorderRef.current.reset();
 
     setChars(initChars(t));
     setCurrentIndex(0);

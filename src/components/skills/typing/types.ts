@@ -1,3 +1,25 @@
+/** One thing worth a look in a run: a key with several mistakes, or an unusually slow letter pair. */
+export interface RunSpot {
+  kind: 'key' | 'pair';
+  label: string;
+  detail: string;
+}
+
+/** Per-run detail for the result card. Kept only with the latest few runs. */
+export interface RunDetail {
+  /** Net speed (WPM of correct keystrokes) over time, smoothed over about 5 s. */
+  speed: number[];
+  /** Raw speed (WPM of all keystrokes), smoothed over about 3 s. */
+  raw: number[];
+  /** Mistakes per point. */
+  errors: number[];
+  /** Whole seconds in the run (the curve may have fewer points than this). */
+  seconds: number;
+  /** 0–100, how steady the speed was. */
+  consistency: number;
+  spots: RunSpot[];
+}
+
 export interface TypingSession {
   id: string;
   date: number;
@@ -9,6 +31,8 @@ export interface TypingSession {
   duration: number; // seconds
   mode: 'lesson' | 'practice' | 'speed-test' | 'game';
   modeDetail?: string;
+  /** Present on the latest runs only; stripped before the long history is saved. */
+  run?: RunDetail;
 }
 
 export interface Achievement {

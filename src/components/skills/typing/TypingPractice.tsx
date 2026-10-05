@@ -4,6 +4,7 @@ import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react
 import { RotateCcw, Shuffle } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
+import { withoutRun } from './runStats';
 import { recordPair, getPairStore, weakPairsOf } from './pairStats';
 import { generatePairDrill, generateKeyDrill } from './pairDrill';
 import { scoreLetters, summarize, pickFocus, MIN_JUDGED_TO_ADAPT, type LetterScore, type LetterLevel } from './letterStats';
@@ -173,7 +174,7 @@ export default function TypingPractice() {
         mode: 'practice' as const,
         modeDetail: categoryRef.current,
       };
-      addSession(updated);
+      addSession(withoutRun(updated));
       trackEvent('practice_complete', {
         category: categoryRef.current,
         wpm: session.wpm,

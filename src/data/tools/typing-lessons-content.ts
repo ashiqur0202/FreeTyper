@@ -9,7 +9,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-05
+ * Last real edit: 2026-10-06
  */
 
 export const meta = {
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Lessons — Learn Touch Typing Step by Step</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-05">October 5, 2026</time></span>
+  <span>Last updated <time datetime="2026-10-06">October 6, 2026</time></span>
   <span>~7 min read</span>
 </p>
 <p>These free typing lessons are a course of 34 short lessons in six stages. You begin with two keys on the home row, add the rest of the home row, then the top and bottom rows, then Shift and punctuation, then numbers and symbols, and finish with speed and accuracy practice. A live keyboard above the text shows which key comes next, and your progress is saved in your browser without an account.</p>
@@ -116,7 +116,7 @@ export const bodyHtml = `
 <li><strong>Signs on the numbered buttons.</strong> A tick means passed, a skip icon means you moved on anyway, and a padlock means locked.</li>
 <li><strong>A live keyboard.</strong> The next key pulses (you can switch that off in Settings), the key you press flashes green when right and red when wrong, and keys outside the current lesson are dimmed. When a capital or a shifted symbol is next, the key and the Shift key on the opposite hand are both highlighted.</li>
 <li><strong>Same scoring as the speed test.</strong> WPM counts five characters as a word, accuracy is correct characters out of characters typed, and Backspace removes the character you step back over. The <a href="/">typing speed test guide</a> explains this in full.</li>
-<li><strong>Your last five lesson runs</strong> are listed under the keyboard, newest first, with a short coach note on each. Every attempt also counts as a session in your <a href="/typing-progress">progress</a>.</li>
+<li><strong>Your last five lesson runs</strong> are listed under the keyboard, newest first, with a short coach note on each. The newest one is a result card; for runs of 10 seconds or longer it includes a graph of your speed, a consistency score and the keys or letter pairs that went wrong, as described in the <a href="/">typing speed test guide</a>. Every attempt also counts as a session in your <a href="/typing-progress">progress</a>.
 </ul>
 
 <h2 id="how-to-learn-touch-typing-with-these-lessons">How to learn touch typing with this course</h2>

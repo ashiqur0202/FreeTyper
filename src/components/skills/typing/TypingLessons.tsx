@@ -4,6 +4,7 @@ import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react
 import { Check, Lock, RotateCcw, SkipForward } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
+import { withoutRun } from './runStats';
 import { recordPair } from './pairStats';
 import {
   courseLessons,
@@ -122,7 +123,7 @@ export default function TypingLessons() {
         mode: 'lesson' as const,
         modeDetail: `${stageLabel} · ${current.title}`,
       };
-      addSession(updated);
+      addSession(withoutRun(updated));
 
       const failedBefore = progressRef.current.attempts[current.id] ?? 0;
       const nextProgress = recordResult(progressRef.current, current, passed);
