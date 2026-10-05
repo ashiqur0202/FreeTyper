@@ -82,7 +82,6 @@ export default function TypingPractice() {
   const [lineHeight, setLineHeight] = useState(0);
   const [weakFocus, setWeakFocus] = useState<AdaptiveInfo | null>(null);
   const [letterScores, setLetterScores] = useState<LetterScore[]>([]);
-  const [focusKey, setFocusKey] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const typingAreaRef = useRef<HTMLDivElement>(null);
@@ -350,7 +349,6 @@ export default function TypingPractice() {
     if (isRunningRef.current) return;
     // Choosing a tab (including "weak keys") ends a letter drill and goes back to the automatic one.
     focusKeyRef.current = null;
-    setFocusKey(null);
     if (cat === category) {
       if (cat === 'adaptive') nextTextRef.current();
       return;
@@ -363,7 +361,6 @@ export default function TypingPractice() {
   const pickKey = (key: string) => {
     if (isRunningRef.current) return;
     focusKeyRef.current = key;
-    setFocusKey(key);
     if (category !== 'adaptive') {
       setCategory('adaptive');
       setResult(null);
@@ -429,47 +426,32 @@ export default function TypingPractice() {
             </div>
           </div>
 
-          <LetterRow scores={letterScores} activeKey={focusKey} disabled={isRunning} onPick={pickKey} />
+          <LetterRow
+            scores={letterScores}
+            focusKey={category === 'adaptive' ? (weakFocus?.key ?? null) : null}
+            manual={category === 'adaptive' && weakFocus?.kind === 'manual'}
+            disabled={isRunning}
+            onPick={pickKey}
+            onBack={() => changeCategory('adaptive')}
+          />
 
           {category === 'adaptive' && weakFocus && (
-            <p className="mb-3 text-xs leading-relaxed text-text-dim" data-weak-focus={weakFocus.kind}>
-              {weakFocus.kind === 'warmup' && (
-                <>Adaptive practice is warming up with common words that use every letter, so it can learn which keys and letter pairs slow you down. Pick any tab above to practise something else.</>
-              )}
+            <p
+              className={weakFocus.kind === 'auto' || weakFocus.kind === 'manual' ? 'sr-only' : 'mb-3 text-xs leading-relaxed text-text-dim'}
+              data-weak-focus={weakFocus.kind}
+            >
+              {weakFocus.kind === 'warmup' && <>Warming up: type a little so adaptive practice can learn your keys.</>}
               {weakFocus.kind === 'auto' && (
                 <>
                   {weakFocus.reason === 'new' ? 'Next key to learn: ' : `Your ${weakFocus.level === 'bad' ? 'weakest' : weakFocus.level === 'weak' ? 'weak' : 'next'} key: `}
-                  <kbd className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
-                    {weakFocus.key}
-                  </kbd>
-                  {weakFocus.items.length > 0 && (
-                    <>
-                      {' '}with its slow pairs{' '}
-                      {weakFocus.items.map((p) => (
-                        <kbd key={p} className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-accent">
-                          {p}
-                        </kbd>
-                      ))}
-                    </>
-                  )}
-                  . It moves on by itself once this key is good.
+                  {weakFocus.key?.toUpperCase()}.
+                  {weakFocus.items.length > 0 && <> Slow pairs: {weakFocus.items.join(', ')}.</>}
                 </>
               )}
-              {weakFocus.kind === 'manual' && (
-                <>
-                  Drilling the key{' '}
-                  <kbd className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
-                    {weakFocus.key}
-                  </kbd>
-                  in real words.{' '}
-                  <button type="button" onClick={() => changeCategory('adaptive')} className="text-accent hover:underline">
-                    back to adaptive
-                  </button>
-                </>
-              )}
+              {weakFocus.kind === 'manual' && <>Drilling the key {weakFocus.key?.toUpperCase()}.</>}
               {weakFocus.kind === 'pairs' && (
                 <>
-                  Every key you have typed enough is good. Drilling your slowest letter pairs:{' '}
+                  All keys good. Slowest pairs:{' '}
                   {weakFocus.items.map((p) => (
                     <kbd key={p} className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-accent">
                       {p}
@@ -477,9 +459,7 @@ export default function TypingPractice() {
                   ))}
                 </>
               )}
-              {weakFocus.kind === 'mixed' && (
-                <>Every key you have typed enough is good and no letter pair stands out. Keep going, or pick a letter above to drill it.</>
-              )}
+              {weakFocus.kind === 'mixed' && <>All keys good. Keep going to find new weak spots.</>}
             </p>
           )}
 
