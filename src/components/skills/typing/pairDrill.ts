@@ -110,3 +110,55 @@ export function generatePairDrill(
   const present = pairs.filter((p) => text.includes(p));
   return { text, pairs: present };
 }
+
+/**
+ * A drill for one letter: real words that contain it, weighted by how often it
+ * occurs, with extra weight on words holding one of the user's weak pairs that
+ * end in it. Very rare letters get a repeated chunk so there is always a drill.
+ */
+export function generateKeyDrill(
+  key: string,
+  weakPairs: string[] = [],
+  rand: () => number = Math.random,
+  words: string[] = COURSE_WORDS,
+  wordCount = WORD_COUNT,
+): PairDrill {
+  const endingHere = weakPairs.filter((p) => p[1] === key);
+  const weighted = words
+    .map((word) => {
+      let weight = 0;
+      for (const ch of word) if (ch === key) weight += 1;
+      for (const pair of endingHere) weight += countPair(word, pair) * 2;
+      return { word, weight };
+    })
+    .filter((w) => w.weight > 0);
+
+  if (weighted.length === 0) {
+    const chunk = `${key}${key} ${key}${key}${key}`;
+    return { text: Array.from({ length: 10 }, () => chunk).join(' '), pairs: [] };
+  }
+
+  const total = weighted.reduce((sum, w) => sum + w.weight, 0);
+  const pick = (): string => {
+    let r = rand() * total;
+    for (const w of weighted) {
+      r -= w.weight;
+      if (r <= 0) return w.word;
+    }
+    return weighted[weighted.length - 1].word;
+  };
+
+  const sequence: string[] = [];
+  let guard = 0;
+  // With very few matching words, repeats are unavoidable, but never back to back.
+  while (sequence.length < wordCount && guard++ < wordCount * 30) {
+    const w = pick();
+    if (sequence[sequence.length - 1] === w) {
+      if (weighted.length === 1) sequence.push(w);
+      continue;
+    }
+    sequence.push(w);
+  }
+  const text = sequence.join(' ');
+  return { text, pairs: endingHere.filter((p) => text.includes(p)) };
+}

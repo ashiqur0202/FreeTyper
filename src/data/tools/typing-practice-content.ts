@@ -118,6 +118,21 @@ export const bodyHtml = `
 </ol>
 <p>The pairs and their timings stay in this browser, are never sent to a server, and are cleared when you reset progress on the <a href="/typing-progress">progress page</a>, which also lists your weakest pairs. The method is our own and is not a validated training program. It finds pairs you are slow or error-prone on and gives you words that contain them. Use the <a href="/keyboard-guide">keyboard guide</a> if a pair keeps failing and you are not sure which fingers type it.</p>
 
+<h2 id="the-letter-row">The letter row</h2>
+<p>Under the category tabs is a row of 26 boxes, one per letter. Each box is coloured from your own typing history, so it shows at a glance which keys are solid and which are not:</p>
+<table>
+<thead><tr><th>Colour</th><th>Label</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td>Green</td><td>good</td><td>score below 0.15</td></tr>
+<tr><td>Gold</td><td>okay</td><td>0.15 to 0.3</td></tr>
+<tr><td>Orange</td><td>weak</td><td>0.3 to 0.6</td></tr>
+<tr><td>Red</td><td>weakest</td><td>0.6 or more</td></tr>
+<tr><td>Grey</td><td>not enough data</td><td>fewer than 10 presses</td></tr>
+</tbody>
+</table>
+<p>The score is four times the key's error rate, plus how much slower you are into that letter than into your typical letter. The speed part comes from the letter-pair timings described above (the average time of the pairs that end in the letter) and is left out until enough pairs have timings. A key you hit accurately but slowly can therefore show as weak, which accuracy alone would miss. The short bar at the bottom of each box is longer for a cleaner, faster key, so the row still works if you cannot tell the colours apart. Hover or focus a box for its accuracy, average time and number of presses.</p>
+<p>Click a letter to drill it: you get 40 real words that contain that letter, with extra weight on words holding one of your weak pairs that end in it. The same letter keeps being drilled after each run until you pick another letter, choose another tab, or press "drill my weakest instead". Letters are locked while a run is in progress. Only letters a to z are shown; digits and punctuation are counted in your key statistics but have no box yet.</p>
+
 <h2 id="practice-vs-lessons-vs-speed-test">Practice, lessons or speed test: which should you use?</h2>
 <ul>
 <li><a href="/typing-lessons">Lessons</a> teach the keyboard in order, from the home row up. Use them if you are learning to touch type.</li>
@@ -141,7 +156,7 @@ export const bodyHtml = `
 <li>Twenty fixed passages in four categories, so repeats are normal.</li>
 <li>Passages are short, and runs are untimed, so WPM from a single run is rough.</li>
 <li>English text and the QWERTY layout only.</li>
-<li>The weak-key drill targets letters and letter pairs, not fingers, and needs a few hundred keystrokes before the pair data says anything useful.</li>
+<li>The weak-key drill targets letters and letter pairs, not fingers, and needs a few hundred keystrokes before the pair data says anything useful. The letter row covers a to z only.</li>
 <li>For a physical keyboard, not a phone.</li>
 </ul>
 

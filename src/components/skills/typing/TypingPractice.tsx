@@ -5,7 +5,9 @@ import { RotateCcw, Shuffle } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
 import { recordPair, getPairStore, weakPairsOf } from './pairStats';
-import { generatePairDrill } from './pairDrill';
+import { generatePairDrill, generateKeyDrill } from './pairDrill';
+import { scoreLetters, type LetterScore } from './letterStats';
+import LetterRow from './LetterRow';
 import { COURSE_WORDS } from './courseWords';
 import { practiceTexts } from './typingData';
 import type { TypingSession, Achievement } from './types';
@@ -66,7 +68,9 @@ export default function TypingPractice() {
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
   const [lineHeight, setLineHeight] = useState(0);
-  const [weakFocus, setWeakFocus] = useState<{ kind: 'pairs' | 'keys'; items: string[] } | null>(null);
+  const [weakFocus, setWeakFocus] = useState<{ kind: 'pairs' | 'keys' | 'key'; items: string[] } | null>(null);
+  const [letterScores, setLetterScores] = useState<LetterScore[]>([]);
+  const [focusKey, setFocusKey] = useState<string | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const typingAreaRef = useRef<HTMLDivElement>(null);
@@ -76,13 +80,25 @@ export default function TypingPractice() {
   const categoryRef = useRef(category);
   categoryRef.current = category;
 
-  const { addSession, updateKeyStats, checkAchievements, getWeakKeys } = useTypingProgress();
+  const { progress, addSession, updateKeyStats, checkAchievements, getWeakKeys } = useTypingProgress();
+  const focusKeyRef = useRef<string | null>(null);
+  const keyStatsRef = useRef(progress.keyStats);
+  useEffect(() => {
+    keyStatsRef.current = progress.keyStats;
+  }, [progress.keyStats]);
 
   const generateText = useCallback(
     (cat: Category) => {
       if (cat !== 'weak') {
         setWeakFocus(null);
       } else {
+        // 0. A letter picked in the row above.
+        const picked = focusKeyRef.current;
+        if (picked) {
+          const drill = generateKeyDrill(picked, weakPairsOf(getPairStore(), 10).map((p) => p.pair));
+          setWeakFocus({ kind: 'key', items: [picked] });
+          return drill.text;
+        }
         // 1. Letter pairs you are slow or error-prone on (needs enough typing).
         const pairs = weakPairsOf(getPairStore());
         if (pairs.length > 0) {
@@ -126,6 +142,12 @@ export default function TypingPractice() {
     setText(generateTextRef.current('quotes'));
     setLog(loadPracticeLog());
   }, []);
+
+  // Colour the letter row from the stored key and pair data, once on load and after each finished run.
+  useEffect(() => {
+    if (!mounted) return;
+    setLetterScores(scoreLetters(keyStatsRef.current, getPairStore()));
+  }, [mounted, result]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -315,9 +337,29 @@ export default function TypingPractice() {
   }, [currentIndex, lineHeight, chars.length]);
 
   const changeCategory = (cat: Category) => {
-    if (isRunningRef.current || cat === category) return;
+    if (isRunningRef.current) return;
+    // Choosing a tab (including "weak keys") ends a letter drill and goes back to the automatic one.
+    focusKeyRef.current = null;
+    setFocusKey(null);
+    if (cat === category) {
+      if (cat === 'weak') nextTextRef.current();
+      return;
+    }
     setCategory(cat);
     setResult(null);
+  };
+
+  /** Drill one letter picked in the row. */
+  const pickKey = (key: string) => {
+    if (isRunningRef.current) return;
+    focusKeyRef.current = key;
+    setFocusKey(key);
+    if (category !== 'weak') {
+      setCategory('weak');
+      setResult(null);
+    } else {
+      nextTextRef.current();
+    }
   };
 
   if (!mounted || !text) {
@@ -377,9 +419,22 @@ export default function TypingPractice() {
             </div>
           </div>
 
+          <LetterRow scores={letterScores} activeKey={focusKey} disabled={isRunning} onPick={pickKey} />
+
           {category === 'weak' && (
             <p className="mb-3 text-xs leading-relaxed text-text-dim" data-weak-focus={weakFocus?.kind ?? 'none'}>
-              {weakFocus?.kind === 'pairs' ? (
+              {weakFocus?.kind === 'key' ? (
+                <>
+                  Drilling the key{' '}
+                  <kbd className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
+                    {weakFocus.items[0]}
+                  </kbd>
+                  in real words.{' '}
+                  <button type="button" onClick={() => changeCategory('weak')} className="text-accent hover:underline">
+                    drill my weakest instead
+                  </button>
+                </>
+              ) : weakFocus?.kind === 'pairs' ? (
                 <>
                   Drilling your slowest or least accurate letter pairs:{' '}
                   {weakFocus.items.map((p) => (

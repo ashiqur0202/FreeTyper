@@ -45,7 +45,8 @@ src/components/skills/typing/
                 useKeySound, mobileInput (touch/IME fallback)
                 courseData (6 stages, 34 lessons, pass marks), courseWords (word list, sentences, passages),
                 lessonText (text generator), courseProgress (unlock, skip, migration)
-                pairStats (letter-pair stats, scoring, storage), pairDrill (weak-pair drill text)
+                pairStats (letter-pair stats, scoring, storage), pairDrill (weak-pair and single-key drill text),
+                letterStats (per-letter status), LetterRow (the a–z row on Practice)
                 typingData (practice passages, finger map), gameData (word pools, tiers, rounds, scoring)
 src/components/layout/   Sidebar, RightSidebar (both pinned), SettingsProvider, Footer, ContactPanel
 src/components/          content/ExpandableSeoContent, seo/JsonLd, blog/BlogContent+BlogCard, tools/ToolClient
@@ -81,6 +82,8 @@ The guides and posts must stay consistent with these.
   2. Score = 4 × recent error rate (shrunk: de ÷ (dn + 2)) + (pair ms ÷ your own median pair ms − 1, floored at 0). Needs ≥ 5 samples; listed from score 0.3; top 5. Speed is only compared once ≥ 8 pairs have ≥ 3 timings.
   3. Drill = 40 words from `COURSE_WORDS` (~890): each pair gets up to 3 of its own words first, the rest is weighted random (more/weaker pairs = likelier), no immediate repeats; a pair almost no word contains gets a repeated chunk (“qzqz qzqzqz”).
   4. Fallbacks: ≥ 5-press single-key accuracy (5 lowest) → normal passage. The page names which level is in use.
+- **Letter row** (`LetterRow.tsx`, `letterStats.ts`) under the Practice tabs: 26 boxes a–z. Level from score = 4 × error rate (`keyStats`) + (ms into the letter ÷ your median letter − 1, floored at 0; ms = average of timed pairs ending in the letter). good < 0.15 · okay < 0.3 · weak < 0.6 · weakest ≥ 0.6 · grey under 10 presses. Colours = the heatmap palette; a bar under each letter repeats the level without colour. Scores recompute on load and after each finished run.
+  - Click a letter → weak drill for that key (`generateKeyDrill`: real words with the letter, extra weight on weak pairs ending in it; keeps drilling it until another letter / tab / “drill my weakest instead”). Locked during a run.
 - Pair data lives in `freetyper-pairs`, written at most every 2 s and on page hide (never per keystroke), cleared by Reset on the progress page. Never sent to GA.
 
 **Progress**
@@ -180,7 +183,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Test touch typing on a real phone; optional: real screenshot of a result card for the home guide; rename sidebar “start” → “speed test”.
 
 **Planned product work (agreed 2026-10-05; build order)**
-- [x] **[C] 1. Weak-pair drills (bigrams)** — built on `feat/weak-pairs` (awaiting review/deploy). Ideas left: show pair progress after a drill (“th 260 → 190 ms”), include punctuation pairs, a Dhakal-style hand/finger-pair view.
+- [x] **[C] 1. Weak-pair drills (bigrams) + the letter row with click-to-drill** — built on `feat/weak-pairs` (awaiting review/deploy). **Step 2 (next): adaptive mode** — a “keep going” loop that always drills the current weakest key and shows “n of 26 keys good”; decide the “good” goal (accuracy + your median speed, or a user-set target WPM; keybr defaults to a target WPM). Other ideas left: show pair progress after a drill (“th 260 → 190 ms”), include punctuation pairs, a Dhakal-style hand/finger-pair view.
   - *Data:* record, per typed letter, the expected previous letter, correct/wrong, and the time since the previous keystroke (letters only, so ≤ 676 pairs). Local only, never sent to GA. Today `onKeyStats` gets only `(key, correct)` and `KeyStats.averageTime` is always 0, so the engine needs to pass a timestamp and the previous character.
   - *Weak pair:* ≥ 5 samples, ranked by error rate plus slowness against the user's own median; ignore gaps over ~2 s. Say honestly when there is not enough data yet.
   - *Drill:* words from the ~890-word `courseWords` list that contain the weak pairs (most weak pairs first); fewer than 5 matches → short repeated pair drills.
@@ -205,6 +208,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 **Recently done (2026-10-03 to 05):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (live 2026-10-05).
 
 ## 9. Gotchas
+- **Phone overflow (open bug):** the on-screen `LiveKeyboard` is ~119 px wider than a 390 px screen on `/`, `/typing-lessons` and `/typing-practice`, so the page scrolls sideways. Fix idea: scale the keyboard to the width or hide it on touch devices.
 - **Sidebars:** keep `md:sticky md:top-0 md:h-screen md:self-start` on both asides. `h-auto` or `min-h-screen` stretches them in the flex row and breaks sticky.
 - **Hydration:** anything read from localStorage must render only after hydration (see `KeyboardGuide`, `useSyncExternalStore`).
 - **Slash key:** `/` opens the speed-test command palette unless the passage starts with `/`.
