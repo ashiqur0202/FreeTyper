@@ -170,13 +170,30 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[C]** Save the browser checks as **Playwright tests** in `tests/` (speed run, finger labels, Word Attack progress, Falling Words speed, hydration, sticky rails, touch input, GA4 events, redirects).
 - [ ] **[A]** Test touch typing on a real phone; optional: real screenshot of a result card for the home guide; rename sidebar “start” → “speed test”.
 
+**Planned product work (agreed 2026-10-05; build order; do not start before the “Now” list above is done)**
+- [ ] **[C] 1. Weak-pair drills (bigrams).** Find the letter pairs a user is slow or error-prone on and drill them.
+  - *Data:* record, per typed letter, the expected previous letter, correct/wrong, and the time since the previous keystroke (letters only, so ≤ 676 pairs). Local only, never sent to GA. Today `onKeyStats` gets only `(key, correct)` and `KeyStats.averageTime` is always 0, so the engine needs to pass a timestamp and the previous character.
+  - *Weak pair:* ≥ 5 samples, ranked by error rate plus slowness against the user's own median; ignore gaps over ~2 s. Say honestly when there is not enough data yet.
+  - *Drill:* words from the ~890-word `courseWords` list that contain the weak pairs (most weak pairs first); fewer than 5 matches → short repeated pair drills.
+  - *Where:* upgrade the Practice weak-key drill; show the top 5 slow pairs on the Progress page. No new route. Update the Practice and Progress guides, the privacy page and bump their dates.
+- [ ] **[C] 2. Coding tracks.** Start with **one** language, chosen from real Bing Webmaster queries (guess: JavaScript). Four thin tracks would repeat the “low value content” problem.
+  - ~15 original snippets, ordered by difficulty, each run or compiled to prove it is correct, each with a note on the symbols it trains.
+  - Decide how Enter, Tab and leading indentation work in code (proposal: skip leading indentation automatically after Enter; a setting later). Check the engine first.
+  - Start as a Practice category; a route per language only once it has its own guide and enough content.
+- [ ] **[C] 3. Upgrade the result card.** The card is `PracticeFeedback.tsx` (speed test shows the detailed layout).
+  - *Today:* net WPM, accuracy, time, rank pill, ↑/↓ vs the previous run, WPM scale bar, correct / errors / gross WPM / words, coach note, finger-map and weak-key buttons, and a text-only share. Only the last 5 runs are kept, as plain `TypingSession` (no per-keystroke data). The cumulative error heatmap lives on the Progress page (`KeyboardHeatmap.tsx`, from `keyStats`).
+  - *Ideas:* WPM-over-time curve for the run, consistency %, a per-run key heatmap, the run's slowest pairs (from item 1), and a visual share image.
+  - *Needs:* per-keystroke timestamps from the engine (the same capture as item 1, so build it once). Decide how much to store per run, since only 5 runs are kept.
+  - Build after item 1 and before adding anything else to the card.
+
 **Later — ideas, validate first**
+- Custom text importer (paste your own text): **dropped for now** (no SEO value, narrow audience, odd-input edge cases). Revisit only if students ask.
 - Exam / language typing tests (India, Pakistan and Bangladesh are in the top countries): check Bing Webmaster queries before building.
 - Make guides easy for AI assistants to cite (clear definitions, sourced numbers) — ChatGPT already refers visitors.
 - Accounts, leaderboards, multiplayer races, Dvorak/Colemak, more games, progress export/import, ease Falling Words tiers 7–10, more than 20 practice passages.
 - Cleanup: ~57 older lint errors · delete `content-dates.ts` · unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`).
 
-**Recently done (2026-10-03/04):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (live 2026-10-05).
+**Recently done (2026-10-03 to 05):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (live 2026-10-05).
 
 ## 9. Gotchas
 - **Sidebars:** keep `md:sticky md:top-0 md:h-screen md:self-start` on both asides. `h-auto` or `min-h-screen` stretches them in the flex row and breaks sticky.
