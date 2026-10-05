@@ -6,8 +6,8 @@ No login, no database, privacy-first (all data stays in the browser), to be fund
 This is the living reference. History lives in git. Per-guide detail lives in the header comment of each content file.
 
 ## 1. Status (updated 2026-10-06)
-- **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-05: the 34-lesson course with a 95 % gate; before it 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. Live course test: 30/30 passed.
-- **Built, tested, not deployed — branches `feat/weak-pairs` and `feat/result-card` (the latter, at commit `399759d`, is built on the former, so merging it ships both):** the new result card (speed graph, consistency, weak spots) on the speed test, practice and lessons — new suite `card` 36/36, pure checks `run-check` — plus letter-pair statistics, the **adaptive** Practice tab (now the default), the a–z letter row with a focus marker and click-to-drill, a “Weakest letter pairs” card on Progress, and the matching guide/privacy updates. New suites: `pairs` 19/19, `letters` 32/32, plus pure-logic checks; all older suites still pass. Deploy next (after the phone-keyboard fix if wanted).
+- **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-06: adaptive practice, the letter row, weak pairs and the new result card; before it 2026-10-05: the 34-lesson course with a 95 % gate; 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. Suites run against the live site on 2026-10-06: pairs 19/19, letters 32/32, card 36/36, course 30/30.
+- **Live since 2026-10-06 (commit `d81054c`):** the result card (speed graph, consistency, weak spots) on the speed test, practice and lessons; letter-pair statistics; the **adaptive** Practice tab (now the default); the a–z letter row with a focus marker and click-to-drill; a “Weakest letter pairs” card on Progress; and the matching guide/privacy updates.
 - **AdSense:** application rejected — **“Low value content”**. The setup is correct and live. “Verify site ownership” is still open in the dashboard.
 - **Done because of the rejection:**
   - every guide rewritten from the real code, with verified sources
@@ -189,7 +189,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) so progress can be compared.
 
 **Next — product work the data supports**
-- [ ] **[C]** **Deploy `feat/result-card`** (it contains `feat/weak-pairs`; merge fast-forward, push, poll, run the `pairs` / `letters` / `course` / `card` suites against the live site; the `card` suite types for ~20 s per page), then request indexing for `/typing-practice` (guide changed a lot) and check the GA4 `practice_complete` category values (`adaptive` is new).
+- [ ] **[A]** After the 2026-10-06 release: request indexing for `/typing-practice` and `/` in Search Console (both guides changed), and in GA4 check that `practice_complete` shows the new category `adaptive` (register `category` as a dimension if not yet).
 - [ ] **[C]** **Fix the phone overflow** (see §9): scale `LiveKeyboard` to the screen width or hide it on touch devices.
 - [x] Longer lessons course (34 lessons, 95 % gate) — **live since 2026-10-05**. Now watch `lesson_attempt` (pass rate per lesson) in GA4 to find lessons that are too hard.
 - [ ] **[C]** A clear, printable **touch-typing finger chart** (people already search “keyboard finger chart / touch typing diagram”; the keyboard guide ranks ~position 47–73 for it).
@@ -198,12 +198,12 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Test touch typing on a real phone; optional: real screenshot of a result card for the home guide; rename sidebar “start” → “speed test”.
 
 **Planned product work (agreed 2026-10-05; build order)**
-- [x] **[C] 1. Weak-pair drills (bigrams), letter row, adaptive default** — built on `feat/weak-pairs` (rules in §4 Practice). Ideas left: a user-set target WPM (keybr has one) · a “you improved” summary after a drill (“th 260 → 190 ms”) · adaptive for digits and punctuation (pairs are letters only) · an adaptive entry on the home page · a Dhakal-style hand/finger-pair view.
+- [x] **[C] 1. Weak-pair drills (bigrams), letter row, adaptive default** — live (rules in §4 Practice). Ideas left: a user-set target WPM (keybr has one) · a “you improved” summary after a drill (“th 260 → 190 ms”) · adaptive for digits and punctuation (pairs are letters only) · an adaptive entry on the home page · a Dhakal-style hand/finger-pair view.
 - [ ] **[C] 2. Coding tracks.** Start with **one** language, chosen from real Bing Webmaster queries (guess: JavaScript). Four thin tracks would repeat the “low value content” problem.
   - ~15 original snippets, ordered by difficulty, each run or compiled to prove it is correct, each with a note on the symbols it trains.
   - Decide how Enter, Tab and leading indentation work in code (proposal: skip leading indentation automatically after Enter; a setting later). Check the engine first.
   - Start as a Practice category; a route per language only once it has its own guide and enough content.
-- [x] **[C] 3. Upgrade the result card** — built on `feat/result-card` (rules in §4 Result card). The graph shows from 5 s (it was 10 s; fast typists finishing a short quote got none). Ideas left: a per-run keyboard heatmap behind a toggle (demoed, left out to keep the card short) · a “you improved” comparison of weak pairs after a drill · result-card guide screenshots. The share image is item 4.
+- [x] **[C] 3. Upgrade the result card** — live (rules in §4 Result card). The graph shows from 5 s (it was 10 s; fast typists finishing a short quote got none). Ideas left: a per-run keyboard heatmap behind a toggle (demoed, left out to keep the card short) · a “you improved” comparison of weak pairs after a drill · result-card guide screenshots. The share image is item 4.
 - [ ] **[C] 4. Share the result as an image (agreed 2026-10-06, not built).** Today “share” (speed test only) copies one text line (`20 WPM · 55% accuracy — FreeTyper`); an image gets noticed in feeds and puts `freetyper.com` in front of people (helps the traffic goal).
   - A purpose-made **1200×630 PNG drawn on a canvas in the browser** (not a screenshot of the live card: that has buttons, the coach note and a window-dependent size). Content: big WPM, accuracy, time, rank, a mini speed graph, date, `freetyper.com`; theme colours. Nothing is uploaded; it shows only the finished run, never typed text.
   - Button behaviour: phones → Web Share API with the image attached; desktop → copy the image to the clipboard (`ClipboardItem`, PNG); if blocked/unsupported → download the PNG and copy the old text line.
@@ -217,7 +217,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - Accounts, leaderboards, multiplayer races, Dvorak/Colemak, more games, progress export/import, ease Falling Words tiers 7–10, more than 20 practice passages.
 - Cleanup: ~57 older lint errors · delete `content-dates.ts` · unused config in `gameData.ts` (`wordAttackRounds.duration/basePoints`, `scoringRules.speedBonus*`).
 
-**Recently done (2026-10-03 to 06):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (live 2026-10-05) · weak pairs, letter row, adaptive practice and the new result card (built 2026-10-06, branches only).
+**Recently done (2026-10-03 to 06):** all guides and posts rewritten · blog 25 → 10 · settings, touch input, shift hints, Esc/slash fixes · sticky sidebars · one visible post date · About/Disclaimer wording fixed · `/typing-test` alias · GA4 events · 34-lesson course (live 2026-10-05) · weak pairs, letter row, adaptive practice and the new result card (live 2026-10-06).
 
 ## 9. Gotchas
 - **Phone overflow (open bug):** the on-screen `LiveKeyboard` is ~119 px wider than a 390 px screen on `/`, `/typing-lessons` and `/typing-practice`, so the page scrolls sideways. Fix idea: scale the keyboard to the width or hide it on touch devices.
