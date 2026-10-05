@@ -49,10 +49,17 @@ export interface TypingCharState {
   status: 'pending' | 'current' | 'correct' | 'incorrect';
 }
 
+/** What was typed just before a key: the previous letter in the text and the time since the last keystroke. */
+export interface KeyContext {
+  prev?: string;
+  /** Milliseconds since the previous keystroke; undefined at the start or right after a Backspace. */
+  gapMs?: number;
+}
+
 export interface TypingEngineOptions {
   text: string;
   timed?: number;
   onStart?: () => void;
   onComplete?: (result: TypingSession) => void;
-  onKeyStats?: (key: string, correct: boolean) => void;
+  onKeyStats?: (key: string, correct: boolean, context: KeyContext) => void;
 }

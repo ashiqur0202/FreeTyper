@@ -4,6 +4,7 @@ import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react
 import { Check, Lock, RotateCcw, SkipForward } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
+import { recordPair } from './pairStats';
 import {
   courseLessons,
   STAGES,
@@ -186,7 +187,10 @@ export default function TypingLessons() {
   } = useTypingEngine({
     text,
     onComplete: handleComplete,
-    onKeyStats: (key, correct) => updateKeyStats(key, correct),
+    onKeyStats: (key, correct, ctx) => {
+      updateKeyStats(key, correct);
+      recordPair(ctx.prev, key, correct, ctx.gapMs);
+    },
   });
 
   isRunningRef.current = isRunning;

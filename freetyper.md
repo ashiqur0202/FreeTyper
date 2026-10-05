@@ -45,6 +45,7 @@ src/components/skills/typing/
                 useKeySound, mobileInput (touch/IME fallback)
                 courseData (6 stages, 34 lessons, pass marks), courseWords (word list, sentences, passages),
                 lessonText (text generator), courseProgress (unlock, skip, migration)
+                pairStats (letter-pair stats, scoring, storage), pairDrill (weak-pair drill text)
                 typingData (practice passages, finger map), gameData (word pools, tiers, rounds, scoring)
 src/components/layout/   Sidebar, RightSidebar (both pinned), SettingsProvider, Footer, ContactPanel
 src/components/          content/ExpandableSeoContent, seo/JsonLd, blog/BlogContent+BlogCard, tools/ToolClient
@@ -75,9 +76,15 @@ The guides and posts must stay consistent with these.
 
 **Practice**
 - 20 built-in passages (5 each: quotes, news, code, fun), plus a weak-key drill. Untimed.
-- Weak key = at least 5 presses; the 5 lowest accuracy. The drill is 40 words from a ~123-word list.
+- **Weak-key drill** (category “weak keys”) has three levels:
+  1. **Weak pairs** (`pairStats.ts`, `pairDrill.ts`). Each letter typed after a letter is a sample for that pair (letters a–z only, ≤ 676 pairs). Kept: samples, recent-weighted errors (decay 0.97), and a timing only for a *correct* key whose gap from the previous key is 15–2000 ms and not right after a Backspace (EMA 0.25).
+  2. Score = 4 × recent error rate (shrunk: de ÷ (dn + 2)) + (pair ms ÷ your own median pair ms − 1, floored at 0). Needs ≥ 5 samples; listed from score 0.3; top 5. Speed is only compared once ≥ 8 pairs have ≥ 3 timings.
+  3. Drill = 40 words from `COURSE_WORDS` (~890): each pair gets up to 3 of its own words first, the rest is weighted random (more/weaker pairs = likelier), no immediate repeats; a pair almost no word contains gets a repeated chunk (“qzqz qzqzqz”).
+  4. Fallbacks: ≥ 5-press single-key accuracy (5 lowest) → normal passage. The page names which level is in use.
+- Pair data lives in `freetyper-pairs`, written at most every 2 s and on page hide (never per keystroke), cleared by Reset on the progress page. Never sent to GA.
 
 **Progress**
+- A “Weakest letter pairs” card (top 5: ms, × your typical pair, % errors, samples); under ~100 recorded pairs it says more typing is needed.
 - Best WPM/accuracy exclude games; the chart and average include them (average = last 30 sessions).
 - Streak = consecutive **local** days. Reset does not clear lesson unlocks or the latest-5 logs. 14 achievements.
 
@@ -96,7 +103,9 @@ The guides and posts must stay consistent with these.
 - Sound (soft tick / lower thud, Web Audio) · keyboard hints (next-key highlight) · layout (a fixed “QWERTY” label).
 - Default is dark + gold `#e2b714`.
 
-**Storage keys:** `freetyper-settings`, `-progress`, `-speed-log`, `-practice-log`, `-lessons-log`, `-course-progress` (old `-lessons-progress` is read once for migration), `-fw-log`, `-wa-log`, `-fw-highscore`, `-wa-highscore`.
+**Storage keys:** `freetyper-settings`, `-progress`, `-speed-log`, `-practice-log`, `-lessons-log`, `-pairs`, `-course-progress` (old `-lessons-progress` is read once for migration), `-fw-log`, `-wa-log`, `-fw-highscore`, `-wa-highscore`.
+
+**Engine:** `onKeyStats(key, correct, {prev, gapMs})` — speed test, practice and lessons all feed `recordPair`; the games do not (no meaningful timing).
 
 **Input:** window `keydown` plus a hidden-input `input` fallback for touch/IME. Capitals and shifted symbols highlight the key and the opposite-hand Shift.
 
@@ -170,8 +179,8 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[C]** Save the browser checks as **Playwright tests** in `tests/` (speed run, finger labels, Word Attack progress, Falling Words speed, hydration, sticky rails, touch input, GA4 events, redirects).
 - [ ] **[A]** Test touch typing on a real phone; optional: real screenshot of a result card for the home guide; rename sidebar “start” → “speed test”.
 
-**Planned product work (agreed 2026-10-05; build order; do not start before the “Now” list above is done)**
-- [ ] **[C] 1. Weak-pair drills (bigrams).** Find the letter pairs a user is slow or error-prone on and drill them.
+**Planned product work (agreed 2026-10-05; build order)**
+- [x] **[C] 1. Weak-pair drills (bigrams)** — built on `feat/weak-pairs` (awaiting review/deploy). Ideas left: show pair progress after a drill (“th 260 → 190 ms”), include punctuation pairs, a Dhakal-style hand/finger-pair view.
   - *Data:* record, per typed letter, the expected previous letter, correct/wrong, and the time since the previous keystroke (letters only, so ≤ 676 pairs). Local only, never sent to GA. Today `onKeyStats` gets only `(key, correct)` and `KeyStats.averageTime` is always 0, so the engine needs to pass a timestamp and the previous character.
   - *Weak pair:* ≥ 5 samples, ranked by error rate plus slowness against the user's own median; ignore gaps over ~2 s. Say honestly when there is not enough data yet.
   - *Drill:* words from the ~890-word `courseWords` list that contain the weak pairs (most weak pairs first); fewer than 5 matches → short repeated pair drills.
@@ -183,7 +192,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[C] 3. Upgrade the result card.** The card is `PracticeFeedback.tsx` (speed test shows the detailed layout).
   - *Today:* net WPM, accuracy, time, rank pill, ↑/↓ vs the previous run, WPM scale bar, correct / errors / gross WPM / words, coach note, finger-map and weak-key buttons, and a text-only share. Only the last 5 runs are kept, as plain `TypingSession` (no per-keystroke data). The cumulative error heatmap lives on the Progress page (`KeyboardHeatmap.tsx`, from `keyStats`).
   - *Ideas:* WPM-over-time curve for the run, consistency %, a per-run key heatmap, the run's slowest pairs (from item 1), and a visual share image.
-  - *Needs:* per-keystroke timestamps from the engine (the same capture as item 1, so build it once). Decide how much to store per run, since only 5 runs are kept.
+  - *Needs:* per-keystroke timestamps for a run curve (the engine now passes `gapMs` per key, but nothing keeps a per-run series yet). Decide how much to store per run, since only 5 runs are kept. The run's slowest pairs can use the pair store as is.
   - Build after item 1 and before adding anything else to the card.
 
 **Later — ideas, validate first**

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { RotateCcw, Settings2, X, Maximize, Minimize, Share2, Check, PenTool } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
+import { recordPair } from './pairStats';
 import { practiceTexts } from './typingData';
 import { wordPools } from './gameData';
 import type { TypingSession, Achievement } from './types';
@@ -164,7 +165,10 @@ export default function TypingSpeedTest() {
       text,
       timed: duration,
       onComplete: handleComplete,
-      onKeyStats: (key, correct) => updateKeyStats(key, correct),
+      onKeyStats: (key, correct, ctx) => {
+      updateKeyStats(key, correct);
+      recordPair(ctx.prev, key, correct, ctx.gapMs);
+    },
     });
 
   const isCompleteRef = useRef(false);

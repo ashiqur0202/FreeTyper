@@ -30,8 +30,10 @@ export default function PrivacyPage() {
           <h2 className="text-xl font-bold text-text-bright">Data stored on your device</h2>
           <p className="mt-2">
             Progress, achievements, settings, and game high scores are stored only in your
-            browser&apos;s localStorage. That data does not go to our servers. Clearing site data
-            deletes it.
+            browser&apos;s localStorage. So are your letter-pair statistics: which letters you type
+            one after the other, how often a pair goes wrong and how long it takes, used to build
+            weak-key drills. That data does not go to our servers. Clearing site data deletes it,
+            and resetting progress on the progress page clears the pair statistics too.
           </p>
         </section>
 

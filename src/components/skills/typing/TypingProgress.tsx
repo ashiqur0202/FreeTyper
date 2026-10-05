@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { clearPairs, getPairStore, totalSamples, weakPairsOf, type PairScore } from './pairStats';
 import {
   BarChart3,
   Flame,
@@ -46,8 +47,14 @@ export default function TypingProgress() {
   const [showReset, setShowReset] = useState(false);
   const [mounted, setMounted] = useState(false);
 
+  const [pairs, setPairs] = useState<PairScore[]>([]);
+  const [pairSamples, setPairSamples] = useState(0);
+
   useEffect(() => {
     setMounted(true);
+    const store = getPairStore();
+    setPairs(weakPairsOf(store, 5));
+    setPairSamples(totalSamples(store));
   }, []);
 
   const wpmHistory = getWpmHistory().slice(-30);
@@ -259,6 +266,51 @@ export default function TypingProgress() {
           </Link>
         </div>
 
+        {/* Weakest letter pairs */}
+        <div className="rounded-xl border border-surface-border bg-surface-raised/30 p-5" data-section="weak-pairs">
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="text-sm font-medium text-text-bright">Weakest letter pairs</h3>
+            <Link
+              href="/typing-practice"
+              className="inline-flex items-center gap-1 text-[11px] text-accent hover:underline"
+            >
+              drill <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+          {pairs.length > 0 ? (
+            <div className="mt-4 space-y-2.5">
+              {pairs.map((p) => (
+                <div key={p.pair} className="flex items-center gap-3">
+                  <kbd className="flex h-8 min-w-[2.5rem] items-center justify-center rounded-md border border-surface-border bg-surface px-2 font-mono text-sm text-text-bright">
+                    {p.pair}
+                  </kbd>
+                  <div className="min-w-0 flex-1 text-xs leading-snug text-text">
+                    {p.relativeSpeed !== null && p.relativeSpeed > 1.15 && p.ms !== null ? (
+                      <span>{p.ms} ms, {p.relativeSpeed.toFixed(1)}× your typical pair</span>
+                    ) : (
+                      <span className="text-text-dim">speed is typical for you</span>
+                    )}
+                    <span className="text-text-dim"> · </span>
+                    <span className={p.errorRate >= 0.1 ? 'text-error' : 'text-text-dim'}>
+                      {Math.round(p.errorRate * 100)}% errors
+                    </span>
+                  </div>
+                  <span className="font-mono text-[11px] tabular-nums text-text-dim">{p.samples}×</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="mt-3 text-xs leading-relaxed text-text-dim">
+              {pairSamples < 100
+                ? `Type a bit more (${pairSamples} letter pairs recorded so far, about 100 needed) and the pairs you are slow or error-prone on will show up here.`
+                : 'No letter pair stands out right now. That is a good sign.'}
+            </p>
+          )}
+          <p className="mt-4 text-[11px] leading-relaxed text-text-dim">
+            Pairs are two letters typed one after the other, like “th”. They are kept only in this browser.
+          </p>
+        </div>
+
         {/* Recent sessions */}
         <div className="rounded-xl border border-surface-border bg-surface-raised/30 p-5">
           <h3 className="text-sm font-medium text-text-bright">Recent sessions</h3>
@@ -356,6 +408,9 @@ export default function TypingProgress() {
               type="button"
               onClick={() => {
                 resetProgress();
+                clearPairs();
+                setPairs([]);
+                setPairSamples(0);
                 setShowReset(false);
               }}
               className="rounded-md bg-error px-3 py-1 text-[11px] font-medium text-white hover:opacity-90"

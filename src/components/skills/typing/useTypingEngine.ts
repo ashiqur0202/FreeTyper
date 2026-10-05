@@ -29,6 +29,8 @@ export function useTypingEngine(options: TypingEngineOptions) {
   const isRunningRef = useRef(false);
   const isCompleteRef = useRef(false);
   const currentIndexRef = useRef(0);
+  /** performance.now() of the last keystroke; 0 when there is no usable previous keystroke. */
+  const lastKeyAtRef = useRef(0);
   const timedRef = useRef(timed ?? 0);
   const textRef = useRef(text);
   textRef.current = text;
@@ -128,7 +130,12 @@ export function useTypingEngine(options: TypingEngineOptions) {
       setErrors((prev) => [...prev, idx]);
     }
 
-    onKeyStats?.(expected.toLowerCase(), isCorrect);
+    const now = performance.now();
+    onKeyStats?.(expected.toLowerCase(), isCorrect, {
+      prev: idx > 0 ? chars[idx - 1].char : undefined,
+      gapMs: lastKeyAtRef.current ? now - lastKeyAtRef.current : undefined,
+    });
+    lastKeyAtRef.current = now;
 
     const nextIdx = idx + 1;
     currentIndexRef.current = nextIdx;
@@ -149,6 +156,8 @@ export function useTypingEngine(options: TypingEngineOptions) {
     if (idx <= 0) return;
 
     const prevIdx = idx - 1;
+    // A correction breaks the rhythm, so the next key has no usable timing.
+    lastKeyAtRef.current = 0;
 
     // If the previous char was incorrect, undo the error count
     setChars((prev) => {
@@ -189,6 +198,7 @@ export function useTypingEngine(options: TypingEngineOptions) {
     isCompleteRef.current = false;
     currentIndexRef.current = 0;
     startTimeRef.current = 0;
+    lastKeyAtRef.current = 0;
 
     setChars(initChars(t));
     setCurrentIndex(0);

@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-03
+ * Last real edit: 2026-10-05
  */
 
 export const meta = {
@@ -36,7 +36,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'How does the weak-key drill choose its words?',
     answer:
-      'FreeTyper counts how often you press each key and how often you get it right. Keys you have pressed at least five times are ranked by accuracy, and the five with the lowest accuracy are your weak keys. The drill then builds a 40-word passage from common English words that contain those letters. Until you have enough data, the drill gives you a normal passage instead.',
+      'FreeTyper records which letter pairs you type, like th or er, how often you get each pair wrong and how long it takes you. Pairs with at least five samples are scored, and the weakest few are drilled with 40 common English words that contain them. Speed is compared only with your own typical pair, so a slow typist is not marked weak everywhere. Until there are enough pairs, the drill uses your least accurate single keys, and with no data at all it gives you a normal passage.',
   },
   {
     question: 'Is typing practice timed?',
@@ -78,10 +78,10 @@ export const previewHtml = `
 <h2>Free Typing Practice — Quotes, News, Code and Weak-Key Drills</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-03">October 3, 2026</time></span>
+  <span>Last updated <time datetime="2026-10-05">October 5, 2026</time></span>
   <span>~6 min read</span>
 </p>
-<p>This free typing practice page gives you a short passage to type, scores it when you finish, and immediately loads the next one so you can keep going. You choose the kind of text: quotes, news-style passages, code snippets or fun facts. A fifth option, weak keys, builds a drill from the letters you miss most often.</p>
+<p>This free typing practice page gives you a short passage to type, scores it when you finish, and immediately loads the next one so you can keep going. You choose the kind of text: quotes, news-style passages, code snippets or fun facts. A fifth option, weak keys, builds a drill from the letter pairs and keys you are slowest or least accurate on.</p>
 <p>Below is how practice works here, what each category contains, exactly how the weak-key drill picks its words, and how to practice in a way that improves your accuracy as well as your speed.</p>
 `;
 
@@ -103,19 +103,20 @@ export const bodyHtml = `
 <tr><td>News</td><td>Five news-style passages on technology, space, climate, health and privacy</td><td>about 24–30 words</td></tr>
 <tr><td>Code</td><td>Five snippets: a React component, Python, TypeScript, SQL and CSS</td><td>about 23–30 words</td></tr>
 <tr><td>Fun</td><td>Five trivia passages, such as facts about octopuses, honey and keyboard history</td><td>about 36–41 words</td></tr>
-<tr><td>Weak keys</td><td>A 40-word drill generated from your own error data</td><td>40 words</td></tr>
+<tr><td>Weak keys</td><td>A 40-word drill generated from your own pair and key data</td><td>40 words</td></tr>
 </tbody>
 </table>
 <p>That is twenty built-in passages in the first four categories, and the next one is picked at random from the category you chose. You will see repeats, and that is a limit of the current text library, not a bug. Because the passages are short, a single run is a noisy measure of speed; average several runs before you draw conclusions.</p>
 
 <h2 id="how-weak-key-drills-work">How the weak-key drill works</h2>
 <ol>
-<li><strong>Every key you press is counted.</strong> FreeTyper records, per key, how many times you pressed it and how many of those were correct. This includes the speed test, the lessons, practice and both games. In the tests, lessons and practice, capital and lowercase letters count as the same key.</li>
-<li><strong>Weak keys are the five least accurate.</strong> Only keys you have pressed at least five times are considered, and they are ranked from lowest to highest accuracy.</li>
-<li><strong>The drill is built from common words.</strong> FreeTyper picks 40 words at random from a list of about 125 common English words, keeping only words that contain one of your weak letters (if there are enough of them), so you get repeated practice on those keys inside real words.</li>
-<li><strong>No data yet, no drill.</strong> Until you have pressed enough keys, choosing weak keys gives you a normal passage instead.</li>
+<li><strong>Every letter that follows another letter is recorded as a pair.</strong> Typing "the" records "th" and "he". For each pair FreeTyper keeps how many times you typed it, how many of those were wrong, and the time between the two keystrokes. Spaces, digits and punctuation are not recorded as pairs, and capital and lowercase letters count as the same.</li>
+<li><strong>Only clean timings count.</strong> A time is kept only when the key was right and came within about two seconds of the previous key. A pause, or the key right after a Backspace, adds an error or a sample but no timing.</li>
+<li><strong>Each pair gets a score.</strong> It is four times your recent error rate, plus how much slower the pair is than your own median pair (nothing is added if it is typical or faster). So a pair you miss 10% of the time scores 0.4, and one that takes twice your typical time scores 1.0. Recent typing weighs more than old typing, so a pair you have fixed drops out. A pair needs at least five samples and a score of 0.3 to be listed.</li>
+<li><strong>The drill uses real words.</strong> FreeTyper picks 40 words from a list of about 890 common English words. Each weak pair is guaranteed its own words first, and the rest are chosen at random, with words holding more or weaker pairs more likely. A pair that almost no word contains gets a short repeated chunk instead. The same word never appears twice in a row.</li>
+<li><strong>Fallbacks.</strong> If there are not enough pairs yet, the drill uses your five least accurate single keys (at least five presses each) and says so above the text. With no data at all you get a normal passage.</li>
 </ol>
-<p>Be aware of what this is. It finds keys with a low hit rate and gives you words that contain them. It does not analyse which finger or which key pair is causing the error, so use the <a href="/keyboard-guide">keyboard guide</a> if a key keeps failing and you are not sure which finger it belongs to. Your weakest keys are also listed on the <a href="/typing-progress">progress page</a>.</p>
+<p>The pairs and their timings stay in this browser, are never sent to a server, and are cleared when you reset progress on the <a href="/typing-progress">progress page</a>, which also lists your weakest pairs. The method is our own and is not a validated training program. It finds pairs you are slow or error-prone on and gives you words that contain them. Use the <a href="/keyboard-guide">keyboard guide</a> if a pair keeps failing and you are not sure which fingers type it.</p>
 
 <h2 id="practice-vs-lessons-vs-speed-test">Practice, lessons or speed test: which should you use?</h2>
 <ul>
@@ -140,7 +141,7 @@ export const bodyHtml = `
 <li>Twenty fixed passages in four categories, so repeats are normal.</li>
 <li>Passages are short, and runs are untimed, so WPM from a single run is rough.</li>
 <li>English text and the QWERTY layout only.</li>
-<li>The weak-key drill targets letters, not fingers or letter pairs.</li>
+<li>The weak-key drill targets letters and letter pairs, not fingers, and needs a few hundred keystrokes before the pair data says anything useful.</li>
 <li>For a physical keyboard, not a phone.</li>
 </ul>
 

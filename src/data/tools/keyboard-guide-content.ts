@@ -7,7 +7,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-03
+ * Last real edit: 2026-10-05
  */
 
 export const meta = {
@@ -72,7 +72,7 @@ export const previewHtml = `
 <h2>Keyboard Guide — Color-Coded Finger Placement for Touch Typing</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-03">October 3, 2026</time></span>
+  <span>Last updated <time datetime="2026-10-05">October 5, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This keyboard guide shows the correct finger placement for each key on a standard QWERTY keyboard. Every key is coloured by the finger that owns it, the eight home-row keys carry a small dot, and you can click or hover over any key to see its finger and your own accuracy on it. It is a reference for learning touch typing and for working out why certain keys keep going wrong.</p>
@@ -86,7 +86,7 @@ export const bodyHtml = `
 <li><strong>Filter by finger.</strong> The pills at the top let you light up one finger's keys and dim the rest: left little, ring, middle and index, then right index, middle, ring and little.</li>
 <li><strong>Home row only.</strong> This toggle dims everything except the eight home-row keys (and leaves the space bar lit), so you can focus on the resting position.</li>
 <li><strong>Your stats.</strong> The panel also shows how many times you have pressed that key, your accuracy on it, and your error count. A key where your accuracy is under 90% gets a faint glow around it.</li>
-<li><strong>Weak keys.</strong> Up to five of your least accurate keys are listed as buttons. Click one to jump to it, or follow the link to <a href="/typing-practice">practice a drill built from them</a>.</li>
+<li><strong>Weak keys.</strong> Up to five of your least accurate keys are listed as buttons. Click one to jump to it, or follow the link to <a href="/typing-practice">practice a weak-key drill</a>, which targets your slowest or least accurate letter pairs once there is enough data and your weak keys until then.</li>
 </ul>
 
 <h2 id="which-finger-types-which-key">Which finger types which key? The full finger placement chart</h2>
@@ -174,6 +174,6 @@ export const howToSteps: { name: string; text: string }[] = [
   },
   {
     name: 'Practice the keys you miss',
-    text: 'Follow the link to typing practice for a drill built from your weak keys, then repeat.',
+    text: 'Follow the link to typing practice for a weak-key drill built from your weakest letter pairs and keys, then repeat.',
   },
 ];

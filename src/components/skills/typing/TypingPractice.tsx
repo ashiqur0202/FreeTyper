@@ -4,6 +4,9 @@ import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react
 import { RotateCcw, Shuffle } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
+import { recordPair, getPairStore, weakPairsOf } from './pairStats';
+import { generatePairDrill } from './pairDrill';
+import { COURSE_WORDS } from './courseWords';
 import { practiceTexts } from './typingData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
@@ -63,6 +66,7 @@ export default function TypingPractice() {
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
   const [lineHeight, setLineHeight] = useState(0);
+  const [weakFocus, setWeakFocus] = useState<{ kind: 'pairs' | 'keys'; items: string[] } | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const typingAreaRef = useRef<HTMLDivElement>(null);
@@ -76,34 +80,33 @@ export default function TypingPractice() {
 
   const generateText = useCallback(
     (cat: Category) => {
-      if (cat === 'weak') {
+      if (cat !== 'weak') {
+        setWeakFocus(null);
+      } else {
+        // 1. Letter pairs you are slow or error-prone on (needs enough typing).
+        const pairs = weakPairsOf(getPairStore());
+        if (pairs.length > 0) {
+          const drill = generatePairDrill(pairs.map((p) => p.pair));
+          setWeakFocus({ kind: 'pairs', items: drill.pairs });
+          return drill.text;
+        }
+        // 2. Single keys with the lowest accuracy.
         const weak = getWeakKeys();
-        if (weak.length === 0) {
-          const random = practiceTexts[Math.floor(Math.random() * practiceTexts.length)];
-          return random.text;
+        if (weak.length > 0) {
+          const weakChars = weak.map((k) => k.key);
+          const focused = COURSE_WORDS.filter((w) => weakChars.some((c) => w.includes(c)));
+          const pool = focused.length > 5 ? focused : COURSE_WORDS;
+          const words: string[] = [];
+          for (let i = 0; i < 40; i++) {
+            words.push(pool[Math.floor(Math.random() * pool.length)]);
+          }
+          setWeakFocus({ kind: 'keys', items: weakChars });
+          return words.join(' ');
         }
-        const weakChars = weak.map((k) => k.key).join('');
-        const commonWords = [
-          'the', 'be', 'to', 'of', 'and', 'a', 'in', 'that', 'have', 'it', 'for', 'not', 'on', 'with',
-          'he', 'as', 'you', 'do', 'at', 'this', 'but', 'his', 'by', 'from', 'they', 'we', 'say', 'her',
-          'she', 'or', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what', 'so', 'up',
-          'out', 'if', 'about', 'who', 'get', 'which', 'go', 'me', 'when', 'make', 'can', 'like', 'time',
-          'no', 'just', 'him', 'know', 'take', 'people', 'into', 'year', 'your', 'good', 'some', 'could',
-          'them', 'see', 'other', 'than', 'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think',
-          'also', 'back', 'after', 'use', 'two', 'how', 'our', 'work', 'first', 'well', 'way', 'even',
-          'new', 'want', 'because', 'any', 'these', 'give', 'day', 'most', 'us', 'great', 'between',
-          'need', 'large', 'under', 'never', 'same', 'last', 'long', 'world', 'still', 'own', 'find',
-          'here', 'thing', 'many', 'right', 'begin', 'since', 'before', 'little', 'end', 'real', 'life',
-        ];
-        const focused = commonWords.filter((w) =>
-          weakChars.split('').some((c) => w.includes(c)),
-        );
-        const pool = focused.length > 5 ? focused : commonWords;
-        const words: string[] = [];
-        for (let i = 0; i < 40; i++) {
-          words.push(pool[Math.floor(Math.random() * pool.length)]);
-        }
-        return words.join(' ');
+        // 3. Not enough data yet: a normal passage.
+        setWeakFocus(null);
+        const random = practiceTexts[Math.floor(Math.random() * practiceTexts.length)];
+        return random.text;
       }
       const pool = practiceTexts.filter((p) => p.category === cat);
       if (pool.length === 0) return practiceTexts[0].text;
@@ -177,7 +180,10 @@ export default function TypingPractice() {
   } = useTypingEngine({
     text,
     onComplete: handleComplete,
-    onKeyStats: (key, correct) => updateKeyStats(key, correct),
+    onKeyStats: (key, correct, ctx) => {
+      updateKeyStats(key, correct);
+      recordPair(ctx.prev, key, correct, ctx.gapMs);
+    },
   });
 
   isRunningRef.current = isRunning;
@@ -370,6 +376,32 @@ export default function TypingPractice() {
               </span>
             </div>
           </div>
+
+          {category === 'weak' && (
+            <p className="mb-3 text-xs leading-relaxed text-text-dim" data-weak-focus={weakFocus?.kind ?? 'none'}>
+              {weakFocus?.kind === 'pairs' ? (
+                <>
+                  Drilling your slowest or least accurate letter pairs:{' '}
+                  {weakFocus.items.map((p) => (
+                    <kbd key={p} className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-accent">
+                      {p}
+                    </kbd>
+                  ))}
+                </>
+              ) : weakFocus?.kind === 'keys' ? (
+                <>
+                  Not enough pair data yet, so this drill uses your least accurate keys:{' '}
+                  {weakFocus.items.map((k) => (
+                    <kbd key={k} className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
+                      {k}
+                    </kbd>
+                  ))}
+                </>
+              ) : (
+                <>Type a few more runs and this drill will target your weak letter pairs. Until then you get a normal passage.</>
+              )}
+            </p>
+          )}
 
           <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
             <div
