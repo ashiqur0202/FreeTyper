@@ -5,7 +5,19 @@ No login, no database, privacy-first (all data stays in the browser), to be fund
 
 This is the living reference. History lives in git. Per-guide detail lives in the header comment of each content file.
 
-## 1. Status (updated 2026-10-06)
+## 0. Resume here (written 2026-10-07)
+- **Repo state:** `master` = `origin/master` = `61c2e94`, clean tree, everything is merged and **live**. Nothing is in flight. Old merged branches (`chore/ignore-analytics`, `content/blog-consolidation`, `docs/*`, `feat/*`, `fix/*`) can be deleted whenever convenient; none holds unmerged work.
+- **Do next, in this order (all [C] = Claude in code):**
+  1. **Fix the phone overflow** (§9): the on-screen keyboard makes `/`, `/typing-lessons` and `/typing-practice` scroll sideways on a 390 px screen. Many visitors are probably on phones.
+  2. **Share the result as an image** (§8, item 4; plan is written out there).
+  3. **Move the browser tests into the repo** (§8 “Playwright tests”). The suites that were used for every release (`run`, `fixes`, `events`, `course`, `pairs`, `letters`, `card`, `sticky`, `hydration`, plus pure-logic checks) were plain `puppeteer-core` + Chrome scripts kept in Claude's temporary scratchpad **outside the repo**, so they can disappear. Rebuild them from the behaviour in §4. They ran against `next start -p 3100` (or the live site via a `BASE` URL); `card` types ~20 s per page.
+  4. **Coding tracks** only after Bing Webmaster shows which language people search for.
+- **Ashiqur's list ([A], unchanged, most valuable for growth):** Bing Webmaster Tools · Search Console (resubmit sitemap, request indexing for `/`, `/typing-lessons`, `/typing-practice`) · GA4 key events + custom dimensions (`category`, `passed`, `lesson_number`, `attempt`, …) · AdSense site verification · one sourced blog post a week · monthly analytics export into `analytics/`.
+- **Open question from earlier:** the Coolify dashboard once showed a Redis `MISCONF` 500 error (likely full disk on the server). The site itself stayed up; whether the dashboard was fixed is unknown. Check disk space on the Hetzner server if the dashboard still errors.
+- **Known harmless noise:** `next build` prints “Failed to download dynamic font” (no network for the OG image font); Google's ad script occasionally throws `Uncaught Error: int64` in headless tests (not our code, passes on rerun).
+- **Numbers to refresh:** the analytics snapshot in §1 is from 2026-10-04, before the lessons course and adaptive practice shipped. Re-export GA4 and Search Console to see their effect (watch `lesson_attempt` pass rates and `practice_complete` with category `adaptive`).
+
+## 1. Status (updated 2026-10-07)
 - **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-06: adaptive practice, the letter row, weak pairs and the new result card; before it 2026-10-05: the 34-lesson course with a 95 % gate; 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. Suites run against the live site on 2026-10-06: pairs 19/19, letters 32/32, card 36/36, course 30/30.
 - **Live since 2026-10-06 (commit `d81054c`):** the result card (speed graph, consistency, weak spots) on the speed test, practice and lessons; letter-pair statistics; the **adaptive** Practice tab (now the default); the a–z letter row with a focus marker and click-to-drill; a “Weakest letter pairs” card on Progress; and the matching guide/privacy updates.
 - **AdSense:** application rejected — **“Low value content”**. The setup is correct and live. “Verify site ownership” is still open in the dashboard.
@@ -190,11 +202,11 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 
 **Next — product work the data supports**
 - [ ] **[A]** After the 2026-10-06 release: request indexing for `/typing-practice` and `/` in Search Console (both guides changed), and in GA4 check that `practice_complete` shows the new category `adaptive` (register `category` as a dimension if not yet).
-- [ ] **[C]** **Fix the phone overflow** (see §9): scale `LiveKeyboard` to the screen width or hide it on touch devices.
+- [ ] **[C]** **Fix the phone overflow** (see §9; first thing to do): scale `LiveKeyboard` to the screen width or hide it on touch devices; re-measure `scrollWidth - clientWidth` at 390 px on `/`, `/typing-lessons`, `/typing-practice` (it is 119 px today) and check the result card still fits.
 - [x] Longer lessons course (34 lessons, 95 % gate) — **live since 2026-10-05**. Now watch `lesson_attempt` (pass rate per lesson) in GA4 to find lessons that are too hard.
 - [ ] **[C]** A clear, printable **touch-typing finger chart** (people already search “keyboard finger chart / touch typing diagram”; the keyboard guide ranks ~position 47–73 for it).
 - [ ] **[C]** Preset **duration pages** (e.g. 1-minute, 5-minute test) as real working tools with a short unique intro — only after pages are being indexed, and never thin duplicates.
-- [ ] **[C]** Save the browser checks as **Playwright tests** in `tests/` (speed run, finger labels, Word Attack progress, Falling Words speed, hydration, sticky rails, touch input, GA4 events, redirects).
+- [ ] **[C]** Save the browser checks as **Playwright tests** in `tests/` (speed run, finger labels, Word Attack progress, Falling Words speed, hydration, sticky rails, touch input, GA4 events, redirects, **plus the newer ones: course gate/migration, pair recording, adaptive tab and letter row, result card**). Right now they exist only in a temporary folder outside the repo (see §0), so this protects the release routine.
 - [ ] **[A]** Test touch typing on a real phone; optional: real screenshot of a result card for the home guide; rename sidebar “start” → “speed test”.
 
 **Planned product work (agreed 2026-10-05; build order)**
