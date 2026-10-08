@@ -12,7 +12,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
   2. **Share the result as an image** (§8, item 4; plan is written out there).
   3. **Move the browser tests into the repo** (§8 “Playwright tests”). The suites that were used for every release (`run`, `fixes`, `events`, `course`, `pairs`, `letters`, `card`, `sticky`, `hydration`, plus pure-logic checks) were plain `puppeteer-core` + Chrome scripts kept in Claude's temporary scratchpad **outside the repo**, so they can disappear. Rebuild them from the behaviour in §4. They ran against `next start -p 3100` (or the live site via a `BASE` URL); `card` types ~20 s per page.
   4. **Coding tracks** only after Bing Webmaster shows which language people search for.
-- **Ashiqur's list ([A], unchanged, most valuable for growth):** Bing Webmaster Tools · Search Console (resubmit sitemap, request indexing for `/`, `/typing-lessons`, `/typing-practice`) · GA4 key events + custom dimensions (`category`, `passed`, `lesson_number`, `attempt`, …) · AdSense site verification · one sourced blog post a week · monthly analytics export into `analytics/`.
+- **Ashiqur's list ([A], most valuable for growth):** ~~Bing Webmaster Tools~~ (done 2026-10-08, §2) · Search Console (resubmit sitemap, request indexing for `/`, `/typing-lessons`, `/typing-practice`) · GA4 key events + custom dimensions (`category`, `passed`, `lesson_number`, `attempt`, …) · AdSense site verification · one sourced blog post a week · monthly analytics export into `analytics/`.
 - **Open question from earlier:** the Coolify dashboard once showed a Redis `MISCONF` 500 error (likely full disk on the server). The site itself stayed up; whether the dashboard was fixed is unknown. Check disk space on the Hetzner server if the dashboard still errors.
 - **Known harmless noise:** `next build` prints “Failed to download dynamic font” (no network for the OG image font); Google's ad script occasionally throws `Uncaught Error: int64` in headless tests (not our code, passes on rerun).
 - **Numbers to refresh:** the analytics snapshot in §1 is from 2026-10-04, before the lessons course and adaptive practice shipped. Re-export GA4 and Search Console to see their effect (watch `lesson_attempt` pass rates and `practice_complete` with category `adaptive`).
@@ -45,7 +45,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
   3. test on `next start` in a headless browser
   4. fast-forward `master`, push
   5. poll the live site to confirm
-- Analytics: GA4 `G-QC5509TVSF` · Search Console verified · Bing Webmaster Tools not set up yet · mail: `contact@freetyper.com`.
+- Analytics: GA4 `G-QC5509TVSF` · Search Console verified · **Bing Webmaster Tools set up 2026-10-08**: verified with the `msvalidate.01` meta tag (`verification.other` in `src/app/layout.tsx`, commit `7487820`; the stray `BingSiteAuth.xml` XML-file method is not used) and `sitemap.xml` submitted. Bing also feeds Yahoo, DuckDuckGo and Ecosia, so no separate submissions. Yandex/IndexNow are optional and not set up · mail: `contact@freetyper.com`.
 
 ## 3. Architecture map
 ```
@@ -193,7 +193,8 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 ## 8. TODO (owner: **[A]** Ashiqur · **[C]** Claude in code)
 **Now — growth is limited by distribution, not features**
 - [ ] **[A]** Confirm the events arrive: GA4 → Reports → Realtime, finish a test on freetyper.com and look for `test_complete` under “Event count by Event name” (DebugView with the GA Debugger extension shows the parameters).
-- [ ] **[A]** Set up **Bing Webmaster Tools** (free): import the site from Search Console, submit `sitemap.xml`, read its queries. Bing is ~70 % of traffic.
+- [x] **[A]** **Bing Webmaster Tools** set up and sitemap submitted (2026-10-08).
+- [ ] **[A]** Check Bing Webmaster in about a week: sitemap status, pages indexed, and the **search queries** (they decide the coding-track language and any exam-typing pages). Optionally use its URL Submission for the key pages.
 - [ ] **[A]** Search Console: **resubmit the sitemap** (23 URLs) and **request indexing** for `/`, `/blog`, the 6 tool pages and the 10 posts.
 - [ ] **[A]** Request indexing for `/typing-lessons` in Search Console (content changed a lot on 2026-10-05).
 - [ ] **[A]** GA4, once each event has appeared at least once (register the custom definitions first — they are not retroactive): Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `passed`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`, `lesson_number`, `attempt`.
