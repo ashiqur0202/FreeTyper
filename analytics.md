@@ -31,6 +31,44 @@ Other properties exist under the same Google account (a different site and a "Fi
 
 ## Log (newest first)
 
+### 2026-10-10 — deep dive: engagement, events, devices, browsers (GA4, window 2026-09-12 to 2026-10-09 unless noted)
+
+**Engagement**
+- 909 active users, 903 new, 865 engaged sessions, engagement rate 68.6 %, average engagement time 6m 41s per active user. Page views per user, 4.05 (4–9 Oct).
+- Bounce rate by page: Lessons 23.3 %, Practice 17.4 %, Speed test 17.5 %, Keyboard guide 13.7 %, Progress 3.0 %, Falling Words 8.0 %, Word Attack 1.3 %.
+- Views (28 days): Lessons 915, Practice 838, Speed test 777, Keyboard guide 415, Progress 179, Falling Words 104, Word Attack 103.
+
+**Events (only tracked since the 2026-10-04 release, so the 4–9 Oct window is the fair one: 281 users)**
+| Event | Users | Share of 281 | Events | Per user |
+|---|---|---|---|---|
+| practice_complete | 69 | 24.6 % | 406 | 5.9 |
+| lesson_attempt | 56 | 19.9 % | 420 | 7.5 |
+| test_complete | 41 | 14.6 % | 215 | 5.2 |
+| lesson_complete | 39 | 13.9 % | 267 | 6.9 |
+| game_complete | 20 | 7.1 % | 50 | 2.5 |
+| setting_change | 12 | 4.3 % | 59 | 4.9 |
+The shares overlap (one person can do several), so they cannot be added up. We do not know the share of users who did at least one core action.
+
+**Devices and browsers**
+- Desktop 884 users (97.3 %), 6m 51s engagement; mobile 23 (2.5 %), 41.7 % engagement rate, 59s; tablet 2.
+- Edge 641 (70.5 %), 7m 36s; Chrome 221 (24.3 %), 5m 12s; Safari 29, 45 % engagement rate; Firefox 9; Samsung Internet 4.
+
+**Sources (28 days, sessions)**: bing / organic 924, direct 120, yahoo / organic 68, in.search.yahoo.com 28, chatgpt.com 27, google / organic 20, duckduckgo 19. Session starts in total: 1,259. Google organic is about 1.6 % of sessions; Bing plus Yahoo plus DuckDuckGo is about 82 %.
+
+**Places**: Singapore 25, Ashburn 19, Chennai 18, Delhi 17, Hyderabad 15, Mumbai 13, Bengaluru 12 (top cities, 28 days). Bangladesh: 18 users, 9m 05s engagement. India is the top country over 7 days (93).
+
+**Unverified / watch**
+- GA's own insight flags 23 Sep: page_view events at 200 vs an expected 19, and Edge events up from 20 to 184 week on week. We do not know the cause. Ashburn is a large data-centre location, so some traffic could be non-human; the long engagement times point to real people, but this is not checked.
+- Not read yet: Bing queries (still "check back in 48 hours" on 2026-10-10), landing-page engagement, cohort retention, per-source trends, Core Web Vitals (no data).
+
+**Site check (live, 2026-10-10)**: each page checked has a unique title (41–65 characters), a description, a canonical link, one H1, JSON-LD and roughly 1,700–2,600 words. No basic technical SEO gap showed up.
+
+**Reading and suggestions (suggestions, not findings)**
+1. People who start use the site deeply (5 to 7 actions each, 6+ minutes), but only about 1 in 5 start a core action. The product works for those who try it; the gap is getting visitors to start.
+2. The audience is a desktop, Edge and Bing audience. The assumption in `freetyper.md` that "many visitors are probably on phones" is not supported (2.5 % mobile). Mobile may be low partly because the page is hard to use on a phone, so it is a cause and an effect that we cannot separate.
+3. About 4 of 5 sessions come through Bing. That is the main risk and the main lever.
+4. Returning use is small (63 returning vs 293 new users in the last 7 days).
+
 ### 2026-10-10 — first entry (read by hand in the browser)
 
 **GA4 (FreeTyper)**

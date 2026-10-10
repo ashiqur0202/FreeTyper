@@ -8,7 +8,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
 ## 0. Resume here (written 2026-10-07)
 - **Repo state:** `master` = `origin/master` = `61c2e94`, clean tree, everything is merged and **live**. Nothing is in flight. Old merged branches (`chore/ignore-analytics`, `content/blog-consolidation`, `docs/*`, `feat/*`, `fix/*`) can be deleted whenever convenient; none holds unmerged work.
 - **Do next, in this order (all [C] = Claude in code):**
-  1. **Fix the phone overflow** (§9): the on-screen keyboard makes `/`, `/typing-lessons` and `/typing-practice` scroll sideways on a 390 px screen. Many visitors are probably on phones.
+  1. **Fix the phone overflow** (§9): the on-screen keyboard makes `/`, `/typing-lessons` and `/typing-practice` scroll sideways on a 390 px screen. GA4 (2026-10-10) shows only 2.5 % mobile, so it is lower priority than first assumed (see `analytics.md`).
   2. **Share the result as an image** (§8, item 4; plan is written out there).
   3. **Move the browser tests into the repo** (§8 “Playwright tests”). The suites that were used for every release (`run`, `fixes`, `events`, `course`, `pairs`, `letters`, `card`, `sticky`, `hydration`, plus pure-logic checks) were plain `puppeteer-core` + Chrome scripts kept in Claude's temporary scratchpad **outside the repo**, so they can disappear. Rebuild them from the behaviour in §4. They ran against `next start -p 3100` (or the live site via a `BASE` URL); `card` types ~20 s per page.
   4. **Coding tracks** only after Bing Webmaster shows which language people search for.
