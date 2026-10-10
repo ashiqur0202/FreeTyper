@@ -32,6 +32,16 @@ Other properties exist under the same Google account (a different site and a "Fi
 
 ## Log (newest first)
 
+### 2026-10-10 — trend check: growth has levelled off (GA4 Home chart, active users per day)
+
+Values are read by eye from GA4's Home chart (about ±3), so treat them as approximate. Dates are 2026.
+- **Early Sep:** about 7 to 8 active users a day (to 13 Sep).
+- **14 to 24 Sep: the step up.** 15, then 30 (20 Sep), then about 50 (22 to 24 Sep) and about 55 on 25 Sep.
+- **25 Sep to 9 Oct: a plateau, not a climb.** Weekdays mostly 40 to 68 a day. Weekend dips: about 29 on Sun 27 Sep and about 30 on Sat 3 Oct. Highest points about 68 on 6 and 7 Oct, then about 57 on 8 to 9 Oct.
+- **Last 7 days vs the 7 before** (GA Home cards): new users 293, up only 2.8 %; returning users 63, up 21.2 %.
+- **Event count is not a growth measure here.** It jumps on 5 Oct because the custom events were released on 4 Oct, so it counts more event types than before.
+- **Cause unknown.** We have not identified what changed on or around 14 to 24 Sep. Hypotheses only: Bing started ranking the site for the queries it now gets; the plateau is how many people search those queries.
+
 ### 2026-10-10 — deep dive: engagement, events, devices, browsers (GA4, window 2026-09-12 to 2026-10-09 unless noted)
 
 **Engagement**
