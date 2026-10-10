@@ -3,6 +3,7 @@
 Running log of traffic and search data. `freetyper.md` holds the product rules and status; this file holds the numbers over time.
 
 ## How to use this file
+- **Keep it current.** Whenever any analytics, Search Console or Bing data is read, add an entry the same session, and update the status in `freetyper.md` (section 0 and 1). Both files are how a new session learns where the project stands.
 - Add a new dated entry at the **top** of the log. Never edit old entries, except to fix a typo.
 - Record only numbers that were read from the tool on that date. Write the source and the date range. No estimates, no rounding up.
 - Use the same fields every time so entries can be compared.

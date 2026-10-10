@@ -8,6 +8,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 Everything below is short on purpose. The full detail is in **`freetyper.md`** — read it first (product rules, content standards, release routine, current status). Keep it under about 250 lines and update it with each release.
 
+**Always keep `freetyper.md` and `analytics.md` current.** They are how a new session learns the project state. At the end of every session or change: update the status, repo state and next steps in `freetyper.md` (section 0 and 1), and add a dated entry at the top of `analytics.md` whenever analytics, Search Console or Bing numbers were read. Do it in the same branch as the change.
+
 ## Workflow
 - Work on a branch. Never commit to `master` directly; a push to `master` deploys the live site.
 - Before merging: `npx tsc --noEmit`, `npm run build`, then test the built site (`next start`) in a browser.

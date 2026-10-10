@@ -5,14 +5,16 @@ No login, no database, privacy-first (all data stays in the browser), to be fund
 
 This is the living reference. History lives in git. Per-guide detail lives in the header comment of each content file.
 
-## 0. Resume here (written 2026-10-07)
-- **Repo state:** `master` = `origin/master` = `61c2e94`, clean tree, everything is merged and **live**. Nothing is in flight. Old merged branches (`chore/ignore-analytics`, `content/blog-consolidation`, `docs/*`, `feat/*`, `fix/*`) can be deleted whenever convenient; none holds unmerged work.
+## 0. Resume here (updated 2026-10-10)
+- **Keep this file and `analytics.md` current.** At the end of every session or change, update the status here and add a dated entry to `analytics.md` if any numbers were read. They are how a new session learns the project state.
+- **Repo state (2026-10-10):** `master` = `origin/master` = `7487820` (the Bing verification tag), live. The branch `docs/analytics-log` is **6 docs-only commits ahead** (the Bing note, `analytics.md`, this refresh) and is **not merged or pushed yet**: merge by fast-forward when approved (a push to `master` deploys, though only docs change). Other old branches hold no unmerged work and can be deleted.
 - **Do next, in this order (all [C] = Claude in code):**
-  1. **Fix the phone overflow** (§9): the on-screen keyboard makes `/`, `/typing-lessons` and `/typing-practice` scroll sideways on a 390 px screen. GA4 (2026-10-10) shows only 2.5 % mobile, so it is lower priority than first assumed (see `analytics.md`).
+  1. **Fix the phone overflow** (§9): the on-screen keyboard makes `/`, `/typing-lessons` and `/typing-practice` scroll sideways on a 390 px screen. GA4 (2026-10-10) shows only 2.5 % mobile (97 % desktop, 70 % Edge), so it is lower priority than first assumed, but it may also be why mobile is so low (see `analytics.md`).
   2. **Share the result as an image** (§8, item 4; plan is written out there).
   3. **Move the browser tests into the repo** (§8 “Playwright tests”). The suites that were used for every release (`run`, `fixes`, `events`, `course`, `pairs`, `letters`, `card`, `sticky`, `hydration`, plus pure-logic checks) were plain `puppeteer-core` + Chrome scripts kept in Claude's temporary scratchpad **outside the repo**, so they can disappear. Rebuild them from the behaviour in §4. They ran against `next start -p 3100` (or the live site via a `BASE` URL); `card` types ~20 s per page.
   4. **Coding tracks** only after Bing Webmaster shows which language people search for.
-- **Ashiqur's list ([A], most valuable for growth):** ~~Bing Webmaster Tools~~ (done 2026-10-08, §2) · Search Console (resubmit sitemap, request indexing for `/`, `/typing-lessons`, `/typing-practice`) · GA4 key events + custom dimensions (`category`, `passed`, `lesson_number`, `attempt`, …) · AdSense site verification · one sourced blog post a week · monthly analytics export into `analytics/`.
+- **Ashiqur's list ([A], most valuable for growth):** ~~Bing Webmaster Tools~~ (done 2026-10-08, §2) · GA4 **key events + custom dimensions** (events do arrive; registering them is not retroactive, so do it first) · Search Console: request indexing for the pages Google has not fetched (`/`, `/typing-lessons`, `/typing-practice` are already indexed) · AdSense site verification · one sourced blog post a week · monthly analytics entry in `analytics.md`.
+- **Growth reading (2026-10-10, details in `analytics.md`):** ~82 % of sessions come from Bing/Yahoo/DuckDuckGo, Google ~1.6 %; visitors who start use the site deeply (68.6 % engagement rate, 6m 41s) but only ~1 in 5 start a core action; returning users are few. Suggested focus: key events, Bing queries, IndexNow, the share image, a few real backlinks.
 - **Open question from earlier:** the Coolify dashboard once showed a Redis `MISCONF` 500 error (likely full disk on the server). The site itself stayed up; whether the dashboard was fixed is unknown. Check disk space on the Hetzner server if the dashboard still errors.
 - **Known harmless noise:** `next build` prints “Failed to download dynamic font” (no network for the OG image font); Google's ad script occasionally throws `Uncaught Error: int64` in headless tests (not our code, passes on rerun).
 - **Numbers to refresh:** newer numbers are logged in `analytics.md` (first entry 2026-10-10); the snapshot in §1 is from 2026-10-04, before the lessons course and adaptive practice shipped. Re-export GA4 and Search Console to see their effect (watch `lesson_attempt` pass rates and `practice_complete` with category `adaptive`).
@@ -25,13 +27,8 @@ This is the living reference. History lives in git. Per-guide detail lives in th
   - every guide rewritten from the real code, with verified sources
   - blog cut from 25 to 10 posts, all rewritten
   - real author and dates, BlogPosting schema, bugs found while documenting fixed
-- **Analytics snapshot (GA4 6 Jul–3 Oct 2026, Search Console last 3 months; exports were read on 2026-10-04):**
-  - ~850 users, 1,123 sessions; new users rose from ~5/day (Aug) to ~40–55/day (late Sep), so today’s run-rate is well above 500 a month.
-  - **Bing is the main source:** Bing 692 sessions (+ Yahoo 75, DuckDuckGo 17, all Bing-powered) ≈ 70 %. **Google organic: only 41 sessions (~4 %).** ChatGPT referrals: 53.
-  - **Google has barely indexed the site:** 13 clicks / 44 impressions in 3 months; Pages report (to 21 Sep): 4 indexed, 34 not (32 “Discovered – currently not indexed”). Sitemap last read 28 Sep (old 38-URL version).
-  - Visitors engage (organic ≈ 232 s per session). 93 % of views are tool pages; blog only 3.4 %. Lessons and practice are the 2nd and 3rd most visited pages.
-  - Top countries: India 27.5 %, US 24 %, then Canada, China, Philippines, Pakistan, UK. **Key events were 0** (no conversions tracked) until the events below shipped.
-- **GA4 events are live from the 2026-10-04 release.** Key events and custom dimensions still have to be registered in GA4 (§8) before WPM/category breakdowns appear.
+- **Analytics (latest in `analytics.md`; older snapshot from 2026-10-04 in git history):** GA4 2026-09-12 to 10-09: 909 active users, engagement rate 68.6 %, 6m 41s per user, 97 % desktop, Edge 70 %. Search Console (28 days to 10-06): 8 clicks, 24 impressions; Google has indexed 3 pages (`/`, `/typing-lessons`, `/typing-practice`); 13 of the “not indexed” URLs are old deleted posts that return 404 on purpose. Bing: sitemap OK (23 URLs), search data not ready on 10-10, 0 AI citations. Top countries: India, US, Philippines, Canada. **Key events: 0 (not registered yet).**
+- **GA4 events are live from the 2026-10-04 release and confirmed arriving** (4–9 Oct: `practice_complete`, `lesson_attempt`, `lesson_complete`, `test_complete`, `game_complete`, `setting_change` seen; `share_result` not checked). Key events and custom dimensions still have to be registered (§8).
 - **Still open (needs Ashiqur):** see the TODO in §8.
 
 ## 2. Stack and release
@@ -192,11 +189,10 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 
 ## 8. TODO (owner: **[A]** Ashiqur · **[C]** Claude in code)
 **Now — growth is limited by distribution, not features**
-- [ ] **[A]** Confirm the events arrive: GA4 → Reports → Realtime, finish a test on freetyper.com and look for `test_complete` under “Event count by Event name” (DebugView with the GA Debugger extension shows the parameters).
+- [x] Events arrive (confirmed in GA4 Events report, 2026-10-10).
 - [x] **[A]** **Bing Webmaster Tools** set up and sitemap submitted (2026-10-08).
-- [ ] **[A]** Check Bing Webmaster in about a week: sitemap status, pages indexed, and the **search queries** (they decide the coding-track language and any exam-typing pages). Optionally use its URL Submission for the key pages.
-- [ ] **[A]** Search Console: **resubmit the sitemap** (23 URLs) and **request indexing** for `/`, `/blog`, the 6 tool pages and the 10 posts.
-- [ ] **[A]** Request indexing for `/typing-lessons` in Search Console (content changed a lot on 2026-10-05).
+- [ ] **[A]** Check Bing Webmaster in about a week: sitemap status, pages indexed, and the **search queries** (they decide the coding-track language and any exam-typing pages). Search Performance still said “check back in 48 hours” on 2026-10-10. Optionally use its URL Submission and set up IndexNow.
+- [ ] **[A]** Search Console: **resubmit the sitemap** (23 URLs) and **request indexing** for `/blog`, `/keyboard-guide`, `/typing-progress`, the 2 games and the 10 posts. `/`, `/typing-lessons`, `/typing-practice` are already indexed (reported 2026-10-10); re-request them after big content changes.
 - [ ] **[A]** GA4, once each event has appeared at least once (register the custom definitions first — they are not retroactive): Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `passed`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`, `lesson_number`, `attempt`.
 - [ ] **[A]** Publish 1 sourced post a week; share honestly (Reddit r/typing, Show HN, Product Hunt); look for a few real links.
 - [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) and add a dated entry at the top of `analytics.md` so progress can be compared.
