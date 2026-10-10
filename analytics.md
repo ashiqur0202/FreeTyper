@@ -27,7 +27,7 @@ Other properties exist under the same Google account (a different site and a "Fi
 - **Comparing entries:** use the same windows every time (GA4 last 7 and 30 days, Search Console 28 days) and the same fields, as in the first entry. The first entry's percentage changes are GA's own "vs previous period" figures, not ours.
 - **Baseline to beat (2026-10-10):** GA4 920 active users in 30 days; Search Console 8 clicks and 24 impressions in 28 days, 3 pages indexed (stale report); Bing sitemap 23 URLs and 0 AI citations; key events 0.
 - **Why Bing matters:** Bing, Yahoo and DuckDuckGo are the main sources, so Bing Webmaster data is the most useful search signal. Google's numbers are tiny so far, and a few clicks swing the percentages a lot. Do not read trends into Search Console until the counts are larger.
-- **Still unknown:** which 3 pages Google has indexed, why 3 pages were crawled but not indexed, and how Bing's own click data compares with GA's Bing sessions. These are in the open questions below.
+- **Still unknown:** why 3 pages were crawled but not indexed (the 3 indexed pages are `/`, `/typing-lessons`, `/typing-practice`, as reported by Ashiqur), and how Bing's own click data compares with GA's Bing sessions. These are in the open questions below.
 
 ## Log (newest first)
 
@@ -46,7 +46,7 @@ Other properties exist under the same Google account (a different site and a "Fi
 - Performance, 2026-09-09 to 2026-10-06 (28 days): 8 clicks, 24 impressions, CTR 33.3 %, average position 18.5.
 - Overview chart, from 2026-07-07: 15 total web search clicks.
 - Queries (28 days): `freetyper` 6 clicks / 12 impressions / position 4.7. Four queries with 0 clicks: `touch typing diagram` (3 impressions, position 56.0), `keyboard finger chart`, `free ty`, `keyboard fingers chart` (1 impression each, positions 68 to 73).
-- Indexing: 3 indexed pages, 35 not indexed. **The Page indexing report says "Last update 10/4/26", so it is 6 days old and predates the 2026-10-08 sitemap work.** The 3 indexed URLs were not opened.
+- Indexing: 3 indexed pages, 35 not indexed. **The Page indexing report says "Last update 10/4/26", so it is 6 days old and predates the 2026-10-08 sitemap work.** I did not open the indexed list; Ashiqur reported on 2026-10-10 that the 3 indexed pages are `/`, `/typing-lessons` and `/typing-practice` (not verified by me).
   - **Crawled – currently not indexed (3):** `/typing-game-word-attack`, `/keyboard-guide`, `/typing-game-falling-words`, all last crawled 2026-09-06. Google gives no reason; the cause is unknown.
   - **Discovered – currently not indexed (32):** last crawled "N/A", so Google has found the URLs but never fetched them. I read 29 of the 32 (the first row of each page was scrolled out of view): `/blog`, 23 blog slugs, `/contact`, `/disclaimer`, `/privacy`, `/terms`, `/typing-progress`.
   - **Checked against the live site on 2026-10-10 (HTTP status):** of the 23 blog slugs, 10 return 200 (`10-bad-typing-habits`, `data-entry-typing-test`, `fix-typing-posture-and-avoid-wrist-pain`, `good-typing-speed`, `how-to-type-faster`, `improve-typing-accuracy`, `mechanical-vs-membrane-keyboards`, `muscle-memory-and-touch-typing`, `touch-typing-for-beginners`, `typing-speed-for-programmers`) and 13 return **404**: `3-minute-typing-test-vs-5-minute-typing-test`, `5-minute-typing-test`, `average-typing-speed`, `best-free-typing-games`, `best-keyboards-for-fast-typing`, `how-many-words-per-minute`, `how-to-learn-touch-typing-as-an-adult`, `one-minute-typing-test`, `type-numbers-and-symbols-without-looking`, `typing-accuracy-test`, `typing-practice`, `typing-speed-for-work`, `typing-speed-test`. These match the old posts removed in the blog cut from 25 to 10 (see `freetyper.md`). The live `sitemap.xml` lists 23 URLs and none of the 404 slugs.
@@ -64,7 +64,8 @@ Other properties exist under the same Google account (a different site and a "Fi
   1. The 3 pages that Google crawled and chose not to index (`/keyboard-guide` and the two game pages). We do not know why, so we should not guess. Content quality, duplication or a low-priority signal are possibilities, not findings.
   2. About 19 live URLs (blog posts, `/typing-progress`, legal pages) that Google has found but never fetched. For a new site this usually means Google has not got to them yet. This is the usual cause but I did not confirm it for this site.
 - The 13 dead slugs are still "known" to Google, which is why they appear. A 404 is the right answer for removed pages. Redirecting them to related live posts is an option, but it is a content decision, not a fix for an error.
-- Not yet seen: whether `/typing-lessons` and `/typing-practice`, which are in the sitemap, are among the 3 indexed pages. They were not in either not-indexed list I read, but 3 rows of the discovered list were out of view.
+- Per Ashiqur, the 3 indexed pages are `/`, `/typing-lessons` and `/typing-practice`. That fits what I saw: none of them was in either not-indexed list. These are also three of the four most-viewed pages in GA4 (Typing Lessons 324, Typing Practice 324, home speed test 254 views in 7 days; GA lists the home page as "Typing Speed Test"), though views come mostly from Bing, so this is a coincidence of which pages matter, not evidence about why Google indexed them.
+- That leaves `/keyboard-guide`, `/typing-progress`, the two game pages, `/blog`, the 10 live blog posts and the legal pages (`/about` was not in any list I read) as the pages Google has not indexed.
 - AI-assistant traffic (chatgpt.com) is small but present; Bing's AI citation report is still empty.
 
 **Changes since last entry**
@@ -72,7 +73,7 @@ Other properties exist under the same Google account (a different site and a "Fi
 
 **Next check**
 - Bing Search Performance on or after 2026-10-11 (queries, pages, clicks, impressions).
-- Search Console: wait for the Page indexing report to refresh (it showed 2026-10-04 on 2026-10-10), open the "Indexed" list to see which 3 pages are in, and request indexing for the key pages (list is in `freetyper.md`). Use URL Inspection on `/keyboard-guide` for Google's own status on that page.
+- Search Console: wait for the Page indexing report to refresh (it showed 2026-10-04 on 2026-10-10), open the "Indexed" list to confirm the 3 pages Ashiqur reported, and request indexing for the key pages (list is in `freetyper.md`). Use URL Inspection on `/keyboard-guide` for Google's own status on that page.
 - GA4: confirm the custom events arrive and mark key events (steps are in `freetyper.md`).
 
 ## Open questions
