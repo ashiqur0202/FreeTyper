@@ -15,7 +15,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
 - **Ashiqur's list ([A], most valuable for growth):** ~~Bing Webmaster Tools~~ (done 2026-10-08, §2) · Search Console (resubmit sitemap, request indexing for `/`, `/typing-lessons`, `/typing-practice`) · GA4 key events + custom dimensions (`category`, `passed`, `lesson_number`, `attempt`, …) · AdSense site verification · one sourced blog post a week · monthly analytics export into `analytics/`.
 - **Open question from earlier:** the Coolify dashboard once showed a Redis `MISCONF` 500 error (likely full disk on the server). The site itself stayed up; whether the dashboard was fixed is unknown. Check disk space on the Hetzner server if the dashboard still errors.
 - **Known harmless noise:** `next build` prints “Failed to download dynamic font” (no network for the OG image font); Google's ad script occasionally throws `Uncaught Error: int64` in headless tests (not our code, passes on rerun).
-- **Numbers to refresh:** the analytics snapshot in §1 is from 2026-10-04, before the lessons course and adaptive practice shipped. Re-export GA4 and Search Console to see their effect (watch `lesson_attempt` pass rates and `practice_complete` with category `adaptive`).
+- **Numbers to refresh:** newer numbers are logged in `analytics.md` (first entry 2026-10-10); the snapshot in §1 is from 2026-10-04, before the lessons course and adaptive practice shipped. Re-export GA4 and Search Console to see their effect (watch `lesson_attempt` pass rates and `practice_complete` with category `adaptive`).
 
 ## 1. Status (updated 2026-10-07)
 - **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-06: adaptive practice, the letter row, weak pairs and the new result card; before it 2026-10-05: the 34-lesson course with a 95 % gate; 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. Suites run against the live site on 2026-10-06: pairs 19/19, letters 32/32, card 36/36, course 30/30.
@@ -199,7 +199,7 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 - [ ] **[A]** Request indexing for `/typing-lessons` in Search Console (content changed a lot on 2026-10-05).
 - [ ] **[A]** GA4, once each event has appeared at least once (register the custom definitions first — they are not retroactive): Admin → Events → mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as **key events**; Admin → Custom definitions → add dimensions `text_mode`, `category`, `game`, `lesson`, `passed`, `setting`, `value` and metrics `wpm`, `accuracy`, `duration_s`, `score`, `level`, `lesson_number`, `attempt`.
 - [ ] **[A]** Publish 1 sourced post a week; share honestly (Reddit r/typing, Show HN, Product Hunt); look for a few real links.
-- [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) so progress can be compared.
+- [ ] **[A]** Re-export Search Console + GA4 monthly into `analytics/` (git-ignored) and add a dated entry at the top of `analytics.md` so progress can be compared.
 
 **Next — product work the data supports**
 - [ ] **[A]** After the 2026-10-06 release: request indexing for `/typing-practice` and `/` in Search Console (both guides changed), and in GA4 check that `practice_complete` shows the new category `adaptive` (register `category` as a dimension if not yet).
