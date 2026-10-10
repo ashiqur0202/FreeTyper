@@ -19,6 +19,16 @@ Running log of traffic and search data. `freetyper.md` holds the product rules a
 
 Other properties exist under the same Google account (a different site and a "Finlytics" site). They are not FreeTyper. Check the property name before reading numbers.
 
+## Notes for future sessions
+- **Right GA4 property:** the FreeTyper one has property ID `541715664` (URL `analytics.google.com/analytics/web/#/a371062405p541715664/`). On 2026-10-10 the other two properties in the account were "Free Creator Tools" (`p533930399`) and "Finlytics" (`p513382477`). They look similar and contain other sites' numbers. Confirm the name "FreeTyper" at the top left before copying anything.
+- **Access:** all three tools were read through the signed-in Chrome browser, not an API. A session needs the Chrome extension connected. Nothing was changed in any tool.
+- **Lags:** GA4 Home cards trail real time a little. Search Console performance data trails by a few days, and its Page indexing report can be older still (it was 6 days old on 2026-10-10). Always note the "last update" date shown.
+- **Reading tips:** Search Console's drill-down pages show 10 rows at a time, so scroll and page through the list before counting. The page-text reader returned the previous page on those drill-downs; screenshots worked.
+- **Comparing entries:** use the same windows every time (GA4 last 7 and 30 days, Search Console 28 days) and the same fields, as in the first entry. The first entry's percentage changes are GA's own "vs previous period" figures, not ours.
+- **Baseline to beat (2026-10-10):** GA4 920 active users in 30 days; Search Console 8 clicks and 24 impressions in 28 days, 3 pages indexed (stale report); Bing sitemap 23 URLs and 0 AI citations; key events 0.
+- **Why Bing matters:** Bing, Yahoo and DuckDuckGo are the main sources, so Bing Webmaster data is the most useful search signal. Google's numbers are tiny so far, and a few clicks swing the percentages a lot. Do not read trends into Search Console until the counts are larger.
+- **Still unknown:** which 3 pages Google has indexed, why 3 pages were crawled but not indexed, and how Bing's own click data compares with GA's Bing sessions. These are in the open questions below.
+
 ## Log (newest first)
 
 ### 2026-10-10 — first entry (read by hand in the browser)
