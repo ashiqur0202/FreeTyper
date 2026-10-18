@@ -5,7 +5,7 @@ Short notes on traffic and search data over time. Product rules and status are i
 ## Rules
 - Update it every analytics read, same session, and update `freetyper.md` section 0.
 - Only numbers read from the tool that day; write the source and date range. No estimates.
-- Each week: (1) update **Major insights**, (2) add a row to the **Trend table**, (3) add a short dated entry at the top of the **Log** (max about 15 lines), (4) condense the entry from two weeks ago. Raw exports go in `analytics/` (git-ignored). No logins or secrets.
+- Each week: (1) update **Major insights**, (2) add a row to the **Trend table**, (2b) **revise the Growth plan** from the new insights, (3) add a short dated entry at the top of the **Log** (max about 15 lines), (4) condense the entry from two weeks ago. Raw exports go in `analytics/` (git-ignored). No logins or secrets.
 
 ## Weekly routine (ask Claude: "run the weekly analytics")
 All read in the signed-in Chrome; nothing is changed. Same windows every time.
@@ -37,6 +37,23 @@ Each has its first-seen date. If one stops being true, mark it "(superseded date
 |---|---|---|---|---|---|---|---|---|
 | 10-10 | 920 (30 d) | 293 / 63 | 0 | 8 / 24 | 3 (stale) | no data yet | 0 | 2.5 % |
 | 10-18 | 1,163 | 302 / 63 | 0 | 7 / 22 | 2 | 189 / 9.8K (12 to 16 Oct) | 13.6K (12 to 16 Oct) | not read |
+
+## Growth plan (revise every weekly cycle; max 8 open items)
+Each item names the insight it answers (#) and the number that tells us if it worked. Owner: **[A]** Ashiqur, **[C]** Claude in code. Order = priority. Weekly: tick what is done, drop what the data disproves, add what the new insights call for, then re-sort. Moving an item to "Done / dropped" keeps the reason in one line.
+
+| Pri | Owner | Action | Why (#) | Success signal |
+|---|---|---|---|---|
+| 1 | A | Mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as GA4 key events; then add the custom dimensions listed in `freetyper.md` §8. | 10 | Key events > 0, so we can see which source converts. |
+| 2 | C | Rewrite the title and description of `/typing-lessons`, `/typing-practice`, `/keyboard-guide` around what people really search on Bing ("free typing lessons for beginners / adults", "free typing practice"), and say only what the page does. Bump the visible dates. | 3, 5 | Bing CTR on those pages (about 1.7 to 2.3 % on 10-18); GA4 share of users who complete an event (about 12 %). Needs 2+ weeks to judge. |
+| 3 | A | Search Console: request indexing for `/typing-practice`, `/keyboard-guide`, the two games, `/typing-progress`, `/blog` and the 10 posts. | 7 | Google indexed count (2 on 10-18). |
+| 4 | A + C | Decide two redirects: `www` to the bare domain (301), and the two removed posts to the nearest live post. Claude can write the rules; the `www` one is a Cloudflare / Coolify setting. | 8, 9 | Bing pages listed under one host; no more hits on the two 404 slugs. |
+| 5 | A | Bing: read the other 74 keywords, open the 7 warnings and 1 excluded URL in Site Explorer, set up IndexNow. | 1, 11 | Warnings cleared; any coding or exam keyword found. |
+| 6 | C | Share the result as an image (plan in `freetyper.md` §8). | 2, 3 | `share_result` events (6 in 28 d on 10-18); returning users (63 a week). |
+| 7 | C | Fix the phone overflow (`LiveKeyboard` wider than a 390 px screen). | 4 | Mobile share of users and Bing mobile clicks (0 on 10-16). Low priority until mobile shows up. |
+| 8 | A | One sourced blog post a week; ask for a few real links (Reddit r/typing, Show HN). | 1, 7 | Pages indexed; sessions from non-Bing sources. |
+
+**Waiting on data (do not start):** coding tracks (need a Bing coding keyword, insight 11); exam-typing pages (same); duration preset pages (only once pages are being indexed).
+**Done / dropped:** none yet (plan started 2026-10-18).
 
 ## Log (newest first)
 
