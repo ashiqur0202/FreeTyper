@@ -22,14 +22,14 @@ Each has its first-seen date. If one stops being true, mark it "(superseded date
 |---|---|---|---|
 | 1 | 10-10 | **Search traffic is mostly Bing, Yahoo, DuckDuckGo (~82 % of sessions); Google ~1.6 %.** | Still true 10-18 (bing 343 sessions in 7 d, google 2). Bing is the main lever. |
 | 2 | 10-10 | **Users stepped up mid-Sept (~8 to ~50 a day), flat since.** | Still flat 10-18 (~40 to 78/day). New users 302 vs 293. |
-| 3 | 10-10 | **Visitors who start use it deeply (69 % engagement, 9m 53s) but only ~12 % complete a practice event** (142 of 1,163 users, 28 d). | Getting people to start is the gap. Suggestion, untested: better title/description on the top 3 pages. |
+| 3 | 10-10 | **Visitors who start use it deeply (69 % engagement, 9m 53s) but only ~12 % complete a practice event** (142 of 1,163 users, 28 d). | Getting people to start is the gap. New titles/descriptions for the top 3 pages are built (10-18), not live yet. |
 | 4 | 10-10 | **Audience is desktop (Edge ~70 %, Chrome ~25 %).** Mobile 2.5 % in GA4; Bing 0 mobile clicks. | Phone overflow bug may be part of it. |
 | 5 | 10-18 | **Bing ranks us for "free typing lessons / practice" at positions 4 to 9** (189 clicks, 9.8K impressions, 12 to 16 Oct), nearly all to `/typing-lessons`, `/typing-practice`, `/keyboard-guide`. | CTR 1.2 to 3.4 % on bigger queries: snippet wording is the cheapest lever (suggestion). |
 | 6 | 10-18 | **Bing cites us heavily in AI answers** (13.6K in 5 days, was 0) **but few visits follow** (GA4: 8 AI sessions in 7 d). | A citation is not a click. Watch AI sessions. |
-| 7 | 10-18 | **Google indexes little:** 2 pages (`/`, `/typing-lessons`); `/typing-practice` crawled, not indexed; 17 discovered, never fetched. GSC: 7 clicks in 28 d, all for "freetyper". | Don't read trends into Google yet. Ashiqur: request indexing. Cause unknown. |
+| 7 | 10-18 | **Google indexes little:** 2 pages (`/`, `/typing-lessons`); `/typing-practice` crawled, not indexed; 17 discovered, never fetched. GSC: 7 clicks in 28 d, all for "freetyper". | Don't read trends into Google yet. Indexing requested for 5 pages on 10-18; check the indexed count next week. Cause unknown. |
 | 8 | 10-18 | **Site answers on two hosts:** `www.freetyper.com` returns 200; Bing lists most pages under `www`. Canonical points to the bare domain. | Open decision: 301 from `www` to bare domain. |
 | 9 | 10-18 | **Bing still shows/cites two removed posts** (`typing-speed-test`, `how-many-words-per-minute`, both 404). Tiny. | Open decision: redirect or accept 404. |
-| 10 | 10-10 | **GA4 key events still 0** after 2+ weeks. | Ashiqur: mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as key events. |
+| 10 | 10-10 | **GA4 key events were 0** for 2+ weeks, so conversions could not be measured. | Fixed 2026-10-18: 4 events marked (not retroactive). Expect key events > 0 from 10-19; confirm next week. |
 | 11 | 10-18 | **No coding or exam-typing keyword in Bing's top 25** (74 more unread). | Coding-track decision still waits. |
 
 ## Trend table (one row a week; windows differ where noted, read direction not exact change)
@@ -67,7 +67,7 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 - **Bing sitemaps:** bare host submitted 10-08, crawled 10-15, 23 URLs; `www` host crawled 10-12, 23 URLs; 0 errors. **Site Explorer:** indexed 46, error 0, warning 7, excluded 1 (not opened). 6-month totals 806 clicks / 53.5K impressions: does not match the 5-day figure, not compared.
 - **Live check (curl):** `www` returns 200 with canonical to the bare domain; `http` redirects to `https`; removed slugs 404.
 - **Changes since 10-10:** no site release since 10-06; docs only. **Made after the reads on 10-18:** GA4 key events marked (`test_complete`, `lesson_complete`, `practice_complete`, `game_complete`); Search Console indexing requested for 5 pages (see Growth plan). New titles/descriptions are built but not live, so Bing numbers for the next two weeks are still the "before" picture.
-- **Next check (10-25):** Bing range beyond 5 days? clicks near 30 to 45 a day? `/typing-practice` back in Google's index? key events registered? mobile share; open the 7 Bing warnings and 1 excluded URL; read the other Bing keywords.
+- **Next check (10-25):** Bing range beyond 5 days? clicks near 30 to 45 a day? `/typing-practice` back in Google's index? key events now counting (marked 10-18)? retitle branch merged, and did Bing CTR move? mobile share; open the 7 Bing warnings and 1 excluded URL; read the other Bing keywords.
 
 ### 2026-10-10 — first week (condensed from three entries: first read, deep dive, trend check)
 - **GA4 30 d:** 920 users (+543 % vs previous period), 8.3K events, 0 key events. 7 d: 293 new, 63 returning. Sessions: Organic 392, Direct 51, AI 8. Countries 7 d: India 93, US 74, Philippines 20, Canada 19.
