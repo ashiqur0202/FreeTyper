@@ -43,9 +43,9 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 
 | Pri | Owner | Action | Why (#) | Success signal |
 |---|---|---|---|---|
-| 1 | A | Mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as GA4 key events; then add the custom dimensions listed in `freetyper.md` §8. | 10 | Key events > 0, so we can see which source converts. |
-| 2 | C | Rewrite the title and description of `/typing-lessons`, `/typing-practice`, `/keyboard-guide` around what people really search on Bing ("free typing lessons for beginners / adults", "free typing practice"), and say only what the page does. Bump the visible dates. | 3, 5 | Bing CTR on those pages (about 1.7 to 2.3 % on 10-18); GA4 share of users who complete an event (about 12 %). Needs 2+ weeks to judge. |
-| 3 | A | Search Console: request indexing for `/typing-practice`, `/keyboard-guide`, the two games, `/typing-progress`, `/blog` and the 10 posts. | 7 | Google indexed count (2 on 10-18). |
+| 1 | A | **Key events done 2026-10-18** (4 events marked). Still open: add the custom dimensions listed in `freetyper.md` §8 (`text_mode`, `category`, `game`, `lesson`, `passed`, `setting`, `value`; metrics `wpm`, `accuracy`, ...). | 10 | Key events > 0 from 10-19 on (not retroactive), so we can see which source converts. |
+| 2 | C | **Built 2026-10-18 on branch `seo/bing-query-titles` (commit `65e06f8`), checked, NOT merged or live yet.** New titles/descriptions for `/typing-lessons`, `/typing-practice`, `/keyboard-guide` use Bing's query words; dates bumped. Next: merge and push (Ashiqur approves), then watch Bing CTR. | 3, 5 | Bing CTR on those pages (about 1.7 to 2.3 % on 10-18); GA4 share of users who complete an event (about 12 %). Needs 2+ weeks to judge. |
+| 3 | A + C | **Indexing requested 2026-10-18** for `/typing-practice`, `/keyboard-guide`, `/typing-progress`, `/typing-game-falling-words`, `/typing-game-word-attack` (Google: added to the priority crawl queue). Still to request (a few a day): `/blog`, the 10 posts, `/about`, legal pages. Re-request the 3 retitled pages after the SEO change is live. | 7 | Google indexed count (2 on 10-18); Page indexing report "last update" date. |
 | 4 | A + C | Decide two redirects: `www` to the bare domain (301), and the two removed posts to the nearest live post. Claude can write the rules; the `www` one is a Cloudflare / Coolify setting. | 8, 9 | Bing pages listed under one host; no more hits on the two 404 slugs. |
 | 5 | A | Bing: read the other 74 keywords, open the 7 warnings and 1 excluded URL in Site Explorer, set up IndexNow. | 1, 11 | Warnings cleared; any coding or exam keyword found. |
 | 6 | C | Share the result as an image (plan in `freetyper.md` §8). | 2, 3 | `share_result` events (6 in 28 d on 10-18); returning users (63 a week). |
@@ -53,7 +53,7 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 | 8 | A | One sourced blog post a week; ask for a few real links (Reddit r/typing, Show HN). | 1, 7 | Pages indexed; sessions from non-Bing sources. |
 
 **Waiting on data (do not start):** coding tracks (need a Bing coding keyword, insight 11); exam-typing pages (same); duration preset pages (only once pages are being indexed).
-**Done / dropped:** none yet (plan started 2026-10-18).
+**Done / dropped:** 2026-10-18: GA4 key events marked; 5 Search Console indexing requests sent. Not changed: GA4 `purchase` placeholder was already in the key-events list.
 
 ## Log (newest first)
 
@@ -66,7 +66,7 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 - **Bing AI:** 13.6K citations; pages `/` 6.2K, `/typing-lessons` 4.6K, `/typing-practice` 1.6K, `/keyboard-guide` 1.0K; 256 grounding queries (top: free typing lessons for beginners 896, free typing lessons 667). Bing says it is a sample.
 - **Bing sitemaps:** bare host submitted 10-08, crawled 10-15, 23 URLs; `www` host crawled 10-12, 23 URLs; 0 errors. **Site Explorer:** indexed 46, error 0, warning 7, excluded 1 (not opened). 6-month totals 806 clicks / 53.5K impressions: does not match the 5-day figure, not compared.
 - **Live check (curl):** `www` returns 200 with canonical to the bare domain; `http` redirects to `https`; removed slugs 404.
-- **Changes since 10-10:** no site release since 10-06; docs only.
+- **Changes since 10-10:** no site release since 10-06; docs only. **Made after the reads on 10-18:** GA4 key events marked (`test_complete`, `lesson_complete`, `practice_complete`, `game_complete`); Search Console indexing requested for 5 pages (see Growth plan). New titles/descriptions are built but not live, so Bing numbers for the next two weeks are still the "before" picture.
 - **Next check (10-25):** Bing range beyond 5 days? clicks near 30 to 45 a day? `/typing-practice` back in Google's index? key events registered? mobile share; open the 7 Bing warnings and 1 excluded URL; read the other Bing keywords.
 
 ### 2026-10-10 — first week (condensed from three entries: first read, deep dive, trend check)
