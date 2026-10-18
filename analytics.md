@@ -30,7 +30,73 @@ Other properties exist under the same Google account (a different site and a "Fi
 - **Why Bing matters:** Bing, Yahoo and DuckDuckGo are the main sources, so Bing Webmaster data is the most useful search signal. Google's numbers are tiny so far, and a few clicks swing the percentages a lot. Do not read trends into Search Console until the counts are larger.
 - **Still unknown:** why 3 pages were crawled but not indexed (the 3 indexed pages are `/`, `/typing-lessons`, `/typing-practice`, as reported by Ashiqur), and how Bing's own click data compares with GA's Bing sessions. These are in the open questions below.
 
+## Weekly routine (run once a week, same day, ask Claude: "run the weekly analytics")
+All three tools are read in the signed-in Chrome, nothing is changed. Take about 20 minutes. Use these exact windows so entries compare.
+1. **GA4** (property `FreeTyper`, check the name top left). Home: last 7 days cards (new/returning users, countries, pages, channels, first-user source, sessions by source). Reports snapshot: last 28 days (users, engagement time, top pages, sources). Events report (`r=top-events`, both pages of the table): event count and users per event, key events. Tech details (`r=user-technology-detail`): browser, engagement rate. Direct URLs to the Events and Tech reports work when typed into the navigate call; Home deep links do not always switch page, so use the left Reports icon.
+2. **Search Console**: Performance 28 days (clicks, impressions, CTR, position, queries, pages); Pages (indexed count, "Last update" date, open "View data about indexed pages" and the "Crawled" list); Sitemaps (last read, discovered).
+3. **Bing Webmaster** (dismiss the Copilot popup with "Not now"): Search Performance (set 7 D / 30 D; keywords, pages, device, country via `&activeTab=` `keywords|pages|devices|countries`), AI Performance (`aiperformance`, grounding queries and pages), Sitemaps, Site Explorer (crawl counts: indexed, error, warning, excluded).
+4. Write a dated entry at the **top** of the log with the same fields as the 2026-10-18 entry, add "Changes since last entry" (releases, indexing requests), update `freetyper.md` section 0, and commit on the docs branch.
+5. Watch-list each week: key events (still 0?), Google indexed count (2 on 2026-10-18), Bing clicks vs GA bing/organic sessions, mobile share, www vs non-www host in Bing URLs, anything changed on the "Next check" list.
+
 ## Log (newest first)
+
+### 2026-10-18 — weekly check (GA4, Search Console, Bing; all read this day in Chrome)
+
+Windows: GA4 last 7 days = 2026-10-11 to 10-17 and last 28 days = 09-20 to 10-17. Search Console 28 days = 09-19 to 10-16 ("last update 3.5 hours ago"); Page indexing "Last update 10/12/26". Bing Search Performance and AI Performance only show **12 to 16 Oct** (5 days of data, whatever range is selected). Numbers marked "GA %" are GA's own vs-previous-period figures.
+
+**GA4 (FreeTyper), last 7 days (11 to 17 Oct)**
+- New users 302 (GA +2.0 %), returning users 63 (GA +6.0 %). Last entry (3 to 9 Oct): 293 new, 63 returning. Key events: 0.
+- Sessions by channel: Organic Search 415, Direct 80, AI Assistant 8.
+- Sessions by source / medium: bing / organic 343, (direct) 80, yahoo / organic 27, in.search.yahoo.com 15, chatgpt.com 8, duckduckgo 7, google / organic 2.
+- First-user source (active users): bing / organic 209, (direct) 69, yahoo / organic 16, in.search.yahoo.com 14, chatgpt.com 7, duckduckgo 5, ph.search.yahoo.com 2.
+- Countries (active users): United States 98, India 73, Singapore 36, Canada 17, United Kingdom 12, Philippines 10, Pakistan 10. (Last entry: India 93, US 74, so the US overtook India this week; Singapore went from 11 to 36.)
+- Views by page: Lessons 379, Practice 295, Speed test 224, Keyboard guide 129, Progress 78, Falling Words 39, Word Attack 31.
+- Daily active users, read by eye from the Home chart (about ±3): up and down between about 40 and 78, with the last point about 55. Still a plateau with a high of about 78. Not a new step up.
+
+**GA4, last 28 days (20 Sep to 17 Oct)**
+- Active users 1,163 (events report) / 1,159 (browser report; GA's own two reports differ by 4). New users 1,152. Event count 13,107. Average engagement time per active user 9m 53s. Engagement rate 69.53 %. Engaged sessions 1,182. Key events 0.
+- Views and bounce rate: Lessons 1.3K views / 21.9 %, Practice 1.1K / 17.4 %, Speed test 951 / 15.5 %, Keyboard guide 518 / 13.9 %, Progress 254 / 2.8 %, Falling Words 140 / 5.4 %, Word Attack 132 / 2.1 %.
+- Sessions by source: bing / organic 1.3K, (direct) 176, yahoo / organic 95, in.search.yahoo.com 42, chatgpt.com 32, duckduckgo 23, google / organic 16.
+- Cities (active users): Singapore 58, Chennai 21, Hyderabad 21, Delhi 20, Ashburn 18, Bengaluru 18, Mumbai 14.
+- Browsers (active users, engagement rate, engagement time): Edge 811 (69.97 %), 72.87 %, 11m 19s; Chrome 292 (25.19 %), 61.96 %, 7m 17s; Safari 29, 45.45 %, 1m 33s; Firefox 14; Samsung Internet 4. Device category (desktop vs mobile) was **not** re-read this week.
+- Events (28 days, total users 1,163): page_view 4,599 · session_start 1,702 · user_engagement 1,308 · lesson_attempt 1,208 events / 131 users (11.26 %) · practice_complete 1,187 / 142 (12.21 %) · first_visit 1,152 · lesson_complete 784 / 94 (8.08 %) · test_complete 453 / 94 (8.08 %) · game_complete 189 / 37 (3.18 %) · game_round_complete 186 / 23 · scroll 183 / 150 · setting_change 138 / 24 · click 6 · share_result 6 / 2 users · form_start 3 · form_submit 2 · lesson_skip 1 / 1 user. Shares overlap, so they cannot be added. A rough read: at most about 142 of 1,163 users (12 %) completed one of the practice events in 28 days; the 4–9 Oct window in the 10-10 entry (about 1 in 5 starting a core action) used a different, shorter window, so the two are not directly comparable.
+- GA's AI insights again flag 23 Sep (page_view 200 vs an expected 20; Edge, US and India up). Cause still unknown.
+
+**Google Search Console**
+- Performance, 28 days: **7 clicks, 22 impressions**, CTR 31.8 %, average position 4.5. Last entry (2026-09-09 to 10-06): 8 clicks, 24 impressions. Flat; counts are too small to read a trend.
+- Queries: `freetyper` 6 clicks / 13 impressions; `free ty` 0 / 1. No generic queries at all now (last time `touch typing diagram` and `keyboard finger chart` showed).
+- Pages table (top): `https://freetyper.com/` 7 clicks / 22 impressions, two `/#...` fragment URLs from the home guide (0 clicks, 13 impressions each), `/typing-lessons` 0 / 6, `/typing-practice` 0 / 3. I did not scroll the rest.
+- **Indexing: 2 indexed, 21 not indexed** (was 3 indexed, 35 not indexed; report last updated 10/12/26). The 13 old 404 posts no longer count as known pages. Indexed list: **`/` (last crawled 2026-09-18) and `/typing-lessons` (2026-10-05)**. **`/typing-practice` is now under "Crawled - currently not indexed"** (last crawled 2026-10-12), together with `/typing-game-word-attack`, `/keyboard-guide` and `/typing-game-falling-words` (all 2026-09-06). That is 4 crawled-not-indexed and **17 "Discovered - currently not indexed"** (I did not open that list). Whether `/typing-practice` dropped out of the index or was never in it is not known: Ashiqur reported it indexed on 10-10, and the index chart shows a drop at about 10/5 from about 37 to about 23 known pages, which is the old 404s being removed. The cause of Google's choice is not given.
+- Sitemaps: `/sitemap.xml` submitted 2026-10-05, last read **2026-10-14**, Success, 23 discovered. (No 2026-10-08 resubmission shows; the submit date is 10-05.)
+
+**Bing Webmaster Tools**
+- **Search Performance has data now, but only for 12 to 16 Oct:** 189 clicks, 9.8K impressions, CTR 1.94 %. Per day clicks 46 / 39 / 31 / 33 / 40, impressions 2.3K / 2K / 1.8K / 1.9K / 1.8K. Desktop 9.6K impressions / 189 clicks; mobile 148 impressions / 0 clicks.
+- Countries (impressions / clicks): Rest of World 5.3K / 105, United States 3.5K / 66, United Kingdom 443 / 3, Canada 299 / 11, China 44 / 0, Germany 33 / 2, Japan 22, Italy 11 / 1, Spain 9, Brazil 6 / 1, France 4.
+- Pages (impressions / clicks / average position): `www.freetyper.com/typing-lessons` 5.7K / 99 / 6.02, `/typing-practice` 2.9K / 68 / 7.31, `/keyboard-guide` 788 / 18 / 6.07, `/` 200 / 2 / 6.87, `/blog/how-many-words-per-minute` 8 / 0 (a removed post), one blog post 1 / 0. **Bing lists most pages on the `www.` host.**
+- Keywords: 99 in total, top 25 read. Top by impressions: `free typing practice` 898 / 23 clicks / position 7.04; `typing lessons` 697 / 9 / 7.95; `free typing lessons` 353 / 12 / 4.91; `free online typing lessons` 325 / 4 / 4.05; `typing practice free` 287 / 5 / 8.82; `typing lessons free` 279 / 5 / 4.33; `free typing lessons for beginners` 229 / 1 / 4.40; `typing for beginners` 140 / 1; `typing learning free` 131 / 4; `free typing lessons online` 107 / 2. Best CTR among the larger ones: `free typing lessons for adults` 43 impressions / 4 clicks / position 2.00. **No coding or exam-typing keyword in the top 25**, so the coding-track and exam-page questions are still open (the other 74 keywords were not read).
+- **AI Performance (Copilot and partners), 12 to 16 Oct: 13.6K citations** (2.7K / 3.1K / 2.9K / 2.6K / 2.4K per day), average cited pages 10. The 10-10 reading was 0. Cited pages: `www.freetyper.com/` 6.2K, `/typing-lessons` 4.6K, `/typing-practice` 1.6K, `/keyboard-guide` 1.0K, `/blog/typing-speed-test` 15 (a removed post), one blog post 4. 256 grounding queries; top: `free typing lessons for beginners` 896, `free typing lessons` 667, `free typing class` 387, `free typing speed test` 356, `learn to type free` 262, `free online typing lessons` 262, `writing speed` 179, `keyboard hand placement` 142, `wpm counter` 90. Bing labels this "a sample of overall activity". A citation is not a click: GA shows only 8 AI-assistant sessions in 7 days.
+- Sitemaps: `https://freetyper.com/sitemap.xml` submitted 10/8, crawled 10/15, Success, 23 URLs; `https://www.freetyper.com/sitemap.xml` discovered 7/2, crawled 10/12, Success, 23 URLs. Two sitemaps, 0 errors, 0 warnings, 46 URLs discovered in total (the same 23 on two hosts).
+- Site Explorer: crawl information **Indexed 46, Error 0, Warning 7, Excluded 1**; folder information (last 6 months) 54 URLs, 806 clicks, 53.5K impressions. This does not match the 5-day Search Performance figure above, so I have not compared them. Not read: what the 7 warnings and 1 excluded URL are.
+
+**Site check (live, 2026-10-18, curl)**
+- `https://www.freetyper.com/` and `/typing-lessons` both return **200** (no redirect to `freetyper.com`), so the site answers on two hosts. The `www` page's canonical tag points to `https://freetyper.com/typing-lessons`, so the duplicate is handled by canonical, not by a redirect. `http://` redirects (302) to `https://`. The removed slugs `/blog/typing-speed-test` and `/blog/how-many-words-per-minute` return 404.
+
+**Reading and suggestions (suggestions, not findings)**
+1. Bing is now the clearest signal: about 38 clicks a day over 12 to 16 Oct, mostly desktop, for "free typing lessons / practice" queries at positions 4 to 9. GA shows bing / organic at 343 sessions in 7 days (about 49 a day). Same order of size; I did not reconcile them.
+2. Bing's clicks come mostly from the pages that are already the biggest in GA (lessons, practice, keyboard guide), so the traffic is driven by those three pages. Better titles and descriptions for them are the cheapest lever for click-through: the larger queries sit at 1.2 to 3.4 % CTR at positions 4 to 8 (a suggestion, not tested).
+3. Bing is serving and citing the `www.` host. Canonical points the right way, but a 301 from `www` to the apex would remove the doubt and merge the data. This is a config change at Cloudflare or Coolify, to decide.
+4. Google is the weak side: 2 pages indexed, `/typing-practice` crawled and not indexed, 4 clicks from branded searches only. Do not expect traffic from Google until that changes.
+5. Key events are still 0 after 2+ weeks. This is the first thing to do in GA4.
+6. Removed blog posts are still being shown or cited by Bing (`how-many-words-per-minute`, `typing-speed-test`). Small numbers, but redirecting them to the nearest live post is now worth deciding.
+
+**Changes since last entry (2026-10-10)**
+- No site release since 2026-10-06. Docs only. Sitemap submitted to Search Console on 2026-10-05 and read by Google on 10-14; Bing sitemap read 10-15.
+
+**Next check (2026-10-25)**
+- Did Bing Search Performance start showing more than 5 days? Do clicks stay near 30 to 45 a day?
+- Search Console: does `/typing-practice` return to Indexed; the 17 "Discovered" URLs; request indexing for the pages in `freetyper.md` §8 (Ashiqur).
+- GA4: key events registered? Read device category (mobile share) again.
+- Open the 7 Bing warnings and 1 excluded URL in Site Explorer.
 
 ### 2026-10-10 — trend check: growth has levelled off (GA4 Home chart, active users per day)
 
