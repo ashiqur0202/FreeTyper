@@ -26,9 +26,9 @@ const toolData: ToolData[] = [
   {
     id: 'typing-lessons',
     name: 'Typing Lessons',
-    seoTitle: 'Free Typing Lessons — Learn Touch Typing Step by Step',
+    seoTitle: 'Free Typing Lessons for Beginners & Adults — 34 Lessons',
     description:
-      'Free progressive typing lessons from home row to advanced. Live keyboard hints, accuracy tracking, no signup. Learn touch typing the right way.',
+      'Free online typing lessons for beginners and adults: 34 lessons from the home row to symbols, a live keyboard and a 95% accuracy pass mark. No signup.',
     iconName: 'GraduationCap',
     category: 'typing',
     featured: true,
@@ -36,9 +36,9 @@ const toolData: ToolData[] = [
   {
     id: 'typing-practice',
     name: 'Typing Practice',
-    seoTitle: 'Free Typing Practice — Daily Drills & Weak-Key Training',
+    seoTitle: 'Free Typing Practice Online — Quotes, Code & Weak-Key Drills',
     description:
-      'Free typing practice online with quotes, news, code, fun text, and adaptive weak-key drills. Build speed and accuracy daily — no signup.',
+      'Free typing practice exercises online: quotes, news, code and fun passages, plus an adaptive drill from the keys and letter pairs you miss most. No signup.',
     iconName: 'PenTool',
     category: 'typing',
     featured: true,
@@ -56,9 +56,9 @@ const toolData: ToolData[] = [
   {
     id: 'keyboard-guide',
     name: 'Keyboard Guide',
-    seoTitle: 'Keyboard Guide — Touch Typing Finger Placement Map (Free)',
+    seoTitle: 'Keyboard Finger Chart — Which Finger Types Which Key (Free)',
     description:
-      'Interactive color-coded keyboard guide for touch typing. Learn which finger types each key, master home row, and fix weak keys — free, no signup.',
+      'A colour-coded keyboard chart for hand placement: see which finger types each key, with a home-row mode and your own key accuracy. Free, no signup, QWERTY.',
     iconName: 'Keyboard',
     category: 'typing',
     featured: true,

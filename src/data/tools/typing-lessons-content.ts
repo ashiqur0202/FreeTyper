@@ -9,13 +9,13 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-06
+ * Last real edit: 2026-10-18
  */
 
 export const meta = {
-  title: 'Free Typing Lessons — Learn Touch Typing Step by Step',
+  title: 'Free Typing Lessons for Beginners & Adults — 34 Lessons',
   description:
-    'Free typing course: 34 lessons from the home row to numbers and symbols. A live keyboard shows the next key and 95% accuracy moves you on. No signup.',
+    'Free online typing lessons for beginners and adults: 34 lessons from the home row to symbols, a live keyboard and a 95% accuracy pass mark. No signup.',
 };
 
 export const faqs: { question: string; answer: string }[] = [
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Lessons — Learn Touch Typing Step by Step</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-06">October 6, 2026</time></span>
+  <span>Last updated <time datetime="2026-10-18">October 18, 2026</time></span>
   <span>~7 min read</span>
 </p>
 <p>These free typing lessons are a course of 34 short lessons in six stages. You begin with two keys on the home row, add the rest of the home row, then the top and bottom rows, then Shift and punctuation, then numbers and symbols, and finish with speed and accuracy practice. A live keyboard above the text shows which key comes next, and your progress is saved in your browser without an account.</p>

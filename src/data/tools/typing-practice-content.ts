@@ -8,13 +8,13 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-06
+ * Last real edit: 2026-10-18
  */
 
 export const meta = {
-  title: 'Free Typing Practice — Daily Drills & Weak-Key Training',
+  title: 'Free Typing Practice Online — Quotes, Code & Weak-Key Drills',
   description:
-    'Free typing practice with quotes, news, code and fun passages, plus a drill built from the keys you miss most. No signup, progress stays in your browser.',
+    'Free typing practice exercises online: quotes, news, code and fun passages, plus an adaptive drill from the keys and letter pairs you miss most. No signup.',
 };
 
 export const faqs: { question: string; answer: string }[] = [
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Free Typing Practice — Adaptive Drills, Quotes, News and Code</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-06">October 6, 2026</time></span>
+  <span>Last updated <time datetime="2026-10-18">October 18, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This free typing practice page gives you a short passage to type, scores it when you finish, and immediately loads the next one so you can keep going. You choose the kind of text: quotes, news-style passages, code snippets or fun facts. The first tab, adaptive, is the default: it builds each drill from the keys and letter pairs you are slowest or least accurate on.</p>

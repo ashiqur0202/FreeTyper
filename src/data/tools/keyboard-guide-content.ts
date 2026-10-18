@@ -7,13 +7,13 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-05
+ * Last real edit: 2026-10-18
  */
 
 export const meta = {
-  title: 'Keyboard Guide — Touch Typing Finger Placement Map (Free)',
+  title: 'Keyboard Finger Chart — Which Finger Types Which Key (Free)',
   description:
-    'A colour-coded keyboard showing which finger types each key, with a home-row mode and your own key accuracy. Free, no signup, QWERTY.',
+    'A colour-coded keyboard chart for hand placement: see which finger types each key, with a home-row mode and your own key accuracy. Free, no signup, QWERTY.',
 };
 
 export const faqs: { question: string; answer: string }[] = [
@@ -72,7 +72,7 @@ export const previewHtml = `
 <h2>Keyboard Guide — Color-Coded Finger Placement for Touch Typing</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-05">October 5, 2026</time></span>
+  <span>Last updated <time datetime="2026-10-18">October 18, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This keyboard guide shows the correct finger placement for each key on a standard QWERTY keyboard. Every key is coloured by the finger that owns it, the eight home-row keys carry a small dot, and you can click or hover over any key to see its finger and your own accuracy on it. It is a reference for learning touch typing and for working out why certain keys keep going wrong.</p>
