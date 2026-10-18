@@ -11,6 +11,29 @@ Running log of traffic and search data. `freetyper.md` holds the product rules a
 - Put what shipped between entries under "Changes since last entry", so a jump in a number can be tied to a release or an indexing request.
 - No logins, no secrets. The GA4 Measurement ID is public in the page source and is fine here.
 
+## Major insights (read this first; update it every weekly cycle)
+Only the findings that matter. Each line has the date it was first seen and what it rests on. Details and raw numbers are in the dated log below. When an insight stops being true, do not delete it: mark it "(superseded YYYY-MM-DD: why)". Suggestions are labelled as such.
+
+| # | First seen | Insight | Status / what to do |
+|---|---|---|---|
+| 1 | 2026-10-10 | **Search traffic is almost all Bing, Yahoo and DuckDuckGo (about 82 % of sessions); Google sends about 1.6 %.** | Still true on 10-18 (bing / organic 343 of ~470 sessions in 7 days, google 2). Bing is the main lever. |
+| 2 | 2026-10-10 | **Daily users stepped up in mid-September (about 8 to about 50) and have been flat since.** | Still flat on 10-18 (about 40 to 78 a day). New users 302 vs 293 last week. |
+| 3 | 2026-10-10 | **People who start use the site deeply** (engagement rate about 69 %, 9m 53s per user over 28 days) **but only about 12 % of users complete a practice-type event** (142 of 1,163 in 28 days). | Getting visitors to start is the gap, not the product. Suggestion, untested: clearer title and description on the top 3 pages. |
+| 4 | 2026-10-10 | **The audience is desktop, Edge and Chrome.** Mobile is about 2.5 % in GA4 (10-10) and 0 Bing clicks from mobile (10-16). | Phone overflow bug may be part of it, cause and effect cannot be separated. |
+| 5 | 2026-10-18 | **Bing now ranks us for "free typing lessons / practice" queries at positions 4 to 9** (189 clicks, 9.8K impressions, 12 to 16 Oct). The three pages `/typing-lessons`, `/typing-practice`, `/keyboard-guide` get nearly all of it. | New. CTR is 1.2 to 3.4 % on the bigger queries, so snippet wording is the cheapest lever (suggestion). |
+| 6 | 2026-10-18 | **Bing cites us a lot in AI answers** (13.6K citations in 5 days, from 0 on 10-10) **but sends few visitors from them** (GA4: 8 AI-assistant sessions in 7 days). | A citation is not a click. Watch whether AI sessions grow. |
+| 7 | 2026-10-18 | **Google indexes very little: 2 pages (`/`, `/typing-lessons`), `/typing-practice` crawled but not indexed, 17 pages discovered but never fetched.** Search Console is 7 clicks in 28 days, all for the brand name "freetyper". | Do not read trends into Google yet. Request indexing (Ashiqur). Cause of Google's choice is unknown. |
+| 8 | 2026-10-18 | **The site answers on two hosts** (`www.freetyper.com` returns 200, Bing lists most pages under `www`). Canonical points to the bare domain, so it works. | Decision open: a 301 from `www` to the bare domain would merge the data. |
+| 9 | 2026-10-18 | **Bing still shows or cites two removed blog posts** (`typing-speed-test`, `how-many-words-per-minute`; both 404). Tiny numbers. | Decision open: redirect to the nearest live post, or accept the 404. |
+| 10 | 2026-10-10 | **GA4 key events are still 0** after more than 2 weeks, so conversions cannot be measured. | Ashiqur: mark `test_complete`, `lesson_complete`, `practice_complete`, `game_complete` as key events. |
+| 11 | 2026-10-18 | **No coding or exam-typing keyword in Bing's top 25 queries** (74 more not read). | The coding-track decision still waits on the rest of the list. |
+
+**Trend table (same fields every cycle; add a row each week, newest at the bottom).** Windows differ between rows where noted, so read direction, not exact change.
+| Date | GA4 users, 28 d (30 d on 10-10) | GA4 new / returning, last 7 d | GA4 key events | GSC clicks / impressions, 28 d | Google indexed pages | Bing clicks / impressions | Bing AI citations | Mobile share |
+|---|---|---|---|---|---|---|---|---|
+| 2026-10-10 | 920 (30 d) | 293 / 63 | 0 | 8 / 24 | 3 (stale report) | no data yet | 0 | 2.5 % (GA4) |
+| 2026-10-18 | 1,163 | 302 / 63 | 0 | 7 / 22 | 2 | 189 / 9.8K (12 to 16 Oct only) | 13.6K (12 to 16 Oct) | not read (Bing: 0 clicks from mobile) |
+
 ## Sources
 | Tool | What it gives us | Notes |
 |---|---|---|
@@ -35,7 +58,7 @@ All three tools are read in the signed-in Chrome, nothing is changed. Take about
 1. **GA4** (property `FreeTyper`, check the name top left). Home: last 7 days cards (new/returning users, countries, pages, channels, first-user source, sessions by source). Reports snapshot: last 28 days (users, engagement time, top pages, sources). Events report (`r=top-events`, both pages of the table): event count and users per event, key events. Tech details (`r=user-technology-detail`): browser, engagement rate. Direct URLs to the Events and Tech reports work when typed into the navigate call; Home deep links do not always switch page, so use the left Reports icon.
 2. **Search Console**: Performance 28 days (clicks, impressions, CTR, position, queries, pages); Pages (indexed count, "Last update" date, open "View data about indexed pages" and the "Crawled" list); Sitemaps (last read, discovered).
 3. **Bing Webmaster** (dismiss the Copilot popup with "Not now"): Search Performance (set 7 D / 30 D; keywords, pages, device, country via `&activeTab=` `keywords|pages|devices|countries`), AI Performance (`aiperformance`, grounding queries and pages), Sitemaps, Site Explorer (crawl counts: indexed, error, warning, excluded).
-4. Write a dated entry at the **top** of the log with the same fields as the 2026-10-18 entry, add "Changes since last entry" (releases, indexing requests), update `freetyper.md` section 0, and commit on the docs branch.
+4. **Update the "Major insights" table and add a row to the trend table first** (they are what a future session reads), then write a dated entry at the **top** of the log with the same fields as the 2026-10-18 entry, add "Changes since last entry" (releases, indexing requests), update `freetyper.md` section 0, and commit on the docs branch.
 5. Watch-list each week: key events (still 0?), Google indexed count (2 on 2026-10-18), Bing clicks vs GA bing/organic sessions, mobile share, www vs non-www host in Bing URLs, anything changed on the "Next check" list.
 
 ## Log (newest first)
