@@ -35,9 +35,16 @@ export default function OpengraphImage() {
         }}
       >
         {/* Wordmark: Free (white) + Typer (gold) */}
-        <div style={{ display: 'flex', alignItems: 'center', fontSize: 52, fontWeight: 700 }}>
-          <span style={{ color: '#f0f0e8' }}>Free</span>
-          <span style={{ color: '#e2b714' }}>Typer</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 20, fontSize: 52, fontWeight: 700 }}>
+          <svg width="64" height="64" viewBox="0 0 64 64">
+            <rect x="3.5" y="3.5" width="57" height="57" rx="14" fill="#1a1812" stroke="#e2b714" strokeWidth="3" />
+            <path d="M10 16H54V25H19V30H30V37H19V48H10Z" fill="#e2b714" />
+            <rect x="38.5" y="25" width="9" height="23" rx="1" fill="#f7f1d6" />
+          </svg>
+          <div style={{ display: 'flex' }}>
+            <span style={{ color: '#f0f0e8' }}>Free</span>
+            <span style={{ color: '#e2b714' }}>Typer</span>
+          </div>
         </div>
 
         {/* Headline + value prop */}

@@ -17,6 +17,7 @@ import {
   X,
 } from 'lucide-react';
 import { useSidebar } from './SidebarProvider';
+import LogoMark from './LogoMark';
 import { useState } from 'react';
 import { useSettings, THEMES, ACCENT_COLORS } from './SettingsProvider';
 
@@ -154,10 +155,8 @@ export default function Sidebar() {
             onClick={close}
             className="group flex items-center gap-2 transition-opacity hover:opacity-80"
           >
-            {/* Mark — keyboard key with cursor */}
-            <div className="flex h-7 w-7 items-center justify-center rounded-md border border-surface-border bg-surface-raised">
-              <span className="inline-block h-3.5 w-0.5 bg-accent cursor-blink" />
-            </div>
+            {/* Mark — FT with the T stem as the cursor */}
+            <LogoMark size={28} className="shrink-0" />
             {/* Wordmark */}
             <div className="flex items-baseline">
               <span className="text-sm font-semibold tracking-tight text-text-bright">

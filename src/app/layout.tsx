@@ -68,11 +68,12 @@ export const metadata: Metadata = {
     'google-adsense-account': siteConfig.adsenseClient,
   },
   icons: {
+    // /favicon.ico in src/app is linked automatically; the apple icon must be listed here
+    // because this `icons` object replaces the file-based apple-icon link.
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },
     ],
-    shortcut: '/favicon.svg',
-    apple: '/favicon.svg',
+    apple: [{ url: '/apple-icon.png', sizes: '180x180', type: 'image/png' }],
   },
 };
 

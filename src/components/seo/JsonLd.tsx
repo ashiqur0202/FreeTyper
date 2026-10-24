@@ -20,7 +20,7 @@ export function organizationSchema() {
     '@type': 'Organization',
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/opengraph-image`,
+    logo: `${siteConfig.url}/icon-512.png`,
   };
 }
 
@@ -118,7 +118,7 @@ export function blogPostingSchema(post: {
       '@type': 'Organization',
       name: siteConfig.name,
       url: siteConfig.url,
-      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/opengraph-image` },
+      logo: { '@type': 'ImageObject', url: `${siteConfig.url}/icon-512.png` },
     },
   };
 }
