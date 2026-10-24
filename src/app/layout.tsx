@@ -3,6 +3,7 @@ import Script from 'next/script';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import Footer from '@/components/layout/Footer';
+import FaviconBlink from '@/components/layout/FaviconBlink';
 import Sidebar from '@/components/layout/Sidebar';
 import RightSidebar from '@/components/layout/RightSidebar';
 import { SidebarProvider } from '@/components/layout/SidebarProvider';
@@ -105,6 +106,7 @@ export default function RootLayout({
               <RightSidebar />
             </main>
             <Footer />
+            <FaviconBlink />
           </SettingsProvider>
         </SidebarProvider>
 
