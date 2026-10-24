@@ -121,6 +121,9 @@ html { scroll-behavior: smooth; }
   50% { opacity: 0; }
 }
 .cursor-blink { animation: blink 1s step-end infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .cursor-blink { animation: none; }
+}
 
 .typing-text {
   text-align: justify;
