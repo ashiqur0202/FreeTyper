@@ -225,6 +225,14 @@ Likely causes (inferred): bulk templated content with no sources or real author 
   - Add the share button to **practice and lessons** too (only the speed test has one today). Keep the `share_result` GA event, with `source` = speed_test | practice | lessons (update the privacy page text only if the payload changes).
   - Update the guides (result card section) and `freetyper.md`; add a browser test (button produces a PNG blob of 1200×630; fallbacks work when the clipboard is blocked).
 
+**Engagement ideas (2026-10-26; Claude's suggestions, not agreed or built; reason: ~12 % start a core action, few return; GA4 28 d is now ~18k events for ~1.2k users)**
+- [ ] **[C]** Ghost race: replay your best run's per-second curve as a ghost cursor (client-only; the run recorder already has the data). Best effort versus payoff.
+- [ ] **[C]** Daily challenge: one text per day for everyone, picked from the date, no backend.
+- [ ] **[C]** Daily goal and streak on the first screen (streak exists only on Progress today).
+- [ ] **[C]** "Continue lesson N" button for returning visitors and a one-click 1-minute test for new ones; “you improved” summary after a drill.
+- [ ] **[C]** Printable typing certificate (name typed locally, labelled not an official qualification) and the printable finger chart above.
+- Before building: check the 18k events by event name and new vs returning users, and look for bot/data-centre traffic (Ashburn, unchecked). Accounts and leaderboards stay off the list (privacy-first, needs a backend). Google's own idea list was not pasted yet; compare when it is.
+
 **Later — ideas, validate first**
 - Custom text importer (paste your own text): **dropped for now** (no SEO value, narrow audience, odd-input edge cases). Revisit only if students ask.
 - Exam / language typing tests (India, Pakistan and Bangladesh are in the top countries): check Bing Webmaster queries before building.
