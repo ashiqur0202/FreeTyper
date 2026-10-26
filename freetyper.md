@@ -225,6 +225,13 @@ Likely causes (inferred): bulk templated content with no sources or real author 
   - Add the share button to **practice and lessons** too (only the speed test has one today). Keep the `share_result` GA event, with `source` = speed_test | practice | lessons (update the privacy page text only if the payload changes).
   - Update the guides (result card section) and `freetyper.md`; add a browser test (button produces a PNG blob of 1200×630; fallbacks work when the clipboard is blocked).
 
+**PageSpeed audit of `/` (2026-10-26, pagespeed.web.dev, lab test, no field data yet; not started, do later)**
+- Desktop: Performance 77, Accessibility 87, Best Practices 100, SEO 100 (FCP 0.9 s, LCP 1.3 s, TBT 330 ms, CLS 0, Speed Index 2.3 s). Mobile detail read from the same report (slow 4G): FCP 3.5 s, LCP 7.1 s, TBT 200 ms, Speed Index 6.2 s; mobile score and the failing “Agentic Browsing” check (1/2) not read.
+- [ ] **[C]** Mobile LCP: the element is the “start typing to begin” hint with 3,280 ms render delay (shows only after JS runs). Find out why it is not in the server HTML. Likely the only real bug here.
+- [ ] **[C]** Accessibility: label the hidden `input.sr-only`; raise contrast on the duration/“words”/“code” buttons, keyboard key labels and the guide byline/date/sources/“Show less”; mark inline guide links (e.g. underline), not colour only.
+- [ ] **[C]** Smaller own-code items: 13.7 KiB legacy polyfills in the main chunk; one 11 KiB render-blocking CSS (~150 ms); 166 ms forced reflow in chunk `13h9vpz4kt-4o.js`; key-pulse animates box-shadow/colours (non-composited); 13,896 DOM elements (typing text alone has 3,583 children); no preconnect.
+- [ ] **[A+C]** Third-party weight: ~299 KiB of the unused JS is mostly Google (AdSense ~148, GA4 ~74, consent message ~37; our own ~46). Only deferral/delayed loading is possible; check the effect on ads and GA events before changing. Re-run mobile and desktop after any fix and compare. Do not read too much into 77 before field data exists.
+
 **Engagement ideas (2026-10-26; Claude's suggestions, not agreed or built; reason: ~12 % start a core action, few return; GA4 28 d is now ~18k events for ~1.2k users)**
 - [ ] **[C]** Ghost race: replay your best run's per-second curve as a ghost cursor (client-only; the run recorder already has the data). Best effort versus payoff.
 - [ ] **[C]** Daily challenge: one text per day for everyone, picked from the date, no backend.
