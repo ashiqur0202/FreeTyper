@@ -28,7 +28,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
 ## 1. Status (updated 2026-10-07)
 - **Product:** 7 tools, 7 guides, 10 blog posts and the legal pages are built, browser-tested and **live** (latest release 2026-10-06: adaptive practice, the letter row, weak pairs and the new result card; before it 2026-10-05: the 34-lesson course with a 95 % gate; 2026-10-04: settings, touch input, GA4 events, `/typing-test` alias). All settings work. Suites run against the live site on 2026-10-06: pairs 19/19, letters 32/32, card 36/36, course 30/30.
 - **Live since 2026-10-06 (commit `d81054c`):** the result card (speed graph, consistency, weak spots) on the speed test, practice and lessons; letter-pair statistics; the **adaptive** Practice tab (now the default); the a–z letter row with a focus marker and click-to-drill; a “Weakest letter pairs” card on Progress; and the matching guide/privacy updates.
-- **AdSense:** application rejected — **“Low value content”**. The setup is correct and live. “Verify site ownership” is still open in the dashboard.
+- **AdSense:** first application rejected — **“Low value content”**; **re-applied 2026-10-25, result pending** (see §7). The setup is correct and live. “Verify site ownership” is still open in the dashboard.
 - **Done because of the rejection:**
   - every guide rewritten from the real code, with verified sources
   - blog cut from 25 to 10 posts, all rewritten
@@ -192,7 +192,7 @@ The guides and posts must stay consistent with these.
 Google’s stated bar: authentic, high-quality content and tools · **ongoing curation** · **sustained, genuine user interest**.
 Likely causes (inferred): bulk templated content with no sources or real author (fixed), guides collapsed behind “Read more” (fixed), and a new domain with almost no Google-indexed pages (open; traffic itself is now rising).
 - [ ] **[A]** AdSense → Sites → freetyper.com → **Verify site ownership** (snippet, meta tag and ads.txt are live; if there is no button, Google auto-verifies within days, else contact AdSense help with a screenshot).
-- [ ] **[A]** After several weeks of steady growth and more pages indexed: **request a review** (repeated rejections do not help).
+- [x] **[A]** **Re-applied / review requested on 2026-10-25** (Ashiqur's report, 2026-10-28; earlier than the plan below, which said to wait for several weeks of steady growth and more pages indexed). **Result not known yet: check the AdSense dashboard and the email; if rejected, note the reason here and do not re-apply again until the content or indexing has clearly changed (repeated rejections do not help).** Site-ownership verification status still to confirm.
 
 ## 8. TODO (owner: **[A]** Ashiqur · **[C]** Claude in code)
 **Now — growth is limited by distribution, not features**
