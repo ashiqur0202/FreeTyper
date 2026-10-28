@@ -57,6 +57,12 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 
 ## Log (newest first)
 
+### 2026-10-28 — Bing keywords only (not a full weekly check; Bing Search Performance, 12 to 25 Oct)
+- **Bing:** 533 clicks, 25.9K impressions, CTR 2.06 %; 31 to 49 clicks a day, no upward trend. 209 keywords; read the top 75 (the rest have 5 impressions or fewer).
+- **Every top-75 keyword is a generic "free typing lessons / practice / for beginners" phrase.** Biggest: typing lessons 3.6K impr / 24 clicks / pos 7.6 · free typing practice 1.6K / 39 / 7.4 · free typing lessons 1.1K / 28 / 4.6 · typing lessons free 734 / 18 / 4.2 · free online typing lessons 658 / 21 / 3.8. **No coding, data-entry, exam, job, medical or legal keyword; no language-typing keyword (e.g. Bangla); no "1/5/10 minute test" keyword.** This settles insight 11 for now.
+- **Finger-chart signals:** "typewriter keyboard finger layout" 11 impr / 10 clicks, "keyboard practice chart" 22 impr (pos 3.1), "which fingers belong to home key row" 16 impr, "free printable typing lessons" 6 impr. Small, but they convert.
+- Weak CTR on high-impression phrases: typing lessons 0.67 %, typing practice free 1.10 %, free typing practice online 0.91 %.
+
 ### 2026-10-18 — weekly check (GA4 7 d = 10-11 to 10-17, 28 d = 09-20 to 10-17; GSC 28 d to 10-16; Bing 12 to 16 Oct)
 - **GA4 7 d:** sessions bing 343, direct 80, yahoo 27, in.search.yahoo 15, chatgpt 8, duckduckgo 7, google 2. Countries: US 98, India 73, Singapore 36, Canada 17, UK 12, Philippines 10, Pakistan 10 (US passed India; Singapore up from 11). Views: Lessons 379, Practice 295, Speed test 224, Keyboard guide 129, Progress 78, Falling Words 39, Word Attack 31.
 - **GA4 28 d:** 1,163 users, 13,107 events, engagement rate 69.5 %. Edge 811 users (11m 19s), Chrome 292 (7m 17s), Safari 29 (1m 33s). Bounce: Lessons 21.9 %, Practice 17.4 %, Speed test 15.5 %.
