@@ -252,6 +252,10 @@ a:hover { color: var(--color-accent); }
 .blog-article p { margin-bottom: 1.25rem; }
 .blog-article a { color: var(--color-accent); text-decoration: none; }
 .blog-article a:hover { text-decoration: underline; }
+/* Links inside running text are underlined so colour is not the only cue (accessibility). */
+.blog-article p a, .blog-article li a { text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 1px; }
+.blog-article .article-toc a { text-decoration: none; }
+.blog-article .article-toc a:hover { text-decoration: underline; }
 .blog-article strong { color: var(--color-text-bright); font-weight: 600; }
 .blog-article em { color: var(--color-accent); font-style: italic; }
 .blog-article code {
