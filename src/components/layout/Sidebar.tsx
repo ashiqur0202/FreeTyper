@@ -160,7 +160,7 @@ export default function Sidebar() {
             <span>settings</span>
           </Link>
 
-          <AppearanceControls className="mt-1 px-3 pb-2 pt-3" />
+          <AppearanceControls />
 
           <div className="mt-3 px-3 pb-4">
             <span className="font-mono text-[10px] text-text-dim">v{version}</span>
