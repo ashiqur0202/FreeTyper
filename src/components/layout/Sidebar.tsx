@@ -57,7 +57,7 @@ function ThemeModal({ onClose }: { onClose: () => void }) {
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
       <div className="relative z-10 w-full max-w-xs rounded-xl border border-surface-border bg-surface shadow-2xl">
         <div className="flex items-center justify-between border-b border-surface-border px-5 py-3">
-          <span className="text-sm font-medium text-text">Theme</span>
+          <span className="text-sm font-medium text-text">Appearance</span>
           <button
             onClick={onClose}
             className="rounded-md p-1 text-text-dim transition-colors hover:bg-surface-raised hover:text-text"
@@ -230,7 +230,7 @@ export default function Sidebar() {
             className="group flex w-full items-center gap-2.5 rounded-md px-3 py-1.5 text-sm text-text-dim transition-colors hover:bg-surface-raised hover:text-text"
           >
             <Palette className="h-4 w-4 shrink-0" />
-            <span>theme</span>
+            <span>appearance</span>
           </button>
 
           <div className="mt-3 px-3 pb-4">
