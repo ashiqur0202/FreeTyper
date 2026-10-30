@@ -46,21 +46,32 @@ const DURATION_OPTIONS: DurationOption[] = [
   { seconds: 1800, label: '30m' },
 ];
 
-function generateTestText(mode: TextMode): string {
-  // Enough text for a 30-minute run at high WPM; timer still ends the test.
+/**
+ * Words to build for a run of `seconds`: 5 per second (a 300 WPM budget), so a
+ * 1-minute test builds 300 words, not the 1,500 a long run needs. Every character
+ * is a DOM element, so a shorter passage makes the first load much lighter.
+ * Runs of 5 minutes or more get the same amount as before; the timer still ends the test.
+ */
+function wordBudget(seconds: number, max: number): number {
+  return Math.min(max, Math.max(300, Math.round(seconds * 5)));
+}
+
+function generateTestText(mode: TextMode, seconds = 60): string {
   if (mode === 'words') {
     const pool = [...wordPools.easy, ...wordPools.medium];
     const out: string[] = [];
-    while (out.length < 2000) {
+    const wanted = wordBudget(seconds, 2000);
+    while (out.length < wanted) {
       const shuffled = [...pool].sort(() => Math.random() - 0.5);
       out.push(...shuffled);
     }
-    return out.slice(0, 2000).join(' ');
+    return out.slice(0, wanted).join(' ');
   }
   if (mode === 'code') {
     const codeTexts = practiceTexts.filter((p) => p.category === 'code');
     const chunks: string[] = [];
-    while (chunks.join(' ').split(/\s+/).length < 800) {
+    const wantedWords = Math.min(800, Math.max(200, Math.round(wordBudget(seconds, 800) * 0.6)));
+    while (chunks.join(' ').split(/\s+/).length < wantedWords) {
       chunks.push(...[...codeTexts].sort(() => Math.random() - 0.5).map((p) => p.text));
       if (codeTexts.length === 0) break;
     }
@@ -68,7 +79,8 @@ function generateTestText(mode: TextMode): string {
   }
   const proseTexts = practiceTexts.filter((p) => p.category !== 'code');
   const chunks: string[] = [];
-  while (chunks.join(' ').split(/\s+/).length < 1500) {
+  const wantedProse = wordBudget(seconds, 1500);
+  while (chunks.join(' ').split(/\s+/).length < wantedProse) {
     chunks.push(...[...proseTexts].sort(() => Math.random() - 0.5).map((p) => p.text));
     if (proseTexts.length === 0) break;
   }
@@ -318,13 +330,13 @@ export default function TypingSpeedTest() {
     setScrollOffset(0);
     setLineHeight(0);
     setLastKeyFlash(null);
-    const next = generateTestText(textMode);
+    const next = generateTestText(textMode, dur ?? customDuration ?? duration);
     setText(next);
     restart(next);
     isCompleteRef.current = false;
     setShowCustomInput(false);
     inputRef.current?.focus({ preventScroll: true });
-  }, [duration, textMode, restart]);
+  }, [duration, customDuration, textMode, restart]);
 
   const startNewTestRef = useRef(startNewTest);
   startNewTestRef.current = startNewTest;
@@ -380,25 +392,25 @@ export default function TypingSpeedTest() {
       case 'w':
         setTextMode('words');
         setResult(null);
-        setText(generateTestText('words'));
+        setText(generateTestText('words', customDuration ?? duration));
         restart();
         break;
       case 'sentences':
       case 's':
         setTextMode('sentences');
         setResult(null);
-        setText(generateTestText('sentences'));
+        setText(generateTestText('sentences', customDuration ?? duration));
         restart();
         break;
       case 'code':
       case 'c':
         setTextMode('code');
         setResult(null);
-        setText(generateTestText('code'));
+        setText(generateTestText('code', customDuration ?? duration));
         restart();
         break;
     }
-  }, [startNewTest, restart]);
+  }, [startNewTest, restart, customDuration, duration]);
 
   const seconds = Math.ceil(timeLeft || activeDuration);
   const progress = isRunning ? ((activeDuration - (timeLeft || 0)) / activeDuration) * 100 : 0;
@@ -476,7 +488,7 @@ export default function TypingSpeedTest() {
                   onClick={() => {
                     if (isRunning) return;
                     setTextMode(m.id);
-                    const next = generateTestText(m.id);
+                    const next = generateTestText(m.id, customDuration ?? duration);
                     setText(next);
                     restart(next);
                   }}
