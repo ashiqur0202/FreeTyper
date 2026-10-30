@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import AppearanceControls from './AppearanceControls';
 import PracticeCard from './PracticeCard';
 
 const links = [
@@ -24,7 +25,8 @@ export default function RightSidebar() {
         md:sticky md:top-0 md:z-auto md:flex md:h-screen md:self-start
       "
     >
-      <div className="px-4 pb-3 pt-5">
+      <AppearanceControls />
+      <div className="px-4 pb-3 pt-4">
         <p className="text-[10px] uppercase tracking-widest text-text-dim">On this site</p>
       </div>
       <nav className="flex flex-col gap-0.5 px-2">

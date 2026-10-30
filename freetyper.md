@@ -67,7 +67,7 @@ src/components/skills/typing/
                 letterStats (per-letter status), LetterRow (the a–z row on Practice)
                 runStats (per-run curve, consistency, weak spots), RunGraph (SVG graph), PracticeFeedback (the result card + coach notes)
                 typingData (practice passages, finger map), gameData (word pools, tiers, rounds, scoring)
-src/components/layout/   Sidebar, RightSidebar (both pinned), SettingsProvider, Footer, ContactPanel, LogoMark (K mark), FaviconBlink (tab icon), PracticeCard (sidebar streak / daily goal / continue lesson)
+src/components/layout/   Sidebar, RightSidebar (both pinned), SettingsProvider, Footer, ContactPanel, LogoMark (K mark), FaviconBlink (tab icon), PracticeCard (sidebar streak / daily goal / continue lesson), AppearanceControls (dark/light switch, accent, text size at the top of the right sidebar)
 src/components/          content/ExpandableSeoContent, seo/JsonLd, blog/BlogContent+BlogCard, tools/ToolClient
 src/config/     tools.ts (7 tools), site.ts (name, author, AdSense id)
 src/lib/        post-dates.ts (the one visible post date), key-sound.ts (Web Audio), analytics.ts (GA4 events), content-dates.ts (unused)
@@ -136,6 +136,7 @@ The guides and posts must stay consistent with these.
 - Theme (dark / light / midnight / paper) · accent (6) · font size (typing text 14/18/22 px via `data-font-size`).
 - Sound (soft tick / lower thud, Web Audio) · keyboard hints (next-key highlight) · layout (a fixed “QWERTY” label).
 - Default is dark + gold `#e2b714`.
+- **Quick controls (branch `feat/appearance-controls`, 2026-10-30, not merged):** the top of the right sidebar (desktop only) has a dark/light switch (dark and midnight count as dark, so it flips between `dark` and `light`; midnight and paper stay in the left sidebar's theme popup and on the Settings page), the six accent swatches and three text-size buttons (14/18/22 px). Same `updateSetting` and `setting_change` event as the other places.
 
 **Storage keys:** `freetyper-daily-goal` (5/10/15/20 minutes), `freetyper-settings`, `-progress`, `-speed-log`, `-practice-log`, `-lessons-log`, `-pairs`, `-course-progress` (old `-lessons-progress` is read once for migration), `-fw-log`, `-wa-log`, `-fw-highscore`, `-wa-highscore`.
 
