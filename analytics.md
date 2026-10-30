@@ -74,6 +74,7 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 - **Desktop:** performance 79, accessibility 87, best practices 100, SEO 100. FCP 0.8 s, LCP 0.8 s, TBT 340 ms, CLS 0, Speed Index 2.1 s; main-thread work 2.8 s.
 - **Both:** unused JavaScript 279 to 301 KiB, mostly the AdSense scripts (left alone while the re-application is pending); cache-lifetime warning is AdSense's too. Home page loads about 220 KB gzipped of our own JavaScript in 11 files.
 - **Accessibility causes (same on both):** unlabelled hidden input, dim text 2.98:1 (2.64:1 on raised panels), article links without underline. All fixed on `fix/pagespeed-a11y`; local Lighthouse on the build: accessibility 100. Local mobile performance baseline (3 runs): 43 to 46, FCP 3.7 to 4.0 s, LCP 6.8 s, so it tracks PageSpeed for FCP and LCP (TBT is higher locally).
+- **Fix pass (same day, branch `fix/pagespeed-a11y`):** accessibility 4 of 4 fixed (local Lighthouse 100). Performance: passage length now follows the run length (see `freetyper.md` section 0); median local mobile LCP 6.8 s to 5.0 s, forced reflow about 270 to 150 ms. Left: AdSense/GA scripts (unused JS, cache lifetimes, network tree), Next's own polyfill block (14 KiB), the render-blocking stylesheet (inlineCss skipped), and the post-hydration LCP.
 - Not read: Core Web Vitals field data. Re-run PageSpeed after the release.
 
 ### 2026-10-30 — weekly check (GA4 28 d = Oct 2 to 29, 7 d = Oct 23 to 29; GSC 28 d to 10-28; Bing 12 to 28 Oct; all read by Claude)
