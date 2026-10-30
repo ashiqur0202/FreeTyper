@@ -496,6 +496,7 @@ export default function TypingPractice() {
           <input
           ref={inputRef}
           className="sr-only"
+          aria-label="Type the text shown on screen here"
           autoFocus
           defaultValue={INPUT_SENTINEL}
           autoCapitalize="off"
