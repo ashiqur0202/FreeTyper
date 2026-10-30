@@ -13,6 +13,15 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: 'how-long-to-practice-typing-each-day',
+    title: 'How Long Should You Practice Typing Each Day?',
+    excerpt: 'What the one careful study on typing practice schedules found, what it did not test, why "15 minutes a day" is not proven, and a routine clearly marked as our suggestion.',
+    date: '2026-10-30',
+    author: 'Ashiqur Rahman',
+    category: 'Practice',
+    readTime: '6 min',
+  },
+  {
     slug: 'how-to-type-faster',
     title: 'How to Type Faster: What the Research Supports',
     excerpt: 'What fast typists actually do differently, six habits backed by a 168,960-person study, what to treat with caution, and a four-week practice plan you can try. Sourced, with no promised gains.',

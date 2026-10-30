@@ -148,13 +148,13 @@ The guides and posts must stay consistent with these.
 | `/` | speed test (home owns “typing speed test”) | ~2k words + FAQ |
 | `/typing-lessons` `/typing-practice` `/keyboard-guide` `/typing-progress` | tools | ~1.6–1.7k words each + FAQ |
 | `/typing-game-falling-words` `/typing-game-word-attack` | games | ~1.7k words each + FAQ |
-| `/blog`, `/blog/[slug]` | 10 sourced posts | — |
+| `/blog`, `/blog/[slug]` | 11 sourced posts (10 + the 10-30 practice-schedule post, unreleased) | — |
 | `/about` `/contact` `/privacy` `/terms` `/disclaimer` | trust and legal | — |
 
 - A tool page is a full-viewport tool, then the guide (its first heading is the visible H1, open by default). `/typing-speed-test` and `/typing-test` redirect 308 to `/` (next.config.ts).
 - Metadata: unique titles and canonicals · OG/Twitter and a generated OG image · PWA manifest.
 - `robots.ts` allows all and points to the sitemap.
-- `sitemap.ts`: **23 URLs** (7 static + 6 tools + 10 posts). Posts use `updated ?? date`; other URLs omit `lastmod` rather than fake it.
+- `sitemap.ts`: **23 URLs live; 24 once branch `feat/post-practice-schedule` ships** (7 static + 6 tools + 10 posts, +1). Posts use `updated ?? date`; other URLs omit `lastmod` rather than fake it.
 - `feed.xml`: tools + posts, dated `updated ?? date`.
 - JSON-LD: Organization + WebSite (layout); WebApplication + FAQPage + HowTo on home and tools (FAQ text = the visible FAQ); Breadcrumb; **BlogPosting** on posts (author → `/about#author`). Output escapes `<`.
 - Google has largely retired HowTo/FAQ rich results, so that markup is harmless and accurate, not a ranking lever.
@@ -182,12 +182,14 @@ The guides and posts must stay consistent with these.
 - Walker 2002 and 2003 · Brawn 2010 · Walker & Stickgold 2004 · Rempel 1997 · Gerard 1999.
 - Minelli 2015 · Xia 2018 · SSC India CHSL 2026 notice · eSkill docs · Wikipedia (Words per minute, Touch typing, Muscle memory, Data entry clerk).
 
-**Blog: 10 posts, ~1.0–1.5k words, rewritten 2026-10-04**
+**Blog: 10 posts live, ~1.0–1.5k words, rewritten 2026-10-04; an 11th, `how-long-to-practice-typing-each-day`, is written on branch `feat/post-practice-schedule` (2026-10-30, not released)**
 - `how-to-type-faster` · `good-typing-speed` · `improve-typing-accuracy` · `touch-typing-for-beginners` · `muscle-memory-and-touch-typing`
 - `10-bad-typing-habits` · `typing-speed-for-programmers` · `data-entry-typing-test` · `mechanical-vs-membrane-keyboards` · `fix-typing-posture-and-avoid-wrist-pain`
 - 15 older templated posts were deleted (not indexed; no redirects) and their links remapped. The old text is in git history.
 
-**Next posts (1 a week):** how employers score typing tests (net vs gross, accuracy floors) · laptop vs external keyboard · practising 10 minutes a day · common typing errors by key pair (from the Dhakal error data).
+**Post 11 (2026-10-30, not released):** based on Baddeley & Longman 1978 (*Ergonomics* 21(8) 627-635; read in full from the gwern.net PDF; 4 schedules, 18 per group; 1 h/day learned fastest). It says plainly that the study never tested sessions under an hour; the 10–20 min routine is labelled our suggestion. Ashiqur should read and edit it in his own voice before release. After release: IndexNow + request indexing for the URL. Employer-scoring is already covered by `data-entry-typing-test`, so it is dropped from the list below.
+
+**Next posts (1 a week):** laptop vs external keyboard (weak evidence found, vendor blogs only) · common typing errors by key pair (from the Dhakal error data).
 
 ## 7. AdSense plan
 Google’s stated bar: authentic, high-quality content and tools · **ongoing curation** · **sustained, genuine user interest**.

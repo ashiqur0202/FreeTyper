@@ -1,4 +1,68 @@
 export const practiceArticles: Record<string, string> = {
+  'how-long-to-practice-typing-each-day': `<p>Most advice on this says "practise 15 minutes a day" and stops there, usually without a source. We looked for evidence and found one old but careful study that tested how practice time is split up when people learn to type. It supports spreading practice over more days. It does not test 15 minutes, and it says nothing about how much you should practise in total. This guide explains what the study did, what it found, where it stops, and then gives a routine that is clearly marked as our own suggestion.</p>
+
+<h2 id="the-study">The one study worth knowing</h2>
+<p>In 1978, Alan Baddeley (Medical Research Council Applied Psychology Unit) and Derek Longman (Post Office) published <em>The influence of length and frequency of training session on the rate of learning to type</em> in the journal <em>Ergonomics</em>. The British Post Office expected to train up to 10,000 sorting-machine operators on a standard typewriter keyboard, and wanted to know whether it was better to train a few people intensively or more people gradually.</p>
+<ul>
+<li><strong>Who:</strong> volunteers from one sorting office, 18 in each of four groups (postmen and a higher postal grade). They said they had neither used a typewriter nor played a keyboard instrument. They were assigned to groups at random, with average ages matched.</li>
+<li><strong>What they learned:</strong> to type alphanumeric post-code material on a typewriter keyboard, taught by an instructor using the Post Office's standard method.</li>
+<li><strong>The four schedules:</strong> one 1-hour session a day; two 1-hour sessions a day; one 2-hour session a day; two 2-hour sessions a day. Training was planned as 60 hours for everyone, and was extended to 80 hours for every group except the first.</li>
+</ul>
+
+<h2 id="what-they-found">What they found</h2>
+<table>
+<thead><tr><th>Schedule</th><th>Mean hours to learn the keyboard</th><th>Correct keystrokes per minute after a nominal 60 hours</th><th>Uncorrected errors after 60 hours</th></tr></thead>
+<tbody>
+<tr><td>1 session of 1 hour a day</td><td>34.9</td><td>79.3</td><td>1.09%</td></tr>
+<tr><td>2 sessions of 1 hour a day</td><td>42.6</td><td>73.4</td><td>1.14%</td></tr>
+<tr><td>1 session of 2 hours a day</td><td>43.2</td><td>71.1</td><td>1.41%</td></tr>
+<tr><td>2 sessions of 2 hours a day</td><td>49.7</td><td>64.8</td><td>2.06%</td></tr>
+</tbody>
+</table>
+<p>The figures are from Tables 1 to 3 of the paper. In words:</p>
+<ul>
+<li>The group that practised one hour a day learned fastest, and the group with two 2-hour sessions a day learned slowest. The paper notes that the fastest person in the slowest group was slower than the slowest person in either once-a-day group.</li>
+<li>The authors report that session length mattered more than the number of sessions per day. In their words, a 2-hour session "seems to be too long for efficient training", and one session a day was slightly better than two, "though this is not a very great difference".</li>
+<li>The two-sessions-of-two-hours group also made significantly more uncorrected errors than any other group. No other difference between groups on errors was significant.</li>
+<li>Time on the calendar was very different. The nominal 60 hours took twelve weeks for the one-hour-a-day group and three weeks for the two-by-two-hour group, and the slow, spread-out schedule still came out ahead.</li>
+</ul>
+
+<h2 id="what-people-preferred">What the trainees preferred</h2>
+<p>This part is easy to miss. Afterwards, trainees rated their schedules. They tended to prefer the schedule they had been given, and the two-by-two-hour group was the most enthusiastic, even though it learned slowest and made the most errors. The one-hour-a-day group was less enthusiastic, and the authors thought they may have resented spending twelve weeks on what colleagues finished in three. They concluded it was unlikely that motivation explained the one-hour group's better results, and noted that going by ratings alone would have recommended the schedule with the slowest learning, the least accurate typing and the poorest retention. A schedule that feels productive and one that works can differ.</p>
+
+<h2 id="forgetting">What happens if you stop</h2>
+<p>The authors retested 62 of the 70 people who completed training and had not used a typewriter since, after about one, three or nine months. Speed fell by about 30% after nine months, and it did not drop substantially after the first three months, with a possible exception for the two-by-two-hour group, which had learned least well and kept the least. Error rates rose for most people but stayed within what the authors called reasonable limits. These people were not practising in between, so this describes not typing at all, not casual use.</p>
+
+<h2 id="limits">What this study cannot tell you</h2>
+<ul>
+<li><strong>It did not test short sessions.</strong> The shortest session was one hour. Nothing here shows that 10, 15 or 20 minutes works better than an hour. That would be an extrapolation. The authors themselves list open questions, including whether the effect is limited to discrete motor skills like typing.</li>
+<li><strong>It was a 1970s typewriter course.</strong> Participants learned post-code material on mechanical typewriters under an instructor, not prose on a modern keyboard with a free website. The keystrokes-per-minute figures are for that material and are not comparable to the WPM from a speed test.</li>
+<li><strong>It was one workplace and one group of adults,</strong> training around their normal duties. We did not open any other study of typing practice schedules, so we do not claim the finding is settled.</li>
+<li>A popular summary of the same study on the Learning Scientists blog reads it the same way, but it cites only this one typing study, so it adds no independent evidence.</li>
+<li>For what sleep may add to a new motor skill, and why that evidence is still debated, see <a href="/blog/muscle-memory-and-touch-typing">muscle memory and touch typing</a>. We do not repeat it here.</li>
+</ul>
+
+<h2 id="a-routine">A routine you could try (our suggestion)</h2>
+<p>Everything in this section is our own suggestion. It follows the study's direction (spread practice out, avoid long cramming sessions) but is not proven for short sessions.</p>
+<ol>
+<li><strong>Pick a regular time</strong> and a length you can keep without dreading it. Ten to twenty minutes is what we suggest, the same range as in our <a href="/blog/how-to-type-faster">how to type faster</a> guide.</li>
+<li><strong>Beginners:</strong> spend the session on the <a href="/typing-lessons">typing lessons</a>. A lesson needs 95% accuracy to pass, and a miss restarts it with new text, so a short session is still a complete step.</li>
+<li><strong>After the lessons:</strong> use <a href="/typing-practice">typing practice</a>. Its adaptive tab builds the text from your own weakest letters and letter pairs once it has enough data from you. The other tabs offer quotes, news, code and fun text.</li>
+<li><strong>Keep accuracy first.</strong> If your accuracy drops well below 95%, slow down. See <a href="/blog/improve-typing-accuracy">how to improve typing accuracy</a>.</li>
+<li><strong>Measure rarely.</strong> Take a <a href="/">speed test</a> about once a week, not after every session, and compare the middle of three runs.</li>
+<li><strong>Missed a few days?</strong> Restart with a normal session, not a catch-up marathon. The study's longest sessions were its worst performers.</li>
+</ol>
+<p>The <a href="/typing-progress">progress page</a> shows a streak of consecutive days and your history, and all of it stays in your own browser. FreeTyper has no reminders or daily goal, so set a reminder in your calendar or phone if you want one.</p>
+
+<h2 id="sources">Sources</h2>
+<ul class="article-sources">
+<li>Baddeley AD, Longman DJA. <a href="https://www.gwern.net/doc/psychology/spaced-repetition/1978-baddeley.pdf" rel="noopener" target="_blank">The influence of length and frequency of training session on the rate of learning to type</a>. Ergonomics, 1978, 21(8), 627-635. Read in full; the figures and quotes above are from its text and tables. The link is a copy of the paper hosted on gwern.net.</li>
+<li>Nebel C. <a href="https://www.learningscientists.org/blog/2018/11/15-1" rel="noopener" target="_blank">Spaced Practice for Skill Learning</a>. The Learning Scientists blog. A popular summary, cited only for the point that it relies on the same single study.</li>
+<li>The 10 to 20 minute sessions, the weekly speed test and the routine steps are our own suggestions. Descriptions of the FreeTyper tools come from the <a href="/typing-lessons">lessons</a>, <a href="/typing-practice">practice</a> and <a href="/typing-progress">progress</a> pages as they work today.</li>
+</ul>
+<p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
+`,
+
   'data-entry-typing-test': `<p>A data entry typing test measures speed and accuracy together, and reports the result either in words per minute (WPM) or in keystrokes per hour (often written KSPH, KPH or KDPH). The two are easy to convert: because a "word" is five keystrokes, <strong>1 WPM is 300 keystrokes per hour</strong>. What counts as a pass depends entirely on the employer. We found no universal standard, and we will not invent one. This guide explains how such tests are scored, shows real requirements from an official source so you can see the range, and lays out how to prepare.</p>
 
 <h2 id="wpm-and-keystrokes-per-hour">WPM and keystrokes per hour</h2>
