@@ -502,12 +502,12 @@ export default function TypingSpeedTest() {
               <span className={`tabular-nums ${isLowTime && isRunning ? 'text-error' : 'text-text-bright'}`}>
                 {seconds}
               </span>
-              <span className="text-surface-border">·</span>
+              <span className="text-text-dim">·</span>
               <span className="tabular-nums text-text-bright">
                 {isRunning ? wpm : '--'}
                 <span className="text-text"> wpm</span>
               </span>
-              <span className="text-surface-border">·</span>
+              <span className="text-text-dim">·</span>
               <span className="tabular-nums text-text-bright">
                 {isRunning ? accuracy : '--'}
                 <span className="text-text">%</span>
@@ -627,27 +627,27 @@ export default function TypingSpeedTest() {
               <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs">
                 <div className="flex items-center justify-between">
                   <span className="text-text-dim">restart</span>
-                  <span className="font-mono text-surface-border">r</span>
+                  <span className="font-mono text-text-dim">r</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-text-dim">focus mode</span>
-                  <span className="font-mono text-surface-border">f</span>
+                  <span className="font-mono text-text-dim">f</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-text-dim">words</span>
-                  <span className="font-mono text-surface-border">w</span>
+                  <span className="font-mono text-text-dim">w</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-text-dim">sentences</span>
-                  <span className="font-mono text-surface-border">s</span>
+                  <span className="font-mono text-text-dim">s</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-text-dim">code</span>
-                  <span className="font-mono text-surface-border">c</span>
+                  <span className="font-mono text-text-dim">c</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-text-dim">set time</span>
-                  <span className="font-mono text-surface-border">t 60s</span>
+                  <span className="font-mono text-text-dim">t 60s</span>
                 </div>
               </div>
             </div>
@@ -703,7 +703,7 @@ export default function TypingSpeedTest() {
         <div className="w-full max-w-5xl px-12">
           {testContent}
         </div>
-        <p className="absolute bottom-4 text-[10px] text-surface-border">
+        <p className="absolute bottom-4 text-[10px] text-text-dim">
           press Esc to exit focus mode
         </p>
       </div>

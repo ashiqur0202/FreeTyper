@@ -465,12 +465,12 @@ export default function TypingLessons() {
           </div>
           <div className="flex items-center gap-3 font-mono text-sm text-text">
             <span className="text-[11px] text-text-dim">{doneCount}/{courseLessons.length} done</span>
-            <span className="text-surface-border">·</span>
+            <span className="text-text-dim">·</span>
             <span className="tabular-nums text-text-bright">
               {isRunning ? wpm : '--'}
               <span className="text-text"> wpm</span>
             </span>
-            <span className="text-surface-border">·</span>
+            <span className="text-text-dim">·</span>
             <span className="tabular-nums text-text-bright">
               {isRunning ? accuracy : '--'}
               <span className="text-text">%</span>

@@ -248,11 +248,11 @@ export default function GameFeedback({ log, extraActions }: GameFeedbackProps) {
           <p className="text-[10px] uppercase tracking-[0.18em] text-text-dim">result</p>
           <p className="text-[11px] text-text-dim">
             {timeAgo(latest.date)}
-            <span className="text-surface-border"> · </span>
+            <span className="text-text-dim"> · </span>
             {latest.detail}
             {isBest && (
               <>
-                <span className="text-surface-border"> · </span>
+                <span className="text-text-dim"> · </span>
                 <span className="text-accent">best</span>
               </>
             )}
@@ -321,7 +321,7 @@ export default function GameFeedback({ log, extraActions }: GameFeedbackProps) {
           <Sparkline values={spark} />
           <p className="text-[11px] text-text-dim">
             <span className="tabular-nums text-text-bright">{bestScore}</span> best
-            <span className="text-surface-border"> · </span>
+            <span className="text-text-dim"> · </span>
             <span className="tabular-nums text-text-bright">{avgScore}</span> avg
           </p>
         </div>
@@ -344,10 +344,10 @@ export default function GameFeedback({ log, extraActions }: GameFeedbackProps) {
                     <div className="flex items-baseline gap-2 font-mono text-sm">
                       <span className="text-base font-light tabular-nums text-accent">{entry.score}</span>
                       <span className="text-[11px] text-text-dim">pts</span>
-                      <span className="text-surface-border">·</span>
+                      <span className="text-text-dim">·</span>
                       <span className="tabular-nums text-text-bright">{entry.wpm}</span>
                       <span className="text-[11px] text-text-dim">wpm</span>
-                      <span className="text-surface-border">·</span>
+                      <span className="text-text-dim">·</span>
                       <span className="tabular-nums text-text-bright">{entry.accuracy}%</span>
                       {rowBest && (
                         <span className="rounded-full bg-accent-bg px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-accent">
@@ -357,7 +357,7 @@ export default function GameFeedback({ log, extraActions }: GameFeedbackProps) {
                     </div>
                     <span className="text-[11px] text-text-dim">
                       {timeAgo(entry.date)}
-                      <span className="text-surface-border"> · </span>
+                      <span className="text-text-dim"> · </span>
                       {entry.detail}
                     </span>
                   </div>

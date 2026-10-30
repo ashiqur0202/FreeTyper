@@ -442,7 +442,7 @@ export default function WordAttackGame() {
             <p className="mt-2 font-mono text-sm text-text">
               <span className="tabular-nums text-accent">{score}</span>
               <span className="text-text-dim"> pts</span>
-              <span className="text-surface-border"> · </span>
+              <span className="text-text-dim"> · </span>
               round {currentRound + 1}/{wordAttackRounds.length}
             </p>
             <button
@@ -465,10 +465,10 @@ export default function WordAttackGame() {
                 {currentRound + 1}/{wordAttackRounds.length}
               </span>
               <span className="text-[11px] text-text-dim">round</span>
-              <span className="text-surface-border">·</span>
+              <span className="text-text-dim">·</span>
               <span className="tabular-nums text-accent">{score}</span>
               <span className="text-[11px] text-text-dim">pts</span>
-              <span className="text-surface-border">·</span>
+              <span className="text-text-dim">·</span>
               <span className="tabular-nums text-text-bright">{wpm}</span>
               <span className="text-[11px] text-text-dim">wpm</span>
             </div>

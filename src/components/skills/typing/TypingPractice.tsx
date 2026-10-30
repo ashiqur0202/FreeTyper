@@ -419,7 +419,7 @@ export default function TypingPractice() {
                 {isRunning ? wpm : '--'}
                 <span className="text-text"> wpm</span>
               </span>
-              <span className="text-surface-border">·</span>
+              <span className="text-text-dim">·</span>
               <span className="tabular-nums text-text-bright">
                 {isRunning ? accuracy : '--'}
                 <span className="text-text">%</span>

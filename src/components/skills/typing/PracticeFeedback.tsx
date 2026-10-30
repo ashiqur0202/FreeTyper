@@ -557,11 +557,11 @@ export default function PracticeFeedback({
           </p>
           <p className="text-[11px] text-text-dim">
             {timeAgo(latest.date)}
-            <span className="text-surface-border"> · </span>
+            <span className="text-text-dim"> · </span>
             {categoryLabel(latest.modeDetail)}
             {isBest && (
               <>
-                <span className="text-surface-border"> · </span>
+                <span className="text-text-dim"> · </span>
                 <span className="text-accent">best</span>
               </>
             )}
@@ -690,9 +690,9 @@ export default function PracticeFeedback({
           <Sparkline values={spark} />
           <p className="text-[11px] text-text-dim">
             <span className="tabular-nums text-text-bright">{bestWpm}</span> best
-            <span className="text-surface-border"> · </span>
+            <span className="text-text-dim"> · </span>
             <span className="tabular-nums text-text-bright">{avgWpm}</span> avg
-            <span className="text-surface-border"> · </span>
+            <span className="text-text-dim"> · </span>
             <span className="tabular-nums text-text-bright">{cleanCount}</span> clean
           </p>
         </div>
@@ -717,16 +717,16 @@ export default function PracticeFeedback({
                         {entry.wpm}
                       </span>
                       <span className="text-[11px] text-text-dim">wpm</span>
-                      <span className="text-surface-border">·</span>
+                      <span className="text-text-dim">·</span>
                       <span className="tabular-nums text-text-bright">{entry.accuracy}%</span>
                       {entry.mode === 'speed-test' && (
                         <>
-                          <span className="text-surface-border">·</span>
+                          <span className="text-text-dim">·</span>
                           <span className="tabular-nums text-error">{entry.incorrectChars}</span>
                           <span className="text-[11px] text-text-dim">err</span>
                         </>
                       )}
-                      <span className="text-surface-border">·</span>
+                      <span className="text-text-dim">·</span>
                       <span className="text-[11px] text-text-dim">{entry.duration}s</span>
                       {isBest && (
                         <span className="rounded-full bg-accent-bg px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-accent">
@@ -736,7 +736,7 @@ export default function PracticeFeedback({
                     </div>
                     <span className="text-[11px] text-text-dim">
                       {timeAgo(entry.date)}
-                      <span className="text-surface-border"> · </span>
+                      <span className="text-text-dim"> · </span>
                       {categoryLabel(entry.modeDetail)}
                     </span>
                   </div>

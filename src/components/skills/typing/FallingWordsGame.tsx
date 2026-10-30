@@ -340,10 +340,10 @@ export default function FallingWordsGame() {
         <div className="flex items-center gap-3 font-mono text-sm text-text">
           <span className="tabular-nums text-accent">{score}</span>
           <span className="text-[11px] text-text-dim">pts</span>
-          <span className="text-surface-border">·</span>
+          <span className="text-text-dim">·</span>
           <span className="tabular-nums text-text-bright">{tier + 1}/10</span>
           <span className="text-[11px] text-text-dim">tier</span>
-          <span className="text-surface-border">·</span>
+          <span className="text-text-dim">·</span>
           <span className="tabular-nums text-text-bright">{wpm}</span>
           <span className="text-[11px] text-text-dim">wpm</span>
         </div>

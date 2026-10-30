@@ -131,7 +131,7 @@ export default function KeyboardGuide() {
           <Home className="h-3 w-3" />
           home row only
         </button>
-        <span className="text-surface-border">·</span>
+        <span className="text-text-dim">·</span>
         <span className="inline-flex items-center gap-1">
           <Hand className="h-3 w-3 text-accent" />
           hover or click a key
