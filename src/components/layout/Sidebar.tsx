@@ -12,14 +12,12 @@ import {
   Crosshair,
   BookOpen,
   Settings,
-  Palette,
   Menu,
   X,
 } from 'lucide-react';
 import { useSidebar } from './SidebarProvider';
 import LogoMark from './LogoMark';
-import { useState } from 'react';
-import { useSettings, THEMES, ACCENT_COLORS } from './SettingsProvider';
+import AppearanceControls from './AppearanceControls';
 
 const navGroups = [
   {
@@ -49,72 +47,9 @@ const navGroups = [
 
 const version = '1.0.0';
 
-function ThemeModal({ onClose }: { onClose: () => void }) {
-  const { settings, updateSetting } = useSettings();
-
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-      <div className="relative z-10 w-full max-w-xs rounded-xl border border-surface-border bg-surface shadow-2xl">
-        <div className="flex items-center justify-between border-b border-surface-border px-5 py-3">
-          <span className="text-sm font-medium text-text">Appearance</span>
-          <button
-            onClick={onClose}
-            className="rounded-md p-1 text-text-dim transition-colors hover:bg-surface-raised hover:text-text"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        </div>
-        <div className="px-5 py-4">
-          <span className="mb-3 block text-xs text-text-dim">accent color</span>
-          <div className="flex gap-2">
-            {ACCENT_COLORS.map((c) => (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => updateSetting('accentColor', c.id)}
-                className={`h-7 w-7 rounded-full border-2 transition-all hover:scale-110 ${
-                  settings.accentColor === c.id ? 'border-text-bright scale-110' : 'border-transparent'
-                }`}
-                style={{ backgroundColor: c.color }}
-                title={c.id}
-                aria-label={`${c.id} accent`}
-                aria-pressed={settings.accentColor === c.id}
-              />
-            ))}
-          </div>
-          <span className="mb-3 mt-5 block text-xs text-text-dim">mode</span>
-          <div className="flex flex-wrap gap-1">
-            {THEMES.map((t) => (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => updateSetting('theme', t.id)}
-                className={`inline-flex items-center rounded-md px-3 py-1.5 text-xs transition-colors ${
-                  settings.theme === t.id
-                    ? 'bg-accent-bg text-accent'
-                    : 'text-text-dim hover:bg-surface-raised hover:text-text'
-                }`}
-                aria-pressed={settings.theme === t.id}
-              >
-                <span
-                  className="mr-1.5 inline-block h-2 w-2 rounded-full border border-surface-border"
-                  style={{ backgroundColor: t.swatch }}
-                />
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function Sidebar() {
   const pathname = usePathname();
   const { isOpen, toggle, close } = useSidebar();
-  const [showTheme, setShowTheme] = useState(false);
 
   return (
     <>
@@ -206,7 +141,7 @@ export default function Sidebar() {
           </div>
         ))}
 
-        {/* Settings, theme, version — after nav */}
+        {/* Settings, appearance, version — after nav */}
         <div className="px-2">
           <div className="mx-2 my-2 h-px bg-surface-border" />
 
@@ -225,22 +160,13 @@ export default function Sidebar() {
             <span>settings</span>
           </Link>
 
-          <button
-            onClick={() => setShowTheme(true)}
-            className="group flex w-full items-center gap-2.5 rounded-md px-3 py-1.5 text-sm text-text-dim transition-colors hover:bg-surface-raised hover:text-text"
-          >
-            <Palette className="h-4 w-4 shrink-0" />
-            <span>appearance</span>
-          </button>
+          <AppearanceControls className="mt-1 px-3 pb-2 pt-3" />
 
           <div className="mt-3 px-3 pb-4">
             <span className="font-mono text-[10px] text-text-dim">v{version}</span>
           </div>
         </div>
       </aside>
-
-      {/* Theme modal */}
-      {showTheme && <ThemeModal onClose={() => setShowTheme(false)} />}
     </>
   );
 }

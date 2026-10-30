@@ -19,12 +19,16 @@ const SIZES: { value: FontSize; label: string; textClass: string }[] = [
   { value: 'large', label: 'Large typing text', textClass: 'text-[18px]' },
 ];
 
-export default function AppearanceControls() {
+export default function AppearanceControls({
+  className = 'border-b border-surface-border px-4 pb-4 pt-5',
+}: {
+  className?: string;
+}) {
   const { settings, updateSetting } = useSettings();
   const isDark = DARK_THEMES.includes(settings.theme);
 
   return (
-    <div className="border-b border-surface-border px-4 pb-4 pt-5" data-appearance-controls>
+    <div className={className} data-appearance-controls>
       <p className="text-[10px] uppercase tracking-widest text-text-dim">Appearance</p>
 
       <button
