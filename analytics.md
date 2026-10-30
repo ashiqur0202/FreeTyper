@@ -69,6 +69,11 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 
 ## Log (newest first)
 
+### 2026-10-31 (later) — PageSpeed re-run after the release (captured 02:09 GMT+6, one lab run; read by Claude)
+- **Mobile:** performance 66 (was 61), accessibility 100 (was 87), best practices 100, SEO 100. FCP 3.4 s, LCP 6.5 s (was 7.0; element render delay still about 2.3 s), TBT 80 ms (was 190), CLS 0, Speed Index 5.4 s (was 6.2).
+- **Desktop:** performance 95 (was 79), accessibility 100 (was 87), best practices 100, SEO 100. FCP 0.8 s, LCP 0.8 s, TBT 60 ms (was 340), CLS 0.003, Speed Index 1.9 s, main-thread work 2.3 s (was 2.8).
+- **Still flagged:** unused JavaScript 299 / 275 KiB and cache lifetimes (AdSense and GA, left alone), network dependency tree, Next's 14 KiB polyfill block, render-blocking stylesheet (inlineCss skipped), forced reflow. The main open item is the mobile LCP (test renders after hydration).
+
 ### 2026-10-31 — PageSpeed Insights (live site, one lab run 01:24 GMT+6; read by Claude from the report page)
 - **Mobile:** performance 61, accessibility 87, best practices 100, SEO 100. FCP 3.5 s, LCP 7.0 s (element render delay about 3 s after a 0.5 s first byte), TBT 190 ms, CLS 0, Speed Index 6.2 s.
 - **Desktop:** performance 79, accessibility 87, best practices 100, SEO 100. FCP 0.8 s, LCP 0.8 s, TBT 340 ms, CLS 0, Speed Index 2.1 s; main-thread work 2.8 s.
