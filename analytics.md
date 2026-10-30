@@ -7,12 +7,17 @@ Short notes on traffic and search data over time. Product rules and status are i
 - Only numbers read from the tool that day; write the source and date range. No estimates.
 - Each week: (1) update **Major insights**, (2) add a row to the **Trend table**, (2b) **revise the Growth plan** from the new insights, (3) add a short dated entry at the top of the **Log** (max about 15 lines), (4) condense the entry from two weeks ago. Raw exports go in `analytics/` (git-ignored). No logins or secrets.
 
-## Weekly routine (ask Claude: "run the weekly analytics")
+## Friday routine (every Friday; ask Claude: "run the Friday analytics")
 All read in the signed-in Chrome; nothing is changed. Same windows every time.
 1. **GA4**, property `FreeTyper` (ID `541715664`; other properties in the account are other sites, check the name top left). Home: last 7 days. Reports snapshot: 28 days. Events report (`r=top-events`, 2 pages), Tech details (`r=user-technology-detail`); these URLs work typed into navigate. Also read device category (mobile share).
 2. **Search Console** `https://freetyper.com/`: Performance 28 days (queries, pages); Pages (indexed count, "last update" date, indexed list, "Crawled" list); Sitemaps.
 3. **Bing Webmaster** (dismiss the Copilot popup "Not now"): Search Performance (`searchperf`, `&activeTab=keywords|pages|devices|countries`), AI Performance (`aiperformance`), Sitemaps, Site Explorer (indexed / error / warning / excluded).
 4. Watch each week: GA4 key events (still 0?), Google indexed count, Bing clicks vs GA bing sessions, mobile share, `www` vs bare host in Bing, Bing keywords for coding or exam terms.
+5. **Growth verdict (our method, a suggestion):** compare three angles and say plainly whether the site is growing. Drop the last 1 to 2 days of Bing and Search Console (they lag).
+   - **Daily:** the per-day series (Bing clicks and impressions, GA4 users per day). Note the level, a 7-day average and any spike. Never judge from one day.
+   - **Weekly:** the last 7 full days against the 7 before: GA4 new and returning users, Bing clicks and impressions, Google impressions.
+   - **Monthly:** 28 or 30 days against the previous period, plus the trend table: GA4 users, Google indexed count, Bing indexed count, key events, mobile share.
+   - **Verdict:** growing if at least two of GA4 new users, Bing clicks and Google impressions are up on the previous equal period and none is sharply down; flat if within about 5 %; falling otherwise. Name the numbers that are too small to trust (Google clicks are in the teens). Add a row to the Growth scorecard below.
 - **Lags:** GA4 Home trails a little; Search Console data trails days and the Page indexing report can be a week old (note its "last update"); Bing Search and AI Performance showed only 5 days (12 to 16 Oct) on 10-18.
 
 ## Major insights (read this first)
@@ -39,6 +44,11 @@ Each has its first-seen date. If one stops being true, mark it "(superseded date
 | 10-10 | 920 (30 d) | 293 / 63 | 0 | 8 / 24 | 3 (stale) | no data yet | 0 | 2.5 % |
 | 10-18 | 1,163 | 302 / 63 | 0 | 7 / 22 | 2 | 189 / 9.8K (12 to 16 Oct) | 13.6K (12 to 16 Oct) | not read |
 | 10-30 | 1,289 (Oct 2 to 29) | 378 / 107 | 2,497 | 16 / 38 (1 to 28 Oct) | 9 | 674 / 32.7K (12 to 28 Oct) | 39.4K (12 to 28 Oct) | 4.7 % |
+
+## Growth scorecard (one row each Friday: is the site growing, from three angles)
+| Date | Daily (Bing) | Weekly (7 d vs previous 7 d) | Monthly (28 to 30 d) | Verdict |
+|---|---|---|---|---|
+| 10-30 | 31 to 61 clicks a day, average 39.6 (12 to 28 Oct). About 37 a day before the retitle, 41.5 after. | Bing clicks 259 to 274 (+5.8 %; 12 to 18 vs 19 to 25 Oct), impressions 12.5K to 13.4K (+7 %). GA4 new users 378 (+18.5 %), returning 107 (+3.9 %). | GA4 users 1,163 (10-17) to 1,289 (10-29), +10.8 %. Google indexed 2 to 9. Bing indexed 46 to 44. Key events 0 to 2,497. AI citations about 2.7K a day to 2.3K (flat). GA4's own 30 d card says +111.6 %, but its previous period holds the early-September low, so it flatters. | **Growing slowly, from a low base.** Up: GA4 new users, Bing clicks and impressions (+6 to 7 % a week), key events, Google indexed pages. Flat: Bing clicks a day, CTR 2.06 %, AI citations a day. Weak: Google clicks (16 in 28 d, too few to trust), mobile (4.7 %), returning users (107 a week), shares (6 in 28 d). |
 
 ## Growth plan (revise every weekly cycle; max 8 open items)
 Each item names the insight it answers (#) and the number that tells us if it worked. Owner: **[A]** Ashiqur, **[C]** Claude in code. Order = priority. Weekly: tick what is done, drop what the data disproves, add what the new insights call for, then re-sort. Moving an item to "Done / dropped" keeps the reason in one line.
