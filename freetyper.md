@@ -8,7 +8,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
 ## 0. Resume here (updated 2026-10-24)
 - **Keep this file and `analytics.md` current.** At the end of every session or change, update the status here and add a dated entry to `analytics.md` if any numbers were read. They are how a new session learns the project state.
 - **Repo state (2026-10-24):** the logo release (branch `feat/logo-k`, which also carried the earlier docs-only commits) was fast-forwarded into `master` and pushed on 2026-10-24, so `master` = `origin/master` = that branch and it deploys through Coolify (~3 min). Run `git log --oneline -5` and `git status` to see the exact commit. The older branches (`docs/*`, `feat/logo-k`) hold no unmerged work and can be deleted.
-- **Docs branch (2026-10-28):** `docs/engagement-ideas` holds 5 unpushed docs-only commits (engagement ideas, PageSpeed audit, top-5 growth features, Bing keyword read in `analytics.md`). They ship with the next code release; nothing is decided or started from them. Ashiqur said “nothing to do for now” on 10-28. The weekly analytics read (due 10-25) is still pending; the Bing retitle CTR read is due about 11-01 to 11-08. See §8 for the three new to-do blocks.
+- **Docs branch (2026-10-28; its docs commits were released with the 2026-10-30 release):** `docs/engagement-ideas` held 5 docs-only commits (engagement ideas, PageSpeed audit, top-5 growth features, Bing keyword read in `analytics.md`). They ship with the next code release; nothing is decided or started from them. Ashiqur said “nothing to do for now” on 10-28. The weekly analytics read (due 10-25) is still pending; the Bing retitle CTR read is due about 11-01 to 11-08. See §8 for the three new to-do blocks.
 - **Do next, in this order (all [C] = Claude in code):**
   1. **Fix the phone overflow** (§9): the on-screen keyboard makes `/`, `/typing-lessons` and `/typing-practice` scroll sideways on a 390 px screen. GA4 (2026-10-10) shows only 2.5 % mobile (97 % desktop, 70 % Edge), so it is lower priority than first assumed, but it may also be why mobile is so low (see `analytics.md`).
   2. **Share the result as an image** (§8, item 4; plan is written out there).
@@ -48,7 +48,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
   3. test on `next start` in a headless browser
   4. fast-forward `master`, push
   5. poll the live site to confirm
-- **IndexNow (branch `feat/indexnow`, 2026-10-30, not yet released):** key file `public/bc0913c67f5d7b38b5f9f5ec8d2c412e.txt` (public by design) and `scripts/indexnow.mjs`. After a release is live, run `node scripts/indexnow.mjs <changed urls>` (only added/changed URLs; `--all` once for the first submission). Submitting before the key file is live returns 403. Endpoint `api.indexnow.org/indexnow` is from the protocol's usual setup; the docs page fetched names only a placeholder, so check the HTTP status on first use (200/202 = ok). It does not help Google.
+- **IndexNow (released 2026-10-30 together with post 11; first submission still to run: `node scripts/indexnow.mjs --all`):** key file `public/bc0913c67f5d7b38b5f9f5ec8d2c412e.txt` (public by design) and `scripts/indexnow.mjs`. After a release is live, run `node scripts/indexnow.mjs <changed urls>` (only added/changed URLs; `--all` once for the first submission). Submitting before the key file is live returns 403. Endpoint `api.indexnow.org/indexnow` is from the protocol's usual setup; the docs page fetched names only a placeholder, so check the HTTP status on first use (200/202 = ok). It does not help Google.
 - Analytics: GA4 `G-QC5509TVSF` · Search Console verified · **Bing Webmaster Tools set up 2026-10-08**: verified with the `msvalidate.01` meta tag (`verification.other` in `src/app/layout.tsx`, commit `7487820`; the stray `BingSiteAuth.xml` XML-file method is not used) and `sitemap.xml` submitted. Bing also feeds Yahoo, DuckDuckGo and Ecosia, so no separate submissions. Yandex/IndexNow are optional and not set up · mail: `contact@freetyper.com`.
 
 ## 3. Architecture map
@@ -148,13 +148,13 @@ The guides and posts must stay consistent with these.
 | `/` | speed test (home owns “typing speed test”) | ~2k words + FAQ |
 | `/typing-lessons` `/typing-practice` `/keyboard-guide` `/typing-progress` | tools | ~1.6–1.7k words each + FAQ |
 | `/typing-game-falling-words` `/typing-game-word-attack` | games | ~1.7k words each + FAQ |
-| `/blog`, `/blog/[slug]` | 11 sourced posts (10 + the 10-30 practice-schedule post, unreleased) | — |
+| `/blog`, `/blog/[slug]` | 11 sourced posts (10 + the 10-30 practice-schedule post) | — |
 | `/about` `/contact` `/privacy` `/terms` `/disclaimer` | trust and legal | — |
 
 - A tool page is a full-viewport tool, then the guide (its first heading is the visible H1, open by default). `/typing-speed-test` and `/typing-test` redirect 308 to `/` (next.config.ts).
 - Metadata: unique titles and canonicals · OG/Twitter and a generated OG image · PWA manifest.
 - `robots.ts` allows all and points to the sitemap.
-- `sitemap.ts`: **23 URLs live; 24 once branch `feat/post-practice-schedule` ships** (7 static + 6 tools + 10 posts, +1). Posts use `updated ?? date`; other URLs omit `lastmod` rather than fake it.
+- `sitemap.ts`: **24 URLs** (7 static + 6 tools + 11 posts). Posts use `updated ?? date`; other URLs omit `lastmod` rather than fake it.
 - `feed.xml`: tools + posts, dated `updated ?? date`.
 - JSON-LD: Organization + WebSite (layout); WebApplication + FAQPage + HowTo on home and tools (FAQ text = the visible FAQ); Breadcrumb; **BlogPosting** on posts (author → `/about#author`). Output escapes `<`.
 - Google has largely retired HowTo/FAQ rich results, so that markup is harmless and accurate, not a ranking lever.
@@ -182,12 +182,12 @@ The guides and posts must stay consistent with these.
 - Walker 2002 and 2003 · Brawn 2010 · Walker & Stickgold 2004 · Rempel 1997 · Gerard 1999.
 - Minelli 2015 · Xia 2018 · SSC India CHSL 2026 notice · eSkill docs · Wikipedia (Words per minute, Touch typing, Muscle memory, Data entry clerk).
 
-**Blog: 10 posts live, ~1.0–1.5k words, rewritten 2026-10-04; an 11th, `how-long-to-practice-typing-each-day`, is written on branch `feat/post-practice-schedule` (2026-10-30, not released)**
+**Blog: 11 posts, ~1.0–1.5k words; 10 rewritten 2026-10-04, the 11th, `how-long-to-practice-typing-each-day`, released 2026-10-30**
 - `how-to-type-faster` · `good-typing-speed` · `improve-typing-accuracy` · `touch-typing-for-beginners` · `muscle-memory-and-touch-typing`
 - `10-bad-typing-habits` · `typing-speed-for-programmers` · `data-entry-typing-test` · `mechanical-vs-membrane-keyboards` · `fix-typing-posture-and-avoid-wrist-pain`
 - 15 older templated posts were deleted (not indexed; no redirects) and their links remapped. The old text is in git history.
 
-**Post 11 (2026-10-30, not released):** based on Baddeley & Longman 1978 (*Ergonomics* 21(8) 627-635; read in full from the gwern.net PDF; 4 schedules, 18 per group; 1 h/day learned fastest). It says plainly that the study never tested sessions under an hour; the 10–20 min routine is labelled our suggestion. Ashiqur should read and edit it in his own voice before release. After release: IndexNow + request indexing for the URL. Employer-scoring is already covered by `data-entry-typing-test`, so it is dropped from the list below.
+**Post 11 (2026-10-30, released):** based on Baddeley & Longman 1978 (*Ergonomics* 21(8) 627-635; read in full from the gwern.net PDF; 4 schedules, 18 per group; 1 h/day learned fastest). It says plainly that the study never tested sessions under an hour; the 10–20 min routine is labelled our suggestion. Ashiqur should read and edit it in his own voice before release. After release: IndexNow + request indexing for the URL. Employer-scoring is already covered by `data-entry-typing-test`, so it is dropped from the list below.
 
 **Next posts (1 a week):** laptop vs external keyboard (weak evidence found, vendor blogs only) · common typing errors by key pair (from the Dhakal error data).
 
