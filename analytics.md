@@ -69,6 +69,13 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 
 ## Log (newest first)
 
+### 2026-10-31 — PageSpeed Insights (live site, one lab run 01:24 GMT+6; read by Claude from the report page)
+- **Mobile:** performance 61, accessibility 87, best practices 100, SEO 100. FCP 3.5 s, LCP 7.0 s (element render delay about 3 s after a 0.5 s first byte), TBT 190 ms, CLS 0, Speed Index 6.2 s.
+- **Desktop:** performance 79, accessibility 87, best practices 100, SEO 100. FCP 0.8 s, LCP 0.8 s, TBT 340 ms, CLS 0, Speed Index 2.1 s; main-thread work 2.8 s.
+- **Both:** unused JavaScript 279 to 301 KiB, mostly the AdSense scripts (left alone while the re-application is pending); cache-lifetime warning is AdSense's too. Home page loads about 220 KB gzipped of our own JavaScript in 11 files.
+- **Accessibility causes (same on both):** unlabelled hidden input, dim text 2.98:1 (2.64:1 on raised panels), article links without underline. All fixed on `fix/pagespeed-a11y`; local Lighthouse on the build: accessibility 100. Local mobile performance baseline (3 runs): 43 to 46, FCP 3.7 to 4.0 s, LCP 6.8 s, so it tracks PageSpeed for FCP and LCP (TBT is higher locally).
+- Not read: Core Web Vitals field data. Re-run PageSpeed after the release.
+
 ### 2026-10-30 — weekly check (GA4 28 d = Oct 2 to 29, 7 d = Oct 23 to 29; GSC 28 d to 10-28; Bing 12 to 28 Oct; all read by Claude)
 - **GA4 28 d:** 1,289 users (1,265 new), 19,766 events, engagement rate 71.65 %, 14m 44s per user. Home card 30 d: 1.4K users (+111.6 % vs previous 30 d), 5.7K views. **7 d:** 378 new (+18.5 %), 107 returning (+3.9 %). Sessions: bing 384, direct 92, chatgpt.com 61 (+154 %), yahoo 38, ca.search.yahoo referral 19, google 16, ecosia 11.
 - **Key events now count: 2,497 in 28 d** (insight 10 fixed). Events (events / users): practice_complete 2,623 / 231 · lesson_attempt 2,607 / 319 · lesson_complete 1,614 / 232 · test_complete 966 / 193 · game_round_complete 405 / 56 · game_complete 329 / 72 · setting_change 303 / 42 · share_result 6 / 2 · lesson_skip 3 / 3. Google flagged a spike of 246 key events on 10-23 (cause unknown).
