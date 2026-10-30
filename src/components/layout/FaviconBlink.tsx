@@ -27,20 +27,22 @@ export default function FaviconBlink() {
     const tick = () => {
       const accent =
         getComputedStyle(document.documentElement).getPropertyValue('--color-accent').trim() || '#e2b714';
-      // One icon link only, so the browser cannot pick the static .ico over the blinking one.
-      const links = document.querySelectorAll<HTMLLinkElement>('link[rel~="icon"]');
-      let link = Array.from(links).find((l) => l.type === 'image/svg+xml') ?? links[0];
-      if (!link) {
-        link = document.createElement('link');
-        link.rel = 'icon';
-        document.head.appendChild(link);
+      // Point every icon link at the blinking icon, so the browser cannot pick the static .ico over it.
+      // Never remove these links: Next/React owns them, and deleting one behind React's back makes
+      // the next client navigation throw "Cannot read properties of null (reading 'removeChild')".
+      let links = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel~="icon"]'));
+      if (links.length === 0) {
+        const created = document.createElement('link');
+        created.rel = 'icon';
+        document.head.appendChild(created);
+        links = [created];
       }
+      const href = iconSvg(accent, stem);
       links.forEach((l) => {
-        if (l !== link) l.remove();
+        l.type = 'image/svg+xml';
+        l.setAttribute('sizes', 'any');
+        l.href = href;
       });
-      link.type = 'image/svg+xml';
-      link.setAttribute('sizes', 'any');
-      link.href = iconSvg(accent, stem);
       stem = !stem;
     };
 
