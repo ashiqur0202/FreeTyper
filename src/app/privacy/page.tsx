@@ -47,7 +47,8 @@ export default function PrivacyPage() {
           <p className="mt-2">
             We also send a few anonymous usage events to Analytics so we can see which tools are
             used: for example that a test, lesson, practice run or game was finished, with its
-            length, WPM and accuracy numbers, and which setting was changed. We never send what you
+            length, WPM and accuracy numbers, which setting was changed, and that the &quot;continue&quot;
+            shortcut in the sidebar was used (with the lesson number). We never send what you
             type.
           </p>
           <p className="mt-2 text-text-dim">

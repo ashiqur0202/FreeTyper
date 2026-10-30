@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import type { ProgressData, TypingSession, Achievement, KeyStats } from './types';
+import { notifyProgressUpdated } from '@/lib/progress-events';
 
 const STORAGE_KEY = 'freetyper-progress';
 
@@ -57,6 +58,7 @@ function saveProgress(data: ProgressData) {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    notifyProgressUpdated();
   } catch {
     // Storage full or unavailable
   }

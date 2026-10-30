@@ -1,4 +1,5 @@
 import { courseLessons, type CourseLesson } from './courseData';
+import { notifyProgressUpdated } from '@/lib/progress-events';
 
 /**
  * Progress through the typing course, kept in localStorage.
@@ -121,6 +122,7 @@ export function loadProgress(): CourseProgress {
 export function saveProgress(p: CourseProgress) {
   try {
     localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+    notifyProgressUpdated();
   } catch {
     /* storage full or unavailable */
   }

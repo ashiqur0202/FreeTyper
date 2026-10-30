@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import PracticeCard from './PracticeCard';
 
 const links = [
   { href: '/', label: 'Speed test' },
@@ -44,6 +45,7 @@ export default function RightSidebar() {
           );
         })}
       </nav>
+      <PracticeCard />
       <div className="mx-4 mt-6 border-t border-surface-border pt-4">
         <p className="text-[11px] leading-relaxed text-text-dim">
           Tip: keep accuracy at 95% or higher. Speed follows clean reps, not the other way around.

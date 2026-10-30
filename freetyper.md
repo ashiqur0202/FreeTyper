@@ -67,7 +67,7 @@ src/components/skills/typing/
                 letterStats (per-letter status), LetterRow (the a–z row on Practice)
                 runStats (per-run curve, consistency, weak spots), RunGraph (SVG graph), PracticeFeedback (the result card + coach notes)
                 typingData (practice passages, finger map), gameData (word pools, tiers, rounds, scoring)
-src/components/layout/   Sidebar, RightSidebar (both pinned), SettingsProvider, Footer, ContactPanel, LogoMark (K mark), FaviconBlink (tab icon)
+src/components/layout/   Sidebar, RightSidebar (both pinned), SettingsProvider, Footer, ContactPanel, LogoMark (K mark), FaviconBlink (tab icon), PracticeCard (sidebar streak / daily goal / continue lesson)
 src/components/          content/ExpandableSeoContent, seo/JsonLd, blog/BlogContent+BlogCard, tools/ToolClient
 src/config/     tools.ts (7 tools), site.ts (name, author, AdSense id)
 src/lib/        post-dates.ts (the one visible post date), key-sound.ts (Web Audio), analytics.ts (GA4 events), content-dates.ts (unused)
@@ -137,7 +137,7 @@ The guides and posts must stay consistent with these.
 - Sound (soft tick / lower thud, Web Audio) · keyboard hints (next-key highlight) · layout (a fixed “QWERTY” label).
 - Default is dark + gold `#e2b714`.
 
-**Storage keys:** `freetyper-settings`, `-progress`, `-speed-log`, `-practice-log`, `-lessons-log`, `-pairs`, `-course-progress` (old `-lessons-progress` is read once for migration), `-fw-log`, `-wa-log`, `-fw-highscore`, `-wa-highscore`.
+**Storage keys:** `freetyper-daily-goal` (5/10/15/20 minutes), `freetyper-settings`, `-progress`, `-speed-log`, `-practice-log`, `-lessons-log`, `-pairs`, `-course-progress` (old `-lessons-progress` is read once for migration), `-fw-log`, `-wa-log`, `-fw-highscore`, `-wa-highscore`.
 
 **Engine:** `onKeyStats(key, correct, {prev, gapMs})` — speed test, practice and lessons all feed `recordPair`; the games do not (no meaningful timing). The engine also feeds a per-run recorder (`runStats.createRecorder`) and returns `session.run` when a run finishes.
 
@@ -162,7 +162,7 @@ The guides and posts must stay consistent with these.
 - **GA4 custom events** (`src/lib/analytics.ts` → `trackEvent`). Numbers and short fixed labels only; never typed text.
   - `test_complete` {duration_s, text_mode, wpm, accuracy} · `lesson_attempt` {lesson_number, passed, wpm, accuracy, attempt} · `lesson_complete` (passes only) {lesson_number, lesson, wpm, accuracy} · `lesson_skip` {lesson_number} · `practice_complete` {category (adaptive, quotes, news, code, fun), wpm, accuracy}
   - `game_complete` {game, score, wpm, accuracy, level} (Falling Words at game over; Word Attack after round 8) · `game_round_complete` {game, round, score}
-  - `setting_change` {setting, value} · `share_result` {source} (counted when the button is used)
+  - `setting_change` {setting, value} · `share_result` {source} (counted when the button is used) · `continue_click` {target: start | lesson | practice, lesson_number} (the sidebar card's link; privacy page updated)
   - The privacy page discloses these. Add a new event only if it follows the same rule and is added there.
 - **AdSense:** publisher `ca-pub-3237588309372777` in the root `<head>`, the `google-adsense-account` meta, and `public/ads.txt`. Auto ads only (no `<ins>` units).
 - **Never put ads.txt in `robots.txt`.** When approved, turn off overlay / anchor / vignette formats so they miss the typing area.
@@ -241,8 +241,8 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 **Top 5 growth features (researched 2026-10-28; ranking is Claude's judgment, from our own data plus public pages; not agreed or built)**
 - Evidence: Bing keywords (top 75 of 209, `analytics.md` 10-28) are all generic “free typing lessons/practice”; **no data-entry, coding, exam, language or “N-minute test” keyword**. Only ~12 % of visitors start an action; few return; `share_result` was 6 in 28 d.
 - Competitors (public pages, 2026-10-28): Monkeytype has XP, daily streaks, daily/weekly leaderboards, challenges and badges (per third-party docs mirrors). keybr: adaptive lessons, profile with daily goals, leaderboard and multiplayer (third-party reviews). Typing.com: lessons, tests, games, classroom tools, certificates and accounts; its coding units are HTML/CSS/JS. Ratatype: free test and lessons in several languages, **certificate costs $5**. 10FastFingers: 24 h competitions, multiplayer, 40+ languages, custom tests. Many free sites give a typing certificate (typingtest.me, TestDome top 25 %, Speed Typing Online). Official sources for Monkeytype/keybr could not be fetched (JS pages).
-- [ ] 1. **Faster start:** “Continue lesson N” for returning visitors, one-click 1-minute test for new ones (~88 % never start).
-- [ ] 2. **Reason to return:** streak and daily goal on the first screen, daily challenge, ghost race (client-only; competitors lean on streaks and leaderboards, we stay login-free).
+- [x] 1. **Faster start (built 2026-10-30 on branch `feat/continue-streak`, not merged):** the right-sidebar **Your practice** card (`PracticeCard.tsx`, desktop only because the sidebar is hidden on phones). New visitors see “Start lesson 1”; returning ones see the current streak (shown as broken once a local day is missed; “Practise today to keep it” when it was last extended yesterday), minutes typed today against a daily goal (click the goal to cycle 5/10/15/20 min; stored in `freetyper-daily-goal`) and “Continue lesson N” (hidden on the lessons page; “Keep going: practice” once all 34 lessons are done). Reads the saved progress only after hydration (`useSyncExternalStore`, server snapshot null), refreshes on a `freetyper-progress-updated` event sent after each save, on focus and across tabs. Minutes today come from saved session durations (all modes, games included). Success signals: `continue_click` events, returning users, `lesson_attempt` per user. The one-click 1-minute test for new visitors was not built: the home page already is the test.
+- [ ] 2. **Reason to return:** (streak and daily goal are now in the sidebar card, see 1) daily challenge, ghost race (client-only; competitors lean on streaks and leaderboards, we stay login-free).
 - [ ] 3. **Share the result as an image** (plan in item 4 above).
 - [ ] 4. **Finger chart page + free printable certificate:** Bing already shows finger-layout and chart searches converting (10 of 11 clicks); free certificates exist elsewhere and Ratatype charges $5, so a free one is a differentiator. Label it not an official qualification. Job-skill tracks (data entry first; then terminal; medical and legal last, accuracy risk) only after **demand shows up**: none does in Bing yet.
 - [ ] 5. **Better snippets for the big phrases** (“typing lessons” CTR 0.67 %): measure the 10-18 retitle first (read about 11-01 to 11-08), then decide on duration pages. No “N-minute test” demand seen yet, so they drop below this.
