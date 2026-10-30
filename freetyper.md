@@ -48,6 +48,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
   3. test on `next start` in a headless browser
   4. fast-forward `master`, push
   5. poll the live site to confirm
+- **IndexNow (branch `feat/indexnow`, 2026-10-30, not yet released):** key file `public/bc0913c67f5d7b38b5f9f5ec8d2c412e.txt` (public by design) and `scripts/indexnow.mjs`. After a release is live, run `node scripts/indexnow.mjs <changed urls>` (only added/changed URLs; `--all` once for the first submission). Submitting before the key file is live returns 403. Endpoint `api.indexnow.org/indexnow` is from the protocol's usual setup; the docs page fetched names only a placeholder, so check the HTTP status on first use (200/202 = ok). It does not help Google.
 - Analytics: GA4 `G-QC5509TVSF` · Search Console verified · **Bing Webmaster Tools set up 2026-10-08**: verified with the `msvalidate.01` meta tag (`verification.other` in `src/app/layout.tsx`, commit `7487820`; the stray `BingSiteAuth.xml` XML-file method is not used) and `sitemap.xml` submitted. Bing also feeds Yahoo, DuckDuckGo and Ecosia, so no separate submissions. Yandex/IndexNow are optional and not set up · mail: `contact@freetyper.com`.
 
 ## 3. Architecture map
