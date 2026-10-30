@@ -136,7 +136,7 @@ The guides and posts must stay consistent with these.
 - Theme (dark / light / midnight / paper) · accent (6) · font size (typing text 14/18/22 px via `data-font-size`).
 - Sound (soft tick / lower thud, Web Audio) · keyboard hints (next-key highlight) · layout (a fixed “QWERTY” label).
 - Default is dark + gold `#e2b714`.
-- **Quick controls (branch `feat/appearance-controls`, 2026-10-30, not merged):** `AppearanceControls` is shown twice: at the top of the right sidebar (desktop only) and in the left sidebar under "settings" (also reachable on phones through the hamburger menu). It has a dark/light switch (dark and midnight count as dark, so it flips between `dark` and `light`), the six accent swatches and three text-size buttons (14/18/22 px). The old theme popup was removed; midnight and paper are now only on the Settings page. Same `updateSetting` and `setting_change` event everywhere.
+- **Quick controls (branch `feat/appearance-controls`, 2026-10-30, not merged):** `AppearanceControls` sits in the left sidebar under "settings" (reachable on phones through the hamburger menu); it was first on the right sidebar and was moved. It has a dark/light switch (dark and midnight count as dark, so it flips between `dark` and `light`), the six accent swatches and three text-size buttons (14/18/22 px). The old theme popup was removed; midnight and paper are now only on the Settings page. Same `updateSetting` and `setting_change` event everywhere.
 
 **Storage keys:** `freetyper-daily-goal` (5/10/15/20 minutes), `freetyper-settings`, `-progress`, `-speed-log`, `-practice-log`, `-lessons-log`, `-pairs`, `-course-progress` (old `-lessons-progress` is read once for migration), `-fw-log`, `-wa-log`, `-fw-highscore`, `-wa-highscore`.
 
