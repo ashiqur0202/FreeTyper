@@ -45,9 +45,9 @@ export default function KeyboardHeatmap() {
   };
 
   const look = (id: string): KeyLook => {
-    if (id.length > 1) return {}; // Shift, Enter ... are not tracked
-    const { bg } = heatStyle(getErrorRate(id));
-    return { style: { backgroundColor: bg, color: 'var(--color-text-bright)' }, title: getTooltip(id) };
+    if (id.length > 1) return { color: 'var(--color-surface-border)' }; // Shift, Enter ... are not tracked
+    const rate = getErrorRate(id);
+    return { color: rate === null ? 'var(--color-surface-border)' : heatStyle(rate).bg, title: getTooltip(id) };
   };
 
   return (
@@ -66,7 +66,7 @@ export default function KeyboardHeatmap() {
         </div>
       </div>
 
-      <LaptopKeyboard keyH={36} gap={4} width="100%" capitals look={look} className="max-w-3xl" />
+      <LaptopKeyboard keyH={40} width="100%" fingerColors={false} look={look} className="lk-heat max-w-3xl" />
       <p className="mt-2 text-center text-[11px] text-text-dim">
         Hover a key for accuracy · needs 3+ presses to color
       </p>

@@ -487,14 +487,33 @@ a:hover { color: var(--color-accent); }
   .kg-key, .kg-fg, .kg-fg .kg-fr { transition: none; }
 }
 
-/* ===== Shared laptop keyboard (LiveKeyboard, heatmap) ===== */
-.lk { display: flex; flex-direction: column; margin-inline: auto; user-select: none; container-type: inline-size; }
-.lk-row { display: flex; }
-.lk-key { min-width: 0; padding: 0; font-family: var(--font-mono), ui-monospace, monospace; overflow: hidden; }
-.lk-key.lk-word { font-size: clamp(6px, 2.4cqw, 0.8em); letter-spacing: 0; }
-.lk-sym { display: flex; flex-direction: column; align-items: center; line-height: 1; }
-.lk-shift { font-size: 0.7em; opacity: 0.5; }
-.lk-idle { opacity: 0.45; font-size: 0.8em; }
-.lk-arrows { display: flex; flex-direction: column; min-width: 0; }
-.lk-arrows .lk-idle { width: 100%; font-size: 0.7em; }
-.lk-compact .lk-shift { font-size: 0.62em; }
+/* ===== Shared laptop keyboard (LaptopKeyboard: typing pages, heatmap) =====
+   Uses the guide's kg-* key style; only size and state are set here. */
+.lk { margin-inline: auto; user-select: none; container-type: inline-size; padding: 0.5rem; gap: 3px; border-radius: 0.9rem; }
+.lk .kg-row { gap: 3px; }
+.lk .kg-key, .lk .kg-idle, .lk .kg-arrows { height: var(--kh, 2.5rem); }
+.lk .kg-arrows { gap: 2px; }
+.lk .kg-arrows .kg-idle { height: auto; }
+.lk .kg-key { cursor: default; border-radius: 0.45rem; border-width: 1px; box-shadow: 0 2px 0 color-mix(in srgb, var(--kc) 40%, #000); font-size: 0.72rem; }
+.lk .kg-key:hover { filter: none; }
+.lk .kg-idle { border-radius: 0.45rem; border-width: 1px; font-size: 0.55rem; }
+.lk .kg-sh { display: block; font-size: 0.5rem; }
+.lk .kg-key.kg-mod { font-size: clamp(0.4rem, 2.6cqw, 0.62rem); }
+.lk .kg-key.kg-home::after { bottom: 4px; }
+.lk .kg-sub { display: none; }
+.lk-detail .kg-sub { display: block; }
+.lk .kg-key.lk-hint { transform: translateY(2px); filter: brightness(1.25); z-index: 2; animation: lkPulse 1.2s ease-in-out infinite; }
+.lk .kg-key.lk-ok { transform: translateY(2px); filter: brightness(1.3); box-shadow: 0 0 0 2px var(--color-accent), 0 0 14px var(--color-accent-bg); }
+.lk .kg-key.lk-bad { transform: translateY(2px); background: var(--color-error-bg); border-color: var(--color-error); color: var(--color-error); box-shadow: 0 0 0 2px var(--color-error), 0 0 14px var(--color-error-bg); }
+@media (max-width: 560px) {
+  .lk .kg-key, .lk .kg-idle, .lk .kg-arrows { height: calc(var(--kh, 2.5rem) * 0.78); }
+  .lk { padding: 0.35rem; gap: 2px; }
+  .lk .kg-row { gap: 2px; }
+}
+/* Heatmap: stronger fill so the colours match the legend */
+.lk-heat .kg-key { background: color-mix(in srgb, var(--kc) 70%, var(--color-surface)); }
+@keyframes lkPulse {
+  0%, 100% { box-shadow: 0 0 0 2px var(--color-accent), 0 0 8px var(--color-accent-bg); }
+  50% { box-shadow: 0 0 0 2px var(--color-accent), 0 0 20px var(--color-accent); }
+}
+@media (prefers-reduced-motion: reduce) { .lk .kg-key.lk-hint { animation: none; } }

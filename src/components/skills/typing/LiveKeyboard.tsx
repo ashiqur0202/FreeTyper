@@ -79,7 +79,6 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusK
 
   const keyH = compact ? 32 : 40;
   const unitW = compact ? 30 : 38;
-  const gap = compact ? 2 : 3;
 
   const look = (id: string): KeyLook => {
     const flash = flashes.get(id);
@@ -91,14 +90,14 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusK
     const inFocus = !focusSet || id === ' ' || focusSet.has(id);
     const isDimmed = Boolean(focusSet && !inFocus && !isHint && !isFlashCorrect && !isFlashIncorrect);
 
-    let className = '';
-    if (isFlashCorrect) className = 'key-flash-correct';
-    else if (isFlashIncorrect) className = 'key-flash-incorrect';
-    else if (isHint) className = 'key-hint';
-    if (isDimmed) className += ' opacity-25';
-    return { className };
+    const classes: string[] = [];
+    if (isFlashCorrect) classes.push('lk-ok');
+    else if (isFlashIncorrect) classes.push('lk-bad');
+    else if (isHint) classes.push('lk-hint');
+    if (isDimmed) classes.push('kg-fade');
+    return { className: classes.join(' ') };
   };
 
-  // 15 key units wide, as the old keyboard was
-  return <LaptopKeyboard keyH={keyH} gap={gap} width={15 * unitW + 14 * gap} compact={compact} look={look} />;
+  // Same finger colours as the Keyboard guide; the next-key hint lifts and rings the key.
+  return <LaptopKeyboard keyH={keyH} width={15 * unitW + 40} look={look} />;
 }

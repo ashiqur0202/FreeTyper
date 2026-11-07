@@ -1,83 +1,96 @@
 import type { CSSProperties } from 'react';
-import { LAYOUT, SHIFTED, isHomeKey } from './guideLayout';
+import { LAYOUT, SHIFTED, colorOfZone, isHomeKey, zoneOf } from './guideLayout';
 
-// The drawn US laptop keyboard shared by the live typing keyboard and the progress heatmap.
-// It only draws keys: the caller decides how each key looks through `look(id)`.
-// (The Keyboard guide has its own richer renderer in KeyboardGuide.tsx, same LAYOUT.)
+// The drawn US laptop keyboard shared by every page except the Keyboard guide itself
+// (which adds clicking and the hands, in KeyboardGuide.tsx). Same layout, finger colours and
+// key style as the guide: it only draws keys, and the caller adds state through `look(id)`.
 
 export type KeyLook = {
+  /** Extra classes: "kg-act" (lifted + ring), "lk-ok", "lk-bad", "lk-hint", "kg-fade". */
   className?: string;
-  style?: CSSProperties;
+  /** Override the key colour with `--kc` (the heatmap does this). */
+  color?: string;
   title?: string;
 };
 
 type Props = {
   /** Key height in px. */
   keyH: number;
-  /** Gap between keys in px. */
-  gap: number;
-  /** Total width: a number (px) or any CSS width. */
+  /** Total width: a number (px) or any CSS width. It never grows past its container. */
   width: number | string;
-  /** Per-key colours and state. `id` is a layout id: "a", "/", "bksp", "shiftL", " " ... */
+  /** Per-key state. `id` is a layout id: "a", "/", "bksp", "shiftL", " " ... */
   look?: (id: string) => KeyLook;
-  /** Draw letters as capitals (heatmap) instead of lowercase (typing). */
-  capitals?: boolean;
-  /** Smaller type for compact keyboards. */
-  compact?: boolean;
+  /** Draw Home, End, PgUp and PgDn on the arrow keys (needs tall keys). */
+  detail?: boolean;
+  /** Colour every key by its finger (default) or in neutral grey. */
+  fingerColors?: boolean;
   className?: string;
 };
 
-export default function LaptopKeyboard({ keyH, gap, width, look, capitals, compact, className }: Props) {
-  const fontPx = compact ? 10 : 12;
-  const half = Math.floor((keyH - 2) / 2);
-
+export default function LaptopKeyboard({ keyH, width, look, detail, fingerColors = true, className }: Props) {
   return (
     <div
-      className={`lk${compact ? ' lk-compact' : ''}${className ? ` ${className}` : ''}`}
-      style={{ width, maxWidth: '100%', gap, fontSize: fontPx }}
+      className={`kg-board lk${detail ? ' lk-detail' : ''}${className ? ` ${className}` : ''}`}
+      style={{ width, maxWidth: '100%', '--kh': `${keyH}px` } as CSSProperties}
       role="img"
       aria-label="Keyboard"
     >
       {LAYOUT.map((row, ri) => (
-        <div key={ri} className="lk-row" style={{ gap }}>
+        <div key={ri} className="kg-row">
           {row.map((cell, ci) => {
+            const wStyle = { '--w': cell.w } as CSSProperties;
             if (cell.kind === 'idle') {
               return (
-                <div key={ci} className="key lk-key lk-idle" style={{ flex: `${cell.w} 1 0`, height: keyH }}>
-                  <span>{cell.label}</span>
-                </div>
+                <span key={ci} className="kg-idle" style={wStyle}>
+                  {cell.sub ? <span className="kg-arrow">{cell.label}</span> : cell.label}
+                  {cell.sub && <span className="kg-sub">{cell.sub}</span>}
+                </span>
               );
             }
             if (cell.kind === 'arrows') {
               return (
-                <div key={ci} className="lk-arrows" style={{ flex: `${cell.w} 1 0`, height: keyH, gap: 2 }}>
-                  <div className="key lk-key lk-idle" style={{ height: half }}>↑</div>
-                  <div className="key lk-key lk-idle" style={{ height: half }}>↓</div>
-                </div>
+                <span key={ci} className="kg-arrows" style={wStyle}>
+                  <span className="kg-idle">
+                    <span className="kg-arrow">↑</span>
+                    <span className="kg-sub">PgUp</span>
+                  </span>
+                  <span className="kg-idle">
+                    <span className="kg-arrow">↓</span>
+                    <span className="kg-sub">PgDn</span>
+                  </span>
+                </span>
               );
             }
-            const { id, w, label } = cell;
+            const { id } = cell;
             const l = look?.(id) ?? {};
+            const isWord = id.length > 1 || id === ' ';
             const symbol = SHIFTED[id];
-            const isChar = id.length === 1 && id !== ' ';
-            const text = id === 'bksp' ? '⌫' : (label ?? (capitals ? id.toUpperCase() : id));
-            const word = label !== undefined;
+            const label = cell.label ?? (symbol ? null : id.toUpperCase());
+            const kc = l.color ?? (fingerColors ? colorOfZone(zoneOf(id)) : colorOfZone(null));
             return (
-              <div
+              <span
                 key={ci}
-                className={`key lk-key${word ? ' lk-word' : ''}${!word && isHomeKey(id) ? ' home-row' : ''}${l.className ? ` ${l.className}` : ''}`}
-                style={{ flex: `${w} 1 0`, height: keyH, ...l.style }}
+                className={[
+                  'kg-key',
+                  isWord && 'kg-mod',
+                  symbol && 'kg-sym',
+                  isHomeKey(id) && 'kg-home',
+                  l.className,
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
+                style={{ '--kc': kc, '--w': cell.w } as CSSProperties}
                 title={l.title}
               >
-                {symbol && isChar && !/[a-z]/.test(id) ? (
-                  <span className="lk-sym">
-                    <span className="lk-shift">{symbol}</span>
-                    <span>{text}</span>
-                  </span>
-                ) : (
-                  <span>{id === ' ' && !capitals ? '' : text}</span>
+                {id === 'bksp' ? (
+                  '⌫'
+                ) : label ?? (
+                  <>
+                    <span className="kg-sh">{symbol}</span>
+                    <span>{id}</span>
+                  </>
                 )}
-              </div>
+              </span>
             );
           })}
         </div>
