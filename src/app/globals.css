@@ -451,9 +451,10 @@ a:hover { color: var(--color-accent); }
 .kg-idle.kg-fade { opacity: 0.3; }
 .kg-idle .kg-arrow { font-size: 0.95rem; }
 .kg-idle .kg-sub { font-size: 0.5rem; opacity: 0.8; }
-.kg-arrows { flex: var(--w, 1) 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
-.kg-arrows .kg-idle { flex: 1; width: 100%; height: auto; border-radius: 0.45rem; }
-.kg-arrows .kg-arrow { font-size: 0.75rem; }
+.kg-arrows { flex: var(--w, 1) 1 0; min-width: 0; height: 3.1rem; display: flex; flex-direction: column; gap: 2px; }
+.kg-arrows .kg-idle { flex: 1 1 0; min-height: 0; width: 100%; height: auto; overflow: hidden; border-radius: 0.45rem; }
+.kg-arrows .kg-arrow { font-size: 0.7rem; }
+.kg-arrows .kg-sub { font-size: 0.45rem; }
 
 .kg-hands { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-width: 41rem; margin: 1.6rem auto 0; }
 .kg-hand { width: 100%; height: auto; display: block; overflow: visible; }
@@ -473,6 +474,7 @@ a:hover { color: var(--color-accent); }
   .kg-board { padding: 0.45rem; gap: 4px; }
   .kg-row { gap: 3px; }
   .kg-key, .kg-idle { height: 2.35rem; }
+  .kg-arrows { height: 2.35rem; }
   .kg-key { font-size: 0.7rem; }
   .kg-key.kg-mod { font-size: 0.5rem; }
   .kg-sh, .kg-idle .kg-sub { display: none; }
