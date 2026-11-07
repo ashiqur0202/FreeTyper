@@ -11,7 +11,7 @@ export type DrillProps = { onDone: () => void; device: Device };
 /** After a drill (or a prompt) finishes, the tail of a quick double-click must not finish the next one. */
 const LOCK_MS = 600;
 
-function useLock(ms = LOCK_MS) {
+export function useLock(ms = LOCK_MS) {
   const until = useRef(0);
   useEffect(() => {
     until.current = performance.now() + ms;
@@ -24,10 +24,34 @@ function useLock(ms = LOCK_MS) {
   };
 }
 
-function Box({ id, children, onContextMenu }: { id: StepId; children: ReactNode; onContextMenu?: (e: React.MouseEvent) => void }) {
+export function Box({
+  id,
+  children,
+  onContextMenu,
+  onPointerDown,
+  className = '',
+}: {
+  id: string;
+  children: ReactNode;
+  onContextMenu?: (e: React.MouseEvent) => void;
+  onPointerDown?: (e: ReactPointerEvent<HTMLDivElement>) => void;
+  className?: string;
+}) {
   return (
-    <div className="mp-box" data-testid={`drill-${id}`} onContextMenu={onContextMenu}>
+    <div className={`mp-box ${className}`} data-testid={`drill-${id}`} onContextMenu={onContextMenu} onPointerDown={onPointerDown}>
       {children}
+    </div>
+  );
+}
+
+/** Shown over a drill when its pass mark was missed; nothing is saved until it passes. */
+export function RetryOverlay({ text, onRetry }: { text: string; onRetry: () => void }) {
+  return (
+    <div className="mp-retry" role="status" onPointerDown={(e) => e.stopPropagation()}>
+      <p>{text}</p>
+      <button type="button" onClick={onRetry} className="mp-btn">
+        Try again
+      </button>
     </div>
   );
 }
