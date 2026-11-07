@@ -83,3 +83,22 @@ Leaderboards, accounts, sound, custom cursors, pinch and multi-finger gestures, 
 - A trackpad with gestures turned off cannot complete some steps: handled by the hint above, not by lowering the check.
 - Drag steps are the likeliest to differ across browsers: test with pointer capture and cancel handling.
 - Widening the site's topic: wording on the home and about pages stays typing-first; the mouse page is listed as an extra tool.
+
+## Addendum 2026-11-07 (later): levels from beginner to mastery
+
+Approved by Ashiqur after he tried version 1. The Learn tab becomes four levels; each opens when the one before is passed. Everything stays free. All pass marks below are our own suggestions, not researched standards, and are constants in `levelRules.ts`.
+
+| Level | Drills (id) | Passed when |
+|---|---|---|
+| 1 Beginner | the 7 steps (`move click double right drag scroll mixed`) | all 7 finished |
+| 2 Comfortable | `small` 10 targets of 36 px; `precise` drag a card onto a 44 px spot 3 times; `hold` press and hold a circle 1 s; `select` select a highlighted sentence; `find` scroll a 60-row list and click "Item 47" | all 5 done; `small` needs at least 80% accuracy |
+| 3 Skilled | `moving` 8 drifting targets; `steer` move the pointer from a start dot to an end dot along a corridor; `quick` 5 double-clicks within 20 s; `menu` 3 rounds of right-click then choose the named item from a custom menu; `sort` drag cards 1 to 4 into their slots | all 5 done; `steer` needs at least 85% of pointer samples inside the corridor |
+| 4 Mastery | `gauntlet` 60 s of click, double-click, right-click and drag prompts, score = correct - wrong (min 0), at least 15; `shrink` 30 s aim where the target shrinks 4 px per hit from 80 px to 24 px, score at least 15; `tiny` 20 targets of 24 px, at least 90% accuracy | all 3 done |
+
+- A failed drill shows its result and a Try again button; it is never marked done until it passes.
+- Ranks by highest level passed: none, Beginner, Comfortable, Skilled, Master. Shown at the top and saved per device choice, like finished drills (`done` keeps drill ids from all levels).
+- Locked levels are visible with "Pass Level N to open this". No lock on the Aim tab's classic mode.
+- Aim modes: Classic (always), Moving (opens with Level 3, when Level 2 is passed) and Shrinking (opens with Level 4, when Level 3 is passed). Best scores are kept per mode and size.
+- New event `level_pass` (`level`, `device`) fires once when the last drill of a level is finished.
+- Same pass marks on mouse and trackpad, so a rank means the same on both. The guide says Levels 3 and 4 may feel harder on a trackpad.
+- Not included: timed ranking against other people, accounts, sound.
