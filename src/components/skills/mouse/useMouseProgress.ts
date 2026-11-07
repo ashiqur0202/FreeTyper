@@ -1,8 +1,7 @@
 'use client';
 
 import { useCallback, useMemo, useSyncExternalStore } from 'react';
-import type { Device, StepId } from './mouseData';
-import type { AimSize } from './aimScoring';
+import type { Device } from './mouseData';
 import { isNewBest } from './aimScoring';
 
 // Saved state for the Mouse practice page: chosen device, finished steps per device,
@@ -11,8 +10,10 @@ import { isNewBest } from './aimScoring';
 
 export type MouseProgress = {
   device: Device;
-  done: Record<Device, StepId[]>;
-  best: Partial<Record<AimSize, number>>;
+  /** Ids of finished drills from every level (the 7 Level 1 steps use their old ids). */
+  done: Record<Device, string[]>;
+  /** Best Aim score by key: "large" (classic), "moving-large", "shrinking". */
+  best: Record<string, number>;
 };
 
 const STORAGE_KEY = 'freetyper-mouse';
@@ -46,11 +47,10 @@ function parse(raw: string | null): MouseProgress {
   try {
     const p = JSON.parse(raw) as Partial<MouseProgress>;
     const device: Device = p.device === 'trackpad' ? 'trackpad' : 'mouse';
-    const list = (v: unknown): StepId[] => (Array.isArray(v) ? (v.filter((x) => typeof x === 'string') as StepId[]) : []);
-    const best: Partial<Record<AimSize, number>> = {};
-    for (const size of ['large', 'medium', 'small'] as AimSize[]) {
-      const v = p.best?.[size];
-      if (typeof v === 'number' && Number.isFinite(v) && v > 0) best[size] = v;
+    const list = (v: unknown): string[] => (Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : []);
+    const best: Record<string, number> = {};
+    for (const [key, v] of Object.entries(p.best ?? {})) {
+      if (typeof v === 'number' && Number.isFinite(v) && v > 0) best[key] = v;
     }
     return { device, done: { mouse: list(p.done?.mouse), trackpad: list(p.done?.trackpad) }, best };
   } catch {
@@ -87,17 +87,17 @@ export function useMouseProgress() {
     write({ ...parse(readRaw()), device });
   }, []);
 
-  const completeStep = useCallback((device: Device, step: StepId) => {
+  const completeStep = useCallback((device: Device, step: string) => {
     const cur = parse(readRaw());
     if (cur.done[device].includes(step)) return;
     write({ ...cur, done: { ...cur.done, [device]: [...cur.done[device], step] } });
   }, []);
 
-  /** Returns true when `score` beat the saved best for `size` (and saves it). */
-  const recordBest = useCallback((size: AimSize, score: number): boolean => {
+  /** Returns true when `score` beat the saved best for `key` (and saves it). */
+  const recordBest = useCallback((key: string, score: number): boolean => {
     const cur = parse(readRaw());
-    if (!isNewBest(cur.best[size], score)) return false;
-    write({ ...cur, best: { ...cur.best, [size]: score } });
+    if (!isNewBest(cur.best[key], score)) return false;
+    write({ ...cur, best: { ...cur.best, [key]: score } });
     return true;
   }, []);
 
