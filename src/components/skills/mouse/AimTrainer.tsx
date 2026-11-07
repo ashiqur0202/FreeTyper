@@ -11,18 +11,40 @@ import {
   type AimResult,
   type AimSize,
 } from './aimScoring';
+import { isLevelUnlocked, shrinkDiameter, stepTarget, type Mover } from './levelRules';
 import { useMouseProgress } from './useMouseProgress';
 import { trackEvent } from '@/lib/analytics';
+
+export type AimMode = 'classic' | 'moving' | 'shrinking';
 
 type Phase = 'idle' | 'running' | 'done';
 
 const SIZE_LABEL: Record<AimSize, string> = { large: 'Large', medium: 'Medium', small: 'Small' };
+const MODE_LABEL: Record<AimMode, string> = { classic: 'Classic', moving: 'Moving', shrinking: 'Shrinking' };
+const MODE_NOTE: Record<AimMode, string> = {
+  classic: 'The target stays where it appears.',
+  moving: 'The target drifts across the area.',
+  shrinking: 'The target gets 4 px smaller with every hit, down to 24 px.',
+};
+const MOVE_SPEED = 130; // px per second in Moving mode
 
-export default function AimTrainer() {
+/** Level that opens each mode on the Aim tab. */
+const MODE_LEVEL: Record<AimMode, 1 | 3 | 4> = { classic: 1, moving: 3, shrinking: 4 };
+
+type Props = {
+  /** The Level 4 "shrink" drill runs the Shrinking mode with the mode picker hidden. */
+  lockedMode?: AimMode;
+  passScore?: number;
+  onPass?: () => void;
+};
+
+export default function AimTrainer({ lockedMode, passScore, onPass }: Props) {
   const { progress, recordBest } = useMouseProgress();
+  const done = progress.done[progress.device];
+  const [modeChoice, setModeChoice] = useState<AimMode>('classic');
+  const mode: AimMode = lockedMode ?? modeChoice;
   const [chosen, setChosen] = useState<AimSize | null>(null);
   const size: AimSize = chosen ?? defaultSize(progress.device);
-  const d = AIM_SIZES[size];
 
   const [phase, setPhase] = useState<Phase>('idle');
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -31,18 +53,44 @@ export default function AimTrainer() {
   const [result, setResult] = useState<AimResult | null>(null);
   const [isBest, setIsBest] = useState(false);
 
+  const d = mode === 'shrinking' ? shrinkDiameter(counts.hits) : AIM_SIZES[size];
+  const bestKey = mode === 'classic' ? size : mode === 'moving' ? `moving-${size}` : 'shrinking';
+  const best = progress.best[bestKey];
+
   const areaRef = useRef<HTMLDivElement>(null);
   const events = useRef<AimEvent[]>([]);
   const startedAt = useRef(0);
   const shownAt = useRef(0);
   const running = useRef(false);
+  const mover = useRef<Mover>({ x: 0, y: 0, vx: MOVE_SPEED, vy: MOVE_SPEED * 0.6 });
   const timer = useRef<ReturnType<typeof setInterval> | undefined>(undefined);
 
   useEffect(() => () => clearInterval(timer.current), []);
 
-  const place = () => {
+  // Moving mode: advance the target every frame while a run is going.
+  useEffect(() => {
+    if (phase !== 'running' || mode !== 'moving') return;
+    let raf = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      const r = areaRef.current?.getBoundingClientRect();
+      if (r) {
+        mover.current = stepTarget(mover.current, Math.min(0.05, (now - last) / 1000), r.width, r.height, d);
+        setPos({ x: mover.current.x, y: mover.current.y });
+      }
+      last = now;
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [phase, mode, d]);
+
+  const place = (diameter: number) => {
     const r = areaRef.current?.getBoundingClientRect();
-    setPos(randomTarget(r?.width ?? 600, r?.height ?? 320, d));
+    const p = randomTarget(r?.width ?? 600, r?.height ?? 320, diameter);
+    const angle = Math.random() * Math.PI * 2;
+    mover.current = { x: p.x, y: p.y, vx: Math.cos(angle) * MOVE_SPEED, vy: Math.sin(angle) * MOVE_SPEED };
+    setPos(p);
     shownAt.current = performance.now();
   };
 
@@ -51,9 +99,10 @@ export default function AimTrainer() {
     running.current = false;
     const r = scoreRun(events.current);
     setResult(r);
-    setIsBest(recordBest(size, r.score));
+    setIsBest(recordBest(bestKey, r.score));
     setPhase('done');
-    trackEvent('aim_run_complete', { size, hits: r.hits, accuracy: r.accuracy, score: r.score });
+    trackEvent('aim_run_complete', { mode, size, hits: r.hits, accuracy: r.accuracy, score: r.score });
+    if (passScore !== undefined && r.score >= passScore) onPass?.();
   };
 
   const start = () => {
@@ -64,7 +113,7 @@ export default function AimTrainer() {
     setSecondsLeft(AIM_SECONDS);
     running.current = true;
     startedAt.current = performance.now();
-    place();
+    place(mode === 'shrinking' ? shrinkDiameter(0) : AIM_SIZES[size]);
     setPhase('running');
     clearInterval(timer.current);
     timer.current = setInterval(() => {
@@ -88,43 +137,65 @@ export default function AimTrainer() {
     e.stopPropagation();
     if (!running.current) return;
     record({ hit: true, reactionMs: Math.round(performance.now() - shownAt.current) });
-    place();
+    place(mode === 'shrinking' ? shrinkDiameter(counts.hits + 1) : AIM_SIZES[size]);
   };
 
-  const best = progress.best[size];
+  const modeOpen = (m: AimMode) => !!lockedMode || isLevelUnlocked(MODE_LEVEL[m], done);
 
   return (
     <div className="mx-auto w-full max-w-2xl">
-      <div className="flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Target size">
-        {(Object.keys(AIM_SIZES) as AimSize[]).map((s) => (
-          <button
-            key={s}
-            type="button"
-            disabled={phase === 'running'}
-            onClick={() => setChosen(s)}
-            aria-pressed={size === s}
-            className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
-              size === s ? 'border-accent bg-accent-bg text-accent' : 'border-surface-border text-text-dim hover:text-text'
-            } disabled:opacity-50`}
-          >
-            {SIZE_LABEL[s]}
-          </button>
-        ))}
-      </div>
+      {!lockedMode && (
+        <div className="flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Mode">
+          {(Object.keys(MODE_LABEL) as AimMode[]).map((m) => {
+            const open = modeOpen(m);
+            return (
+              <button
+                key={m}
+                type="button"
+                disabled={phase === 'running' || !open}
+                onClick={() => setModeChoice(m)}
+                aria-pressed={mode === m}
+                title={open ? undefined : `Opens when you reach Level ${MODE_LEVEL[m]} in Learn`}
+                className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
+                  mode === m ? 'border-accent bg-accent-bg text-accent' : 'border-surface-border text-text-dim hover:text-text'
+                } disabled:opacity-50`}
+              >
+                {MODE_LABEL[m]}
+                {!open && ' 🔒'}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {mode !== 'shrinking' && (
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Target size">
+          {(Object.keys(AIM_SIZES) as AimSize[]).map((s) => (
+            <button
+              key={s}
+              type="button"
+              disabled={phase === 'running'}
+              onClick={() => setChosen(s)}
+              aria-pressed={size === s}
+              className={`rounded-lg border px-3 py-1.5 text-sm transition-colors ${
+                size === s ? 'border-accent bg-accent-bg text-accent' : 'border-surface-border text-text-dim hover:text-text'
+              } disabled:opacity-50`}
+            >
+              {SIZE_LABEL[s]}
+            </button>
+          ))}
+        </div>
+      )}
+
       <p className="mt-2 text-center text-xs text-text-dim">
         {phase === 'running'
           ? `${secondsLeft}s left · ${counts.hits} hits · ${counts.misses} misses`
-          : `Click each target as fast as you can for ${AIM_SECONDS} seconds. A click that misses costs a point.${
-              best ? ` Best on ${size}: ${best}.` : ''
-            }`}
+          : `${MODE_NOTE[mode]} ${AIM_SECONDS} seconds. A click that misses costs a point.${
+              passScore !== undefined ? ` Score ${passScore} or more to pass.` : ''
+            }${best ? ` Best: ${best}.` : ''}`}
       </p>
 
-      <div
-        ref={areaRef}
-        className="mp-aim mt-3"
-        data-testid="aim-area"
-        onPointerDown={() => record({ hit: false })}
-      >
+      <div ref={areaRef} className="mp-aim mt-3" data-testid="aim-area" onPointerDown={() => record({ hit: false })}>
         {phase === 'running' && (
           <button
             type="button"
@@ -151,7 +222,13 @@ export default function AimTrainer() {
         {phase === 'done' && result && (
           <div className="absolute inset-0 grid place-items-center bg-black/40" onPointerDown={(e) => e.stopPropagation()}>
             <div className="text-center">
-              <p className="text-sm text-text-dim">{isBest ? 'New best!' : 'Time is up'}</p>
+              <p className="text-sm text-text-dim">
+                {passScore !== undefined && result.score < passScore
+                  ? `Not quite: you need ${passScore}.`
+                  : isBest
+                    ? 'New best!'
+                    : 'Time is up'}
+              </p>
               <div className="mt-3 grid grid-cols-3 gap-x-4 gap-y-3 px-3 sm:grid-cols-5">
                 <div className="mp-stat"><b data-testid="aim-score">{result.score}</b><span>score</span></div>
                 <div className="mp-stat"><b>{result.hits}</b><span>hits</span></div>
