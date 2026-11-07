@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { Device } from './mouseData';
-import MouseLearn from './MouseLearn';
+import MouseLevels from './MouseLevels';
 import AimTrainer from './AimTrainer';
 import { useMouseProgress } from './useMouseProgress';
 
@@ -69,7 +69,7 @@ export default function MousePractice() {
         </p>
       )}
 
-      <div className="mt-6 w-full">{tab === 'learn' ? <MouseLearn /> : <AimTrainer />}</div>
+      <div className="mt-6 w-full">{tab === 'learn' ? <MouseLevels /> : <AimTrainer />}</div>
     </div>
   );
 }

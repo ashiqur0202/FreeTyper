@@ -79,7 +79,7 @@ const toolData: ToolData[] = [
     name: 'Mouse Practice',
     seoTitle: 'Mouse Practice for Beginners — Free Mouse & Trackpad Exercises',
     description:
-      'Free mouse and trackpad practice for beginners: guided click, double-click, right-click, drag and scroll steps, plus a 30-second aim game. No signup.',
+      'Free mouse and trackpad practice from beginner to mastery: four levels of drills, ranks, and a 30-second aim game. No signup.',
     iconName: 'Mouse',
     category: 'typing',
     featured: true,
