@@ -488,10 +488,10 @@ a:hover { color: var(--color-accent); }
 }
 
 /* ===== Shared laptop keyboard (LiveKeyboard, heatmap) ===== */
-.lk { display: flex; flex-direction: column; margin-inline: auto; user-select: none; }
+.lk { display: flex; flex-direction: column; margin-inline: auto; user-select: none; container-type: inline-size; }
 .lk-row { display: flex; }
 .lk-key { min-width: 0; padding: 0; font-family: var(--font-mono), ui-monospace, monospace; overflow: hidden; }
-.lk-key.lk-word { font-size: 0.8em; letter-spacing: 0; }
+.lk-key.lk-word { font-size: clamp(6px, 2.4cqw, 0.8em); letter-spacing: 0; }
 .lk-sym { display: flex; flex-direction: column; align-items: center; line-height: 1; }
 .lk-shift { font-size: 0.7em; opacity: 0.5; }
 .lk-idle { opacity: 0.45; font-size: 0.8em; }

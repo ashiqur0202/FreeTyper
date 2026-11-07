@@ -60,7 +60,7 @@ export default function LaptopKeyboard({ keyH, gap, width, look, capitals, compa
             const l = look?.(id) ?? {};
             const symbol = SHIFTED[id];
             const isChar = id.length === 1 && id !== ' ';
-            const text = label ?? (capitals ? id.toUpperCase() : id);
+            const text = id === 'bksp' ? '⌫' : (label ?? (capitals ? id.toUpperCase() : id));
             const word = label !== undefined;
             return (
               <div
