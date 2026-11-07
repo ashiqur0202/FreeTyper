@@ -566,7 +566,6 @@ export default function TypingLessons() {
           <LiveKeyboard
             nextChar={chars[currentIndex]?.char}
             lastKeyCorrect={lastKeyFlash}
-            focusKeys={lesson.keys}
             compact
           />
         </div>

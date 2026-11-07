@@ -510,6 +510,8 @@ a:hover { color: var(--color-accent); }
   .lk { padding: 0.35rem; gap: 2px; }
   .lk .kg-row { gap: 2px; }
 }
+/* Typing pages: plain grey keys, like the guide's Ctrl/Alt keys */
+.lk-plain .kg-key { background: color-mix(in srgb, var(--color-surface) 70%, transparent); border-color: var(--color-surface-border); box-shadow: 0 2px 0 var(--color-key-shadow); color: var(--color-text); }
 /* Heatmap: stronger fill so the colours match the legend */
 .lk-heat .kg-key { background: color-mix(in srgb, var(--kc) 70%, var(--color-surface)); }
 @keyframes lkPulse {

@@ -39,11 +39,9 @@ interface LiveKeyboardProps {
   nextChar?: string;
   lastKeyCorrect?: { key: string; correct: boolean } | null;
   compact?: boolean;
-  /** When set, only these keys (and space) stay fully opaque — teaches lesson key focus. */
-  focusKeys?: string[];
 }
 
-export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusKeys }: LiveKeyboardProps) {
+export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact }: LiveKeyboardProps) {
   const { settings } = useSettings();
   const [flashes, setFlashes] = useState<Map<string, KeyFlash>>(new Map());
   const cleanupRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -73,10 +71,6 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusK
   const hintKey = hintTarget?.id ?? null;
   const hintShiftKey = hintTarget?.shiftId ?? null;
 
-  const focusSet = focusKeys && focusKeys.length > 0 && !focusKeys.includes('all')
-    ? new Set(focusKeys.map((k) => k.toLowerCase()))
-    : null;
-
   const keyH = compact ? 32 : 40;
   const unitW = compact ? 30 : 38;
 
@@ -86,18 +80,14 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact, focusK
     const isFlashCorrect = flash?.correct === true;
     const isFlashIncorrect = flash?.correct === false;
 
-    // Dim keys outside the current lesson focus set (modifiers dim too, as before)
-    const inFocus = !focusSet || id === ' ' || focusSet.has(id);
-    const isDimmed = Boolean(focusSet && !inFocus && !isHint && !isFlashCorrect && !isFlashIncorrect);
-
     const classes: string[] = [];
     if (isFlashCorrect) classes.push('lk-ok');
     else if (isFlashIncorrect) classes.push('lk-bad');
     else if (isHint) classes.push('lk-hint');
-    if (isDimmed) classes.push('kg-fade');
     return { className: classes.join(' ') };
   };
 
-  // Same finger colours as the Keyboard guide; the next-key hint lifts and rings the key.
-  return <LaptopKeyboard keyH={keyH} width={15 * unitW + 40} look={look} />;
+  // Same keys as the Keyboard guide but plain grey like its Ctrl/Alt keys: colours would pull the eye
+  // away from the text. The next-key hint lifts and rings the key.
+  return <LaptopKeyboard keyH={keyH} width={15 * unitW + 40} look={look} fingerColors={false} className="lk-plain" />;
 }
