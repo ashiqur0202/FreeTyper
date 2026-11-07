@@ -151,11 +151,11 @@ export function SteerDrill({ onDone }: DrillProps) {
         <div className="mp-dot-end" style={pct(end)} onPointerEnter={finish} data-testid="steer-end">
           end
         </div>
-        <p className="mp-msg">{msg || `Move along the path from start to end. Stay inside it (${PASS.steer}% needed).`}</p>
         {failed !== null && (
           <RetryOverlay text={`You stayed inside the path ${failed}% of the time. You need ${PASS.steer}%. Go a little slower.`} onRetry={retry} />
         )}
       </div>
+      <p className="mp-msg mp-msg-flow">{msg || `Move along the path from start to end. Stay inside it (${PASS.steer}% needed).`}</p>
     </div>
   );
 }
@@ -286,10 +286,10 @@ export function MenuDrill({ onDone }: DrillProps) {
 // ---------- drag cards into order ----------
 
 const SORT_START: { n: number; left: string; top: string }[] = [
-  { n: 3, left: '12%', top: '14%' },
-  { n: 1, left: '36%', top: '30%' },
-  { n: 4, left: '60%', top: '12%' },
-  { n: 2, left: '82%', top: '32%' },
+  { n: 3, left: '8%', top: '14%' },
+  { n: 1, left: '32%', top: '30%' },
+  { n: 4, left: '56%', top: '12%' },
+  { n: 2, left: '76%', top: '32%' },
 ];
 const SLOT_LEFT = ['20%', '40%', '60%', '80%'];
 
