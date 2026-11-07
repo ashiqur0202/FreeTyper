@@ -80,7 +80,7 @@ export function PreciseDragDrill({ onDone }: DrillProps) {
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
   const [round, setRound] = useState(0);
-  const [spot, setSpot] = useState({ x: 300, y: 90 });
+  const [spot, setSpot] = useState({ x: 200, y: 90 });
   const [msg, setMsg] = useState('');
 
   const reset = () => {
