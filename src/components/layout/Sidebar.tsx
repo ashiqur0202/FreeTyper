@@ -10,6 +10,7 @@ import {
   BarChart3,
   ArrowDown,
   Crosshair,
+  Mouse,
   BookOpen,
   Settings,
   Menu,
@@ -28,6 +29,7 @@ const navGroups = [
       { href: '/typing-practice', label: 'practice', icon: PenTool },
       { href: '/keyboard-guide', label: 'guide', icon: Keyboard },
       { href: '/typing-progress', label: 'progress', icon: BarChart3 },
+      { href: '/mouse-practice', label: 'mouse', icon: Mouse },
     ],
   },
   {

@@ -10,6 +10,7 @@ const links = [
   { href: '/typing-lessons', label: 'Lessons' },
   { href: '/keyboard-guide', label: 'Keyboard guide' },
   { href: '/typing-progress', label: 'Progress' },
+  { href: '/mouse-practice', label: 'Mouse practice' },
   { href: '/blog', label: 'Blog' },
 ];
 

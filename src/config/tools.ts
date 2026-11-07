@@ -6,6 +6,7 @@ import {
   BarChart3,
   ArrowDown,
   Crosshair,
+  Mouse,
 } from 'lucide-react';
 
 export type ToolData = {
@@ -74,6 +75,16 @@ const toolData: ToolData[] = [
     featured: true,
   },
   {
+    id: 'mouse-practice',
+    name: 'Mouse Practice',
+    seoTitle: 'Mouse Practice for Beginners — Free Mouse & Trackpad Exercises',
+    description:
+      'Free mouse and trackpad practice for beginners: guided click, double-click, right-click, drag and scroll steps, plus a 30-second aim game. No signup.',
+    iconName: 'Mouse',
+    category: 'typing',
+    featured: true,
+  },
+  {
     id: 'typing-game-falling-words',
     name: 'Falling Words Game',
     seoTitle: 'Falling Words Typing Game — Free Speed Training (No Signup)',
@@ -103,6 +114,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   BarChart3,
   ArrowDown,
   Crosshair,
+  Mouse,
 };
 
 /** Serializable tool data (no functions) — safe for server → client */

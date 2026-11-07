@@ -545,7 +545,7 @@ a:hover { color: var(--color-accent); }
 .mp-hint-on { color: var(--color-accent); }
 .mp-tabs { display: inline-flex; gap: 0.25rem; padding: 0.25rem; border-radius: 0.7rem; border: 1px solid var(--color-surface-border); background: var(--color-surface-raised); }
 .mp-tab { padding: 0.4rem 1rem; border-radius: 0.5rem; font-size: 0.85rem; color: var(--color-text-dim); cursor: pointer; }
-.mp-tab[aria-selected="true"] { background: var(--color-accent-bg); color: var(--color-accent); }
+.mp-tab[aria-selected="true"], .mp-tab[aria-pressed="true"] { background: var(--color-accent-bg); color: var(--color-accent); }
 .mp-aim { position: relative; height: 20rem; overflow: hidden; border-radius: 1rem; border: 1px solid var(--color-surface-border); background: color-mix(in srgb, var(--color-surface) 60%, #000); touch-action: none; user-select: none; cursor: crosshair; }
 .mp-aim-target { position: absolute; border-radius: 9999px; border: 3px solid var(--color-accent); background: var(--color-accent-bg); box-shadow: 0 0 16px var(--color-accent-bg); padding: 0; cursor: pointer; }
 .mp-stat { text-align: center; }
