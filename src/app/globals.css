@@ -496,6 +496,8 @@ a:hover { color: var(--color-accent); }
 .lk .kg-arrows .kg-idle { height: auto; }
 .lk .kg-key { cursor: default; border-radius: 0.45rem; border-width: 1px; box-shadow: 0 2px 0 color-mix(in srgb, var(--kc) 40%, #000); font-size: 0.72rem; }
 .lk .kg-key:hover { filter: none; }
+/* No fade: the next-key ring must jump with every keystroke (the guide's 0.25s fade felt laggy) */
+.lk .kg-key, .lk .kg-idle { transition: none; }
 .lk .kg-idle { border-radius: 0.45rem; border-width: 1px; font-size: 0.55rem; }
 .lk .kg-sh { display: block; font-size: 0.5rem; }
 .lk .kg-key.kg-mod { font-size: clamp(0.4rem, 2.6cqw, 0.62rem); }
