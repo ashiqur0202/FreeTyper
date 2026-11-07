@@ -104,7 +104,7 @@ export const bodyHtml = `
 <h2 id="levels-two-to-four">Levels 2 to 4: comfortable, skilled, mastery</h2>
 <p>Each level opens when you have passed every drill in the one before. All pass marks below are our own suggestions.</p>
 <ul>
-<li><strong>Level 2, Comfortable</strong> trains accuracy and control: click ten small circles (36 pixels) with at least 80% of your clicks hitting; drag a card onto a small dashed circle three times; press and hold a circle for one second; select a highlighted sentence by dragging across it; and scroll a long list to find Item 47 and click it.</li>
+<li><strong>Level 2, Comfortable</strong> trains accuracy and control: click ten small circles (36 pixels) with at least 80% of your clicks hitting; drag a card onto a small dashed circle three times; press and hold a circle for one second; select a highlighted sentence by dragging across it or clicking it three times quickly; and scroll a long list to find Item 47 and click it.</li>
 <li><strong>Level 3, Skilled</strong> trains speed and smooth movement: click a drifting circle eight times; move the pointer along a narrow path from a start dot to an end dot while staying inside the path at least 85% of the time; make five double-clicks within 20 seconds of your first click; right-click a circle three times and choose the named item from a menu; and drag four numbered cards into their slots.</li>
 <li><strong>Level 4, Mastery</strong> is timed: a 60-second gauntlet where the circle asks for a click, a double-click, a right-click or a drag and you score the right actions minus the wrong ones (15 or more to pass); a 30-second shrinking-target run (score 15 or more); and 20 tiny circles (24 pixels) with at least 90% of your clicks hitting.</li>
 </ul>

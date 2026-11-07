@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { Box, RetryOverlay, type DrillProps } from './drills';
 import { randomTarget } from './aimScoring';
-import { PASS, meetsAccuracy } from './levelRules';
+import { PASS, meetsAccuracy, selectionMatches } from './levelRules';
 
 // Level 2 (Comfortable): accuracy and control. Each drill calls onDone once, only when it passes.
 
@@ -192,42 +192,85 @@ export function HoldDrill({ onDone }: DrillProps) {
 
 // ---------- select text ----------
 
-const BEFORE = 'The pointer does more than click. ';
+const BEFORE = 'The pointer does more than click.';
 const TARGET = 'Drag across this whole sentence to select it.';
-const AFTER = ' Let go when the last word is selected.';
-
-const norm = (s: string) => s.replace(/\s+/g, ' ').trim().replace(/\.$/, '');
+const AFTER = 'Drag across it, or click it three times quickly.';
 
 export function SelectDrill({ onDone }: DrillProps) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const doneRef = useRef(onDone);
+  const finished = useRef(false);
   const [msg, setMsg] = useState('');
-  const done = useRef(false);
 
-  const check = () => {
-    // Wait a tick so the browser has finished updating the selection.
-    setTimeout(() => {
-      if (done.current) return;
-      const got = norm(window.getSelection()?.toString() ?? '');
-      if (!got) return;
-      if (got === norm(TARGET)) {
-        done.current = true;
-        onDone();
-      } else {
-        // Clear it: pressing inside an old selection would start dragging that text instead.
-        window.getSelection()?.removeAllRanges();
-        setMsg('That selected something else. Select only the highlighted sentence.');
-      }
-    }, 0);
-  };
+  useEffect(() => {
+    doneRef.current = onDone;
+  });
+
+  useEffect(() => {
+    let steady: ReturnType<typeof setTimeout> | undefined;
+
+    // The current selection, if it started inside this drill.
+    const mine = () => {
+      const sel = window.getSelection();
+      const box = boxRef.current;
+      return sel && box && sel.anchorNode && box.contains(sel.anchorNode) ? sel : null;
+    };
+    const succeed = () => {
+      if (finished.current) return;
+      finished.current = true;
+      doneRef.current();
+    };
+
+    // Letting go counts anywhere on the page, not only over the paragraph: on a trackpad it is
+    // easy to overshoot the text, and a silent failure leaves people stuck.
+    const onRelease = () => {
+      setTimeout(() => {
+        if (finished.current) return;
+        const sel = mine();
+        if (!sel) return;
+        const got = sel.toString();
+        if (selectionMatches(got, TARGET)) {
+          succeed();
+        } else if (got.trim()) {
+          // Clear it: pressing inside an old selection would start dragging that text instead.
+          sel.removeAllRanges();
+          const shown = got.replace(/\s+/g, ' ').trim();
+          setMsg(`You selected "${shown.length > 40 ? shown.slice(0, 40) + '...' : shown}". Select the whole highlighted sentence, from "Drag" to "it."`);
+        } else {
+          setMsg('Nothing is selected yet. Press and hold at the start of the highlighted sentence, slide to its end, then let go.');
+        }
+      }, 0);
+    };
+
+    // If the selection sits on the whole sentence for a moment, that is enough, even when no
+    // release event arrives (for example when the button is let go outside the window).
+    const onChange = () => {
+      clearTimeout(steady);
+      const sel = mine();
+      if (sel && selectionMatches(sel.toString(), TARGET)) steady = setTimeout(succeed, 400);
+    };
+
+    document.addEventListener('pointerup', onRelease);
+    document.addEventListener('selectionchange', onChange);
+    return () => {
+      clearTimeout(steady);
+      document.removeEventListener('pointerup', onRelease);
+      document.removeEventListener('selectionchange', onChange);
+    };
+  }, []);
 
   return (
-    <Box id="select" className="mp-box-text">
-      <p className="mp-prose" onPointerUp={check} data-testid="select-text">
-        {BEFORE}
-        <mark data-testid="select-target">{TARGET}</mark>
-        {AFTER}
-      </p>
-      <p className="mp-msg">{msg}</p>
-    </Box>
+    <div ref={boxRef} className="mp-box mp-box-text" data-testid="drill-select">
+      {/* No text drag-and-drop here: dragging a selected word would otherwise cancel the selection. */}
+      <div className="mp-prose" onDragStart={(e) => e.preventDefault()} data-testid="select-text">
+        <p>{BEFORE}</p>
+        <p>
+          <mark data-testid="select-target">{TARGET}</mark>
+        </p>
+        <p>{AFTER}</p>
+      </div>
+      <p className="mp-msg" style={{ bottom: '0.9rem', padding: '0 1rem' }}>{msg}</p>
+    </div>
   );
 }
 

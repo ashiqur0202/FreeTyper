@@ -7,7 +7,7 @@ import {
 
 import {
   LEVEL_ITEMS, LEVEL_NAMES, isLevelPassed, isLevelUnlocked, rankOf, firstOpenIndex,
-  PASS, meetsAccuracy, densify, distToSegment, insideRatio, scalePath, stepTarget, shrinkDiameter, gauntletScore,
+  PASS, meetsAccuracy, densify, selectionMatches, distToSegment, insideRatio, scalePath, stepTarget, shrinkDiameter, gauntletScore,
 } from '../src/components/skills/mouse/levelRules.ts';
 
 let n = 0;
@@ -158,5 +158,24 @@ t('a fast flick across the path is judged on the line it traces', () => {
   assert.ok(insideRatio(flick, poly, 10) < 85);
   const careful = [{ x: 0, y: 100 }, ...densify({ x: 0, y: 100 }, { x: 100, y: 100 }, 5), { x: 100, y: 100 }, ...densify({ x: 100, y: 100 }, { x: 100, y: 0 }, 5), { x: 100, y: 0 }];
   assert.equal(insideRatio(careful, poly, 10), 100);
+});
+t('selection match: exact, with and without the full stop, any spacing', () => {
+  const T = 'Drag across this whole sentence to select it.';
+  assert.equal(selectionMatches(T, T), true);
+  assert.equal(selectionMatches('Drag across this whole sentence to select it', T), true);
+  assert.equal(selectionMatches('  Drag across this  whole sentence' + String.fromCharCode(10) + 'to select it.  ', T), true);
+});
+t('selection match: a little extra is fine, a lot is not', () => {
+  const T = 'Drag across this whole sentence to select it.';
+  assert.equal(selectionMatches('Drag across this whole sentence to select it. Let', T), true);
+  assert.equal(selectionMatches('The Drag across this whole sentence to select it.', T), true);
+  assert.equal(selectionMatches(T + ' Let go when the last word is selected.', T), false);
+});
+t('selection match: too little or nothing is not a match', () => {
+  const T = 'Drag across this whole sentence to select it.';
+  assert.equal(selectionMatches('rag across this whole sentence to select it.', T), false);
+  assert.equal(selectionMatches('Drag across this whole sentence to select', T), false);
+  assert.equal(selectionMatches('', T), false);
+  assert.equal(selectionMatches('   ', T), false);
 });
 console.log(`\n${n} passed`);

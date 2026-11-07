@@ -49,8 +49,8 @@ const level2: CourseItem[] = [
     id: 'select',
     title: 'Select text',
     text: {
-      mouse: 'Press at the start of the highlighted sentence, drag to its end and let go.',
-      trackpad: 'Press and hold at the start of the highlighted sentence, slide to its end and let go.',
+      mouse: 'Select the highlighted sentence: press at its start, drag to its end and let go. Or click it three times quickly.',
+      trackpad: 'Select the highlighted sentence: press and hold at its start, slide to its end and let go. Or tap it three times quickly.',
     },
     Drill: SelectDrill,
   },

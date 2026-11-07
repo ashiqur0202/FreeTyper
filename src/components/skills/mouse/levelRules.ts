@@ -116,3 +116,17 @@ export function shrinkDiameter(hits: number): number {
 export function gauntletScore(correct: number, wrong: number): number {
   return Math.max(0, correct - wrong);
 }
+
+const tidy = (t: string) => t.replace(/\s+/g, ' ').trim().replace(/\.$/, '');
+
+/**
+ * Does the selected text cover the target sentence? Spacing and the final full stop do not matter,
+ * and up to `slack` extra characters are allowed (a stray space or the start of the next word),
+ * but a selection that misses part of the sentence never matches.
+ */
+export function selectionMatches(selected: string, target: string, slack = 8): boolean {
+  const got = tidy(selected);
+  const want = tidy(target);
+  if (!got || !got.includes(want)) return false;
+  return got.length <= want.length + slack;
+}
