@@ -512,6 +512,10 @@ a:hover { color: var(--color-accent); }
 }
 /* Typing pages: plain grey keys, like the guide's Ctrl/Alt keys */
 .lk-plain .kg-key { background: color-mix(in srgb, var(--color-surface) 70%, transparent); border-color: var(--color-surface-border); box-shadow: 0 2px 0 var(--color-key-shadow); color: var(--color-text); }
+/* Ctrl, Win, Alt and the arrows look exactly like the other keys */
+.lk-plain .kg-idle { opacity: 1; background: color-mix(in srgb, var(--color-surface) 70%, transparent); border-color: var(--color-surface-border); box-shadow: 0 2px 0 var(--color-key-shadow); color: var(--color-text); font: 600 clamp(0.4rem, 2.6cqw, 0.62rem) var(--font-inter), system-ui, sans-serif; }
+.lk-plain .kg-idle .kg-arrow { font-size: 0.8rem; }
+.lk-plain .kg-arrows .kg-idle { box-shadow: none; }
 /* Heatmap: stronger fill so the colours match the legend */
 .lk-heat .kg-key { background: color-mix(in srgb, var(--kc) 70%, var(--color-surface)); }
 @keyframes lkPulse {
