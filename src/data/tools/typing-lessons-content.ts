@@ -9,7 +9,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-18
+ * Last real edit: 2026-11-07
  */
 
 export const meta = {
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Lessons — Learn Touch Typing Step by Step</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-18">October 18, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-07">November 7, 2026</time></span>
   <span>~7 min read</span>
 </p>
 <p>These free typing lessons are a course of 34 short lessons in six stages. You begin with two keys on the home row, add the rest of the home row, then the top and bottom rows, then Shift and punctuation, then numbers and symbols, and finish with speed and accuracy practice. A live keyboard above the text shows which key comes next, and your progress is saved in your browser without an account.</p>
@@ -145,7 +145,7 @@ export const bodyHtml = `
 <tr><td>Both thumbs</td><td>Space bar</td></tr>
 </tbody>
 </table>
-<p>The <a href="/keyboard-guide">keyboard guide</a> shows the same map colour-coded on a full keyboard, and lets you filter by finger. For capitals and shifted symbols, press the Shift key on the opposite side from the key you are typing.</p>
+<p>The <a href="/keyboard-guide">keyboard guide</a> shows the same map colour-coded on a laptop keyboard with two drawn hands, and lets you tap a finger to see all of its keys. For capitals and shifted symbols, press the Shift key on the opposite side from the key you are typing.</p>
 
 <h2 id="what-is-the-home-row">What is the home row?</h2>
 <p>The home row is the middle row of letter keys. Your left fingers rest on A, S, D and F, your right fingers on J, K, L and the semicolon, and your thumbs on the space bar. From there every other key is one short reach away, and your fingers return to it after each reach. The raised bumps on F and J are there so your index fingers can find home by touch.</p>
