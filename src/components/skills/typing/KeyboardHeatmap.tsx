@@ -1,6 +1,7 @@
 'use client';
 
-import { keyboardRows } from './typingData';
+import LaptopKeyboard, { type KeyLook } from './LaptopKeyboard';
+import { SHIFTED } from './guideLayout';
 import { useTypingProgress } from './useTypingProgress';
 
 function heatStyle(errorRate: number | null): { bg: string; label: string } {
@@ -16,17 +17,37 @@ function heatStyle(errorRate: number | null): { bg: string; label: string } {
 export default function KeyboardHeatmap() {
   const { progress } = useTypingProgress();
 
+  // A symbol key counts both what it types plain and with Shift ("/" and "?").
+  const statsFor = (key: string) => {
+    let total = 0;
+    let correct = 0;
+    for (const k of [key, SHIFTED[key]]) {
+      const st = k ? progress.keyStats[k] : undefined;
+      if (st) {
+        total += st.totalPresses;
+        correct += st.correctPresses;
+      }
+    }
+    return { total, correct };
+  };
+
   const getErrorRate = (key: string): number | null => {
-    const stats = progress.keyStats[key.toLowerCase()];
-    if (!stats || stats.totalPresses < 3) return null;
-    return stats.incorrectPresses / stats.totalPresses;
+    const { total, correct } = statsFor(key);
+    if (total < 3) return null;
+    return (total - correct) / total;
   };
 
   const getTooltip = (key: string): string => {
-    const stats = progress.keyStats[key.toLowerCase()];
-    if (!stats || stats.totalPresses < 1) return `${key === ' ' ? 'Space' : key.toUpperCase()}: no data yet`;
-    const acc = Math.round((stats.correctPresses / stats.totalPresses) * 100);
-    return `${key === ' ' ? 'Space' : key.toUpperCase()}: ${acc}% accuracy · ${stats.totalPresses} presses`;
+    const name = key === ' ' ? 'Space' : key.toUpperCase();
+    const { total, correct } = statsFor(key);
+    if (total < 1) return `${name}: no data yet`;
+    return `${name}: ${Math.round((correct / total) * 100)}% accuracy · ${total} presses`;
+  };
+
+  const look = (id: string): KeyLook => {
+    if (id.length > 1) return {}; // Shift, Enter ... are not tracked
+    const { bg } = heatStyle(getErrorRate(id));
+    return { style: { backgroundColor: bg, color: 'var(--color-text-bright)' }, title: getTooltip(id) };
   };
 
   return (
@@ -45,37 +66,7 @@ export default function KeyboardHeatmap() {
         </div>
       </div>
 
-      <div className="w-full pb-1">
-        <div className="w-full space-y-1">
-          {keyboardRows.map((row, ri) => (
-            <div key={ri} className="flex justify-center gap-1">
-              {row.map((key) => {
-                const rate = getErrorRate(key);
-                const { bg } = heatStyle(rate);
-                return (
-                  <div
-                    key={key}
-                    className="flex h-9 min-w-0 flex-1 items-center justify-center rounded-md border border-surface-border font-mono text-[11px] text-text-bright transition-transform hover:scale-105"
-                    style={{ backgroundColor: bg }}
-                    title={getTooltip(key)}
-                  >
-                    {key.toUpperCase()}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-          <div className="flex justify-center">
-            <div
-              className="flex h-9 w-[55%] max-w-xl items-center justify-center rounded-md border border-surface-border font-mono text-[11px] text-text-bright"
-              style={{ backgroundColor: heatStyle(getErrorRate(' ')).bg }}
-              title={getTooltip(' ')}
-            >
-              space
-            </div>
-          </div>
-        </div>
-      </div>
+      <LaptopKeyboard keyH={36} gap={4} width="100%" capitals look={look} className="max-w-3xl" />
       <p className="mt-2 text-center text-[11px] text-text-dim">
         Hover a key for accuracy · needs 3+ presses to color
       </p>

@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-05
+ * Last real edit: 2026-11-07
  */
 
 export const meta = {
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Typing Progress Tracker — WPM History, Streaks and Achievements</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-05">October 5, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-07">November 7, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This typing progress tracker turns the runs you finish on FreeTyper into a picture of how you are improving: your best WPM and accuracy, a chart of recent sessions, your practice streak, the keys you get wrong most often, and 14 achievements. It works with no account, and everything is stored privately in your browser.</p>
@@ -125,7 +125,7 @@ export const bodyHtml = `
 <p>Each bar is one session, oldest on the left. The tallest bar sets the scale, so the chart shows shape, not absolute speed: hover a bar for its exact WPM and date. Look for the trend across ten or more bars, not for any single bar. A slow upward drift with some noise is what real improvement usually looks like.</p>
 
 <h2 id="the-error-heatmap-and-weak-keys">The error heatmap and weak keys</h2>
-<p>The heatmap colours every key by how often you get it wrong, once you have pressed it at least three times:</p>
+<p>The heatmap is drawn as a US laptop keyboard, with the symbols above the number and punctuation keys. It colours every letter, number and symbol key by how often you get it wrong, once you have pressed it at least three times. A symbol key counts both what it types on its own and what it types with Shift, so the slash key also includes your question marks. Shift, Enter, Backspace, Tab, Caps Lock, Ctrl, Alt, Win and the arrow keys are drawn for realism but are not tracked, so they stay grey.</p>
 <table>
 <thead><tr><th>Colour</th><th>Label</th><th>Error rate</th></tr></thead>
 <tbody>

@@ -486,3 +486,15 @@ a:hover { color: var(--color-accent); }
   .kg-cap { animation: none; }
   .kg-key, .kg-fg, .kg-fg .kg-fr { transition: none; }
 }
+
+/* ===== Shared laptop keyboard (LiveKeyboard, heatmap) ===== */
+.lk { display: flex; flex-direction: column; margin-inline: auto; user-select: none; }
+.lk-row { display: flex; }
+.lk-key { min-width: 0; padding: 0; font-family: var(--font-mono), ui-monospace, monospace; overflow: hidden; }
+.lk-key.lk-word { font-size: 0.8em; letter-spacing: 0; }
+.lk-sym { display: flex; flex-direction: column; align-items: center; line-height: 1; }
+.lk-shift { font-size: 0.7em; opacity: 0.5; }
+.lk-idle { opacity: 0.45; font-size: 0.8em; }
+.lk-arrows { display: flex; flex-direction: column; min-width: 0; }
+.lk-arrows .lk-idle { width: 100%; font-size: 0.7em; }
+.lk-compact .lk-shift { font-size: 0.62em; }
