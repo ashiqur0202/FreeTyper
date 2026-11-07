@@ -33,6 +33,10 @@ function resolveChar(ch: string | undefined): { id: string; shiftId: string | nu
   return { id, shiftId: shifted ? shiftKeyFor(id) : null };
 }
 
+/** How long a pressed key stays lit: quick for a hit, a little longer for a miss so it registers. */
+const FLASH_OK_MS = 160;
+const FLASH_BAD_MS = 260;
+
 type KeyFlash = { key: string; correct: boolean; ts: number };
 
 interface LiveKeyboardProps {
@@ -44,7 +48,8 @@ interface LiveKeyboardProps {
 export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact }: LiveKeyboardProps) {
   const { settings } = useSettings();
   const [flashes, setFlashes] = useState<Map<string, KeyFlash>>(new Map());
-  const cleanupRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  // Each key's flash expires on its own timer, so fast typing never leaves a trail of lit keys.
+  const timersRef = useRef<Map<string, ReturnType<typeof setTimeout>>>(new Map());
 
   useEffect(() => {
     if (!lastKeyCorrect) return;
@@ -52,19 +57,33 @@ export default function LiveKeyboard({ nextChar, lastKeyCorrect, compact }: Live
     const target = resolveChar(key);
     if (!target) return;
 
+    const ids = target.shiftId ? [target.id, target.shiftId] : [target.id];
+    const ts = Date.now();
     setFlashes(prev => {
       const next = new Map(prev);
-      const ts = Date.now();
-      next.set(target.id, { key: target.id, correct, ts });
-      if (target.shiftId) next.set(target.shiftId, { key: target.shiftId, correct, ts });
+      ids.forEach(id => next.set(id, { key: id, correct, ts }));
       return next;
     });
 
-    if (cleanupRef.current) clearTimeout(cleanupRef.current);
-    cleanupRef.current = setTimeout(() => {
-      setFlashes(new Map());
-    }, 400);
+    ids.forEach(id => {
+      const old = timersRef.current.get(id);
+      if (old) clearTimeout(old);
+      timersRef.current.set(id, setTimeout(() => {
+        timersRef.current.delete(id);
+        setFlashes(prev => {
+          if (!prev.has(id)) return prev;
+          const next = new Map(prev);
+          next.delete(id);
+          return next;
+        });
+      }, correct ? FLASH_OK_MS : FLASH_BAD_MS));
+    });
   }, [lastKeyCorrect]);
+
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => timers.forEach(clearTimeout);
+  }, []);
 
   // Settings → Keyboard hints: when off, the next key is not highlighted.
   const hintTarget = settings.showKeyboardHints ? resolveChar(nextChar) : null;

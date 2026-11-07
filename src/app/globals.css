@@ -505,7 +505,7 @@ a:hover { color: var(--color-accent); }
 .lk .kg-sub { display: none; }
 .lk-detail .kg-sub { display: block; }
 .lk .kg-key.lk-hint { transform: translateY(2px); filter: brightness(1.25); z-index: 2; animation: lkPulse 1.2s ease-in-out infinite; }
-.lk .kg-key.lk-ok { transform: translateY(2px); filter: brightness(1.3); box-shadow: 0 0 0 2px var(--color-accent), 0 0 14px var(--color-accent-bg); }
+.lk .kg-key.lk-ok { transform: translateY(2px); background: var(--color-accent-bg); border-color: var(--color-accent); color: var(--color-accent); box-shadow: none; }
 .lk .kg-key.lk-bad { transform: translateY(2px); background: var(--color-error-bg); border-color: var(--color-error); color: var(--color-error); box-shadow: 0 0 0 2px var(--color-error), 0 0 14px var(--color-error-bg); }
 @media (max-width: 560px) {
   .lk .kg-key, .lk .kg-idle, .lk .kg-arrows { height: calc(var(--kh, 2.5rem) * 0.78); }
