@@ -384,3 +384,103 @@ a:hover { color: var(--color-accent); }
 
 /* Scale press for interactive elements */
 .active\:scale-95:active { transform: scale(0.95); }
+
+/* ===== Keyboard guide (KeyboardGuide.tsx, GuideHands.tsx) =====
+   Keys take their finger colour from --kc; the selected finger's colour is --kg-c. */
+.kg { --kg-c: #9ca3af; }
+.kg-ans {
+  display: flex; align-items: center; justify-content: center; gap: 1.1rem;
+  width: 100%; max-width: 32.5rem; height: 6rem; margin: 0 auto 0.5rem;
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--kg-c) 40%, var(--color-surface-border));
+  background:
+    radial-gradient(120% 150% at 50% -50%, color-mix(in srgb, var(--kg-c) 24%, transparent), transparent 70%),
+    var(--color-surface-raised);
+  transition: border-color 0.3s;
+}
+.kg-cap {
+  display: grid; place-items: center; min-width: 4.1rem; height: 4.1rem; padding: 0 0.6rem;
+  border-radius: 0.95rem; border: 1.5px solid var(--kg-c);
+  font: 600 2rem var(--font-mono), ui-monospace, monospace; color: var(--color-text-bright);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--kg-c) 38%, var(--color-surface-raised)), color-mix(in srgb, var(--kg-c) 16%, var(--color-surface)));
+  box-shadow: 0 5px 0 color-mix(in srgb, var(--kg-c) 45%, #000);
+  animation: kg-pop 0.28s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.kg-cap.kg-cap-word { font: 600 1rem var(--font-inter), system-ui, sans-serif; }
+@keyframes kg-pop { 0% { transform: translateY(5px) scale(0.9); } 100% { transform: none; } }
+.kg-say { text-align: left; font-size: 1.3rem; line-height: 1.2; color: var(--color-text-bright); }
+.kg-say b { color: var(--kg-c); }
+.kg-say small { display: block; margin-top: 0.3rem; font-size: 0.85rem; color: var(--color-text-dim); }
+.kg-stats { min-height: 1.4rem; margin: 0 0 0.9rem; text-align: center; font-size: 0.75rem; color: var(--color-text-dim); }
+
+.kg-board {
+  display: flex; flex-direction: column; gap: 6px; padding: 0.8rem;
+  border-radius: 1.25rem; border: 1px solid var(--color-surface-border);
+  background: color-mix(in srgb, var(--color-surface) 60%, #000);
+}
+.kg-row { display: flex; gap: 5px; justify-content: center; }
+.kg-key {
+  position: relative; flex: var(--w, 1) 1 0; min-width: 0; height: 3.1rem; padding: 0;
+  display: grid; place-items: center; cursor: pointer;
+  border-radius: 0.6rem; border: 1.5px solid var(--kc);
+  font: 600 0.85rem var(--font-mono), ui-monospace, monospace; color: var(--color-text-bright);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--kc) 34%, var(--color-surface-raised)), color-mix(in srgb, var(--kc) 14%, var(--color-surface)));
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--kc) 40%, #000);
+  transition: transform 0.1s, box-shadow 0.1s, opacity 0.25s, filter 0.25s;
+}
+.kg-key:hover { filter: brightness(1.15); }
+.kg-key.kg-sym { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; line-height: 1; }
+.kg-sh { font-size: 0.68rem; opacity: 0.7; }
+.kg-key.kg-mod { font: 600 0.72rem var(--font-inter), system-ui, sans-serif; letter-spacing: 0.02em; }
+.kg-key.kg-home::after { content: ""; position: absolute; left: 34%; right: 34%; bottom: 6px; height: 2px; border-radius: 2px; background: currentColor; opacity: 0.85; }
+.kg-key.kg-weak { box-shadow: 0 3px 0 color-mix(in srgb, var(--kc) 40%, #000), 0 0 0 1px color-mix(in srgb, var(--kc) 55%, transparent); }
+.kg-key.kg-act {
+  transform: translateY(3px); filter: brightness(1.25); z-index: 2;
+  box-shadow: 0 0 0 3px var(--color-accent), 0 0 22px color-mix(in srgb, var(--kc) 70%, transparent);
+}
+.kg-key.kg-fade { opacity: 0.3; }
+.kg-key:focus-visible, .kg-fg:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.kg-idle {
+  flex: var(--w, 1) 1 0; min-width: 0; height: 3.1rem;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; line-height: 1;
+  border-radius: 0.6rem; border: 1.5px solid var(--color-surface-border);
+  background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+  color: var(--color-text-dim); font: 500 0.66rem var(--font-inter), system-ui, sans-serif; opacity: 0.75;
+  transition: opacity 0.25s;
+}
+.kg-idle.kg-fade { opacity: 0.3; }
+.kg-idle .kg-arrow { font-size: 0.95rem; }
+.kg-idle .kg-sub { font-size: 0.5rem; opacity: 0.8; }
+.kg-arrows { flex: var(--w, 1) 1 0; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.kg-arrows .kg-idle { flex: 1; width: 100%; height: auto; border-radius: 0.45rem; }
+.kg-arrows .kg-arrow { font-size: 0.75rem; }
+
+.kg-hands { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-width: 41rem; margin: 1.6rem auto 0; }
+.kg-hand { width: 100%; height: auto; display: block; overflow: visible; }
+.kg-hand-label { margin-top: 0.35rem; text-align: center; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-text-dim); }
+.kg-palm { fill: var(--color-surface-raised); stroke: var(--color-surface-border); }
+.kg-fg { cursor: pointer; transition: opacity 0.25s; }
+.kg-fg .kg-fr { transition: transform 0.25s cubic-bezier(0.3, 1.5, 0.5, 1); }
+.kg-fg.on .kg-fr { transform: translateY(-14px); }
+.kg-fg.dim { opacity: 0.28; }
+.kg-home-letter { font: 700 17px var(--font-mono), ui-monospace, monospace; fill: #111; pointer-events: none; }
+.kg-finger-name { font: 600 12px var(--font-inter), system-ui, sans-serif; }
+
+@media (max-width: 560px) {
+  .kg-ans { gap: 0.8rem; height: 5.4rem; }
+  .kg-cap { min-width: 3.3rem; height: 3.3rem; font-size: 1.6rem; }
+  .kg-say { font-size: 1.05rem; }
+  .kg-board { padding: 0.45rem; gap: 4px; }
+  .kg-row { gap: 3px; }
+  .kg-key, .kg-idle { height: 2.35rem; }
+  .kg-key { font-size: 0.7rem; }
+  .kg-key.kg-mod { font-size: 0.5rem; }
+  .kg-sh, .kg-idle .kg-sub { display: none; }
+  .kg-finger-name { font-size: 14px; }
+  .kg-home-letter { font-size: 20px; }
+  .kg-idle { font-size: 0.5rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .kg-cap { animation: none; }
+  .kg-key, .kg-fg, .kg-fg .kg-fr { transition: none; }
+}

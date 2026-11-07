@@ -58,7 +58,7 @@ const toolData: ToolData[] = [
     name: 'Keyboard Guide',
     seoTitle: 'Keyboard Finger Chart — Which Finger Types Which Key (Free)',
     description:
-      'A colour-coded keyboard chart for hand placement: see which finger types each key, with a home-row mode and your own key accuracy. Free, no signup, QWERTY.',
+      'A colour-coded laptop keyboard with two hands: see which finger types each key, including Shift symbols, Enter and Backspace, plus your own key accuracy. Free, no signup, QWERTY.',
     iconName: 'Keyboard',
     category: 'typing',
     featured: true,

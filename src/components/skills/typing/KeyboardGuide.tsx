@@ -1,16 +1,27 @@
 'use client';
 
-import { useMemo, useState, useSyncExternalStore } from 'react';
+import { useEffect, useMemo, useState, useSyncExternalStore, type CSSProperties, type ReactNode } from 'react';
 import Link from 'next/link';
-import { ArrowRight, Hand, Home, Target } from 'lucide-react';
-import {
-  keyboardRows,
-  keyboardColors,
-  fingerMap,
-  homeRowKeys,
-  getKeyColor,
-} from './typingData';
+import { ArrowRight, Target } from 'lucide-react';
+import { fingerMap } from './typingData';
 import { useTypingProgress } from './useTypingProgress';
+import GuideHands from './GuideHands';
+import {
+  LAYOUT,
+  PLAIN_FINGER,
+  FINGER_NAMES,
+  SHIFTED,
+  UNSHIFT,
+  SPECIAL_KEYS,
+  capitalize,
+  colorOfZone,
+  fingerOf,
+  isHomeKey,
+  reachHint,
+  shiftKeyFor,
+  zoneOf,
+  type Cell,
+} from './guideLayout';
 
 // False on the server and during hydration, true afterwards, so per-user stats
 // (read from localStorage) never cause a hydration mismatch.
@@ -22,255 +33,253 @@ const useIsClient = () =>
     () => false,
   );
 
-const FINGER_LABELS = ['Pinky', 'Ring', 'Middle', 'Index'] as const;
-
-type ZoneId =
-  | 'left-pinky'
-  | 'left-ring'
-  | 'left-middle'
-  | 'left-index'
-  | 'right-index'
-  | 'right-middle'
-  | 'right-ring'
-  | 'right-pinky'
-  | 'all';
-
-const ZONES: { id: ZoneId; label: string; color?: string }[] = [
-  { id: 'all', label: 'all fingers' },
-  { id: 'left-pinky', label: 'L pinky', color: keyboardColors['left-pinky'] },
-  { id: 'left-ring', label: 'L ring', color: keyboardColors['left-ring'] },
-  { id: 'left-middle', label: 'L middle', color: keyboardColors['left-middle'] },
-  { id: 'left-index', label: 'L index', color: keyboardColors['left-index'] },
-  { id: 'right-index', label: 'R index', color: keyboardColors['right-index'] },
-  { id: 'right-middle', label: 'R middle', color: keyboardColors['right-middle'] },
-  { id: 'right-ring', label: 'R ring', color: keyboardColors['right-ring'] },
-  { id: 'right-pinky', label: 'R pinky', color: keyboardColors['right-pinky'] },
-];
-
-function zoneForKey(key: string): string | null {
-  const m = fingerMap[key.toLowerCase()];
-  if (!m) return null;
-  return `${m.hand}-${['pinky', 'ring', 'middle', 'index'][m.finger]}`;
-}
-
-function formatFinger(key: string): string {
-  if (key === ' ') return 'either thumb';
-  const m = fingerMap[key.toLowerCase()];
-  if (!m) return '—';
-  return `${m.hand} ${FINGER_LABELS[m.finger].toLowerCase()}`;
-}
+const INTERACTIVE = 'button, a, [role="button"], input, textarea, select, [contenteditable="true"]';
 
 export default function KeyboardGuide() {
-  const [selectedKey, setSelectedKey] = useState<string | null>('f');
-  const [hoveredKey, setHoveredKey] = useState<string | null>(null);
-  const [activeZone, setActiveZone] = useState<ZoneId>('all');
-  const [homeOnly, setHomeOnly] = useState(false);
+  const [selected, setSelected] = useState('f');
+  const [hovered, setHovered] = useState<string | null>(null);
+  // True when the selection came from typing a capital or a shifted symbol.
+  const [shifted, setShifted] = useState(false);
   const { progress, getWeakKeys } = useTypingProgress();
   const isClient = useIsClient();
 
-  const activeKey = hoveredKey ?? selectedKey;
+  const active = hovered ?? selected;
+  const activeShifted = hovered ? false : shifted;
+  const zone = zoneOf(active);
+  const color = colorOfZone(zone);
 
-  const keyStats = (key: string) => {
-    if (!isClient) return null;
-    const k = key.toLowerCase();
-    return progress.keyStats[k] || null;
+  const select = (id: string, withShift = false) => {
+    setSelected(id);
+    setShifted(withShift);
   };
 
+  // Press keys on the real keyboard to see their finger. Tab is left alone so
+  // keyboard navigation keeps working, and Enter / Space on a focused control
+  // still activate that control.
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.metaKey || e.ctrlKey || e.altKey || e.isComposing) return;
+      const target = e.target as HTMLElement | null;
+      const onControl = !!target?.closest?.(INTERACTIVE);
+      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+      if (target?.isContentEditable) return;
+
+      let id: string | null = null;
+      let withShift = false;
+      if (e.key === 'Shift') id = e.location === 2 ? 'shiftR' : 'shiftL';
+      else if (e.key === 'Backspace') id = 'bksp';
+      else if (e.key === 'CapsLock') id = 'caps';
+      else if (e.key === 'Enter') {
+        if (onControl) return;
+        id = 'enter';
+      } else if (e.key === ' ') {
+        if (onControl) return;
+        id = ' ';
+        e.preventDefault(); // do not scroll the page
+      } else if (e.key.length === 1) {
+        const base = UNSHIFT[e.key] ?? e.key.toLowerCase();
+        if (fingerMap[base]) {
+          id = base;
+          withShift = e.key !== base;
+        }
+      }
+      if (id) {
+        setSelected(id);
+        setShifted(withShift);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  // Clicking a finger picks that finger's home key (or the space bar for a thumb).
+  const pickZone = (z: string) => {
+    if (z === 'thumb') return select(' ');
+    const home = Object.keys(fingerMap).find((k) => zoneOf(k) === z && isHomeKey(k));
+    if (home) select(home);
+  };
+
+  const keyStats = (id: string) => (isClient && id.length === 1 ? progress.keyStats[id] || null : null);
+
   const weakKeys = useMemo(
-    () => (isClient ? getWeakKeys().slice(0, 6) : []),
+    () => (isClient ? getWeakKeys().filter((k) => k.key === ' ' || fingerMap[k.key]).slice(0, 6) : []),
     [isClient, getWeakKeys],
   );
 
-  const selectedStats = activeKey ? keyStats(activeKey) : null;
-  const selectedColor = activeKey ? getKeyColor(activeKey) : undefined;
+  const stats = keyStats(active);
+  const finger = fingerOf(active);
 
-  const isDimmed = (key: string) => {
-    if (homeOnly && !homeRowKeys.has(key) && key !== ' ') return true;
-    if (activeZone === 'all') return false;
-    return zoneForKey(key) !== activeZone;
+  // ---- answer card -------------------------------------------------------------------
+  let cap = active.toUpperCase();
+  let capWord = false;
+  let headline: ReactNode;
+  let detail: string;
+  if (active === ' ') {
+    cap = '␣';
+    headline = (
+      <>
+        Use either <b>thumb</b>
+      </>
+    );
+    detail = 'Space bar. Your thumbs rest here.';
+  } else if (!finger) {
+    headline = <>Pick a key</>;
+    detail = '';
+  } else {
+    const fingerText = `${PLAIN_FINGER[FINGER_NAMES[finger.finger]]} finger`;
+    const special = SPECIAL_KEYS[active];
+    if (special) {
+      cap = special.name;
+      capWord = true;
+      headline = (
+        <>
+          {capitalize(finger.hand)} hand, <b>{fingerText}</b>
+        </>
+      );
+      detail = special.tip;
+    } else if (activeShifted) {
+      const opposite = finger.hand === 'left' ? 'right' : 'left';
+      cap = SHIFTED[active] ?? active.toUpperCase();
+      headline = (
+        <>
+          Hold <b>Shift</b> with your {opposite} little finger
+        </>
+      );
+      detail = `Then press ${active.toUpperCase()} with your ${finger.hand} ${fingerText}.`;
+    } else {
+      headline = (
+        <>
+          {capitalize(finger.hand)} hand, <b>{fingerText}</b>
+        </>
+      );
+      const withShift = SHIFTED[active] ? ` With Shift it types ${SHIFTED[active]}.` : '';
+      detail = (isHomeKey(active) ? 'Home key: this finger rests here.' : reachHint(active)) + withShift;
+    }
+  }
+
+  const statsLine = (() => {
+    if (active.length !== 1 || !finger) return '';
+    if (!isClient) return '';
+    if (!stats || stats.totalPresses === 0) return 'No data for this key yet. Practice to fill this in.';
+    const acc = Math.round((stats.correctPresses / stats.totalPresses) * 100);
+    return `Your ${active.toUpperCase()} key: ${stats.totalPresses} presses, ${acc}% accuracy, ${stats.incorrectPresses} errors`;
+  })();
+
+  // ---- keyboard ----------------------------------------------------------------------
+  const shiftHint = activeShifted ? shiftKeyFor(active) : null;
+  const fadeOthers = zone !== null;
+
+  const renderCell = (cell: Cell, i: number) => {
+    const style = { '--w': cell.w } as CSSProperties;
+    if (cell.kind === 'idle') {
+      return (
+        <span key={i} className={`kg-idle${fadeOthers ? ' kg-fade' : ''}`} style={style} aria-hidden="true">
+          {cell.sub ? <span className="kg-arrow">{cell.label}</span> : cell.label}
+          {cell.sub && <span className="kg-sub">{cell.sub}</span>}
+        </span>
+      );
+    }
+    if (cell.kind === 'arrows') {
+      return (
+        <span key={i} className="kg-arrows" style={style} aria-hidden="true">
+          <span className={`kg-idle${fadeOthers ? ' kg-fade' : ''}`}>
+            <span className="kg-arrow">↑</span>
+            <span className="kg-sub">PgUp</span>
+          </span>
+          <span className={`kg-idle${fadeOthers ? ' kg-fade' : ''}`}>
+            <span className="kg-arrow">↓</span>
+            <span className="kg-sub">PgDn</span>
+          </span>
+        </span>
+      );
+    }
+    const { id } = cell;
+    const keyZone = zoneOf(id);
+    const isShiftHint = shiftHint === id;
+    const fade = !isShiftHint && fadeOthers && keyZone !== zone;
+    const isWord = id.length > 1 || id === ' ';
+    const symbol = SHIFTED[id];
+    const stat = keyStats(id);
+    const weak = stat && stat.totalPresses > 0 && stat.correctPresses / stat.totalPresses < 0.9;
+    const spoken = isWord ? (SPECIAL_KEYS[id]?.name ?? 'Space') : id;
+    const label = cell.label ?? (symbol ? null : id.toUpperCase());
+    return (
+      <button
+        key={i}
+        type="button"
+        className={[
+          'kg-key',
+          isWord && 'kg-mod',
+          symbol && 'kg-sym',
+          isHomeKey(id) && 'kg-home',
+          (active === id || isShiftHint) && 'kg-act',
+          fade && 'kg-fade',
+          weak && 'kg-weak',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        style={{ '--kc': colorOfZone(keyZone), '--w': cell.w } as CSSProperties}
+        onMouseEnter={() => setHovered(id)}
+        onMouseLeave={() => setHovered(null)}
+        onClick={() => select(id)}
+        aria-label={`${spoken}, ${keyZone === 'thumb' ? 'either thumb' : keyZone?.replace('-', ' ').replace('pinky', 'little') + ' finger'}`}
+        aria-pressed={selected === id}
+      >
+        {label ?? (
+          <>
+            <span className="kg-sh">{symbol}</span>
+            <span>{id}</span>
+          </>
+        )}
+      </button>
+    );
   };
 
   return (
-    <div className="flex w-full flex-col items-center">
-      {/* Finger zone filters */}
-      <div className="mb-3 flex flex-wrap items-center justify-center gap-1">
-        {ZONES.map((z) => (
-          <button
-            key={z.id}
-            type="button"
-            onClick={() => setActiveZone(z.id)}
-            className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs transition-all ${
-              activeZone === z.id
-                ? 'bg-accent-bg text-accent'
-                : 'text-text-dim hover:bg-surface-raised hover:text-text'
-            }`}
-          >
-            {z.color && (
-              <span
-                className="h-2 w-2 rounded-sm"
-                style={{ backgroundColor: z.color }}
-                aria-hidden
-              />
-            )}
-            {z.label}
-          </button>
+    <div className="kg mx-auto flex w-full max-w-[52rem] flex-col" style={{ '--kg-c': color } as CSSProperties}>
+      <p className="mb-4 text-center text-sm text-text-dim">
+        Every colour is one finger. Press a key, or tap one, and see.
+      </p>
+
+      <div className="kg-ans" aria-live="polite">
+        <div className={`kg-cap${capWord ? ' kg-cap-word' : ''}`}>{cap}</div>
+        <div className="kg-say">
+          {headline}
+          {detail && <small>{detail}</small>}
+        </div>
+      </div>
+      <p className="kg-stats">{statsLine}</p>
+
+      <div className="kg-board">
+        {LAYOUT.map((row, ri) => (
+          <div key={ri} className="kg-row">
+            {row.map(renderCell)}
+          </div>
         ))}
       </div>
 
-      {/* Home-row toggle + meta */}
-      <div className="mb-5 flex flex-wrap items-center justify-center gap-3 text-xs text-text-dim">
-        <button
-          type="button"
-          onClick={() => setHomeOnly((v) => !v)}
-          className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 transition-all ${
-            homeOnly
-              ? 'bg-accent-bg text-accent'
-              : 'text-text-dim hover:bg-surface-raised hover:text-text'
-          }`}
-        >
-          <Home className="h-3 w-3" />
-          home row only
-        </button>
-        <span className="text-text-dim">·</span>
-        <span className="inline-flex items-center gap-1">
-          <Hand className="h-3 w-3 text-accent" />
-          hover or click a key
-        </span>
-      </div>
-
-      {/* Interactive keyboard */}
-      <div className="w-full pb-2">
-        <div className="w-full space-y-1.5">
-          {keyboardRows.map((row, ri) => (
-            <div key={ri} className="flex justify-center gap-1">
-              {row.map((key) => {
-                const color = getKeyColor(key);
-                const isHome = homeRowKeys.has(key);
-                const dim = isDimmed(key);
-                const isActive = activeKey === key;
-                const stats = keyStats(key);
-                const acc =
-                  stats && stats.totalPresses > 0
-                    ? Math.round((stats.correctPresses / stats.totalPresses) * 100)
-                    : null;
-
-                return (
-                  <button
-                    key={key}
-                    type="button"
-                    onMouseEnter={() => setHoveredKey(key)}
-                    onMouseLeave={() => setHoveredKey(null)}
-                    onClick={() => setSelectedKey(key)}
-                    className={`key relative h-11 min-w-0 flex-1 text-xs font-mono sm:h-12 sm:text-sm ${
-                      isHome ? 'home-row' : ''
-                    } ${isActive ? 'key-hint z-10' : ''} ${
-                      dim ? 'opacity-20' : ''
-                    }`}
-                    style={
-                      !isActive
-                        ? {
-                            borderColor: dim ? undefined : color,
-                            color: dim ? undefined : color,
-                            boxShadow: stats && acc !== null && acc < 90
-                              ? `0 0 0 1px ${color}40`
-                              : undefined,
-                          }
-                        : undefined
-                    }
-                    aria-label={`Key ${key}, ${formatFinger(key)}`}
-                    aria-pressed={selectedKey === key}
-                  >
-                    <span>{key === ';' ? ';' : key.toUpperCase()}</span>
-                    {isHome && (
-                      <span className="absolute bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-current opacity-60" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
-          ))}
-          <div className="flex justify-center">
-            <button
-              type="button"
-              onMouseEnter={() => setHoveredKey(' ')}
-              onMouseLeave={() => setHoveredKey(null)}
-              onClick={() => setSelectedKey(' ')}
-              className={`key h-11 w-[55%] max-w-xl text-xs font-mono sm:h-12 ${
-                activeKey === ' ' ? 'key-hint' : ''
-              } ${isDimmed(' ') ? 'opacity-20' : ''}`}
-              style={
-                activeKey !== ' '
-                  ? {
-                      borderColor: getKeyColor(' '),
-                      color: getKeyColor(' '),
-                    }
-                  : undefined
-              }
-              aria-label="Space bar, either thumb"
-            >
-              space
-            </button>
-          </div>
+      <div className="kg-hands">
+        <div>
+          <GuideHands hand="left" activeZone={zone} onPick={pickZone} />
+          <p className="kg-hand-label">Left hand</p>
+        </div>
+        <div>
+          <GuideHands hand="right" activeZone={zone} onPick={pickZone} />
+          <p className="kg-hand-label">Right hand</p>
         </div>
       </div>
 
-      {/* Detail panel — fixed height so hover does not reflow the centered page. */}
-      <div className="mt-8 w-full rounded-xl border border-surface-border bg-surface-raised/50 p-5">
-        {activeKey ? (
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div>
-              <p className="text-[10px] uppercase tracking-widest text-text-dim">selected key</p>
-              <p
-                className="mt-1 font-mono text-4xl font-light tabular-nums"
-                style={{ color: selectedColor }}
-              >
-                {activeKey === ' ' ? '␣' : activeKey.toUpperCase()}
-              </p>
-              <p className="mt-2 text-sm text-text">
-                <span className="text-text-dim">finger · </span>
-                {formatFinger(activeKey)}
-              </p>
-              <p
-                className={`mt-1 text-xs text-accent ${
-                  homeRowKeys.has(activeKey) ? '' : 'invisible'
-                }`}
-              >
-                Home row rest position
-              </p>
-            </div>
-            <div className="min-h-[7.5rem] min-w-[9rem] rounded-lg border border-surface-border bg-surface px-4 py-3">
-              <p className="text-[10px] uppercase tracking-widest text-text-dim">your stats</p>
-              {selectedStats && selectedStats.totalPresses > 0 ? (
-                <div className="mt-2 space-y-1 font-mono text-sm">
-                  <p className="tabular-nums text-text-bright">
-                    {selectedStats.totalPresses}
-                    <span className="text-text-dim"> presses</span>
-                  </p>
-                  <p className="tabular-nums text-correct">
-                    {Math.round(
-                      (selectedStats.correctPresses / selectedStats.totalPresses) * 100,
-                    )}
-                    <span className="text-text-dim">% acc</span>
-                  </p>
-                  <p className="tabular-nums text-error">
-                    {selectedStats.incorrectPresses}
-                    <span className="text-text-dim"> errors</span>
-                  </p>
-                </div>
-              ) : (
-                <p className="mt-2 text-xs text-text-dim">
-                  No data yet — practice to fill this in.
-                </p>
-              )}
-            </div>
-          </div>
-        ) : (
-          <p className="text-sm text-text-dim">Select a key to see finger placement.</p>
-        )}
+      <div className="mx-auto mt-6 max-w-xl rounded-xl border border-accent/30 bg-accent-bg px-4 py-3 text-center text-sm text-text">
+        Start with your fingers on <b className="text-accent">A S D F</b> and{' '}
+        <b className="text-accent">J K L ;</b>. Feel the bumps on <b className="text-accent">F</b> and{' '}
+        <b className="text-accent">J</b>: that is home. Your thumbs rest on the space bar.
       </div>
+      <p className="mt-3 text-center text-xs text-text-dim">
+        You can also press keys on your real keyboard. Grey keys are not part of finger training.
+      </p>
 
-      {/* Weak keys + CTAs */}
-      <div className="mt-6 grid w-full gap-3 sm:grid-cols-2">
+      {/* Weak keys + next steps */}
+      <div className="mt-8 grid w-full gap-3 sm:grid-cols-2">
         <div className="rounded-xl border border-surface-border bg-surface-raised/40 p-4">
           <div className="flex items-center gap-2 text-accent">
             <Target className="h-3.5 w-3.5" />
@@ -282,10 +291,10 @@ export default function KeyboardGuide() {
                 <button
                   key={k.key}
                   type="button"
-                  onClick={() => setSelectedKey(k.key)}
+                  onClick={() => select(k.key)}
                   className="rounded-md border border-surface-border px-2 py-1 font-mono text-xs text-text transition-colors hover:border-accent hover:text-accent"
                 >
-                  {k.key.toUpperCase()}
+                  {k.key === ' ' ? 'space' : k.key.toUpperCase()}
                 </button>
               ))}
             </div>
@@ -326,12 +335,6 @@ export default function KeyboardGuide() {
           </ul>
         </div>
       </div>
-
-      <p className="mt-8 max-w-md text-center text-[11px] leading-relaxed text-text-dim/70">
-        Colors show which finger owns each key. Rest on{' '}
-        <span className="text-text">A S D F</span> and{' '}
-        <span className="text-text">J K L ;</span> — bumps on F and J are your anchors.
-      </p>
     </div>
   );
 }

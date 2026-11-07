@@ -8,6 +8,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
 ## 0. Resume here (updated 2026-10-31)
 - **Keep this file and `analytics.md` current.** At the end of every session or change, update the status here and add a dated entry to `analytics.md` if any numbers were read. They are how a new session learns the project state.
 - **Repo state (2026-10-31):** `master` = `origin/master` = `614af26`, deployed through Coolify (~3 min) and checked live. That release carried everything built since 10-24: the favicon `removeChild` fix, the IndexNow key file, post 11, the Your practice card, the appearance controls (left sidebar under settings), the accessibility fixes, the shorter speed-test passage and the docs commits. All feature branches are merged and can be deleted. **Docs-only branch `docs/released-2026-10-31` (local, not pushed; it ships with the next code release)** holds the release notes, the PageSpeed re-run and this update. Live check after the push: 14 routes 200, `aria-label` on the input, `#a4a4a4` dim text, 2,881 passage characters at 1 minute, 6 client navigations with no console errors.
+- **In progress (2026-11-07):** branch `feat/keyboard-guide-fingers` (off `docs/released-2026-11-07`, local, not pushed) holds the rebuilt Keyboard guide (laptop layout, hands, Shift symbols; rules in section 4). tsc and build pass and it is browser-tested; **waiting for Ashiqur to say release** before the merge to master and push.
 - **Retitle read done 2026-11-07 (details in `analytics.md`):** Bing CTR about 2.07 % before the retitle (12 to 18 Oct) and 2.48 % after (19 Oct to 4 Nov); flat in the first week, higher since 26 Oct. Cause not proven. The `www` redirect and the redirects for the two removed posts are now unblocked (confirm with Ashiqur, own branch). The weekly analytics read was last done **2026-11-07**; next Friday 2026-11-13. AdSense is under review (per Ashiqur, 11-07).
 - **Do next (agreed 2026-10-31: growth through distribution first; Ashiqur postponed the share image):**
   1. **Google indexing** [A+C]: **Ashiqur requested indexing page by page in Search Console during the week of 10-31 to 11-06 (which pages was not recorded).** The Page indexing report on 11-07 still showed 9 indexed / 14 not (13 "discovered, not crawled"), but that report lags by days. Re-read it on 11-13 and note its "last update" date; keep requesting a few pages a day (daily limit about 10), including `/blog/how-long-to-practice-typing-each-day` if not yet done.
@@ -58,7 +59,7 @@ This is the living reference. History lives in git. Per-guide detail lives in th
 src/app/        page (speed test), [slug] (6 tool routes), blog, blog/[slug], about, contact, privacy,
                 terms, disclaimer, settings (noindex), sitemap.ts, robots.ts, feed.xml, manifest.ts, opengraph-image
 src/components/skills/typing/
-                TypingSpeedTest, TypingLessons, TypingPractice, KeyboardGuide, TypingProgress,
+                TypingSpeedTest, TypingLessons, TypingPractice, KeyboardGuide (+ GuideHands, guideLayout), TypingProgress,
                 FallingWordsGame, WordAttackGame, LiveKeyboard, TypingPassage, PracticeFeedback, GameFeedback
                 useTypingEngine (timer, WPM, Backspace), useTypingProgress (localStorage),
                 useKeySound, mobileInput (touch/IME fallback)
@@ -117,6 +118,12 @@ The guides and posts must stay consistent with these.
 - **Weak spots** (max 4): keys with ≥ 2 mistakes (top 2) and letter pairs ≥ 1.5 × this run's median pair and ≥ 120 ms (needs ≥ 5 pairs typed ≥ 2 times with a clean timing; top 2). “drill these” = adaptive tab (button on Practice, link elsewhere).
 - Storage: `run` is saved only in the latest-5 logs (`-speed-log`, `-practice-log`, `-lessons-log`, ~0.6–1.2 KB each) and is stripped (`withoutRun`) before `addSession`, so the long `freetyper-progress` history never grows. Old runs (and runs < 5 s) render the card without graph/consistency.
 - Graph (`RunGraph.tsx`): hand-drawn SVG, no chart library; hover / touch / arrow keys show one second; has an `aria-label` summary.
+
+**Keyboard guide (rebuilt 2026-11-07 on branch `feat/keyboard-guide-fingers`, not released until merged)**
+- Layout: US laptop (ANSI QWERTY) without the F-row, real key widths and stagger (`guideLayout.ts` `LAYOUT`). Symbol keys show the Shift symbol above the main one. Shift, Enter, Tab, Caps and Backspace are finger keys (Shift: opposite hand's little finger; Enter and Backspace: right little; Tab and Caps: left little). Ctrl, Alt, Win and the arrows (Home/End/PgUp/PgDn printed on them) are grey and not part of the map. Space bar = either thumb.
+- One answer card (fixed height, so nothing jumps), one keyboard, two drawn hands (`GuideHands.tsx`; the right hand is the left mirrored). Tapping a finger lights its keys; pressing keys on the real keyboard selects them (`?` or a capital shows the Shift step and lights the Shift key to use). Tab is never intercepted; Enter and Space on a focused control still activate it.
+- Kept from before: per-key stats line (after hydration only), faint ring on keys under 90 % accuracy, Weak keys card, Next steps card. Removed: finger filter pills and the home-row-only toggle.
+- Guide text, FAQ, how-to steps and `tools.ts` description updated in the same change (visible date 2026-11-07). Checked in a browser on `next start`: desktop, a 390 px iframe, light theme, no console errors from the site. Not tested on a real phone: keys are about 17 px wide at 390 px.
 
 **Progress**
 - A “Weakest letter pairs” card (top 5: ms, × your typical pair, % errors, samples); under ~100 recorded pairs it says more typing is needed.

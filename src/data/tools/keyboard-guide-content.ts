@@ -1,19 +1,20 @@
 /**
  * Guide content for /keyboard-guide.
  *
- * Describes `KeyboardGuide.tsx` and the finger map in `typingData.ts`
- * (`fingerMap`, `keyboardColors`, `keyboardRows`, `homeRowKeys`). If the map,
- * colours or filters change, update this file in the same commit.
+ * Describes `KeyboardGuide.tsx`, `GuideHands.tsx` and `guideLayout.ts` (the US laptop
+ * layout, Shift symbols and the special keys) and the finger map in `typingData.ts`
+ * (`fingerMap`, `keyboardColors`, `homeRowKeys`). If the map, colours, layout or the
+ * way a key is selected change, update this file in the same commit.
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-18
+ * Last real edit: 2026-11-07
  */
 
 export const meta = {
   title: 'Keyboard Finger Chart — Which Finger Types Which Key (Free)',
   description:
-    'A colour-coded keyboard chart for hand placement: see which finger types each key, with a home-row mode and your own key accuracy. Free, no signup, QWERTY.',
+    'A colour-coded laptop keyboard with two hands: see which finger types each key, including Shift symbols, Enter and Backspace, plus your own key accuracy. Free, no signup, QWERTY.',
 };
 
 export const faqs: { question: string; answer: string }[] = [
@@ -35,7 +36,12 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Which finger presses the space bar?',
     answer:
-      'Either thumb. Most people favor one thumb out of habit. The guide marks the space bar in neutral grey and labels it as either thumb, because it does not belong to any of the eight finger zones.',
+      'Either thumb. Most people favor one thumb out of habit. The guide marks the space bar in neutral grey and says either thumb, because it does not belong to any of the eight finger zones.',
+  },
+  {
+    question: 'Which finger do I use for Shift, Enter and Backspace?',
+    answer:
+      'By the usual touch-typing convention, Enter and Backspace are reached with the right little finger, and Tab and Caps Lock with the left little finger. For Shift you use the little finger on the opposite hand from the key you are pressing: right Shift for keys typed with your left hand, and left Shift for keys typed with your right hand. This is the standard textbook convention, and individual typists vary. The guide shows it, and when you press a capital letter or a symbol such as the question mark on your own keyboard it names the Shift finger as well.',
   },
   {
     question: 'Which fingers type the number row?',
@@ -55,7 +61,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Does the keyboard guide cover Dvorak or Colemak?',
     answer:
-      'No. The guide shows the standard QWERTY layout only, and it does not show modifier keys such as Shift, Enter, Tab or Backspace.',
+      'No. The guide shows one layout only: the standard US laptop QWERTY keyboard, without the function-key row. It draws Shift, Enter, Tab, Caps Lock, Backspace, the space bar and the symbols above the number and punctuation keys. Ctrl, Alt, Win and the arrow keys are drawn in grey for realism but are not part of the finger map.',
   },
   {
     question: 'Is my key data saved or shared?',
@@ -72,21 +78,22 @@ export const previewHtml = `
 <h2>Keyboard Guide — Color-Coded Finger Placement for Touch Typing</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-18">October 18, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-07">November 7, 2026</time></span>
   <span>~6 min read</span>
 </p>
-<p>This keyboard guide shows the correct finger placement for each key on a standard QWERTY keyboard. Every key is coloured by the finger that owns it, the eight home-row keys carry a small dot, and you can click or hover over any key to see its finger and your own accuracy on it. It is a reference for learning touch typing and for working out why certain keys keep going wrong.</p>
+<p>This keyboard guide shows the correct finger placement for each key on a standard US laptop keyboard (QWERTY). Every key is coloured by the finger that owns it, the eight home-row keys carry a small underline, and two drawn hands show which finger to use. Click or hover over any key, or press a key on your own keyboard, to see its finger, how to reach it and your own accuracy on it. It is a reference for learning touch typing and for working out why certain keys keep going wrong.</p>
 <p>Below you will find how to use the guide, the full finger map in text form, what your key statistics mean, and where the guide stops being useful.</p>
 `;
 
 export const bodyHtml = `
 <h2 id="how-to-use-the-keyboard-guide">How to use the keyboard guide</h2>
 <ul>
-<li><strong>Hover or click a key.</strong> A panel under the keyboard shows the key, the finger that types it, and, if it is a home-row key, a "home row rest position" note. The F key is selected when the page opens.</li>
-<li><strong>Filter by finger.</strong> The pills at the top let you light up one finger's keys and dim the rest: left little, ring, middle and index, then right index, middle, ring and little.</li>
-<li><strong>Home row only.</strong> This toggle dims everything except the eight home-row keys (and leaves the space bar lit), so you can focus on the resting position.</li>
-<li><strong>Your stats.</strong> The panel also shows how many times you have pressed that key, your accuracy on it, and your error count. A key where your accuracy is under 90% gets a faint glow around it.</li>
-<li><strong>Weak keys.</strong> Up to five of your least accurate keys are listed as buttons. Click one to jump to it, or follow the link to <a href="/typing-practice">adaptive practice</a>, which drills your weakest key (and its slow letter pairs) in real words.</li>
+<li><strong>Press or tap a key.</strong> A card above the keyboard says which hand and finger types it, in plain words such as "Left hand, middle finger", and how to reach it from the home row. The F key is selected when the page opens. You can also press keys on your own keyboard, and the card follows.</li>
+<li><strong>Symbols and capitals.</strong> Each symbol key shows the symbol you get with Shift above the main one, like a real laptop. Press a capital letter or a shifted symbol on your own keyboard, for example the question mark, and the card tells you to hold Shift with the little finger of the opposite hand, then press the key with its own finger. The Shift key to use lights up.</li>
+<li><strong>Two hands.</strong> The hands under the keyboard use the same colours. The active finger lifts and glows, and each fingertip shows its home key. Tap a finger to light up all of its keys and fade the rest.</li>
+<li><strong>Grey keys.</strong> Ctrl, Alt, Win and the arrow keys (with Home, End, Page Up and Page Down printed on them, as on many laptops) are drawn for realism but are not part of the finger map. Layouts differ between laptops, so yours may place them differently.</li>
+<li><strong>Your stats.</strong> Under the card, for letter, number and symbol keys, the guide shows how many times you have pressed that key, your accuracy on it and your error count. A key where your accuracy is under 90% gets a faint glow around it.</li>
+<li><strong>Weak keys.</strong> Up to six of your least accurate keys are listed as buttons. Click one to jump to it, or follow the link to <a href="/typing-practice">adaptive practice</a>, which drills your weakest key (and its slow letter pairs) in real words.</li>
 </ul>
 
 <h2 id="which-finger-types-which-key">Which finger types which key? The full finger placement chart</h2>
@@ -105,7 +112,7 @@ export const bodyHtml = `
 <tr><td>Either thumb</td><td>Grey</td><td>Space bar</td></tr>
 </tbody>
 </table>
-<p>This is the standard textbook assignment. The guide does not show Shift, Enter, Tab or Backspace. By the usual convention you press Shift with the little finger on the opposite hand from the letter you are capitalising, and reach for Enter and Backspace with the right little finger.</p>
+<p>This is the standard textbook assignment, and the guide also shows the keys around it. By the usual convention you press Shift with the little finger on the opposite hand from the key you are typing, reach for Enter and Backspace with the right little finger, and for Tab and Caps Lock with the left little finger. Typists vary, so treat it as a starting point.</p>
 
 <h2 id="home-row-and-the-f-and-j-bumps">The home row and the F and J bumps</h2>
 <p>The home row is the middle row of letters. Your left fingers rest on A, S, D and F, your right fingers on J, K, L and the semicolon, and your thumbs on the space bar. The raised bumps on F and J are there so your index fingers can find home by touch. After every reach, return to that position: it is what keeps every other key a short, consistent distance away.</p>
@@ -121,8 +128,8 @@ export const bodyHtml = `
 <h2 id="using-the-finger-map-to-learn-touch-typing">Using the finger placement map to learn touch typing</h2>
 <p>These are our recommendations, not guarantees.</p>
 <ol>
-<li><strong>Study the home row first.</strong> Switch on "home row only" and set your hands to match.</li>
-<li><strong>Add one finger at a time.</strong> Use the filters to look at a finger's whole column, then practice those keys.</li>
+<li><strong>Study the home row first.</strong> Tap each home-row key (A S D F, J K L and the semicolon) and set your hands to match the drawing.</li>
+<li><strong>Add one finger at a time.</strong> Tap a finger in the hands to see its whole column, then practice those keys.</li>
 <li><strong>Learn by doing.</strong> The <a href="/typing-lessons">typing lessons</a> introduce the rows in order, and the finger map is the reference to check when a key confuses you.</li>
 <li><strong>Return to home after each reach.</strong> Do not let your hands drift.</li>
 <li><strong>Come back with data.</strong> After some practice, return to the guide and see which keys have the lowest accuracy.</li>
@@ -134,8 +141,8 @@ export const bodyHtml = `
 
 <h2 id="limits-of-the-keyboard-guide">Limits of the keyboard guide</h2>
 <ul>
-<li>QWERTY only. There is no Dvorak or Colemak view.</li>
-<li>It draws the main character keys and the space bar, not Shift, Enter, Tab, Backspace or the function keys.</li>
+<li>QWERTY only, drawn as a US laptop keyboard without the function-key row. There is no Dvorak, Colemak, UK or other layout.</li>
+<li>It draws the character keys, Shift, Enter, Tab, Caps Lock, Backspace and the space bar as finger keys. Ctrl, Alt, Win and the arrows are shown in grey only, and Shift symbols are shown for the standard US legends.</li>
 <li>It shows the standard textbook finger assignment. Individual hands and habits vary, and this is not ergonomic or medical advice.</li>
 <li>Your stats reflect typing on this device and browser only.</li>
 </ul>
@@ -148,7 +155,7 @@ ${faqHtml}
 
 <h2 id="sources-and-method">Sources and method</h2>
 <ul class="article-sources">
-<li>Finger map, colours, filters and key statistics: how the guide on this page works, as described above. The map is the standard touch-typing assignment.</li>
+<li>Finger map, colours, hands and key statistics: how the guide on this page works, as described above. The map is the standard touch-typing assignment.</li>
 <li>Finger-use findings: Dhakal, Feit, Kristensson and Oulasvirta, <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>, CHI 2018.</li>
 <li>The routine and the weak-key pattern notes are FreeTyper's own suggestions.</li>
 </ul>
@@ -158,15 +165,15 @@ ${faqHtml}
 export const howToSteps: { name: string; text: string }[] = [
   {
     name: 'Set your hands on the home row',
-    text: 'Switch on home row only, then rest your left fingers on A, S, D and F and your right fingers on J, K, L and the semicolon. Use the bumps on F and J to find the position by touch.',
+    text: 'Rest your left fingers on A, S, D and F and your right fingers on J, K, L and the semicolon, matching the hands drawn under the keyboard. Use the bumps on F and J to find the position by touch, and rest your thumbs on the space bar.',
   },
   {
     name: 'Click a key to see its finger',
-    text: 'Hover over or click any key to see which finger types it and the colour of that finger zone.',
+    text: 'Hover over or click any key, or press it on your own keyboard, to see which hand and finger types it and how to reach it.',
   },
   {
-    name: 'Filter by one finger',
-    text: 'Use the finger pills at the top to light up only one finger\'s keys and study its column.',
+    name: 'Study one finger at a time',
+    text: 'Tap a finger in the hands under the keyboard to light up only that finger\'s keys and study its column.',
   },
   {
     name: 'Check your weak keys',
