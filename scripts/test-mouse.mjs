@@ -7,7 +7,7 @@ import {
 
 import {
   LEVEL_ITEMS, LEVEL_NAMES, isLevelPassed, isLevelUnlocked, rankOf, firstOpenIndex,
-  PASS, meetsAccuracy, distToSegment, insideRatio, scalePath, stepTarget, shrinkDiameter, gauntletScore,
+  PASS, meetsAccuracy, densify, distToSegment, insideRatio, scalePath, stepTarget, shrinkDiameter, gauntletScore,
 } from '../src/components/skills/mouse/levelRules.ts';
 
 let n = 0;
@@ -144,5 +144,19 @@ t('shrinking diameter', () => {
 t('gauntlet score floors at zero', () => {
   assert.equal(gauntletScore(20, 3), 17);
   assert.equal(gauntletScore(2, 5), 0);
+});
+t('densify fills the gap between two pointer samples', () => {
+  const pts = densify({ x: 0, y: 0 }, { x: 100, y: 0 }, 10);
+  assert.ok(pts.length >= 9 && pts.length <= 10, String(pts.length));
+  for (let i = 1; i < pts.length; i++) assert.ok(pts[i].x - pts[i - 1].x <= 10.001);
+  assert.ok(pts.every((p) => p.x > 0 && p.x < 100));
+  assert.deepEqual(densify({ x: 0, y: 0 }, { x: 5, y: 0 }, 10), []);
+});
+t('a fast flick across the path is judged on the line it traces', () => {
+  const poly = [{ x: 0, y: 100 }, { x: 100, y: 100 }, { x: 100, y: 0 }];
+  const flick = [{ x: 0, y: 100 }, ...densify({ x: 0, y: 100 }, { x: 100, y: 0 }, 5), { x: 100, y: 0 }];
+  assert.ok(insideRatio(flick, poly, 10) < 85);
+  const careful = [{ x: 0, y: 100 }, ...densify({ x: 0, y: 100 }, { x: 100, y: 100 }, 5), { x: 100, y: 100 }, ...densify({ x: 100, y: 100 }, { x: 100, y: 0 }, 5), { x: 100, y: 0 }];
+  assert.equal(insideRatio(careful, poly, 10), 100);
 });
 console.log(`\n${n} passed`);

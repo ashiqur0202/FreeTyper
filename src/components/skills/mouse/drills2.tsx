@@ -212,6 +212,8 @@ export function SelectDrill({ onDone }: DrillProps) {
         done.current = true;
         onDone();
       } else {
+        // Clear it: pressing inside an old selection would start dragging that text instead.
+        window.getSelection()?.removeAllRanges();
         setMsg('That selected something else. Select only the highlighted sentence.');
       }
     }, 0);
@@ -237,8 +239,13 @@ export function FindDrill({ onDone }: DrillProps) {
   const [msg, setMsg] = useState('');
   return (
     <Box id="find">
-      <p className="mp-count" style={{ zIndex: 2 }}>Find Item {FIND_ITEM} and click it</p>
-      <div className="mp-list" style={{ paddingTop: '1.8rem' }} data-testid="find-list">
+      <p
+        className="mp-count"
+        style={{ zIndex: 2, left: 0, right: 0, top: 0, padding: '0.45rem 0.8rem', background: 'var(--color-surface-raised)', borderBottom: '1px solid var(--color-surface-border)' }}
+      >
+        Find Item {FIND_ITEM} and click it
+      </p>
+      <div className="mp-list" style={{ paddingTop: '2.2rem' }} data-testid="find-list">
         {Array.from({ length: 60 }, (_, n) => (
           <div
             key={n}

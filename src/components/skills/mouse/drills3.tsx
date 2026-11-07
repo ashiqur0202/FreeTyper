@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { Box, RetryOverlay, useLock, type DrillProps } from './drills';
 import { randomTarget } from './aimScoring';
-import { PASS, insideRatio, stepTarget, type Mover, type Pt } from './levelRules';
+import { PASS, densify, insideRatio, stepTarget, type Mover, type Pt } from './levelRules';
 
 // Level 3 (Skilled): speed and smooth movement. Each drill calls onDone once, only when it passes.
 
@@ -105,7 +105,10 @@ export function SteerDrill({ onDone }: DrillProps) {
   const move = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!steering) return;
     const p = toViewBox(e);
-    if (p) samples.current.push(p);
+    if (!p) return;
+    const last = samples.current[samples.current.length - 1];
+    if (last) samples.current.push(...densify(last, p, 8));
+    samples.current.push(p);
   };
   const finish = () => {
     if (!steering) return;

@@ -66,6 +66,18 @@ export function distToSegment(px: number, py: number, ax: number, ay: number, bx
   return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
 }
 
+/**
+ * Points between two pointer samples, at most `step` apart (neither end included). A fast flick
+ * reports few samples, so steering is judged on the line the pointer actually traced.
+ */
+export function densify(a: Pt, b: Pt, step: number): Pt[] {
+  const n = Math.floor(Math.hypot(b.x - a.x, b.y - a.y) / step);
+  return Array.from({ length: n }, (_, i) => {
+    const t = (i + 1) / (n + 1);
+    return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+  });
+}
+
 /** Percent (whole number) of points within halfWidth of the polyline; 0 when there are none. */
 export function insideRatio(points: Pt[], poly: Pt[], halfWidth: number): number {
   if (!points.length) return 0;
