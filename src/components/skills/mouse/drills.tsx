@@ -140,6 +140,7 @@ export function DragDrill({ onDone }: DrillProps) {
   const start = useRef<{ x: number; y: number } | null>(null);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [dragging, setDragging] = useState(false);
+  const [msg, setMsg] = useState('');
 
   const reset = () => {
     start.current = null;
@@ -152,6 +153,7 @@ export function DragDrill({ onDone }: DrillProps) {
     e.currentTarget.setPointerCapture(e.pointerId);
     start.current = { x: e.clientX, y: e.clientY };
     setDragging(true);
+    setMsg('');
   };
   const move = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!start.current) return;
@@ -166,6 +168,7 @@ export function DragDrill({ onDone }: DrillProps) {
       setDragging(false);
       onDone();
     } else {
+      setMsg('The card went back. Keep it pressed until the pointer is over the dashed box, then let go.');
       reset();
     }
   };
@@ -186,6 +189,7 @@ export function DragDrill({ onDone }: DrillProps) {
       >
         drag me
       </div>
+      <p className="mp-msg">{msg}</p>
     </Box>
   );
 }

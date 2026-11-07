@@ -172,6 +172,7 @@ export function QuickDrill({ onDone }: DrillProps) {
   const [count, setCount] = useState(0);
   const [pos, setPos] = useState({ x: 200, y: 90 });
   const [failed, setFailed] = useState(false);
+  const [msg, setMsg] = useState('');
 
   useEffect(() => () => clearTimeout(timer.current), []);
 
@@ -183,6 +184,7 @@ export function QuickDrill({ onDone }: DrillProps) {
   const dbl = () => {
     if (locked() || failed) return;
     arm();
+    setMsg('');
     const c = count + 1;
     setCount(c);
     if (c >= QUICK_COUNT) {
@@ -208,6 +210,7 @@ export function QuickDrill({ onDone }: DrillProps) {
           className="mp-target"
           style={{ left: pos.x + 32, top: pos.y + 32 }}
           onPointerDown={arm}
+          onClick={() => !locked() && setMsg('That was one click. Click twice, quickly.')}
           onDoubleClick={dbl}
           data-testid="quick-target"
         >
@@ -215,6 +218,7 @@ export function QuickDrill({ onDone }: DrillProps) {
         </div>
       </div>
       <p className="mp-count">{count} of {QUICK_COUNT} · {QUICK_MS / 1000} seconds from your first click</p>
+      <p className="mp-msg">{msg}</p>
       {failed && <RetryOverlay text="Time ran out. Try to double-click each circle in one smooth motion." onRetry={retry} />}
     </Box>
   );
