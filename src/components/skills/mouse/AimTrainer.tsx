@@ -152,7 +152,7 @@ export default function AimTrainer() {
           <div className="absolute inset-0 grid place-items-center bg-black/40" onPointerDown={(e) => e.stopPropagation()}>
             <div className="text-center">
               <p className="text-sm text-text-dim">{isBest ? 'New best!' : 'Time is up'}</p>
-              <div className="mt-3 grid grid-cols-5 gap-4">
+              <div className="mt-3 grid grid-cols-3 gap-x-4 gap-y-3 px-3 sm:grid-cols-5">
                 <div className="mp-stat"><b data-testid="aim-score">{result.score}</b><span>score</span></div>
                 <div className="mp-stat"><b>{result.hits}</b><span>hits</span></div>
                 <div className="mp-stat"><b>{result.misses}</b><span>misses</span></div>

@@ -71,6 +71,9 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 
 ## Log (newest first)
 
+### 2026-11-07 (later) — new events for the planned mouse practice page (not live yet)
+No numbers read. When `/mouse-practice` ships it sends `mouse_step_complete` (`step`: move, click, double, right, drag, scroll, mixed; `device`: mouse or trackpad) and `aim_run_complete` (`size`: large, medium, small; `hits`; `accuracy` in whole percent; `score`). Register `step`, `device`, `size`, `hits`, `accuracy` as custom definitions in GA4 (the `score` metric already exists). Suggested first read after launch: users who finish step 7 versus users who start an Aim run.
+
 ### 2026-11-07 — Friday check, run a day late (GA4 28 d = Oct 10 to Nov 6, 7 d = Oct 31 to Nov 6; GSC 28 d to 11-04; Bing 12 Oct to 4 Nov; all read by Claude; AdSense is under review per Ashiqur, not read)
 - **GA4 28 d:** 1,527 users (1,484 new), 25,404 events, 5,251 key events, engagement rate 71.7 %, 16m 39s per user. Home 30 d: 1.6K users (+75.4 %). **7 d:** 490 new (+28.6 %), 141 returning (+27.0 %). Sessions 7 d: bing 570 (+42.5 %), direct 118, yahoo 76 (+117 %), chatgpt.com 39 (+32.8 %), ecosia 13, google 11. Cities 7 d: Dhaka 19, Louisville 15, Singapore 10, Hyderabad 10, Ashburn 6.
 - **Events (28 d, events / users):** page_view 6,441 · lesson_attempt 3,752 / 484 · practice_complete 3,365 / 249 · lesson_complete 2,275 / 354 · test_complete 1,354 / 227 · setting_change 635 / 102 · game_round_complete 420 / 61. Users who did lesson_attempt 31.7 %, practice 16.3 %, test 14.9 %. GA4 flagged a spike on Nov 5: 264 lesson_attempt against 82 expected (Edge 78 to 211 a week, US 36 to 150); cause unknown. A GA4 insight also flags a Direct key-event spike of 72 on Oct 28.
