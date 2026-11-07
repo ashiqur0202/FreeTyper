@@ -98,7 +98,8 @@ export function SteerDrill({ onDone }: DrillProps) {
 
   const begin = () => {
     if (failed !== null) return;
-    samples.current = [];
+    // Seed with the start dot so even a fast flick is judged from where the pointer began.
+    samples.current = [PATH[0]];
     setSteering(true);
     setMsg('');
   };
@@ -264,7 +265,7 @@ export function MenuDrill({ onDone }: DrillProps) {
         if (!(e.target as HTMLElement).closest('.mp-menu')) setMenu(null);
       }}
     >
-      <div className="mp-target" style={{ left: '30%', top: '50%' }} data-testid="menu-target">
+      <div className="mp-target mp-target-wide" style={{ left: '30%', top: '50%' }} data-testid="menu-target">
         right-click
       </div>
       <p className="mp-count">{round + 1} of {MENU_PROMPTS.length}: right-click the circle, then choose {MENU_PROMPTS[Math.min(round, MENU_PROMPTS.length - 1)]}</p>

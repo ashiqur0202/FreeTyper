@@ -145,7 +145,7 @@ export default function AimTrainer({ lockedMode, passScore, onPass }: Props) {
   return (
     <div className="mx-auto w-full max-w-2xl">
       {!lockedMode && (
-        <div className="flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Mode">
+        <div className="flex flex-wrap items-center justify-center gap-2" role="group" aria-label="Aim mode">
           {(Object.keys(MODE_LABEL) as AimMode[]).map((m) => {
             const open = modeOpen(m);
             return (
