@@ -52,7 +52,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'What accuracy should I aim for?',
     answer:
-      'Aim for 95 percent or higher before you try to go faster. FreeTyper tells you to hold accuracy below 95 percent and calls a run below 88 percent not a real score, because errors either have to be fixed, which costs time, or left in, which costs quality. Speed usually rises on its own once your accuracy is stable.',
+      'Aim for 95 percent or higher before you try to go faster. FreeTyper tells you to hold accuracy below 95 percent, because errors either have to be fixed, which costs time, or left in, which costs quality. Speed usually rises on its own once your accuracy is stable.',
   },
   {
     question: 'Why do my scores change from one test to the next?',
@@ -137,7 +137,7 @@ export const bodyHtml = `
 </tbody>
 </table>
 <p>Under the stat tiles, a row of five bars shows the same labels as a ladder. A marker shows where your net WPM sits and how many words per minute remain to the next label. After you have finished at least three earlier speed tests on this device, the row also shows a dotted line at the average net WPM of your last 30 speed tests, and the "gross wpm" and "errors" tiles show your average for those tests next to this run's numbers (the errors average is scaled to the length of this test, so a 15-second run is compared with a 15-second share of your longer tests). Games, practice and lessons are not part of that average, and nothing is sent anywhere. For a rough outside reference, a CHI 2018 study of 168,960 typists reported a mean typing speed of 51.56 WPM (Dhakal et al.). We cite only that one speed figure, and our labels are not taken from the study.</p>
-<p>Read accuracy before you read speed. Below 95%, the test tells you to hold accuracy before chasing speed. Below 88%, it calls the run "not a real score," because that WPM was bought with errors that would have to be fixed or would end up in your work.</p>
+<p>Read accuracy before you read speed. Below 95%, the test tells you to hold accuracy before chasing speed, because that WPM was bought with errors that would have to be fixed or would end up in your work.</p>
 
 <h2 id="the-speed-graph-and-weak-spots">The speed graph, consistency and weak spots</h2>
 <p>Runs of 5 seconds or longer also get a graph under the headline numbers, and the result card adds a consistency score and a short list of weak spots.</p>

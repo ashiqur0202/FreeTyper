@@ -92,7 +92,7 @@ The guides and posts must stay consistent with these.
 - Net WPM = correct chars ÷ 5 ÷ minutes. Gross = all typed chars ÷ 5 ÷ minutes. Accuracy = correct ÷ typed.
 - **Backspace removes the stepped-back character from the tally (right or wrong).** Accuracy describes the text left on screen; a fix costs time, not accuracy.
 - Rank labels (ours, not a standard): beginner <40 · average 40–59 · skilled 60–79 · pro 80–99 · elite 100+.
-- Coach: below 95 % “hold accuracy”, below 88 % “not a real score”.
+- Coach: below 95 % “hold accuracy”. The speed-test “not a real score” message for runs below 88 % was removed 2026-11-09 at Ashiqur's request (practice and lessons keep their own stronger wording below 88 %).
 
 **Lessons (34 lessons, 6 stages)**
 - Home row 1–5 · top row 6–10 · bottom row 11–16 · Shift & punctuation 17–22 · numbers & symbols 23–28 · speed & accuracy 29–34.

@@ -36,7 +36,7 @@ export const blogPosts: BlogPost[] = [
     title: 'What Is a Good Typing Speed? What Large-Scale Data Shows',
     excerpt: 'What 168,960 typists actually scored, how to read your own WPM, what jobs usually ask for, and why accuracy matters as much as speed. Every figure is sourced.',
     date: '2026-06-09',
-    updated: '2026-10-04',
+    updated: '2026-11-09',
     author: 'Ashiqur Rahman',
     category: 'Typing Speed',
     readTime: '7 min',

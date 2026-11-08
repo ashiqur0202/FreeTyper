@@ -14,7 +14,7 @@
  * SD 20.2, 168,960 volunteers; top 10 % above about 78, bottom 10 % below
  * about 26), checked against the paper's results table on 2026-11-08.
  *
- * Last real edit: 2026-11-08
+ * Last real edit: 2026-11-09
  */
 
 export type DurationPage = {
@@ -32,7 +32,7 @@ export type DurationPage = {
 const byline = (): string => `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-08">November 8, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-09">November 9, 2026</time></span>
 </p>`;
 
 const sourcesHtml = (extra: string): string => `
@@ -134,7 +134,7 @@ const oneMinute: DurationPage = {
 <ol>
 <li><strong>Use the same text type each time.</strong> Sentences contain capital letters and punctuation, code is full of symbols, and plain words are easiest, so the same typist scores differently on each. Compare like with like.</li>
 <li><strong>Take three runs and read the middle one.</strong> One lucky or unlucky minute is easy to get.</li>
-<li><strong>Check accuracy before speed.</strong> Our coach note says "hold accuracy" below 95% and calls a run "not a real score" below 88%. Those cut-offs are our own, and a fast run with many mistakes says little about your typing.</li>
+<li><strong>Check accuracy before speed.</strong> Our coach note says "hold accuracy" below 95%. That cut-off is our own, and a fast run with many mistakes says little about your typing.</li>
 <li><strong>Test at a similar time of day,</strong> sitting the same way, if you are tracking progress over weeks.</li>
 </ol>
 

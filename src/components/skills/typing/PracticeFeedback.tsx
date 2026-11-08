@@ -351,17 +351,6 @@ export function speedTestCoachNote(
   const bestWpm = history.reduce((m, r) => Math.max(m, r.wpm), 0);
   const timed = run.duration < 20;
 
-  if (run.accuracy < 88) {
-    return {
-      headline: 'Not a real score',
-      tip: pick(id, [
-        'Too many misses. This WPM does not count until accuracy is back above 95%.',
-        'Slow down. A clean 50 is more useful than a messy 80.',
-      ]),
-      tone: 'warn',
-    };
-  }
-
   if (run.accuracy < 95) {
     return {
       headline: 'Hold accuracy',

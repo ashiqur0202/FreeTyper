@@ -95,7 +95,7 @@ export const typingSpeedArticles: Record<string, string> = {
 <p>When a posting names a number, ask three questions: whether it means net or gross WPM, whether corrections are allowed, and what accuracy minimum applies. FreeTyper reports <strong>net WPM</strong>, which counts only correct characters, and shows gross WPM beside it. For test-specific advice, see our guide to <a href="/blog/data-entry-typing-test">data entry typing tests</a>.</p>
 
 <h2 id="accuracy-matters-as-much-as-speed">Accuracy matters as much as speed</h2>
-<p>In the same study, typists who were faster also tended to be more accurate, and slower typists left more errors uncorrected, which the authors suggest may mean they are less able to spot their own mistakes. So chasing speed at the cost of accuracy is not how fast typists got there. The FreeTyper coach reflects this: below 95% accuracy it tells you to hold accuracy before chasing speed, and below 88% it calls the run not a real score. If accuracy is your weak point, read <a href="/blog/improve-typing-accuracy">how to improve typing accuracy</a>.</p>
+<p>In the same study, typists who were faster also tended to be more accurate, and slower typists left more errors uncorrected, which the authors suggest may mean they are less able to spot their own mistakes. So chasing speed at the cost of accuracy is not how fast typists got there. The FreeTyper coach reflects this: below 95% accuracy it tells you to hold accuracy before chasing speed. If accuracy is your weak point, read <a href="/blog/improve-typing-accuracy">how to improve typing accuracy</a>.</p>
 
 <h2 id="what-about-age">What about age?</h2>
 <p>You will find many "typing speed by age" tables online. We looked for reliable data to build one and did not find a source that shows how its figures were measured, so we do not publish an age table. The study above had mostly young participants and does not give a trustworthy breakdown by age in the figures we checked. If you are older or younger than the typical typist, use the labels above as a rough guide and track your own progress instead.</p>
@@ -115,7 +115,7 @@ export const typingSpeedArticles: Record<string, string> = {
 <ul class="article-sources">
 <li>Dhakal V, Feit AM, Kristensson PO, Oulasvirta A. <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a>. CHI 2018. Figures for average speed, percentile speeds, error rate and training effect are taken from the paper's results.</li>
 <li>Wikipedia, <a href="https://en.wikipedia.org/wiki/Words_per_minute" rel="noopener" target="_blank">Words per minute</a>: the five-characters-per-word convention, the Karat et al. 1999 transcription and composition averages, and the professional and job-related speed ranges.</li>
-<li>The FreeTyper speed bands and the 95% and 88% accuracy thresholds are our own, as described in the <a href="/">typing speed test guide</a>.</li>
+<li>The FreeTyper speed bands and the 95% accuracy threshold is our own, as described in the <a href="/">typing speed test guide</a>.</li>
 </ul>
 <p class="article-note">Written by <a href="/about#author">Ashiqur Rahman</a>. Figures attributed to a source were checked against that source. If you spot something wrong, <a href="/contact">tell me</a> and I will correct it.</p>
 `,
@@ -134,7 +134,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <h2 id="how-typical-is-95-percent">How typical is 95% accuracy?</h2>
 <p>In the study, the average uncorrected error rate was <strong>1.167%</strong> of the transcribed text (standard deviation 1.43%), and 90% of participants left under <strong>2.66%</strong> errors. Put roughly in our terms, most volunteers finished with around 97% to 99% final accuracy.</p>
-<p>So FreeTyper's coach, which tells you to hold accuracy below 95% and calls a run below 88% not a real score, is asking for a modest floor, not a perfectionist one. A run around 95% would sit among the less accurate tenth of that group. Two cautions apply: the volunteers were self-selected typing-test takers copying short sentences, and the study's error measure is not identical to ours, so treat the comparison as rough.</p>
+<p>So FreeTyper's coach, which tells you to hold accuracy below 95%, is asking for a modest floor, not a perfectionist one. A run around 95% would sit among the less accurate tenth of that group. Two cautions apply: the volunteers were self-selected typing-test takers copying short sentences, and the study's error measure is not identical to ours, so treat the comparison as rough.</p>
 
 <h2 id="what-the-research-says-about-errors">What the research says about errors</h2>
 <ul>
@@ -159,7 +159,7 @@ export const typingSpeedArticles: Record<string, string> = {
 
 <h2 id="how-to-track-accuracy-on-freetyper">How to track your accuracy on FreeTyper</h2>
 <ul>
-<li>Every result shows accuracy next to WPM. The coach note reacts to it: below 95% it suggests holding accuracy, and below 88% it calls the run not a real score.</li>
+<li>Every result shows accuracy next to WPM. The coach note reacts to it: below 95% it suggests holding accuracy.</li>
 <li>The <a href="/typing-progress">progress page</a> shows your average accuracy over your last 30 sessions and a keyboard heatmap coloured by error rate: green for 5% or less, then gold above 5%, orange above 10% and red above 15%.</li>
 <li>For a trustworthy figure, average several runs of the same length and type, as described in the <a href="/">typing speed test guide</a>.</li>
 </ul>
