@@ -6,6 +6,8 @@ import type { TypingSession } from './types';
 import RunGraph from './RunGraph';
 import ShareResultButton from './ShareResultButton';
 import { MIN_GRAPH_SECONDS } from './runStats';
+import LevelLadder from './LadderView';
+import { LEVELS, averages, levelIndex } from './levelLadder';
 
 export type CoachTone = 'best' | 'up' | 'warn' | 'focus' | 'steady';
 
@@ -39,11 +41,7 @@ function timeAgo(ts: number) {
 }
 
 function rankLabel(wpm: number) {
-  if (wpm >= 100) return 'elite';
-  if (wpm >= 80) return 'pro';
-  if (wpm >= 60) return 'skilled';
-  if (wpm >= 40) return 'average';
-  return 'beginner';
+  return LEVELS[levelIndex(wpm)].key;
 }
 
 function grossWpm(run: TypingSession) {
@@ -477,11 +475,24 @@ function Sparkline({ values }: { values: number[] }) {
   );
 }
 
-function Tile({ value, label, tone, title }: { value: string | number; label: string; tone?: string; title?: string }) {
+function Tile({
+  value,
+  label,
+  tone,
+  title,
+  sub,
+}: {
+  value: string | number;
+  label: string;
+  tone?: string;
+  title?: string;
+  sub?: string;
+}) {
   return (
     <div className="min-w-0 rounded-lg border border-surface-border/60 bg-surface/40 px-2.5 py-2 sm:px-3" title={title}>
       <p className={`font-mono text-base tabular-nums ${tone ?? 'text-text-bright'}`}>{value}</p>
       <p className="text-[9px] uppercase tracking-wide text-text-dim sm:text-[10px] sm:tracking-wider">{label}</p>
+      {sub && <p className="mt-0.5 text-[10px] tabular-nums text-text-dim">{sub}</p>}
     </div>
   );
 }
@@ -508,6 +519,8 @@ interface PracticeFeedbackProps {
   currentCategory?: string;
   onTryWeakKeys?: () => void;
   extraActions?: ReactNode;
+  /** All saved sessions; the speed test passes them so the card can show averages. */
+  savedSessions?: TypingSession[];
 }
 
 export default function PracticeFeedback({
@@ -515,6 +528,7 @@ export default function PracticeFeedback({
   currentCategory,
   onTryWeakKeys,
   extraActions,
+  savedSessions,
 }: PracticeFeedbackProps) {
   if (log.length === 0) return null;
 
@@ -532,6 +546,7 @@ export default function PracticeFeedback({
   const showGuideCta = latest.accuracy < 95;
   const isBest = latest.wpm === bestWpm && log.length > 1;
   const detailed = latest.mode === 'speed-test';
+  const avgs = detailed && savedSessions ? averages(savedSessions, latest.id) : null;
   const gross = detailed ? grossWpm(latest) : 0;
   const words = detailed ? Math.max(0, Math.round(latest.correctChars / 5)) : 0;
   const run = latest.run;
@@ -617,8 +632,8 @@ export default function PracticeFeedback({
         {(detailed || run) && (
           <div className={`mt-4 grid gap-2 ${detailed ? (run ? 'grid-cols-2 sm:grid-cols-5' : 'grid-cols-2 sm:grid-cols-4') : 'grid-cols-3'}`} data-result-stats>
             <Tile value={latest.correctChars} label="correct" tone="text-correct" />
-            <Tile value={latest.incorrectChars} label="errors" tone="text-error" />
-            {detailed && <Tile value={gross} label="gross wpm" />}
+            <Tile value={latest.incorrectChars} label="errors" tone="text-error" sub={avgs ? `avg ${avgs.errors}` : undefined} />
+            {detailed && <Tile value={gross} label="gross wpm" sub={avgs ? `avg ${avgs.gross}` : undefined} />}
             {run && (
               <Tile
                 value={`${run.consistency}%`}
@@ -629,6 +644,8 @@ export default function PracticeFeedback({
             {detailed && <Tile value={words} label="words" />}
           </div>
         )}
+
+        {detailed && <LevelLadder net={latest.wpm} avg={avgs ? avgs.net : null} />}
 
         {spots.length > 0 && (
           <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs" data-result-spots>

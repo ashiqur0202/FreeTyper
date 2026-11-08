@@ -157,7 +157,7 @@ export default function TypingSpeedTest({
   const typingAreaRef = useRef<HTMLDivElement>(null);
   const currentCharRef = useRef<HTMLSpanElement>(null);
 
-  const { addSession, updateKeyStats, checkAchievements } = useTypingProgress();
+  const { progress: savedProgress, addSession, updateKeyStats, checkAchievements } = useTypingProgress();
   const settingsRef = useRef({ duration, textMode, customDuration });
   settingsRef.current = { duration, textMode, customDuration };
 
@@ -624,6 +624,7 @@ export default function TypingSpeedTest({
 
           <PracticeFeedback
             log={log}
+            savedSessions={savedProgress.sessions}
             extraActions={
               <>
                 <Link
