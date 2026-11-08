@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { RotateCcw, Settings2, X, Maximize, Minimize, Share2, Check, PenTool } from 'lucide-react';
+import { RotateCcw, Settings2, X, Maximize, Minimize, PenTool } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
 import { withoutRun } from './runStats';
@@ -119,7 +119,6 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
   const [log, setLog] = useState<PracticeLogEntry[]>([]);
-  const [copied, setCopied] = useState(false);
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [customDuration, setCustomDuration] = useState<number | null>(null);
   const [showCustomInput, setShowCustomInput] = useState(false);
@@ -416,21 +415,6 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
   const progress = isRunning ? ((activeDuration - (timeLeft || 0)) / activeDuration) * 100 : 0;
   const isLowTime = isRunning && timeLeft < 10 && timeLeft < activeDuration * 0.1;
 
-  const shareLatest = async () => {
-    const run = log[0];
-    if (!run) return;
-    const text = `${run.wpm} WPM · ${run.accuracy}% accuracy — FreeTyper`;
-    // Counted when the button is used, even if the browser blocks clipboard access.
-    trackEvent('share_result', { source: 'speed_test' });
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* ignore */
-    }
-  };
-
   if (!mounted || !text) {
     return (
       <div className="w-full">
@@ -600,14 +584,6 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
                   <PenTool className="h-3 w-3" />
                   practice
                 </Link>
-                <button
-                  type="button"
-                  onClick={shareLatest}
-                  className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
-                >
-                  {copied ? <Check className="h-3 w-3 text-accent" /> : <Share2 className="h-3 w-3" />}
-                  {copied ? 'copied' : 'share'}
-                </button>
               </>
             }
           />

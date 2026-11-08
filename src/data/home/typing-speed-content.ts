@@ -148,6 +148,10 @@ export const bodyHtml = `
 </ul>
 <p>Only your latest five runs in each tool keep their graph, in your browser; the long progress history stores just the totals. Runs saved before this feature, and runs under 5 seconds, show the card without a graph. A very long run is reduced to at most 120 points on the graph.</p>
 
+<h2 id="share-your-result-as-a-picture">Sharing your result as a picture</h2>
+<p>The "share" button under the result card draws a 1200 by 630 pixel PNG of your latest run in the colours of the theme you are using. It shows your WPM, accuracy, time, errors, the consistency score and speed graph when the run has them, a rank label for speed tests, the date and the site name. It never contains the text you typed. The picture is drawn in your browser and is not uploaded anywhere.</p>
+<p>What the button does depends on your device. On a phone or tablet that supports it, it opens the system share sheet with the picture attached. On a computer it copies the picture to the clipboard, so you can paste it into a chat or a post. If the browser blocks clipboard images, it saves the PNG as a file and copies the old one-line text instead. The same button appears on the practice and lessons result cards.</p>
+
 <h2 id="what-is-a-good-typing-speed">What is a good typing speed, and what is the average?</h2>
 <p>The average typing speed depends on who you ask and how they were measured. The most useful reference we know of is a large academic study, <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018). It recorded 168,000 volunteers copying sentences on a keyboard. Its reported figures:</p>
 <ul>

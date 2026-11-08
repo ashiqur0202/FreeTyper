@@ -4,6 +4,7 @@ import type { ReactNode } from 'react';
 import Link from 'next/link';
 import type { TypingSession } from './types';
 import RunGraph from './RunGraph';
+import ShareResultButton from './ShareResultButton';
 import { MIN_GRAPH_SECONDS } from './runStats';
 
 export type CoachTone = 'best' | 'up' | 'warn' | 'focus' | 'steady';
@@ -663,8 +664,7 @@ export default function PracticeFeedback({
         <h3 className="mt-4 text-sm font-medium text-text-bright">{headline}</h3>
         <p className="mt-1 max-w-xl text-sm leading-relaxed text-text">{latest.tip}</p>
 
-        {(showGuideCta || showWeakCta || extraActions) && (
-          <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-3 flex flex-wrap gap-2">
             {showGuideCta && (
               <Link
                 href="/keyboard-guide"
@@ -683,8 +683,8 @@ export default function PracticeFeedback({
               </button>
             )}
             {extraActions}
+            <ShareResultButton run={latest} />
           </div>
-        )}
 
         <div className="mt-4 flex flex-wrap items-end justify-between gap-3 border-t border-surface-border/70 pt-3">
           <Sparkline values={spark} />

@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-18
+ * Last real edit: 2026-11-08
  */
 
 export const meta = {
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Free Typing Practice — Adaptive Drills, Quotes, News and Code</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-18">October 18, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-08">November 8, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This free typing practice page gives you a short passage to type, scores it when you finish, and immediately loads the next one so you can keep going. You choose the kind of text: quotes, news-style passages, code snippets or fun facts. The first tab, adaptive, is the default: it builds each drill from the keys and letter pairs you are slowest or least accurate on.</p>
@@ -137,7 +137,7 @@ export const bodyHtml = `
 <p>Click a letter to drill it by hand: you get 40 real words that contain that letter, with extra weight on words holding one of your weak pairs that end in it. The same letter keeps being drilled after each run until you pick another letter, choose another tab, or press "back to adaptive", which appears next to the count while you are drilling by hand. Letters are locked while a run is in progress. Only letters a to z are shown; digits and punctuation are counted in your key statistics but have no box yet.</p>
 
 <h2 id="the-result-card">The result card</h2>
-<p>After each run the card shows your WPM, accuracy and time, how they compare with your previous run, and, for runs of 5 seconds or longer, a graph of your speed over the run with a consistency score and a "weak spots" line. Weak spots are keys you got wrong at least twice in that run and letter pairs that were unusually slow, with a "drill these" button that switches to the adaptive tab. The graph, its consistency score and the weak-spot rules are explained in the <a href="/">typing speed test guide</a>. The curve is kept only for your latest five practice runs.</p>
+<p>After each run the card shows your WPM, accuracy and time, how they compare with your previous run, and, for runs of 5 seconds or longer, a graph of your speed over the run with a consistency score and a "weak spots" line. Weak spots are keys you got wrong at least twice in that run and letter pairs that were unusually slow, with a "drill these" button that switches to the adaptive tab. The graph, its consistency score and the weak-spot rules are explained in the <a href="/">typing speed test guide</a>. The curve is kept only for your latest five practice runs. The "share" button turns the latest run into a picture you can copy or send, as described in the <a href="/#share-your-result-as-a-picture">speed test guide</a>.</p>
 
 <h2 id="practice-vs-lessons-vs-speed-test">Practice, lessons or speed test: which should you use?</h2>
 <ul>
