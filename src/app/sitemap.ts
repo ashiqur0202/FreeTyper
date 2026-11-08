@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 import { tools } from '@/config/tools';
 import { siteConfig } from '@/config/site';
 import { blogPosts } from '@/data/blog/typing-skills';
+import { durationPages } from '@/data/home/duration-tests-content';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Home (`/`) is the canonical speed-test URL; do not list the duplicate slug.
@@ -12,6 +13,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     }));
+
+  const durationTestPages = durationPages.map((page) => ({
+    url: `${siteConfig.url}/${page.slug}`,
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
 
   const blogPages = blogPosts.map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}`,
@@ -30,5 +37,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteConfig.url}/disclaimer`, changeFrequency: 'yearly' as const, priority: 0.2 },
   ];
 
-  return [...staticPages, ...toolPages, ...blogPages];
+  return [...staticPages, ...toolPages, ...durationTestPages, ...blogPages];
 }

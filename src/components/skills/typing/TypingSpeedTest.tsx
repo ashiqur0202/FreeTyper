@@ -113,8 +113,8 @@ function loadSpeedLog(): PracticeLogEntry[] {
   }
 }
 
-export default function TypingSpeedTest() {
-  const [duration, setDuration] = useState(60);
+export default function TypingSpeedTest({ initialDuration = 60 }: { initialDuration?: number }) {
+  const [duration, setDuration] = useState(initialDuration);
   const [text, setText] = useState('');
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
@@ -199,9 +199,9 @@ export default function TypingSpeedTest() {
 
   useEffect(() => {
     setMounted(true);
-    setText(generateTestText('sentences'));
+    setText(generateTestText('sentences', initialDuration));
     setLog(loadSpeedLog());
-  }, []);
+  }, [initialDuration]);
 
   // One path for every typed character: keyboard events and touch/IME input both use it.
   const playKeySound = useKeySound();

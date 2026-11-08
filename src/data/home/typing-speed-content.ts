@@ -9,7 +9,7 @@
  * The FAQ list below is the single source for both the visible FAQ and the
  * FAQPage JSON-LD, so they cannot drift apart.
  *
- * Last real edit: 2026-10-06
+ * Last real edit: 2026-11-08
  */
 
 export const meta = {
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Speed Test — Check Your WPM and Accuracy Online</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-06">October 6, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-08">November 8, 2026</time></span>
   <span>~9 min read</span>
 </p>
 <p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
@@ -94,7 +94,7 @@ export const previewHtml = `
 export const bodyHtml = `
 <h2 id="how-the-typing-test-works">How the typing speed test works</h2>
 <ul>
-<li><strong>Choose a length.</strong> The presets are 15 seconds, 30 seconds, 1, 2, 3, 5, 10, 15 and 30 minutes. A custom option accepts anything from 1 to 120 minutes.</li>
+<li><strong>Choose a length.</strong> The presets are 15 seconds, 30 seconds, 1, 2, 3, 5, 10, 15 and 30 minutes. A custom option accepts anything from 1 to 120 minutes. Three lengths also have their own page that opens on that length, with a short note on what it shows: the <a href="/1-minute-typing-test">1 minute test</a>, the <a href="/3-minute-typing-test">3 minute test</a> and the <a href="/5-minute-typing-test">5 minute test</a>.</li>
 <li><strong>Choose a text type.</strong> <em>Words</em> shows common short English words in random order. <em>Sentences</em> shows quotes and short passages with capital letters and punctuation. <em>Code</em> shows programming snippets full of brackets and symbols.</li>
 <li><strong>Type.</strong> The clock starts on your first keystroke, not when the page loads. Every character has to match exactly: letter case, punctuation and spaces all count.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and the cursor moves on. Backspace steps back if you want to fix it.</li>

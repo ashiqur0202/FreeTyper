@@ -33,6 +33,14 @@ const navGroups = [
     ],
   },
   {
+    label: 'tests',
+    items: [
+      { href: '/1-minute-typing-test', label: '1 minute', icon: Timer },
+      { href: '/3-minute-typing-test', label: '3 minutes', icon: Timer },
+      { href: '/5-minute-typing-test', label: '5 minutes', icon: Timer },
+    ],
+  },
+  {
     label: 'games',
     items: [
       { href: '/typing-game-falling-words', label: 'falling words', icon: ArrowDown },
