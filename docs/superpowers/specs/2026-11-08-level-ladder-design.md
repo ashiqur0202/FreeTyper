@@ -1,6 +1,6 @@
 # Level ladder on the speed-test result card — design
 
-Date: 2026-11-08 · Status: draft for Ashiqur's review · Piece A of the "attract with more features" work.
+Date: 2026-11-08 · Status: approved by Ashiqur 2026-11-08 ("ok", then "do it" for the tile averages) · Piece A of the "attract with more features" work.
 
 ## Goal
 Show a speed-test finisher, in one short row, where their net speed sits between Beginner and Elite and what the next step is. Beginners learn where they stand; everyone sees how they compare with their own recent average. The rest of the result card stays exactly as it is today.
@@ -21,13 +21,20 @@ Show a speed-test finisher, in one short row, where their net speed sits between
 - **Hydration:** the average reads localStorage, so it renders only after mount (the card only appears after a finished run, but the rule in AGENTS.md still applies).
 - **Phone:** five equal segments with names at about 12 px must fit at 390 px; if a name does not fit, shorten only the label font, never wrap the row.
 
+## Raw speed and mistakes against your average (added 2026-11-08)
+Ashiqur asked to keep raw keystrokes and mistakes in the comparison. Chosen option: show them **in the tiles that already exist**, not as new rows.
+- The "gross wpm" tile (raw speed, all typed characters) and the "errors" tile each get a small dim line under the label: `avg 31` and `avg 4`. Nothing else moves; the ladder row is unchanged.
+- The averages use the same sessions as the ladder: the last 30 speed-test sessions before the one just finished, shown only with at least 3. With fewer, the tiles look exactly as today.
+- Gross average = mean of `totalChars / 5 / (duration / 60)`; errors average = mean of `incorrectChars`, rounded to whole numbers. These match how the tiles compute this run's numbers, so the comparison is like for like.
+- No colour judgement on the tiles (no red/green); the user reads the two numbers side by side. Lower mistakes is better, which the guide sentence states.
+
 ## Not in scope
 A global "average of all visitors" (no server), accuracy or typo comparison, practice and lessons cards, new coach text, new GA4 events, any change to how scores are saved.
 
 ## Files
-- New `src/components/skills/typing/levelLadder.ts` — pure functions: `LEVELS`, `levelFor(net)`, `positionInBand(net)`, `nextStep(net)`, `averageNet(sessions, now)`.
+- New `src/components/skills/typing/levelLadder.ts` — pure functions: `LEVELS`, `levelFor(net)`, `positionInBand(net)`, `nextStep(net)`, `averages(sessions)` (returns `{ count, net, gross, errors }` over the last 30 speed-test sessions before the newest, or `null` under 3).
 - New `src/components/skills/typing/LevelLadder.tsx` — the view.
-- Edit `PracticeFeedback.tsx` — render the ladder after the tiles; `rankLabel` uses `LEVELS`.
+- Edit `PracticeFeedback.tsx` — render the ladder after the tiles; `rankLabel` uses `LEVELS`; the `Tile` component gets an optional dim `sub` line used by the gross wpm and errors tiles.
 - Edit `src/data/home/typing-speed-content.ts` — one paragraph in the guide describing the ladder, its labels and the study note; bump the visible date and the "Last real edit" comment (same commit).
 - New `scripts/test-ladder.mjs` — unit tests, run like `scripts/test-mouse.mjs` (`node --experimental-strip-types`).
 
@@ -35,7 +42,7 @@ A global "average of all visitors" (no server), accuracy or typo comparison, pra
 No new storage key, no network call, no GA4 event. The privacy page needs no change.
 
 ## Testing
-1. Unit tests: boundaries (39 / 40 / 59 / 60 / 99 / 100 / 130+), position in band, next step text, average with 0, 2, 3 and 40 sessions (uses the last 30 before the newest), games excluded.
+1. Unit tests: boundaries (39 / 40 / 59 / 60 / 99 / 100 / 130+), position in band, next step text, averages (net, gross, errors) with 0, 2, 3 and 40 sessions (uses the last 30 before the newest), games and other modes excluded, gross formula checked against a known session.
 2. `npx tsc --noEmit`, `npm run build`; lint compared on touched files before and after.
 3. `next start` in a browser: first test, beginner, skilled and elite examples; dark, light, midnight, paper; 390 px width; no console errors; the rank pill and the ladder show the same level.
 
@@ -43,3 +50,4 @@ No new storage key, no network call, no GA4 event. The privacy page needs no cha
 - Show on practice and lessons too: **no, speed test only for now**.
 - Average window: **last 30 speed-test sessions, minimum 3**.
 - Caption wording as above; the tooltip carries the source.
+- Raw speed and mistakes: **small `avg` line inside the existing tiles** (chosen by Ashiqur on 2026-11-08 from three options).
