@@ -1,0 +1,45 @@
+# Level ladder on the speed-test result card — design
+
+Date: 2026-11-08 · Status: draft for Ashiqur's review · Piece A of the "attract with more features" work.
+
+## Goal
+Show a speed-test finisher, in one short row, where their net speed sits between Beginner and Elite and what the next step is. Beginners learn where they stand; everyone sees how they compare with their own recent average. The rest of the result card stays exactly as it is today.
+
+## What Ashiqur chose (demo "Look B", 2026-11-08)
+- Keep the current card unchanged; add one compact element.
+- Placed right after the stat tiles (correct, errors, gross wpm, consistency, words).
+- Style: the "pin ladder" with a small caption line under it (demo layout "Look B: ladder with one caption line").
+- Dropped on purpose: the comparison table, the side panel, the study-mean bar as visible text, new coach wording, a lesson button.
+
+## Behaviour
+- **Where:** `PracticeFeedback.tsx`, after the stat tiles block and before "Weak spots". Speed test only (`detailed` is true), because the rank labels exist only there. Practice and lessons are not changed; extend later if wanted.
+- **Ladder:** five equal segments with names and thresholds: Beginner (under 40), Average (40), Skilled (60), Pro (80), Elite (100+). Levels already passed are filled; the current level is filled to the exact position of the net WPM inside its band (Elite fills over 100 to 130); a gold bubble "You 36" points at that position; a dotted line marks the user's average when it falls in a band.
+- **Caption (one line):** `<Level> · +N to <Next level> · avg <A> · FreeTyper levels`. At Elite: `Elite · top level`. The words "FreeTyper levels" carry a tooltip: "FreeTyper's own labels, not a standard. Study mean 51.56 WPM (Dhakal et al., CHI 2018)."
+- **Average:** mean net WPM of the user's speed-test sessions from `freetyper-progress` (mode `speed-test`), the last 30 before the run just finished. Shown only with at least 3 such sessions; otherwise the dotted line and "avg" are omitted and nothing else changes. The ladder itself needs no history, so a first test still shows it.
+- **Levels:** one shared constant (`LEVELS`) feeds both the ladder and the existing rank pill (`rankLabel`), so the two cannot disagree. Thresholds are unchanged from today (40 / 60 / 80 / 100); they are our labels, not a standard.
+- **Accessibility:** the ladder is `role="img"` with an `aria-label` that says speed, level and next step; meaning is never carried by colour alone (names, thresholds and the caption are text). Colours come from the existing theme tokens, so all four themes work.
+- **Hydration:** the average reads localStorage, so it renders only after mount (the card only appears after a finished run, but the rule in AGENTS.md still applies).
+- **Phone:** five equal segments with names at about 12 px must fit at 390 px; if a name does not fit, shorten only the label font, never wrap the row.
+
+## Not in scope
+A global "average of all visitors" (no server), accuracy or typo comparison, practice and lessons cards, new coach text, new GA4 events, any change to how scores are saved.
+
+## Files
+- New `src/components/skills/typing/levelLadder.ts` — pure functions: `LEVELS`, `levelFor(net)`, `positionInBand(net)`, `nextStep(net)`, `averageNet(sessions, now)`.
+- New `src/components/skills/typing/LevelLadder.tsx` — the view.
+- Edit `PracticeFeedback.tsx` — render the ladder after the tiles; `rankLabel` uses `LEVELS`.
+- Edit `src/data/home/typing-speed-content.ts` — one paragraph in the guide describing the ladder, its labels and the study note; bump the visible date and the "Last real edit" comment (same commit).
+- New `scripts/test-ladder.mjs` — unit tests, run like `scripts/test-mouse.mjs` (`node --experimental-strip-types`).
+
+## Privacy and data
+No new storage key, no network call, no GA4 event. The privacy page needs no change.
+
+## Testing
+1. Unit tests: boundaries (39 / 40 / 59 / 60 / 99 / 100 / 130+), position in band, next step text, average with 0, 2, 3 and 40 sessions (uses the last 30 before the newest), games excluded.
+2. `npx tsc --noEmit`, `npm run build`; lint compared on touched files before and after.
+3. `next start` in a browser: first test, beginner, skilled and elite examples; dark, light, midnight, paper; 390 px width; no console errors; the rank pill and the ladder show the same level.
+
+## Open choices (defaults in bold)
+- Show on practice and lessons too: **no, speed test only for now**.
+- Average window: **last 30 speed-test sessions, minimum 3**.
+- Caption wording as above; the tooltip carries the source.
