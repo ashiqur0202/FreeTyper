@@ -217,6 +217,12 @@ Likely causes (inferred): bulk templated content with no sources or real author 
 Order: (a) indexing + backlinks, (b) post a week, (c) de-duplicate and re-angle the guides (one small branch each, bump dates), (d) re-apply only after most pages are indexed. Do not re-apply sooner.
 
 ## 8. TODO (owner: **[A]** Ashiqur · **[C]** Claude in code)
+**AdSense recovery (added 2026-11-08, order from the audit in §7; do not re-apply before step 4)**
+- [ ] **[A]** 1. Indexing requests (a few a day) and a few honest backlinks; re-read Page indexing on 11-13.
+- [ ] **[A+C]** 2. One sourced post a week (§6 next topics).
+- [ ] **[C]** 3. De-duplicate and re-angle the guides, one branch each, bump the visible date: (a) `feat/dedupe-game-guides` Falling Words + Word Attack (in progress 2026-11-08, not released); (b) lessons vs keyboard guide (finger placement, home row: keep the full text on the keyboard guide, link from lessons); (c) WPM/accuracy meaning (home owns it; other pages link); (d) result card (practice owns it; home links); (e) shorten the shared "Limits" / "Your data and privacy" / "Sources and method" boilerplate. Put the distinctive features (adaptive pairs, run graph, hands guide, mouse practice) first on each page.
+- [ ] **[A]** 4. Re-apply only when most pages are indexed, several more posts are live and Google clicks are not mostly brand searches. Ask AdSense support whether the "Verify site ownership" link is stale.
+
 **Now — growth is limited by distribution, not features**
 - [x] Events arrive (confirmed in GA4 Events report, 2026-10-10).
 - [x] **[A]** **Bing Webmaster Tools** set up and sitemap submitted (2026-10-08).
