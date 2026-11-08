@@ -546,7 +546,7 @@ export default function PracticeFeedback({
   const showGuideCta = latest.accuracy < 95;
   const isBest = latest.wpm === bestWpm && log.length > 1;
   const detailed = latest.mode === 'speed-test';
-  const avgs = detailed && savedSessions ? averages(savedSessions, latest.id) : null;
+  const avgs = detailed && savedSessions ? averages(savedSessions, latest.id, latest.duration) : null;
   const gross = detailed ? grossWpm(latest) : 0;
   const words = detailed ? Math.max(0, Math.round(latest.correctChars / 5)) : 0;
   const run = latest.run;
@@ -632,7 +632,13 @@ export default function PracticeFeedback({
         {(detailed || run) && (
           <div className={`mt-4 grid gap-2 ${detailed ? (run ? 'grid-cols-2 sm:grid-cols-5' : 'grid-cols-2 sm:grid-cols-4') : 'grid-cols-3'}`} data-result-stats>
             <Tile value={latest.correctChars} label="correct" tone="text-correct" />
-            <Tile value={latest.incorrectChars} label="errors" tone="text-error" sub={avgs ? `avg ${avgs.errors}` : undefined} />
+            <Tile
+              value={latest.incorrectChars}
+              label="errors"
+              tone="text-error"
+              sub={avgs ? `avg ${avgs.errors}` : undefined}
+              title={avgs ? 'Your average mistakes in earlier speed tests, scaled to the length of this test.' : undefined}
+            />
             {detailed && <Tile value={gross} label="gross wpm" sub={avgs ? `avg ${avgs.gross}` : undefined} />}
             {run && (
               <Tile

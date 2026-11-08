@@ -39,28 +39,34 @@ t('nextStep: gap to the next level, null at the top', () => {
 });
 t('averages: net, gross and errors over the earlier sessions', () => {
   const list = [s('a', 30, 150, 3, 60), s('b', 20, 100, 5, 60), s('c', 40, 200, 4, 60), s('d', 50, 250, 2, 60)];
-  assert.deepEqual(averages(list, 'd'), { count: 3, net: 30, gross: 30, errors: 4 });
+  assert.deepEqual(averages(list, 'd', 60), { count: 3, net: 30, gross: 30, errors: 4 });
 });
 t('averages: null under three earlier sessions', () => {
-  assert.equal(averages([s('a', 30, 150, 3, 60), s('b', 20, 100, 5, 60), s('d', 50, 250, 2, 60)], 'd'), null);
+  assert.equal(averages([s('a', 30, 150, 3, 60), s('b', 20, 100, 5, 60), s('d', 50, 250, 2, 60)], 'd', 60), null);
 });
 t('averages: games, practice and lessons are ignored', () => {
   const list = [s('a', 30, 150, 3, 60), s('b', 20, 100, 5, 60), s('g', 99, 500, 0, 60, 'game'), s('p', 99, 500, 0, 60, 'practice'), s('l', 99, 500, 0, 60, 'lesson'), s('d', 50, 250, 2, 60)];
-  assert.equal(averages(list, 'd'), null);
+  assert.equal(averages(list, 'd', 60), null);
 });
 t('averages: only the last 30 earlier sessions count', () => {
   const list = [];
   for (let i = 1; i <= 40; i++) list.push(s('s' + i, i, 100, 1, 60));
   list.push(s('cur', 70, 350, 1, 60));
-  const a = averages(list, 'cur');
+  const a = averages(list, 'cur', 60);
   assert.equal(a.count, 30);
   assert.equal(a.net, 26);
 });
 t('averages: odd saved sessions are skipped, results stay finite', () => {
   const good = [s('a', 30, 150, 3, 60), s('b', 20, 100, 5, 60), s('c', 40, 200, 4, 60)];
   const odd = [s('z', 30, 150, 3, 0), { ...s('y', 30, 150, 3, 60), incorrectChars: undefined }, s('x', NaN, 150, 3, 60)];
-  const a = averages([...odd, ...good, s('d', 50, 250, 2, 60)], 'd');
+  const a = averages([...odd, ...good, s('d', 50, 250, 2, 60)], 'd', 60);
   assert.deepEqual(a, { count: 3, net: 30, gross: 30, errors: 4 });
   for (const v of Object.values(a)) assert.ok(Number.isFinite(v));
+});
+t('averages: errors are scaled to the length of the finished run', () => {
+  const prior = [s('a', 30, 150, 3, 60), s('b', 20, 100, 5, 60), s('c', 40, 200, 4, 60)]; // 4 errors per 60 s on average
+  assert.equal(averages([...prior, s('d', 50, 60, 1, 15)], 'd', 15).errors, 1);
+  assert.equal(averages([...prior, s('e', 50, 600, 1, 120)], 'e', 120).errors, 8);
+  assert.equal(averages([...prior, s('f', 50, 250, 2, 60)], 'f', 60).errors, 4);
 });
 console.log(`${n} tests passed`);

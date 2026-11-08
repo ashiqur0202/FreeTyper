@@ -53,9 +53,11 @@ export interface Averages {
 /**
  * Averages over the last AVG_WINDOW speed-test sessions, not counting the
  * session `excludeId` (the run just finished). Sessions are stored oldest
- * first. Returns null under AVG_MIN usable sessions.
+ * first. Returns null under AVG_MIN usable sessions. `errors` is the average
+ * error rate scaled to `duration` seconds (the finished run's length), so a
+ * 15 s run is compared with a 15 s share of earlier longer tests.
  */
-export function averages(sessions: TypingSession[], excludeId: string): Averages | null {
+export function averages(sessions: TypingSession[], excludeId: string, duration: number): Averages | null {
   const usable = sessions
     .filter(
       (s) =>
@@ -74,6 +76,6 @@ export function averages(sessions: TypingSession[], excludeId: string): Averages
     count: usable.length,
     net: mean(usable.map((s) => s.wpm)),
     gross: mean(usable.map((s) => s.totalChars / 5 / (s.duration / 60))),
-    errors: mean(usable.map((s) => s.incorrectChars)),
+    errors: Math.round((usable.reduce((sum, s) => sum + s.incorrectChars / s.duration, 0) / usable.length) * duration),
   };
 }

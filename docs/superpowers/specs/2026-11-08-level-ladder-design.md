@@ -25,14 +25,14 @@ Show a speed-test finisher, in one short row, where their net speed sits between
 Ashiqur asked to keep raw keystrokes and mistakes in the comparison. Chosen option: show them **in the tiles that already exist**, not as new rows.
 - The "gross wpm" tile (raw speed, all typed characters) and the "errors" tile each get a small dim line under the label: `avg 31` and `avg 4`. Nothing else moves; the ladder row is unchanged.
 - The averages use the same sessions as the ladder: the last 30 speed-test sessions before the one just finished, shown only with at least 3. With fewer, the tiles look exactly as today.
-- Gross average = mean of `totalChars / 5 / (duration / 60)`; errors average = mean of `incorrectChars`, rounded to whole numbers. These match how the tiles compute this run's numbers, so the comparison is like for like.
+- Gross average = mean of `totalChars / 5 / (duration / 60)`; errors average = mean error rate (`incorrectChars / duration`) scaled to the length of the finished run and rounded, so a 15 s run is compared with a 15 s share of longer tests (added after the final review; a plain mean of counts mixed test lengths). These match how the tiles compute this run's numbers, so the comparison is like for like.
 - No colour judgement on the tiles (no red/green); the user reads the two numbers side by side. Lower mistakes is better, which the guide sentence states.
 
 ## Not in scope
 A global "average of all visitors" (no server), accuracy or typo comparison, practice and lessons cards, new coach text, new GA4 events, any change to how scores are saved.
 
 ## Files
-- New `src/components/skills/typing/levelLadder.ts` — pure functions: `LEVELS`, `levelFor(net)`, `positionInBand(net)`, `nextStep(net)`, `averages(sessions)` (returns `{ count, net, gross, errors }` over the last 30 speed-test sessions before the newest, or `null` under 3).
+- New `src/components/skills/typing/levelLadder.ts` — pure functions: `LEVELS`, `levelFor(net)`, `positionInBand(net)`, `nextStep(net)`, `averages(sessions, excludeId, duration)` (returns `{ count, net, gross, errors }` over the last 30 speed-test sessions before the newest, or `null` under 3).
 - New `src/components/skills/typing/LevelLadder.tsx` — the view.
 - Edit `PracticeFeedback.tsx` — render the ladder after the tiles; `rankLabel` uses `LEVELS`; the `Tile` component gets an optional dim `sub` line used by the gross wpm and errors tiles.
 - Edit `src/data/home/typing-speed-content.ts` — one paragraph in the guide describing the ladder, its labels and the study note; bump the visible date and the "Last real edit" comment (same commit).
