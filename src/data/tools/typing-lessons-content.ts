@@ -9,7 +9,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-07
+ * Last real edit: 2026-11-08
  */
 
 export const meta = {
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Lessons — Learn Touch Typing Step by Step</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-07">November 7, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-08">November 8, 2026</time></span>
   <span>~7 min read</span>
 </p>
 <p>These free typing lessons are a course of 34 short lessons in six stages. You begin with two keys on the home row, add the rest of the home row, then the top and bottom rows, then Shift and punctuation, then numbers and symbols, and finish with speed and accuracy practice. A live keyboard above the text shows which key comes next, and your progress is saved in your browser without an account.</p>
@@ -130,25 +130,22 @@ export const bodyHtml = `
 <li><strong>Finish with practice.</strong> After the course, switch to <a href="/typing-practice">typing practice</a> for more text and take a <a href="/">typing speed test</a> to see where you stand.</li>
 </ol>
 
-<h2 id="which-finger-types-which-key">Which finger types which key?</h2>
+<h2 id="when-each-finger-gets-its-keys">When does each finger learn its keys?</h2>
+<p>The home row is the middle row of letter keys: your left fingers rest on A, S, D and F, your right fingers on J, K, L and the semicolon, and your thumbs on the space bar. Every other key is one short reach from there, and your finger returns home afterwards. The course adds keys in pairs, one for each hand, so both hands learn together. This table shows the lesson in which each finger meets each key, taken from the lesson list in the course.</p>
 <table>
-<thead><tr><th>Finger</th><th>Keys</th></tr></thead>
+<thead><tr><th>Finger</th><th>Home row</th><th>Top row</th><th>Bottom row</th><th>Number row</th></tr></thead>
 <tbody>
-<tr><td>Left little finger</td><td>1 Q A Z</td></tr>
-<tr><td>Left ring finger</td><td>2 W S X</td></tr>
-<tr><td>Left middle finger</td><td>3 E D C</td></tr>
-<tr><td>Left index finger</td><td>4 5 R T F G V B</td></tr>
-<tr><td>Right index finger</td><td>6 7 Y U H J N M</td></tr>
-<tr><td>Right middle finger</td><td>8 I K ,</td></tr>
-<tr><td>Right ring finger</td><td>9 O L .</td></tr>
-<tr><td>Right little finger</td><td>0 P ; and the punctuation keys to the right</td></tr>
-<tr><td>Both thumbs</td><td>Space bar</td></tr>
+<tr><td>Left little</td><td>A (lesson 4)</td><td>Q (10)</td><td>Z (14)</td><td>1 (23)</td></tr>
+<tr><td>Left ring</td><td>S (3)</td><td>W (10)</td><td>X (13)</td><td>2 (23)</td></tr>
+<tr><td>Left middle</td><td>D (2)</td><td>E (6)</td><td>C (12)</td><td>3 (23)</td></tr>
+<tr><td>Left index</td><td>F (1), G (5)</td><td>R (7), T (8)</td><td>V (11), B (15)</td><td>4, 5 (23)</td></tr>
+<tr><td>Right index</td><td>J (1), H (5)</td><td>U (7), Y (8)</td><td>M (11), N (15)</td><td>6, 7 (24)</td></tr>
+<tr><td>Right middle</td><td>K (2)</td><td>I (6)</td><td>comma (12)</td><td>8 (24)</td></tr>
+<tr><td>Right ring</td><td>L (3)</td><td>O (9)</td><td>full stop (13)</td><td>9 (24)</td></tr>
+<tr><td>Right little</td><td>semicolon (4)</td><td>P (9)</td><td>slash (14)</td><td>0 (24)</td></tr>
 </tbody>
 </table>
-<p>The <a href="/keyboard-guide">keyboard guide</a> shows the same map colour-coded on a laptop keyboard with two drawn hands, and lets you tap a finger to see all of its keys. For capitals and shifted symbols, press the Shift key on the opposite side from the key you are typing.</p>
-
-<h2 id="what-is-the-home-row">What is the home row?</h2>
-<p>The home row is the middle row of letter keys. Your left fingers rest on A, S, D and F, your right fingers on J, K, L and the semicolon, and your thumbs on the space bar. From there every other key is one short reach away, and your fingers return to it after each reach. The raised bumps on F and J are there so your index fingers can find home by touch.</p>
+<p>Both thumbs use the space bar. Capitals come in lessons 17 and 18, one for each Shift key: press the Shift key on the opposite side from the key you are typing. The <a href="/keyboard-guide">keyboard guide</a> has the complete finger map on a laptop keyboard with two drawn hands, where you can tap a finger to see all of its keys, and explains the bumps on F and J that let your index fingers find home by touch.</p>
 
 <h2 id="what-lessons-do-for-your-speed">What do typing lessons actually do for your speed?</h2>
 <p>Less than most lesson pages claim, and it is worth knowing. In <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">a study of 168,000 online typists</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018), people who reported formal typing training were on average about 5 WPM faster than people who did not, and they left slightly fewer errors uncorrected. The effect was modest and the training was self-reported, so it does not prove that lessons cause speed.</p>
