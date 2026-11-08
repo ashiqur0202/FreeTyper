@@ -115,6 +115,32 @@ const oneMinute: DurationPage = {
 <h2 id="typical-scores">What typical scores look like</h2>
 <p>In a study of 168,960 volunteers copying sentences (Dhakal and colleagues, CHI 2018), the mean was 51.56 WPM with a standard deviation of 20.2. The fastest tenth were above about 78 WPM and the slowest tenth below about 26. The volunteers chose to take part and the task was short sentences, so treat these as a reference point, not a target. Our post on <a href="/blog/good-typing-speed">what a good typing speed is</a> goes through the numbers and their limits.</p>
 
+<h2 id="score-in-characters">What a 1 minute score means in characters</h2>
+<p>Because the test is exactly one minute, your net WPM is your correct characters divided by five, nothing more. That makes it easy to turn a score into keystrokes. The table is plain arithmetic from the scoring rule, not data from users.</p>
+<table>
+<thead><tr><th>Net WPM</th><th>Correct characters in 60 seconds</th><th>About how many keys a second</th></tr></thead>
+<tbody>
+<tr><td>20</td><td>100</td><td>1.7</td></tr>
+<tr><td>40</td><td>200</td><td>3.3</td></tr>
+<tr><td>60</td><td>300</td><td>5</td></tr>
+<tr><td>80</td><td>400</td><td>6.7</td></tr>
+<tr><td>100</td><td>500</td><td>8.3</td></tr>
+</tbody>
+</table>
+<p>Spaces and punctuation count as characters, so a "word" here is five characters, not a dictionary word. A typist who makes ten extra mistakes loses those keystrokes from the total, which is why accuracy and speed are shown together.</p>
+
+<h2 id="getting-a-reliable-1-minute-score">Getting a more reliable 1 minute score</h2>
+<p>These are our suggestions, not a tested method.</p>
+<ol>
+<li><strong>Use the same text type each time.</strong> Sentences contain capital letters and punctuation, code is full of symbols, and plain words are easiest, so the same typist scores differently on each. Compare like with like.</li>
+<li><strong>Take three runs and read the middle one.</strong> One lucky or unlucky minute is easy to get.</li>
+<li><strong>Check accuracy before speed.</strong> Our coach note says "hold accuracy" below 95% and calls a run "not a real score" below 88%. Those cut-offs are our own, and a fast run with many mistakes says little about your typing.</li>
+<li><strong>Test at a similar time of day,</strong> sitting the same way, if you are tracking progress over weeks.</li>
+</ol>
+
+<h2 id="1-minute-versus-other-lengths">1 minute compared with shorter and longer tests</h2>
+<p>The test can also run for 15 or 30 seconds, or 2, 3, 5 and more minutes. Shorter runs finish faster but a single stumble weighs even more; longer runs smooth the noise but ask for more focus and rest. One minute is a common middle ground for a quick check. For a number you plan to track, a longer run is usually steadier, which follows from averaging over more keystrokes; we have not measured it.</p>
+
 <h2 id="when-to-use-a-longer-test">When to use a longer test</h2>
 <ul>
 <li>You want a steadier number: use the <a href="/3-minute-typing-test">3 minute test</a>.</li>
@@ -213,6 +239,21 @@ const threeMinute: DurationPage = {
 <h2 id="what-the-study-numbers-mean-here">What the study numbers mean here</h2>
 <p>The figures people quote come from Dhakal and colleagues (CHI 2018): 168,960 volunteers, mean 51.56 WPM, standard deviation 20.2. They copied short sentences, not a three-minute passage, so use them as a rough reference, not a target for this length. See <a href="/blog/good-typing-speed">what a good typing speed is</a> for the detail.</p>
 
+<h2 id="three-minutes-in-characters">What a 3 minute score means in characters</h2>
+<p>Net WPM is correct characters divided by five, divided by three minutes. This is arithmetic from the rule, not user data.</p>
+<table>
+<thead><tr><th>Net WPM</th><th>Correct characters in 3 minutes</th><th>Words (5 characters each)</th></tr></thead>
+<tbody>
+<tr><td>20</td><td>300</td><td>60</td></tr>
+<tr><td>40</td><td>600</td><td>120</td></tr>
+<tr><td>60</td><td>900</td><td>180</td></tr>
+<tr><td>80</td><td>1,200</td><td>240</td></tr>
+</tbody>
+</table>
+
+<h2 id="why-your-line-might-fall">Why your speed line might fall</h2>
+<p>If the gold line sinks across the three minutes, the test cannot say why, but there are a few usual suspects, which are possible readings and not findings: you started faster than you can hold, you tensed up, or mistakes began to pile up and slowed you down. The red dots and the gap to the dashed grey line help tell them apart: dots clustered late point to mistakes, and a steady fall with few dots points to pace or fatigue. Our post on <a href="/blog/improve-typing-accuracy">improving typing accuracy</a> goes through what the research says about errors.</p>
+
 <h2 id="using-the-3-minute-test-to-improve">Using it to improve</h2>
 <p>Our suggestion, not a measured method: take one 3 minute test a few times a week at a similar time of day, read the graph, then spend practice time on the keys and pairs it flags. <a href="/typing-practice">Typing practice</a> has an adaptive tab for that, and our post on <a href="/blog/how-to-type-faster">how to type faster</a> covers what the research does and does not support.</p>
 
@@ -295,6 +336,28 @@ const fiveMinute: DurationPage = {
 
 <h2 id="what-five-minutes-shows">What five minutes shows</h2>
 <p>The longest of our three preset lengths shows how your speed and accuracy hold, not only how fast you can go for a minute. If your gold line starts high and sinks, or mistakes cluster in the last minutes, you are starting too hard, tiring, or losing focus. We read the graph this way as a reasonable interpretation; the test cannot tell you which cause it is.</p>
+
+<h2 id="five-minutes-in-characters">What a 5 minute score means in characters</h2>
+<p>Net WPM is correct characters divided by five, divided by five minutes. The table is arithmetic from the rule, not user data.</p>
+<table>
+<thead><tr><th>Net WPM</th><th>Correct characters in 5 minutes</th><th>Words (5 characters each)</th></tr></thead>
+<tbody>
+<tr><td>20</td><td>500</td><td>100</td></tr>
+<tr><td>40</td><td>1,000</td><td>200</td></tr>
+<tr><td>60</td><td>1,500</td><td>300</td></tr>
+<tr><td>80</td><td>2,000</td><td>400</td></tr>
+</tbody>
+</table>
+<p>A mistake you fix costs the time you spent fixing it, and the character you step back over is removed from the count. Over five minutes those small costs add up, which is one reason the same typist can score differently on a short and a long test.</p>
+
+<h2 id="pacing-a-five-minute-run">Pacing a five minute run</h2>
+<p>These are our suggestions, not a tested method.</p>
+<ul>
+<li><strong>Find a pace you could hold for the full time.</strong> If the first minute feels like a sprint, the last ones will probably be slower.</li>
+<li><strong>Do not stop to re-read.</strong> Look slightly ahead of the character you are typing; the text scrolls with you.</li>
+<li><strong>Fix mistakes only when they are close.</strong> A long chain of Backspaces costs more time than one early correction.</li>
+<li><strong>Compare the start and the end of the graph.</strong> If the gold line at the end sits well below the start, your next goal is holding pace, not top speed.</li>
+</ul>
 
 <h2 id="preparing-for-a-long-run">Preparing for a long run</h2>
 <ul>
