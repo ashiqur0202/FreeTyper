@@ -20,6 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
+  const dailyPage = {
+    url: `${siteConfig.url}/daily-typing-challenge`,
+    changeFrequency: 'daily' as const,
+    priority: 0.8,
+  };
+
   const blogPages = blogPosts.map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}`,
     lastModified: new Date(post.updated ?? post.date),
@@ -37,5 +43,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteConfig.url}/disclaimer`, changeFrequency: 'yearly' as const, priority: 0.2 },
   ];
 
-  return [...staticPages, ...toolPages, ...durationTestPages, ...blogPages];
+  return [...staticPages, ...toolPages, ...durationTestPages, dailyPage, ...blogPages];
 }

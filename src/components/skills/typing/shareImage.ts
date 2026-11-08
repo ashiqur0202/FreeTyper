@@ -33,6 +33,11 @@ function formatDuration(seconds: number) {
 }
 
 function modeTitle(run: TypingSession) {
+  const day = /^daily · (\d{4}-\d{2}-\d{2})$/.exec(run.modeDetail ?? '');
+  if (day) {
+    const label = new Date(`${day[1]}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+    return `Daily challenge · ${label}`;
+  }
   if (run.mode === 'speed-test') return run.modeDetail ? `Typing test · ${run.modeDetail}` : 'Typing test';
   if (run.mode === 'lesson') return run.modeDetail ? `Lesson · ${run.modeDetail}` : 'Typing lesson';
   return 'Typing practice';

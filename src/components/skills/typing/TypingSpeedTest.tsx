@@ -14,6 +14,14 @@ import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import { useKeySound } from './useKeySound';
 import { trackEvent } from '@/lib/analytics';
+import DailyPanel from './DailyPanel';
+import {
+  dailyText,
+  loadDaily,
+  recordDailyRun,
+  utcDateKey,
+  type DailyStore,
+} from './dailyChallenge';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import PracticeFeedback, {
   speedTestCoachNote,
@@ -88,11 +96,13 @@ function generateTestText(mode: TextMode, seconds = 60): string {
 }
 
 const LOG_KEY = 'freetyper-speed-log';
+// The daily challenge keeps its own list, so its card does not mix with free-choice tests.
+const DAILY_LOG_KEY = 'freetyper-daily-log';
 const LOG_MAX = 5;
 
-function loadSpeedLog(): PracticeLogEntry[] {
+function loadSpeedLog(key: string = LOG_KEY): PracticeLogEntry[] {
   try {
-    const raw = localStorage.getItem(LOG_KEY);
+    const raw = localStorage.getItem(key);
     if (!raw) return [];
     const parsed = JSON.parse(raw) as PracticeLogEntry[];
     if (!Array.isArray(parsed)) return [];
@@ -102,7 +112,7 @@ function loadSpeedLog(): PracticeLogEntry[] {
     });
     if (parsed.length > LOG_MAX) {
       try {
-        localStorage.setItem(LOG_KEY, JSON.stringify(trimmed));
+        localStorage.setItem(key, JSON.stringify(trimmed));
       } catch {
         /* ignore */
       }
@@ -113,8 +123,18 @@ function loadSpeedLog(): PracticeLogEntry[] {
   }
 }
 
-export default function TypingSpeedTest({ initialDuration = 60 }: { initialDuration?: number }) {
+export default function TypingSpeedTest({
+  initialDuration = 60,
+  daily = false,
+}: {
+  initialDuration?: number;
+  /** Daily challenge: a fixed 60 s run on the passage chosen by today's UTC date. */
+  daily?: boolean;
+}) {
   const [duration, setDuration] = useState(initialDuration);
+  const [dailyKey, setDailyKey] = useState<string | null>(null);
+  const [dailyStore, setDailyStore] = useState<DailyStore>({});
+  const dailyRef = useRef<string | null>(null);
   const [text, setText] = useState('');
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
@@ -144,15 +164,17 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
   const handleComplete = useCallback((session: TypingSession) => {
     const { duration: dur, textMode: mode, customDuration: custom } = settingsRef.current;
     const secs = custom ?? dur;
+    const day = dailyRef.current;
     const updated = {
       ...session,
       mode: 'speed-test' as const,
-      modeDetail: `${mode} · ${secs}s`,
+      modeDetail: day ? `daily · ${day}` : `${mode} · ${secs}s`,
     };
+    if (day) setDailyStore(recordDailyRun(day, session.wpm, session.accuracy));
     addSession(withoutRun(updated));
     trackEvent('test_complete', {
       duration_s: secs,
-      text_mode: mode,
+      text_mode: day ? 'daily' : mode,
       wpm: session.wpm,
       accuracy: session.accuracy,
     });
@@ -164,7 +186,7 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
       };
       const next = [entry, ...prev].slice(0, LOG_MAX);
       try {
-        localStorage.setItem(LOG_KEY, JSON.stringify(next));
+        localStorage.setItem(dailyRef.current ? DAILY_LOG_KEY : LOG_KEY, JSON.stringify(next));
       } catch {
         /* ignore */
       }
@@ -198,9 +220,17 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
 
   useEffect(() => {
     setMounted(true);
-    setText(generateTestText('sentences', initialDuration));
-    setLog(loadSpeedLog());
-  }, [initialDuration]);
+    if (daily) {
+      const key = utcDateKey();
+      dailyRef.current = key;
+      setDailyKey(key);
+      setDailyStore(loadDaily());
+      setText(dailyText(key));
+    } else {
+      setText(generateTestText('sentences', initialDuration));
+    }
+    setLog(loadSpeedLog(daily ? DAILY_LOG_KEY : LOG_KEY));
+  }, [initialDuration, daily]);
 
   // One path for every typed character: keyboard events and touch/IME input both use it.
   const playKeySound = useKeySound();
@@ -329,7 +359,16 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
     setScrollOffset(0);
     setLineHeight(0);
     setLastKeyFlash(null);
-    const next = generateTestText(textMode, dur ?? customDuration ?? duration);
+    let next: string;
+    if (dailyRef.current) {
+      // Same passage again; if the UTC day rolled over while the page was open, move to the new day's.
+      const key = utcDateKey();
+      dailyRef.current = key;
+      setDailyKey(key);
+      next = dailyText(key);
+    } else {
+      next = generateTestText(textMode, dur ?? customDuration ?? duration);
+    }
     setText(next);
     restart(next);
     isCompleteRef.current = false;
@@ -366,6 +405,12 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
     const c = cmd.trim().toLowerCase();
     setShowCommandPalette(false);
     setCommandInput('');
+
+    if (dailyRef.current) {
+      if (c === 'restart' || c === 'r') startNewTest();
+      else if (c === 'focus' || c === 'f') setFocusMode((prev) => !prev);
+      return;
+    }
 
     // Time commands
     const timeMatch = c.match(/^(?:time|t)\s+(\d+)(s|m)?/);
@@ -437,9 +482,13 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
       ))}
 
       <div className="w-full">
+          {daily && dailyKey && <DailyPanel dateKey={dailyKey} store={dailyStore} />}
           <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
             <div className="flex flex-wrap items-center gap-1">
-              {DURATION_OPTIONS.map((d) => (
+              {daily && (
+                <span className="rounded-md bg-accent-bg px-2 py-1 text-xs text-accent">daily · 60s · sentences</span>
+              )}
+              {!daily && DURATION_OPTIONS.map((d) => (
                 <button
                   key={d.seconds}
                   onClick={() => { !isRunning && startNewTest(d.seconds); }}
@@ -453,7 +502,7 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
                   {d.label}
                 </button>
               ))}
-              <button
+              {!daily && <button
                 onClick={() => !isRunning && setShowCustomInput(!showCustomInput)}
                 disabled={isRunning}
                 className={`flex items-center justify-center rounded-md p-1.5 transition-all ${
@@ -464,9 +513,9 @@ export default function TypingSpeedTest({ initialDuration = 60 }: { initialDurat
                 title="Custom time"
               >
                 <Settings2 className="h-3.5 w-3.5" />
-              </button>
-              <span className="mx-1 hidden h-3 w-px bg-surface-border sm:block" />
-              {TEXT_MODES.map((m) => (
+              </button>}
+              {!daily && <span className="mx-1 hidden h-3 w-px bg-surface-border sm:block" />}
+              {!daily && TEXT_MODES.map((m) => (
                 <button
                   key={m.id}
                   onClick={() => {
