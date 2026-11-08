@@ -9,7 +9,7 @@
  * The FAQ list below is the single source for both the visible FAQ and the
  * FAQPage JSON-LD, so they cannot drift apart.
  *
- * Last real edit: 2026-11-08
+ * Last real edit: 2026-11-09
  */
 
 export const meta = {
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Speed Test — Check Your WPM and Accuracy Online</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-08">November 8, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-09">November 9, 2026</time></span>
   <span>~9 min read</span>
 </p>
 <p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
@@ -136,6 +136,7 @@ export const bodyHtml = `
 <tr><td>100 and above</td><td>Elite</td></tr>
 </tbody>
 </table>
+<p>Under the stat tiles, a row of five bars shows the same labels as a ladder. A gold marker shows where your net WPM sits and how many words per minute remain to the next label. After you have finished at least three earlier speed tests on this device, the row also shows a dotted line at the average net WPM of your last 30 speed tests, and the "gross wpm" and "errors" tiles show your average for those tests next to this run's numbers. Games, practice and lessons are not part of that average, and nothing is sent anywhere. For a rough outside reference, a CHI 2018 study of 168,960 typists reported a mean typing speed of 51.56 WPM (Dhakal et al.); it measured speed only, and our labels are not taken from it.</p>
 <p>Read accuracy before you read speed. Below 95%, the test tells you to hold accuracy before chasing speed. Below 88%, it calls the run "not a real score," because that WPM was bought with errors that would have to be fixed or would end up in your work.</p>
 
 <h2 id="the-speed-graph-and-weak-spots">The speed graph, consistency and weak spots</h2>

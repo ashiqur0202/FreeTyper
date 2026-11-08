@@ -32,11 +32,11 @@ export default function LevelLadder({ net, avg }: LevelLadderProps) {
             <div key={level.key} className="relative min-w-0">
               {isCurrent && (
                 <span
-                  className="absolute bottom-full mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-accent px-1.5 py-0.5 font-mono text-[10px] font-bold text-surface"
+                  className="absolute bottom-full mb-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-text-bright px-1.5 py-0.5 font-mono text-[10px] font-bold text-surface"
                   style={{ left: `${pinLeft}%` }}
                 >
                   You {net}
-                  <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-accent" />
+                  <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent border-t-text-bright" />
                 </span>
               )}
               <div className="relative h-2.5 rounded-full bg-surface-border">
@@ -54,7 +54,7 @@ export default function LevelLadder({ net, avg }: LevelLadderProps) {
               </div>
               <p
                 className={`mt-1 whitespace-nowrap text-center text-[10px] leading-tight ${
-                  isCurrent ? 'font-bold text-accent' : 'text-text-dim'
+                  isCurrent ? 'font-bold text-text-bright' : 'text-text-dim'
                 }`}
               >
                 {level.name}
