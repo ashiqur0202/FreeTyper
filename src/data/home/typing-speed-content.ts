@@ -9,7 +9,7 @@
  * The FAQ list below is the single source for both the visible FAQ and the
  * FAQPage JSON-LD, so they cannot drift apart.
  *
- * Last real edit: 2026-11-09
+ * Last real edit: 2026-11-10
  */
 
 export const meta = {
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Speed Test — Check Your WPM and Accuracy Online</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-09">November 9, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-10">November 10, 2026</time></span>
   <span>~9 min read</span>
 </p>
 <p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
@@ -154,6 +154,10 @@ export const bodyHtml = `
 <p>The "share" button under the result card draws a 1200 by 630 pixel PNG of your latest run in the colours of the theme you are using. It shows your WPM, accuracy, time, errors, the consistency score and speed graph when the run has them, a rank label for speed tests, the date and the site name. It never contains the text you typed. The picture is drawn in your browser and is not uploaded anywhere.</p>
 <p>What the button does depends on your device. On a phone or tablet that supports it, it opens the system share sheet with the picture attached. On a computer it copies the picture to the clipboard, so you can paste it into a chat or a post. If the browser blocks clipboard images, it saves the PNG as a file and copies the old one-line text instead. The same button appears on the practice and lessons result cards.</p>
 
+<h2 id="typing-certificate">Downloading a typing certificate</h2>
+<p>After a speed test that ran for at least 30 seconds with at least 90% accuracy, a "certificate" button appears next to "share" on the result card. These two limits are our own suggestion: shorter runs are too noisy to certify, and 90% is the same bar as the daily challenge streak. The button asks for a name, which you can leave empty (the certificate then says "Typist"), and downloads a 1600 by 1131 pixel PNG on ivory paper with a gold seal. It shows your name, net WPM, accuracy, the test length, your FreeTyper level and the date.</p>
+<p>The certificate is a keepsake, not proof. It says on the picture that the test was timed in your browser and is not independently verified, and the levels are FreeTyper's own labels. The name is printed on the picture only and is remembered on this device so you do not have to type it again. It is not sent anywhere, and the picture is drawn in your browser. Only Latin letters use the script font; names in other alphabets are drawn in a standard font from your device.</p>
+
 <h2 id="what-is-a-good-typing-speed">What is a good typing speed, and what is the average?</h2>
 <p>The average typing speed depends on who you ask and how they were measured. The most useful reference we know of is a large academic study, <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">Observations on Typing from 136 Million Keystrokes</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018). It recorded 168,000 volunteers copying sentences on a keyboard. Its reported figures:</p>
 <ul>
@@ -194,7 +198,7 @@ export const bodyHtml = `
 
 <h2 id="limits-of-this-test">Limits of this test</h2>
 <ul>
-<li>It is not a certificate. An employer or school may require its own test.</li>
+<li>The certificate picture is a keepsake, not an official qualification. An employer or school may require its own test.</li>
 <li>Timing comes from your browser, so a very busy computer can shift a result slightly.</li>
 <li>The text is a built-in set, which will not match your own emails, essays or code.</li>
 <li>It is designed for a physical keyboard; touch-screen typing is a different skill.</li>

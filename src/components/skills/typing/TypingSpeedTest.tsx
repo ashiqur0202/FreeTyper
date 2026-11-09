@@ -26,6 +26,7 @@ import {
   type DailyStore,
 } from './dailyChallenge';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
+import { ignoresTyping } from './typingTarget';
 import PracticeFeedback, {
   speedTestCoachNote,
   type PracticeLogEntry,
@@ -270,6 +271,7 @@ export default function TypingSpeedTest({
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      if (ignoresTyping(e.target)) return;
       if (showCommandPaletteRef.current) {
         if (e.key === 'Escape') {
           e.preventDefault();

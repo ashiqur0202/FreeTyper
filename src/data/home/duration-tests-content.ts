@@ -14,7 +14,7 @@
  * SD 20.2, 168,960 volunteers; top 10 % above about 78, bottom 10 % below
  * about 26), checked against the paper's results table on 2026-11-08.
  *
- * Last real edit: 2026-11-09
+ * Last real edit: 2026-11-10
  */
 
 export type DurationPage = {
@@ -32,7 +32,7 @@ export type DurationPage = {
 const byline = (): string => `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-09">November 9, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-10">November 10, 2026</time></span>
 </p>`;
 
 const sourcesHtml = (extra: string): string => `
@@ -151,7 +151,7 @@ const oneMinute: DurationPage = {
 <h2 id="limits-of-the-1-minute-test">Limits of this test</h2>
 <ul>
 <li>It measures copying text. Composing your own sentences is usually slower.</li>
-<li>It is not a certificate, and employer or exam tests have their own rules.</li>
+<li>The certificate picture is a keepsake, not an official qualification, and employer or exam tests have their own rules.</li>
 <li>It is built for a physical keyboard.</li>
 </ul>
 
@@ -260,7 +260,7 @@ const threeMinute: DurationPage = {
 <h2 id="limits-of-the-3-minute-test">Limits of this test</h2>
 <ul>
 <li>It measures copying text, not writing your own.</li>
-<li>It is not a certificate, and employer or exam tests set their own rules.</li>
+<li>The certificate picture is a keepsake, not an official qualification, and employer or exam tests set their own rules.</li>
 <li>It is built for a physical keyboard.</li>
 </ul>
 
@@ -289,7 +289,7 @@ const fiveMinute: DurationPage = {
     {
       question: 'Is this a typing certificate?',
       answer:
-        'No. It is a practice and measuring tool, and nothing here is an official qualification. If you need a certificate for an employer, ask them which test they accept.',
+        'Not an official one. After a run of at least 30 seconds with at least 90% accuracy you can download a certificate picture, but it is a keepsake: the test is timed in your browser and not independently verified. If you need a certificate for an employer, ask them which test they accept.',
     },
     {
       question: 'Should I warm up first?',
@@ -368,7 +368,7 @@ const fiveMinute: DurationPage = {
 </ul>
 
 <h2 id="five-minutes-and-job-tests">Five minutes and job or exam tests</h2>
-<p>Employer and exam typing tests choose their own length, text and scoring, so a result here will not match them exactly. Our post on <a href="/blog/data-entry-typing-test">data entry typing tests</a> explains how such tests are scored and how to prepare. This page is practice, not a certificate.</p>
+<p>Employer and exam typing tests choose their own length, text and scoring, so a result here will not match them exactly. Our post on <a href="/blog/data-entry-typing-test">data entry typing tests</a> explains how such tests are scored and how to prepare. This page is practice. Its certificate picture is a keepsake, not an official qualification.</p>
 
 <h2 id="typical-scores-over-five-minutes">Typical scores</h2>
 <p>The study people usually quote, Dhakal and colleagues (CHI 2018, 168,960 volunteers, mean 51.56 WPM, standard deviation 20.2), used short copied sentences, not five-minute passages. Use it as a rough reference only. See <a href="/blog/good-typing-speed">what a good typing speed is</a>.</p>
@@ -376,7 +376,7 @@ const fiveMinute: DurationPage = {
 <h2 id="limits-of-the-5-minute-test">Limits of this test</h2>
 <ul>
 <li>It measures copying text, not writing your own.</li>
-<li>It is not a certificate or an official qualification.</li>
+<li>The certificate picture is a keepsake, not an official qualification.</li>
 <li>It is built for a physical keyboard.</li>
 </ul>
 

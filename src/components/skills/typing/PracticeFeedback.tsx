@@ -5,6 +5,8 @@ import Link from 'next/link';
 import type { TypingSession } from './types';
 import RunGraph from './RunGraph';
 import ShareResultButton from './ShareResultButton';
+import CertificateButton from './CertificateButton';
+import { canIssueCertificate } from './certificateRules';
 import { MIN_GRAPH_SECONDS } from './runStats';
 import LevelLadder from './LadderView';
 import { LEVELS, averages, levelIndex } from './levelLadder';
@@ -696,6 +698,7 @@ export default function PracticeFeedback({
             )}
             {extraActions}
             <ShareResultButton run={latest} />
+            {canIssueCertificate(latest) && <CertificateButton run={latest} />}
           </div>
 
         <div className="mt-4 flex flex-wrap items-end justify-between gap-3 border-t border-surface-border/70 pt-3">
