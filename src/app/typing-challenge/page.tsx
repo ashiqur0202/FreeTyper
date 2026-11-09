@@ -15,6 +15,7 @@ export default function Page() {
   return (
     <section className="flex min-h-screen flex-col justify-start px-8 pt-16 pb-12 sm:px-10 md:pt-10 lg:px-12">
       <div className="w-full">
+        <h1 className="sr-only">Typing challenge: beat a friend’s score</h1>
         <TypingSpeedTest challenge />
       </div>
     </section>
