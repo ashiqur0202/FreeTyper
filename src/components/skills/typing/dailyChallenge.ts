@@ -1,16 +1,13 @@
 import { practiceTexts } from './typingData';
+import { dailyStreak, pruneDaily, utcDateKey, type DailyDay, type DailyStore } from './dailyStreak';
+
+export { dailyStreak, utcDateKey, type DailyDay, type DailyStore };
 
 /** One run of the daily challenge needs this many words so a fast typist cannot finish it in 60 s. */
 const DAILY_WORDS = 300;
 const STORE_KEY = 'freetyper-daily-challenge';
-const KEEP_DAYS = 60;
 /** Runs below this accuracy do not count toward the streak (stops key-mashing). */
 export const STREAK_MIN_ACCURACY = 90;
-
-/** Today's challenge date, as UTC `YYYY-MM-DD`, so everyone gets the same passage at the same moment. */
-export function utcDateKey(now: Date = new Date()): string {
-  return now.toISOString().slice(0, 10);
-}
 
 function hashString(s: string): number {
   let h = 2166136261;
@@ -58,15 +55,6 @@ export function dailyText(dateKey: string): string {
   return out.join(' ');
 }
 
-export interface DailyDay {
-  /** Best net WPM among counted runs that day. */
-  wpm: number;
-  accuracy: number;
-  runs: number;
-}
-
-export type DailyStore = Record<string, DailyDay>;
-
 export function loadDaily(): DailyStore {
   try {
     const raw = localStorage.getItem(STORE_KEY);
@@ -87,34 +75,11 @@ export function recordDailyRun(dateKey: string, wpm: number, accuracy: number): 
     day.accuracy = accuracy;
   }
   store[dateKey] = day;
-  const keys = Object.keys(store).sort();
-  for (const k of keys.slice(0, Math.max(0, keys.length - KEEP_DAYS))) delete store[k];
+  const kept = pruneDaily(store, dateKey);
   try {
-    localStorage.setItem(STORE_KEY, JSON.stringify(store));
+    localStorage.setItem(STORE_KEY, JSON.stringify(kept));
   } catch {
     /* ignore */
   }
-  return store;
-}
-
-function previousDay(dateKey: string): string {
-  const d = new Date(`${dateKey}T00:00:00Z`);
-  d.setUTCDate(d.getUTCDate() - 1);
-  return utcDateKey(d);
-}
-
-const counted = (day?: DailyDay) => !!day && day.wpm > 0;
-
-/**
- * Days in a row with a counted run, ending today. If today has no counted run
- * yet, the streak still shows yesterday's chain so it is not lost until the day ends.
- */
-export function dailyStreak(store: DailyStore, today: string): number {
-  let day = counted(store[today]) ? today : previousDay(today);
-  let n = 0;
-  while (counted(store[day])) {
-    n += 1;
-    day = previousDay(day);
-  }
-  return n;
+  return kept;
 }

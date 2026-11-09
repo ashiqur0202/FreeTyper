@@ -10,6 +10,7 @@ const LABEL: Record<ShareOutcome | 'idle' | 'busy', string> = {
   idle: 'share',
   busy: 'making image…',
   shared: 'shared',
+  cancelled: 'share',
   'image-copied': 'image copied',
   downloaded: 'image saved',
   'text-copied': 'text copied',
@@ -25,6 +26,10 @@ export default function ShareResultButton({ run }: { run: TypingSession }) {
     trackEvent('share_result', { source: shareSourceOf(run.mode) });
     setState('busy');
     const outcome = await shareResult(run);
+    if (outcome === 'cancelled') {
+      setState('idle');
+      return;
+    }
     setState(outcome);
     setTimeout(() => setState('idle'), 2500);
   };

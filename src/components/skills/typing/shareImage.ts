@@ -1,5 +1,9 @@
 import type { TypingSession } from './types';
 import { MIN_GRAPH_SECONDS } from './runStats';
+import { LEVELS, levelIndex } from './levelLadder';
+import { isShareCancel, type ShareOutcome } from './shareOutcome';
+
+export type { ShareOutcome };
 
 export const SHARE_W = 1200;
 export const SHARE_H = 630;
@@ -18,11 +22,7 @@ export function shareText(run: TypingSession): string {
 }
 
 function rankLabel(wpm: number) {
-  if (wpm >= 100) return 'elite';
-  if (wpm >= 80) return 'pro';
-  if (wpm >= 60) return 'skilled';
-  if (wpm >= 40) return 'average';
-  return 'beginner';
+  return LEVELS[levelIndex(wpm)].key;
 }
 
 function formatDuration(seconds: number) {
@@ -238,7 +238,6 @@ export async function renderResultImage(run: TypingSession): Promise<Blob> {
   });
 }
 
-export type ShareOutcome = 'shared' | 'image-copied' | 'downloaded' | 'text-copied' | 'failed';
 
 /**
  * Phones: system share sheet with the picture attached. Desktop: copy the
@@ -260,7 +259,7 @@ export async function shareResult(run: TypingSession): Promise<ShareOutcome> {
       await navigator.share({ files: [file], text: shareText(run), url: 'https://freetyper.com' });
       return 'shared';
     } catch (e) {
-      if (e instanceof DOMException && e.name === 'AbortError') return 'failed';
+      if (isShareCancel(e)) return 'cancelled';
     }
   }
 
