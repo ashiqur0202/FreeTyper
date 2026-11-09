@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   Timer,
   CalendarDays,
+  Swords,
   GraduationCap,
   PenTool,
   Keyboard,
@@ -37,6 +38,7 @@ const navGroups = [
     label: 'tests',
     items: [
       { href: '/daily-typing-challenge', label: 'daily', icon: CalendarDays },
+      { href: '/typing-challenge', label: 'challenge', icon: Swords },
       { href: '/1-minute-typing-test', label: '1 minute', icon: Timer },
       { href: '/3-minute-typing-test', label: '3 minutes', icon: Timer },
       { href: '/5-minute-typing-test', label: '5 minutes', icon: Timer },

@@ -83,3 +83,8 @@ export function recordDailyRun(dateKey: string, wpm: number, accuracy: number): 
   }
   return kept;
 }
+
+/** The passage for a challenge link: the same generator as the daily one, seeded by the link's seed. */
+export function challengeText(seed: string): string {
+  return dailyText(`challenge-${seed}`);
+}

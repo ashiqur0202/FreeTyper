@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { RotateCcw, Settings2, X, Maximize, Minimize, PenTool } from 'lucide-react';
+import { RotateCcw, Settings2, X, Maximize, Minimize, PenTool, Swords } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
 import { withoutRun } from './runStats';
@@ -15,7 +15,10 @@ import LiveKeyboard from './LiveKeyboard';
 import { useKeySound } from './useKeySound';
 import { trackEvent } from '@/lib/analytics';
 import DailyPanel from './DailyPanel';
+import ChallengePanel from './ChallengePanel';
+import { newSeed, parseChallenge, type Challenge } from './challengeLink';
 import {
+  challengeText,
   dailyText,
   loadDaily,
   recordDailyRun,
@@ -126,12 +129,19 @@ function loadSpeedLog(key: string = LOG_KEY): PracticeLogEntry[] {
 export default function TypingSpeedTest({
   initialDuration = 60,
   daily = false,
+  challenge = false,
 }: {
   initialDuration?: number;
   /** Daily challenge: a fixed 60 s run on the passage chosen by today's UTC date. */
   daily?: boolean;
+  /** Challenge link: a fixed 60 s run on the passage chosen by the link's seed, compared with the sender's score. */
+  challenge?: boolean;
 }) {
   const [duration, setDuration] = useState(initialDuration);
+  const fixedRun = daily || challenge;
+  const [challengeInfo, setChallengeInfo] = useState<Challenge | null>(null);
+  const [challengeRun, setChallengeRun] = useState<{ wpm: number; accuracy: number } | null>(null);
+  const challengeRef = useRef<Challenge | null>(null);
   const [dailyKey, setDailyKey] = useState<string | null>(null);
   const [dailyStore, setDailyStore] = useState<DailyStore>({});
   const dailyRef = useRef<string | null>(null);
@@ -165,16 +175,18 @@ export default function TypingSpeedTest({
     const { duration: dur, textMode: mode, customDuration: custom } = settingsRef.current;
     const secs = custom ?? dur;
     const day = dailyRef.current;
+    const friendRun = challengeRef.current;
     const updated = {
       ...session,
       mode: 'speed-test' as const,
-      modeDetail: day ? `daily · ${day}` : `${mode} · ${secs}s`,
+      modeDetail: day ? `daily · ${day}` : friendRun ? 'challenge · 60s' : `${mode} · ${secs}s`,
     };
     if (day) setDailyStore(recordDailyRun(day, session.wpm, session.accuracy));
+    if (friendRun) setChallengeRun({ wpm: session.wpm, accuracy: session.accuracy });
     addSession(withoutRun(updated));
     trackEvent('test_complete', {
       duration_s: secs,
-      text_mode: day ? 'daily' : mode,
+      text_mode: day ? 'daily' : friendRun ? 'challenge' : mode,
       wpm: session.wpm,
       accuracy: session.accuracy,
     });
@@ -185,10 +197,13 @@ export default function TypingSpeedTest({
         ...speedTestCoachNote(updated, prev[0], prev),
       };
       const next = [entry, ...prev].slice(0, LOG_MAX);
-      try {
-        localStorage.setItem(dailyRef.current ? DAILY_LOG_KEY : LOG_KEY, JSON.stringify(next));
-      } catch {
-        /* ignore */
+      // A challenge run keeps no card history of its own: it is compared with the friend's score instead.
+      if (!challengeRef.current) {
+        try {
+          localStorage.setItem(dailyRef.current ? DAILY_LOG_KEY : LOG_KEY, JSON.stringify(next));
+        } catch {
+          /* ignore */
+        }
       }
       return next;
     });
@@ -226,11 +241,19 @@ export default function TypingSpeedTest({
       setDailyKey(key);
       setDailyStore(loadDaily());
       setText(dailyText(key));
+    } else if (challenge) {
+      // No usable link (or none at all): start a fresh challenge the person can send on.
+      const parsed = parseChallenge(window.location.search);
+      const info = parsed ?? { seed: newSeed(), wpm: null, accuracy: null };
+      challengeRef.current = info;
+      setChallengeInfo(info);
+      setText(challengeText(info.seed));
+      if (parsed?.wpm != null) trackEvent('challenge_link_open');
     } else {
       setText(generateTestText('sentences', initialDuration));
     }
-    setLog(loadSpeedLog(daily ? DAILY_LOG_KEY : LOG_KEY));
-  }, [initialDuration, daily]);
+    setLog(challenge ? [] : loadSpeedLog(daily ? DAILY_LOG_KEY : LOG_KEY));
+  }, [initialDuration, daily, challenge]);
 
   // One path for every typed character: keyboard events and touch/IME input both use it.
   const playKeySound = useKeySound();
@@ -366,6 +389,8 @@ export default function TypingSpeedTest({
       dailyRef.current = key;
       setDailyKey(key);
       next = dailyText(key);
+    } else if (challengeRef.current) {
+      next = challengeText(challengeRef.current.seed);
     } else {
       next = generateTestText(textMode, dur ?? customDuration ?? duration);
     }
@@ -406,7 +431,7 @@ export default function TypingSpeedTest({
     setShowCommandPalette(false);
     setCommandInput('');
 
-    if (dailyRef.current) {
+    if (dailyRef.current || challengeRef.current) {
       if (c === 'restart' || c === 'r') startNewTest();
       else if (c === 'focus' || c === 'f') setFocusMode((prev) => !prev);
       return;
@@ -483,12 +508,13 @@ export default function TypingSpeedTest({
 
       <div className="w-full">
           {daily && dailyKey && <DailyPanel dateKey={dailyKey} store={dailyStore} />}
+          {challenge && challengeInfo && <ChallengePanel challenge={challengeInfo} run={challengeRun} />}
           <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
             <div className="flex flex-wrap items-center gap-1">
-              {daily && (
-                <span className="rounded-md bg-accent-bg px-2 py-1 text-xs text-accent">daily · 60s · sentences</span>
+              {fixedRun && (
+                <span className="rounded-md bg-accent-bg px-2 py-1 text-xs text-accent">{daily ? 'daily' : 'challenge'} · 60s · sentences</span>
               )}
-              {!daily && DURATION_OPTIONS.map((d) => (
+              {!fixedRun && DURATION_OPTIONS.map((d) => (
                 <button
                   key={d.seconds}
                   onClick={() => { !isRunning && startNewTest(d.seconds); }}
@@ -502,7 +528,7 @@ export default function TypingSpeedTest({
                   {d.label}
                 </button>
               ))}
-              {!daily && <button
+              {!fixedRun && <button
                 onClick={() => !isRunning && setShowCustomInput(!showCustomInput)}
                 disabled={isRunning}
                 className={`flex items-center justify-center rounded-md p-1.5 transition-all ${
@@ -514,8 +540,8 @@ export default function TypingSpeedTest({
               >
                 <Settings2 className="h-3.5 w-3.5" />
               </button>}
-              {!daily && <span className="mx-1 hidden h-3 w-px bg-surface-border sm:block" />}
-              {!daily && TEXT_MODES.map((m) => (
+              {!fixedRun && <span className="mx-1 hidden h-3 w-px bg-surface-border sm:block" />}
+              {!fixedRun && TEXT_MODES.map((m) => (
                 <button
                   key={m.id}
                   onClick={() => {
@@ -633,6 +659,13 @@ export default function TypingSpeedTest({
                 >
                   <PenTool className="h-3 w-3" />
                   practice
+                </Link>
+                <Link
+                  href="/typing-challenge"
+                  className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
+                >
+                  <Swords className="h-3 w-3" />
+                  challenge
                 </Link>
               </>
             }
