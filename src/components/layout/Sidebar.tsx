@@ -16,6 +16,7 @@ import {
   BookOpen,
   Settings,
   Menu,
+  Hash,
   X,
 } from 'lucide-react';
 import { useSidebar } from './SidebarProvider';
@@ -42,6 +43,7 @@ const navGroups = [
       { href: '/1-minute-typing-test', label: '1 minute', icon: Timer },
       { href: '/3-minute-typing-test', label: '3 minutes', icon: Timer },
       { href: '/5-minute-typing-test', label: '5 minutes', icon: Timer },
+      { href: '/number-row-typing-test', label: 'number row', icon: Hash },
     ],
   },
   {

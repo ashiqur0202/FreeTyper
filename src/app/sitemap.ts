@@ -3,6 +3,7 @@ import { tools } from '@/config/tools';
 import { siteConfig } from '@/config/site';
 import { blogPosts } from '@/data/blog/typing-skills';
 import { durationPages } from '@/data/home/duration-tests-content';
+import { numberRowContent } from '@/data/home/number-row-content';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Home (`/`) is the canonical speed-test URL; do not list the duplicate slug.
@@ -19,6 +20,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
+
+  const numberRowPage = {
+    url: `${siteConfig.url}/${numberRowContent.slug}`,
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  };
 
   const dailyPage = {
     url: `${siteConfig.url}/daily-typing-challenge`,
@@ -43,5 +50,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteConfig.url}/disclaimer`, changeFrequency: 'yearly' as const, priority: 0.2 },
   ];
 
-  return [...staticPages, ...toolPages, ...durationTestPages, dailyPage, ...blogPages];
+  return [...staticPages, ...toolPages, ...durationTestPages, numberRowPage, dailyPage, ...blogPages];
 }

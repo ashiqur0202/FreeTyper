@@ -27,6 +27,16 @@ import {
 } from './dailyChallenge';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import { ignoresTyping } from './typingTarget';
+import {
+  NUMBER_ROW_MODES,
+  digitOfKey,
+  digitSpeeds,
+  nextKeyHint,
+  numberRowText,
+  type NumberRowMode,
+} from './numberRow';
+import DigitStrip from './DigitStrip';
+import { useSettings } from '@/components/layout/SettingsProvider';
 import PracticeFeedback, {
   speedTestCoachNote,
   type PracticeLogEntry,
@@ -102,6 +112,8 @@ function generateTestText(mode: TextMode, seconds = 60): string {
 const LOG_KEY = 'freetyper-speed-log';
 // The daily challenge keeps its own list, so its card does not mix with free-choice tests.
 const DAILY_LOG_KEY = 'freetyper-daily-log';
+// So does the number row test: digit speeds would mislead next to normal text.
+const NUMBER_ROW_LOG_KEY = 'freetyper-number-row-log';
 const LOG_MAX = 5;
 
 function loadSpeedLog(key: string = LOG_KEY): PracticeLogEntry[] {
@@ -131,8 +143,11 @@ export default function TypingSpeedTest({
   initialDuration = 60,
   daily = false,
   challenge = false,
+  numberRow = false,
 }: {
   initialDuration?: number;
+  /** Number row test: digits (and the shifted symbols above them) instead of prose. Own result list, not saved to progress. */
+  numberRow?: boolean;
   /** Daily challenge: a fixed 60 s run on the passage chosen by today's UTC date. */
   daily?: boolean;
   /** Challenge link: a fixed 60 s run on the passage chosen by the link's seed, compared with the sender's score. */
@@ -155,6 +170,11 @@ export default function TypingSpeedTest({
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [customValue, setCustomValue] = useState('');
   const [textMode, setTextMode] = useState<TextMode>('sentences');
+  const [rowMode, setRowMode] = useState<NumberRowMode>('digits');
+  const [digitStats, setDigitStats] = useState<ReturnType<typeof digitSpeeds> | null>(null);
+  // Gaps (ms) before each correct press of a number key, for the run in progress.
+  const digitTimesRef = useRef<Record<string, number[]>>({});
+  const { settings } = useSettings();
   const [focusMode, setFocusMode] = useState(false);
   const [showCommandPalette, setShowCommandPalette] = useState(false);
   const [commandInput, setCommandInput] = useState('');
@@ -169,25 +189,33 @@ export default function TypingSpeedTest({
   const currentCharRef = useRef<HTMLSpanElement>(null);
 
   const { progress: savedProgress, addSession, updateKeyStats, checkAchievements } = useTypingProgress();
-  const settingsRef = useRef({ duration, textMode, customDuration });
-  settingsRef.current = { duration, textMode, customDuration };
+  const settingsRef = useRef({ duration, textMode, customDuration, rowMode });
+  settingsRef.current = { duration, textMode, customDuration, rowMode };
 
   const handleComplete = useCallback((session: TypingSession) => {
-    const { duration: dur, textMode: mode, customDuration: custom } = settingsRef.current;
+    const { duration: dur, textMode: mode, customDuration: custom, rowMode: row } = settingsRef.current;
     const secs = custom ?? dur;
     const day = dailyRef.current;
     const friendRun = challengeRef.current;
     const updated = {
       ...session,
       mode: 'speed-test' as const,
-      modeDetail: day ? `daily · ${day}` : friendRun ? 'challenge · 60s' : `${mode} · ${secs}s`,
+      modeDetail: numberRow
+        ? `number row · ${row} · ${secs}s`
+        : day
+          ? `daily · ${day}`
+          : friendRun
+            ? 'challenge · 60s'
+            : `${mode} · ${secs}s`,
     };
     if (day) setDailyStore(recordDailyRun(day, session.wpm, session.accuracy));
     if (friendRun) setChallengeRun({ wpm: session.wpm, accuracy: session.accuracy });
-    addSession(withoutRun(updated));
+    // Number row runs stay out of progress: digit speeds would shift best WPM, averages and the streak.
+    if (numberRow) setDigitStats(digitSpeeds(digitTimesRef.current));
+    else addSession(withoutRun(updated));
     trackEvent('test_complete', {
       duration_s: secs,
-      text_mode: day ? 'daily' : friendRun ? 'challenge' : mode,
+      text_mode: numberRow ? `number_row_${row}` : day ? 'daily' : friendRun ? 'challenge' : mode,
       wpm: session.wpm,
       accuracy: session.accuracy,
     });
@@ -201,14 +229,17 @@ export default function TypingSpeedTest({
       // A challenge run keeps no card history of its own: it is compared with the friend's score instead.
       if (!challengeRef.current) {
         try {
-          localStorage.setItem(dailyRef.current ? DAILY_LOG_KEY : LOG_KEY, JSON.stringify(next));
+          localStorage.setItem(
+            numberRow ? NUMBER_ROW_LOG_KEY : dailyRef.current ? DAILY_LOG_KEY : LOG_KEY,
+            JSON.stringify(next),
+          );
         } catch {
           /* ignore */
         }
       }
       return next;
     });
-  }, [addSession]);
+  }, [addSession, numberRow]);
 
   const { chars, currentIndex, wpm, accuracy, isRunning, isComplete, timeLeft, restart, handleInput, handleBackspace } =
     useTypingEngine({
@@ -217,7 +248,14 @@ export default function TypingSpeedTest({
       onComplete: handleComplete,
       onKeyStats: (key, correct, ctx) => {
       updateKeyStats(key, correct);
-      recordPair(ctx.prev, key, correct, ctx.gapMs);
+      if (numberRow) {
+        // The first key of a run has no previous character: start the per-digit timings afresh.
+        if (ctx.prev === undefined) digitTimesRef.current = {};
+        const digit = digitOfKey(key);
+        if (correct && digit && ctx.gapMs !== undefined) (digitTimesRef.current[digit] ??= []).push(ctx.gapMs);
+      } else {
+        recordPair(ctx.prev, key, correct, ctx.gapMs);
+      }
     },
     });
 
@@ -250,11 +288,13 @@ export default function TypingSpeedTest({
       setChallengeInfo(info);
       setText(challengeText(info.seed));
       if (parsed?.wpm != null) trackEvent('challenge_link_open');
+    } else if (numberRow) {
+      setText(numberRowText('digits', initialDuration));
     } else {
       setText(generateTestText('sentences', initialDuration));
     }
-    setLog(challenge ? [] : loadSpeedLog(daily ? DAILY_LOG_KEY : LOG_KEY));
-  }, [initialDuration, daily, challenge]);
+    setLog(challenge ? [] : loadSpeedLog(numberRow ? NUMBER_ROW_LOG_KEY : daily ? DAILY_LOG_KEY : LOG_KEY));
+  }, [initialDuration, daily, challenge, numberRow]);
 
   // One path for every typed character: keyboard events and touch/IME input both use it.
   const playKeySound = useKeySound();
@@ -393,6 +433,8 @@ export default function TypingSpeedTest({
       next = dailyText(key);
     } else if (challengeRef.current) {
       next = challengeText(challengeRef.current.seed);
+    } else if (numberRow) {
+      next = numberRowText(rowMode, dur ?? customDuration ?? duration);
     } else {
       next = generateTestText(textMode, dur ?? customDuration ?? duration);
     }
@@ -401,7 +443,7 @@ export default function TypingSpeedTest({
     isCompleteRef.current = false;
     setShowCustomInput(false);
     inputRef.current?.focus({ preventScroll: true });
-  }, [duration, customDuration, textMode, restart]);
+  }, [duration, customDuration, textMode, rowMode, numberRow, restart]);
 
   const startNewTestRef = useRef(startNewTest);
   startNewTestRef.current = startNewTest;
@@ -433,7 +475,7 @@ export default function TypingSpeedTest({
     setShowCommandPalette(false);
     setCommandInput('');
 
-    if (dailyRef.current || challengeRef.current) {
+    if (dailyRef.current || challengeRef.current || numberRow) {
       if (c === 'restart' || c === 'r') startNewTest();
       else if (c === 'focus' || c === 'f') setFocusMode((prev) => !prev);
       return;
@@ -481,7 +523,7 @@ export default function TypingSpeedTest({
         restart();
         break;
     }
-  }, [startNewTest, restart, customDuration, duration]);
+  }, [startNewTest, restart, customDuration, duration, numberRow]);
 
   const seconds = Math.ceil(timeLeft || activeDuration);
   const progress = isRunning ? ((activeDuration - (timeLeft || 0)) / activeDuration) * 100 : 0;
@@ -543,7 +585,27 @@ export default function TypingSpeedTest({
                 <Settings2 className="h-3.5 w-3.5" />
               </button>}
               {!fixedRun && <span className="mx-1 hidden h-3 w-px bg-surface-border sm:block" />}
-              {!fixedRun && TEXT_MODES.map((m) => (
+              {numberRow && NUMBER_ROW_MODES.map((m) => (
+                <button
+                  key={m.id}
+                  onClick={() => {
+                    if (isRunning) return;
+                    setRowMode(m.id);
+                    const next = numberRowText(m.id, customDuration ?? duration);
+                    setText(next);
+                    restart(next);
+                  }}
+                  disabled={isRunning}
+                  className={`rounded-md px-2 py-1 text-xs transition-all ${
+                    rowMode === m.id
+                      ? 'bg-accent-bg text-accent'
+                      : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                  } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
+                >
+                  {m.label}
+                </button>
+              ))}
+              {!fixedRun && !numberRow && TEXT_MODES.map((m) => (
                 <button
                   key={m.id}
                   onClick={() => {
@@ -642,6 +704,21 @@ export default function TypingSpeedTest({
             )}
           </div>
 
+          {numberRow && settings.showKeyboardHints && !isComplete && (
+            <p className="mt-1 h-5 text-center text-xs text-text-dim" data-number-row-hint>
+              {nextKeyHint(chars[currentIndex]?.char) ? (
+                <>
+                  next:{' '}
+                  <span className="font-medium text-accent">
+                    {chars[currentIndex]?.char === ' ' ? 'space' : chars[currentIndex]?.char}
+                  </span>
+                  {' · '}
+                  {nextKeyHint(chars[currentIndex]?.char)}
+                </>
+              ) : null}
+            </p>
+          )}
+
           <div className="mt-4 animate-fade-up">
             <LiveKeyboard
               nextChar={chars[currentIndex]?.char}
@@ -652,7 +729,9 @@ export default function TypingSpeedTest({
 
           <PracticeFeedback
             log={log}
-            savedSessions={savedProgress.sessions}
+            savedSessions={numberRow ? undefined : savedProgress.sessions}
+            plain={numberRow}
+            afterStats={numberRow && digitStats ? <DigitStrip speeds={digitStats.speeds} slowest={digitStats.slowest} /> : undefined}
             extraActions={
               <>
                 <Link
@@ -662,13 +741,15 @@ export default function TypingSpeedTest({
                   <PenTool className="h-3 w-3" />
                   practice
                 </Link>
-                <Link
-                  href="/typing-challenge"
-                  className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
-                >
-                  <Swords className="h-3 w-3" />
-                  challenge
-                </Link>
+                {!numberRow && (
+                  <Link
+                    href="/typing-challenge"
+                    className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
+                  >
+                    <Swords className="h-3 w-3" />
+                    challenge
+                  </Link>
+                )}
               </>
             }
           />

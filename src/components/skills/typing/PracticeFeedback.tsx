@@ -512,6 +512,10 @@ interface PracticeFeedbackProps {
   extraActions?: ReactNode;
   /** All saved sessions; the speed test passes them so the card can show averages. */
   savedSessions?: TypingSession[];
+  /** Number row runs: no level ladder or rank label (those levels are for ordinary text). */
+  plain?: boolean;
+  /** Extra block shown under the stat tiles (the number row digit strip). */
+  afterStats?: ReactNode;
 }
 
 export default function PracticeFeedback({
@@ -520,6 +524,8 @@ export default function PracticeFeedback({
   onTryWeakKeys,
   extraActions,
   savedSessions,
+  plain = false,
+  afterStats,
 }: PracticeFeedbackProps) {
   if (log.length === 0) return null;
 
@@ -600,7 +606,7 @@ export default function PracticeFeedback({
             </div>
           </div>
           <div className="flex flex-col items-end gap-1">
-            {detailed && (
+            {detailed && !plain && (
               <span className="rounded-full bg-accent-bg px-2.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-accent">
                 {rankLabel(latest.wpm)}
               </span>
@@ -642,7 +648,8 @@ export default function PracticeFeedback({
           </div>
         )}
 
-        {detailed && <LevelLadder net={latest.wpm} avg={avgs ? avgs.net : null} />}
+        {detailed && !plain && <LevelLadder net={latest.wpm} avg={avgs ? avgs.net : null} />}
+        {afterStats}
 
         {spots.length > 0 && (
           <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs" data-result-spots>

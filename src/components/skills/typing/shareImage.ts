@@ -2,6 +2,7 @@ import type { TypingSession } from './types';
 import { MIN_GRAPH_SECONDS } from './runStats';
 import { LEVELS, levelIndex } from './levelLadder';
 import { isShareCancel, type ShareOutcome } from './shareOutcome';
+import { isNumberRowDetail } from './numberRow';
 
 export type { ShareOutcome };
 
@@ -164,7 +165,7 @@ export async function renderResultImage(run: TypingSession): Promise<Blob> {
   }
 
   // Rank pill (speed test only, same bands as the result card)
-  if (detailed) {
+  if (detailed && !isNumberRowDetail(run.modeDetail)) {
     const label = rankLabel(run.wpm).toUpperCase();
     ctx.font = `600 22px ${p.sans}`;
     const w = ctx.measureText(label).width + 40;
