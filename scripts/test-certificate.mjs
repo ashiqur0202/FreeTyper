@@ -67,4 +67,13 @@ t('script font is for Latin names only; other alphabets use the device font', ()
   assert.equal(usesScriptFont('Ana Ж'), false);
 });
 
+
+t('a number row run never qualifies, however good', () => {
+  assert.equal(canIssueCertificate(run({ modeDetail: 'number row · digits · 30s', accuracy: 100 })), false);
+  assert.equal(canIssueCertificate(run({ modeDetail: 'number row · symbols · 60s' })), false);
+});
+
+t('an ordinary run with a modeDetail still qualifies', () => {
+  assert.equal(canIssueCertificate(run({ modeDetail: 'sentences' })), true);
+});
 console.log(`${n} tests passed`);

@@ -8,12 +8,18 @@ export const CERT_NAME_MAX = 40;
 
 interface RunLike {
   mode: string;
+  modeDetail?: string;
   duration: number;
   accuracy: number;
   wpm: number;
 }
 
+/**
+ * Number row runs use the speed-test mode but are digits, not sentences, so they get no certificate. The label is
+ * the one numberRow.ts gives them (isNumberRowDetail); it is repeated here so this file stays import-free for tests.
+ */
 export function canIssueCertificate(run: RunLike): boolean {
+  if (run.modeDetail?.startsWith('number row')) return false;
   return run.mode === 'speed-test' && run.wpm > 0 && run.duration >= CERT_MIN_SECONDS && run.accuracy >= CERT_MIN_ACCURACY;
 }
 
