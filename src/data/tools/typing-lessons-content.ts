@@ -9,7 +9,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-08
+ * Last real edit: 2026-11-18 (finger and home-row text now points to the keyboard guide)
  */
 
 export const meta = {
@@ -37,7 +37,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Where should my fingers go on the keyboard?',
     answer:
-      'Your left fingers rest on A, S, D and F and your right fingers on J, K, L and the semicolon key. Both thumbs rest on the space bar. The small raised bumps on F and J let you find this position without looking. Each finger then reaches up or down from its home key.',
+      'On the home row: A, S, D and F on the left, J, K, L and the semicolon on the right, with both thumbs on the space bar. The raised bumps on F and J help you find it by touch. Lesson 1 starts there, and the keyboard guide shows the finger for every key.',
   },
   {
     question: 'Do I have to do the lessons in order?',
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Lessons — Learn Touch Typing Step by Step</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-08">November 8, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
   <span>~7 min read</span>
 </p>
 <p>These free typing lessons are a course of 34 short lessons in six stages. You begin with two keys on the home row, add the rest of the home row, then the top and bottom rows, then Shift and punctuation, then numbers and symbols, and finish with speed and accuracy practice. A live keyboard above the text shows which key comes next, and your progress is saved in your browser without an account.</p>
@@ -122,7 +122,7 @@ export const bodyHtml = `
 <h2 id="how-to-learn-touch-typing-with-these-lessons">How to learn touch typing with this course</h2>
 <p>This is the routine we suggest. It is our recommended approach, not a guarantee.</p>
 <ol>
-<li><strong>Set your hands first.</strong> Fingers on A S D F and J K L ;, thumbs on the space bar. Feel for the bumps on F and J.</li>
+<li><strong>Set your hands first.</strong> Fingers on the home row (A S D F and J K L ;), thumbs on the space bar. The <a href="/keyboard-guide">keyboard guide</a> shows the position with two drawn hands.</li>
 <li><strong>Look at the text, not the keys.</strong> The live keyboard is there so you do not need to look down.</li>
 <li><strong>Go slowly enough to pass.</strong> If you keep missing the pass mark, slow down until the lesson feels clean. Speed is the result of control, not the other way round.</li>
 <li><strong>Do a little every day.</strong> Ten minutes daily is easier to keep up than an hour once a week.</li>
@@ -131,7 +131,7 @@ export const bodyHtml = `
 </ol>
 
 <h2 id="when-each-finger-gets-its-keys">When does each finger learn its keys?</h2>
-<p>The home row is the middle row of letter keys: your left fingers rest on A, S, D and F, your right fingers on J, K, L and the semicolon, and your thumbs on the space bar. Every other key is one short reach from there, and your finger returns home afterwards. The course adds keys in pairs, one for each hand, so both hands learn together. This table shows the lesson in which each finger meets each key, taken from the lesson list in the course.</p>
+<p>The course adds keys in pairs, one for each hand, so both hands learn together. This table shows the lesson in which each finger meets each key, taken from the lesson list in the course. What the home row is, why F and J have bumps and which finger owns every key are covered once, in the <a href="/keyboard-guide">keyboard guide</a>.</p>
 <table>
 <thead><tr><th>Finger</th><th>Home row</th><th>Top row</th><th>Bottom row</th><th>Number row</th></tr></thead>
 <tbody>
@@ -145,7 +145,7 @@ export const bodyHtml = `
 <tr><td>Right little</td><td>semicolon (4)</td><td>P (9)</td><td>slash (14)</td><td>0 (24)</td></tr>
 </tbody>
 </table>
-<p>Both thumbs use the space bar. Capitals come in lessons 17 and 18, one for each Shift key: press the Shift key on the opposite side from the key you are typing. The <a href="/keyboard-guide">keyboard guide</a> has the complete finger map on a laptop keyboard with two drawn hands, where you can tap a finger to see all of its keys, and explains the bumps on F and J that let your index fingers find home by touch.</p>
+<p>Both thumbs use the space bar. Capitals come in lessons 17 and 18, one for each Shift key: press the Shift key on the opposite side from the key you are typing. The <a href="/keyboard-guide">keyboard guide</a> has the complete finger map on a laptop keyboard, where you can tap a finger to see all of its keys.</p>
 
 <h2 id="what-lessons-do-for-your-speed">What do typing lessons actually do for your speed?</h2>
 <p>Less than most lesson pages claim, and it is worth knowing. In <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">a study of 168,000 online typists</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018), people who reported formal typing training were on average about 5 WPM faster than people who did not, and they left slightly fewer errors uncorrected. The effect was modest and the training was self-reported, so it does not prove that lessons cause speed.</p>
