@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import TypingSpeedTest from '@/components/skills/typing/TypingSpeedTest';
-import { challengeCard, challengeImagePath, parseScore } from '@/components/skills/typing/challengeLink';
+import { challengeCard, challengeImagePath, parseScore, parseSeconds } from '@/components/skills/typing/challengeLink';
 import { siteConfig } from '@/config/site';
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
@@ -12,13 +12,14 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
   const sp = await searchParams;
   const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
   const query = new URLSearchParams();
-  for (const key of ['w', 'a']) {
+  for (const key of ['w', 'a', 'd']) {
     const v = first(sp[key]);
     if (v !== undefined) query.set(key, v);
   }
   const score = parseScore(query.toString());
-  const card = challengeCard(score);
-  const images = [{ url: challengeImagePath(score), width: 1200, height: 630, alt: card.headline }];
+  const seconds = parseSeconds(query.toString());
+  const card = challengeCard(score, seconds);
+  const images = [{ url: challengeImagePath(score, seconds), width: 1200, height: 630, alt: card.headline }];
 
   return {
     title: { absolute: card.title },

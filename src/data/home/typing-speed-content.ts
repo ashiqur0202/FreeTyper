@@ -9,7 +9,7 @@
  * The FAQ list below is the single source for both the visible FAQ and the
  * FAQPage JSON-LD, so they cannot drift apart.
  *
- * Last real edit: 2026-11-10
+ * Last real edit: 2026-11-18 (challenge a friend link)
  */
 
 export const meta = {
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Speed Test — Check Your WPM and Accuracy Online</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-10">November 10, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
   <span>~9 min read</span>
 </p>
 <p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
@@ -96,7 +96,7 @@ export const bodyHtml = `
 <ul>
 <li><strong>Choose a length.</strong> The presets are 15 seconds, 30 seconds, 1, 2, 3, 5, 10, 15 and 30 minutes. A custom option accepts anything from 1 to 120 minutes. Three lengths also have their own page that opens on that length, with a short note on what it shows: the <a href="/1-minute-typing-test">1 minute test</a>, the <a href="/3-minute-typing-test">3 minute test</a> and the <a href="/5-minute-typing-test">5 minute test</a>.</li>
 <li><strong>Or try the number row.</strong> The <a href="/number-row-typing-test">number row typing test</a> has you type digits, and optionally the shifted symbols above them, on the row above the letters. Its results are kept apart from this test and do not count toward your progress totals.</li>
-<li><strong>Or take the daily challenge.</strong> The <a href="/daily-typing-challenge">daily typing challenge</a> is a fixed 60-second test on a passage chosen by the date, so everyone gets the same text that day. It keeps a streak and your best score of the day in your browser.</li>
+$1<li><strong>Challenge a friend.</strong> After a test of 15 seconds to 5 minutes, "challenge a friend" under the result copies a link (on a phone it opens the share sheet). The friend's page builds the same text, in the same text type and for the same length, and shows your score as the target. The link holds a short code that picks the text, your net WPM and accuracy, the text type and the length. It has no name and no typed text, and the score is not verified, so treat it as a game between friends.</li>
 <li><strong>Choose a text type.</strong> <em>Words</em> shows common short English words in random order. <em>Sentences</em> shows quotes and short passages with capital letters and punctuation. <em>Code</em> shows programming snippets full of brackets and symbols.</li>
 <li><strong>Type.</strong> The clock starts on your first keystroke, not when the page loads. Every character has to match exactly: letter case, punctuation and spaces all count.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and the cursor moves on. Backspace steps back if you want to fix it.</li>

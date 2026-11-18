@@ -7,8 +7,6 @@ import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
 import { withoutRun } from './runStats';
 import { recordPair } from './pairStats';
-import { practiceTexts } from './typingData';
-import { wordPools } from './gameData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
@@ -16,7 +14,9 @@ import { useKeySound } from './useKeySound';
 import { trackEvent } from '@/lib/analytics';
 import DailyPanel from './DailyPanel';
 import ChallengePanel from './ChallengePanel';
-import { newSeed, parseChallenge, type Challenge } from './challengeLink';
+import ChallengeSendButton from './ChallengeSendButton';
+import { CHALLENGE_SECONDS, buildChallengeUrl, newSeed, parseChallenge, type Challenge } from './challengeLink';
+import { seededTestText, type TextMode } from './testText';
 import {
   challengeText,
   dailyText,
@@ -43,8 +43,6 @@ import PracticeFeedback, {
 } from './PracticeFeedback';
 import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 
-type TextMode = 'words' | 'sentences' | 'code';
-
 const TEXT_MODES: { id: TextMode; label: string }[] = [
   { id: 'words', label: 'words' },
   { id: 'sentences', label: 'sentences' },
@@ -68,45 +66,11 @@ const DURATION_OPTIONS: DurationOption[] = [
   { seconds: 1800, label: '30m' },
 ];
 
-/**
- * Words to build for a run of `seconds`: 5 per second (a 300 WPM budget), so a
- * 1-minute test builds 300 words, not the 1,500 a long run needs. Every character
- * is a DOM element, so a shorter passage makes the first load much lighter.
- * Runs of 5 minutes or more get the same amount as before; the timer still ends the test.
- */
-function wordBudget(seconds: number, max: number): number {
-  return Math.min(max, Math.max(300, Math.round(seconds * 5)));
-}
-
-function generateTestText(mode: TextMode, seconds = 60): string {
-  if (mode === 'words') {
-    const pool = [...wordPools.easy, ...wordPools.medium];
-    const out: string[] = [];
-    const wanted = wordBudget(seconds, 2000);
-    while (out.length < wanted) {
-      const shuffled = [...pool].sort(() => Math.random() - 0.5);
-      out.push(...shuffled);
-    }
-    return out.slice(0, wanted).join(' ');
-  }
-  if (mode === 'code') {
-    const codeTexts = practiceTexts.filter((p) => p.category === 'code');
-    const chunks: string[] = [];
-    const wantedWords = Math.min(800, Math.max(200, Math.round(wordBudget(seconds, 800) * 0.6)));
-    while (chunks.join(' ').split(/\s+/).length < wantedWords) {
-      chunks.push(...[...codeTexts].sort(() => Math.random() - 0.5).map((p) => p.text));
-      if (codeTexts.length === 0) break;
-    }
-    return chunks.join(' ');
-  }
-  const proseTexts = practiceTexts.filter((p) => p.category !== 'code');
-  const chunks: string[] = [];
-  const wantedProse = wordBudget(seconds, 1500);
-  while (chunks.join(' ').split(/\s+/).length < wantedProse) {
-    chunks.push(...[...proseTexts].sort(() => Math.random() - 0.5).map((p) => p.text));
-    if (proseTexts.length === 0) break;
-  }
-  return chunks.join(' ');
+/** A new passage with a fresh seed, remembered in `seedRef` so the finished run can be sent as a challenge link. */
+function freshTest(seedRef: { current: string | null }, mode: TextMode, seconds: number): string {
+  const seed = newSeed();
+  seedRef.current = seed;
+  return seededTestText(mode, seconds, seed);
 }
 
 const LOG_KEY = 'freetyper-speed-log';
@@ -158,6 +122,9 @@ export default function TypingSpeedTest({
   const [challengeInfo, setChallengeInfo] = useState<Challenge | null>(null);
   const [challengeRun, setChallengeRun] = useState<{ wpm: number; accuracy: number } | null>(null);
   const challengeRef = useRef<Challenge | null>(null);
+  // Seed of the passage on screen, and the last finished speed test, which "challenge a friend" turns into a link.
+  const textSeedRef = useRef<string | null>(null);
+  const [lastShare, setLastShare] = useState<{ seed: string; mode: TextMode; seconds: number; wpm: number; accuracy: number } | null>(null);
   const [dailyKey, setDailyKey] = useState<string | null>(null);
   const [dailyStore, setDailyStore] = useState<DailyStore>({});
   const dailyRef = useRef<string | null>(null);
@@ -207,11 +174,14 @@ export default function TypingSpeedTest({
         : day
           ? `daily · ${day}`
           : friendRun
-            ? 'challenge · 60s'
+            ? `challenge · ${secs}s`
             : `${mode} · ${secs}s`,
     };
     if (day) setDailyStore(recordDailyRun(day, session.wpm, session.accuracy));
     if (friendRun) setChallengeRun({ wpm: session.wpm, accuracy: session.accuracy });
+    const seed = textSeedRef.current;
+    const shareable = !numberRow && !day && !friendRun && seed !== null && CHALLENGE_SECONDS.includes(secs);
+    setLastShare(shareable ? { seed, mode, seconds: secs, wpm: session.wpm, accuracy: session.accuracy } : null);
     // Number row runs stay out of progress: digit speeds would shift best WPM, averages and the streak.
     if (numberRow) setDigitStats(digitSpeeds(digitTimesRef.current));
     else addSession(withoutRun(updated));
@@ -285,15 +255,17 @@ export default function TypingSpeedTest({
     } else if (challenge) {
       // No usable link (or none at all): start a fresh challenge the person can send on.
       const parsed = parseChallenge(window.location.search);
-      const info = parsed ?? { seed: newSeed(), wpm: null, accuracy: null };
+      const info: Challenge = parsed ?? { seed: newSeed(), mode: null, seconds: 60, wpm: null, accuracy: null };
       challengeRef.current = info;
       setChallengeInfo(info);
-      setText(challengeText(info.seed));
+      setDuration(info.seconds);
+      if (info.mode) setTextMode(info.mode);
+      setText(info.mode ? seededTestText(info.mode, info.seconds, info.seed) : challengeText(info.seed));
       if (parsed?.wpm != null) trackEvent('challenge_link_open');
     } else if (numberRow) {
       setText(numberRowText('digits', initialDuration));
     } else {
-      setText(generateTestText('sentences', initialDuration));
+      setText(freshTest(textSeedRef, 'sentences', initialDuration));
     }
     setLog(challenge ? [] : loadSpeedLog(numberRow ? NUMBER_ROW_LOG_KEY : daily ? DAILY_LOG_KEY : LOG_KEY));
   }, [initialDuration, daily, challenge, numberRow]);
@@ -434,11 +406,12 @@ export default function TypingSpeedTest({
       setDailyKey(key);
       next = dailyText(key);
     } else if (challengeRef.current) {
-      next = challengeText(challengeRef.current.seed);
+      const c = challengeRef.current;
+      next = c.mode ? seededTestText(c.mode, c.seconds, c.seed) : challengeText(c.seed);
     } else if (numberRow) {
       next = numberRowText(rowMode, dur ?? customDuration ?? duration);
     } else {
-      next = generateTestText(textMode, dur ?? customDuration ?? duration);
+      next = freshTest(textSeedRef, textMode, dur ?? customDuration ?? duration);
     }
     setText(next);
     restart(next);
@@ -507,21 +480,21 @@ export default function TypingSpeedTest({
       case 'w':
         setTextMode('words');
         setResult(null);
-        setText(generateTestText('words', customDuration ?? duration));
+        setText(freshTest(textSeedRef, 'words', customDuration ?? duration));
         restart();
         break;
       case 'sentences':
       case 's':
         setTextMode('sentences');
         setResult(null);
-        setText(generateTestText('sentences', customDuration ?? duration));
+        setText(freshTest(textSeedRef, 'sentences', customDuration ?? duration));
         restart();
         break;
       case 'code':
       case 'c':
         setTextMode('code');
         setResult(null);
-        setText(generateTestText('code', customDuration ?? duration));
+        setText(freshTest(textSeedRef, 'code', customDuration ?? duration));
         restart();
         break;
     }
@@ -558,7 +531,7 @@ export default function TypingSpeedTest({
           <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
             <div className="flex flex-wrap items-center gap-1">
               {fixedRun && (
-                <span className="rounded-md bg-accent-bg px-2 py-1 text-xs text-accent">{daily ? 'daily' : 'challenge'} · 60s · sentences</span>
+                <span className="rounded-md bg-accent-bg px-2 py-1 text-xs text-accent">{daily ? 'daily · 60s · sentences' : `challenge · ${challengeInfo?.seconds ?? 60}s · ${challengeInfo?.mode ?? 'sentences'}`}</span>
               )}
               {!fixedRun && DURATION_OPTIONS.map((d) => (
                 <button
@@ -613,7 +586,7 @@ export default function TypingSpeedTest({
                   onClick={() => {
                     if (isRunning) return;
                     setTextMode(m.id);
-                    const next = generateTestText(m.id, customDuration ?? duration);
+                    const next = freshTest(textSeedRef, m.id, customDuration ?? duration);
                     setText(next);
                     restart(next);
                   }}
@@ -743,7 +716,18 @@ export default function TypingSpeedTest({
                   <PenTool className="h-3 w-3" />
                   practice
                 </Link>
-                {!numberRow && (
+                {lastShare ? (
+                  <ChallengeSendButton
+                    wpm={lastShare.wpm}
+                    source="result_card"
+                    emphasis={newBest}
+                    buildUrl={() =>
+                      buildChallengeUrl(window.location.origin, lastShare.seed, lastShare.wpm, lastShare.accuracy, lastShare.mode, lastShare.seconds)
+                    }
+                  >
+                    {newBest ? 'new best: challenge a friend' : 'challenge a friend'}
+                  </ChallengeSendButton>
+                ) : !numberRow && (
                   <Link
                     href="/typing-challenge"
                     title="Type a 60 second text, then send the link to a friend"

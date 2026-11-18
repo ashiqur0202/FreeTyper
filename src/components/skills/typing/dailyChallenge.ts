@@ -29,6 +29,11 @@ function seeded(seed: number) {
   };
 }
 
+/** A seeded random source for any text label (same label, same sequence). */
+export function seededRandom(label: string): () => number {
+  return seeded(hashString(label));
+}
+
 /**
  * The passage for one date: the practice passages that are not code, put in an
  * order decided only by the date, joined until there are about 300 words. There

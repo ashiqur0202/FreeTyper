@@ -1,5 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { challengeCard, parseScore } from '@/components/skills/typing/challengeLink';
+import { challengeCard, parseScore, parseSeconds } from '@/components/skills/typing/challengeLink';
 
 export const runtime = 'nodejs';
 
@@ -12,8 +12,9 @@ const size = { width: 1200, height: 630 };
  * explicit flexbox on every container with more than one child, and inline styles.
  */
 export function GET(request: Request) {
-  const score = parseScore(new URL(request.url).search);
-  const card = challengeCard(score);
+  const { search } = new URL(request.url);
+  const score = parseScore(search);
+  const card = challengeCard(score, parseSeconds(search));
 
   return new ImageResponse(
     (
@@ -66,7 +67,7 @@ export function GET(request: Request) {
         </div>
 
         <div style={{ display: 'flex', fontSize: 28, fontWeight: 600, color: '#a0a092' }}>
-          Free · No sign-up · Takes 60 seconds
+          {card.footer}
         </div>
       </div>
     ),
