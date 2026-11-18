@@ -165,6 +165,8 @@ export default function TypingSpeedTest({
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
   const [log, setLog] = useState<PracticeLogEntry[]>([]);
+  // The newest run beat every earlier run in the card list: a good moment to offer a challenge.
+  const newBest = log.length > 1 && log[0].wpm > Math.max(...log.slice(1).map((r) => r.wpm));
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [customDuration, setCustomDuration] = useState<number | null>(null);
   const [showCustomInput, setShowCustomInput] = useState(false);
@@ -744,10 +746,13 @@ export default function TypingSpeedTest({
                 {!numberRow && (
                   <Link
                     href="/typing-challenge"
-                    className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
+                    title="Type a 60 second text, then send the link to a friend"
+                    className={`inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-[11px] transition-colors hover:border-accent/40 hover:text-accent ${
+                      newBest ? 'border-accent/40 bg-accent-bg font-medium text-accent' : 'border-surface-border text-text-dim'
+                    }`}
                   >
                     <Swords className="h-3 w-3" />
-                    challenge
+                    {newBest ? 'new best: challenge a friend' : 'challenge a friend'}
                   </Link>
                 )}
               </>

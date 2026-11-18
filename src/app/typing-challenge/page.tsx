@@ -1,14 +1,34 @@
 import type { Metadata } from 'next';
 import TypingSpeedTest from '@/components/skills/typing/TypingSpeedTest';
+import { challengeCard, challengeImagePath, parseScore } from '@/components/skills/typing/challengeLink';
 import { siteConfig } from '@/config/site';
 
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+
 // A link page: every challenge has its own query string, so one canonical, kept out of search results.
-export const metadata: Metadata = {
-  title: { absolute: 'Typing Challenge: Beat a Friend’s Score | FreeTyper' },
-  description: 'Type the same text as a friend for 60 seconds and see who types faster. Free, no sign-up.',
-  alternates: { canonical: `${siteConfig.url}/typing-challenge` },
-  robots: { index: false, follow: true },
-};
+// The link preview (title, description and picture) shows the sender's score, taken from the same
+// range-checked `w` and `a` values the page itself reads.
+export async function generateMetadata({ searchParams }: { searchParams: SearchParams }): Promise<Metadata> {
+  const sp = await searchParams;
+  const first = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
+  const query = new URLSearchParams();
+  for (const key of ['w', 'a']) {
+    const v = first(sp[key]);
+    if (v !== undefined) query.set(key, v);
+  }
+  const score = parseScore(query.toString());
+  const card = challengeCard(score);
+  const images = [{ url: challengeImagePath(score), width: 1200, height: 630, alt: card.headline }];
+
+  return {
+    title: { absolute: card.title },
+    description: card.description,
+    alternates: { canonical: `${siteConfig.url}/typing-challenge` },
+    robots: { index: false, follow: true },
+    openGraph: { title: card.title, description: card.description, images },
+    twitter: { card: 'summary_large_image', title: card.title, description: card.description, images },
+  };
+}
 
 /** The speed test in challenge mode: a fixed 60 s run on the link's passage, compared with the sender's score. */
 export default function Page() {

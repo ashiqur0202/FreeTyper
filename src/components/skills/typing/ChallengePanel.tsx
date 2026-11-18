@@ -82,7 +82,7 @@ export default function ChallengePanel({ challenge, run }: ChallengePanelProps) 
         <button
           type="button"
           onClick={send}
-          className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
+          className="inline-flex items-center gap-1 rounded-md border border-accent/40 bg-accent-bg px-2.5 py-1 text-[11px] font-medium text-accent transition-colors hover:border-accent"
         >
           {copied ? <Check className="h-3 w-3 text-accent" /> : <Link2 className="h-3 w-3" />}
           <span aria-live="polite">{copied ? 'link copied' : 'challenge a friend'}</span>

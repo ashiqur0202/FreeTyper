@@ -1,6 +1,6 @@
 // Run: node --experimental-strip-types scripts/test-challenge.mjs
 import assert from 'node:assert/strict';
-import { newSeed, parseChallenge, buildChallengeUrl, compareScores } from '../src/components/skills/typing/challengeLink.ts';
+import { newSeed, parseChallenge, parseScore, challengeCard, challengeImagePath, buildChallengeUrl, compareScores } from '../src/components/skills/typing/challengeLink.ts';
 
 let n = 0;
 const t = (name, fn) => { fn(); n++; console.log('ok -', name); };
@@ -39,6 +39,32 @@ t('compareScores: win, tie, behind by net WPM', () => {
   assert.deepEqual(compareScores(65, 62), { delta: 3, verdict: 'win' });
   assert.deepEqual(compareScores(62, 62), { delta: 0, verdict: 'tie' });
   assert.deepEqual(compareScores(58, 62), { delta: 4, verdict: 'behind' });
+});
+
+t('parseScore: reads w and a, drops out-of-range values, needs a score for accuracy', () => {
+  assert.deepEqual(parseScore('?w=72&a=96'), { wpm: 72, accuracy: 96 });
+  assert.deepEqual(parseScore('w=72'), { wpm: 72, accuracy: null });
+  assert.deepEqual(parseScore('?w=9999&a=96'), { wpm: null, accuracy: null });
+  assert.deepEqual(parseScore('?w=<b>&a=1'), { wpm: null, accuracy: null });
+  assert.deepEqual(parseScore(''), { wpm: null, accuracy: null });
+});
+t('challengeCard: a score gives "Beat N WPM" and the friend line', () => {
+  const c = challengeCard({ wpm: 72, accuracy: 96 });
+  assert.equal(c.headline, 'Beat 72 WPM');
+  assert.equal(c.title, 'Can you beat 72 WPM? | FreeTyper');
+  assert.equal(c.sub, 'A friend typed 72 WPM at 96% accuracy. Same text, 60 seconds.');
+  assert.match(c.description, /Free, no sign-up\.$/);
+});
+t('challengeCard: no accuracy leaves that part out; no score is the generic card', () => {
+  assert.equal(challengeCard({ wpm: 72, accuracy: null }).sub, 'A friend typed 72 WPM. Same text, 60 seconds.');
+  const g = challengeCard({ wpm: null, accuracy: null });
+  assert.equal(g.headline, 'Typing challenge');
+  assert.equal(g.title, 'Typing Challenge: Beat a Friend’s Score | FreeTyper');
+});
+t('challengeImagePath carries only the two numbers', () => {
+  assert.equal(challengeImagePath({ wpm: 72, accuracy: 96 }), '/typing-challenge/og?w=72&a=96');
+  assert.equal(challengeImagePath({ wpm: 72, accuracy: null }), '/typing-challenge/og?w=72');
+  assert.equal(challengeImagePath({ wpm: null, accuracy: null }), '/typing-challenge/og');
 });
 
 console.log(`\n${n} passed`);

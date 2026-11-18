@@ -22,14 +22,52 @@ function wholeNumber(raw: string | null, min: number, max: number): number | nul
   return n >= min && n <= max ? n : null;
 }
 
-/** Read `?c=<seed>&w=<wpm>&a=<accuracy>`. Anything out of range is dropped rather than trusted. */
-export function parseChallenge(search: string): Challenge | null {
+/** Read `w=<wpm>&a=<accuracy>`. Out-of-range values become null; accuracy needs a valid score. */
+export function parseScore(search: string): { wpm: number | null; accuracy: number | null } {
   const params = new URLSearchParams(search);
-  const seed = params.get('c');
-  if (!seed || !SEED_RE.test(seed)) return null;
   const wpm = wholeNumber(params.get('w'), 1, MAX_WPM);
   const accuracy = wpm === null ? null : wholeNumber(params.get('a'), 0, 100);
-  return { seed, wpm, accuracy };
+  return { wpm, accuracy };
+}
+
+/** Read `?c=<seed>&w=<wpm>&a=<accuracy>`. Anything out of range is dropped rather than trusted. */
+export function parseChallenge(search: string): Challenge | null {
+  const seed = new URLSearchParams(search).get('c');
+  if (!seed || !SEED_RE.test(seed)) return null;
+  return { seed, ...parseScore(search) };
+}
+
+/** The words on the link preview card (page title, description and the picture), from the link's score. */
+export function challengeCard(score: { wpm: number | null; accuracy: number | null }): {
+  title: string;
+  description: string;
+  headline: string;
+  sub: string;
+} {
+  if (score.wpm === null) {
+    const sub = 'Type the same text for 60 seconds. See who types faster.';
+    return {
+      title: 'Typing Challenge: Beat a Friend’s Score | FreeTyper',
+      description: `${sub} Free, no sign-up.`,
+      headline: 'Typing challenge',
+      sub,
+    };
+  }
+  const at = score.accuracy !== null ? ` at ${score.accuracy}% accuracy` : '';
+  const sub = `A friend typed ${score.wpm} WPM${at}. Same text, 60 seconds.`;
+  return {
+    title: `Can you beat ${score.wpm} WPM? | FreeTyper`,
+    description: `${sub} Free, no sign-up.`,
+    headline: `Beat ${score.wpm} WPM`,
+    sub,
+  };
+}
+
+/** Path of the preview picture for a link's score; the score is the only thing it carries. */
+export function challengeImagePath(score: { wpm: number | null; accuracy: number | null }): string {
+  if (score.wpm === null) return '/typing-challenge/og';
+  const a = score.accuracy !== null ? `&a=${score.accuracy}` : '';
+  return `/typing-challenge/og?w=${score.wpm}${a}`;
 }
 
 export function buildChallengeUrl(origin: string, seed: string, wpm: number, accuracy: number): string {
