@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-03
+ * Last real edit: 2026-11-18 (de-duplicated against the Falling Words guide)
  */
 
 export const meta = {
@@ -66,7 +66,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Is Word Attack good for improving typing speed?',
     answer:
-      'It trains starting a word immediately and finishing it under a deadline, which helps with burst speed. It does not train capital letters, punctuation or long text, and its accuracy ignores typos, so use it with typing practice and the typing speed test.',
+      'It trains starting a word the moment you see it and finishing it under a deadline, which suits burst speed. Its accuracy ignores typos, so use it as a short change of pace next to typing practice and the typing speed test.',
   },
 ];
 
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Word Attack Typing Game — Eight Timed Rounds, One Word at a Time</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-03">October 3, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>Word Attack is a free typing game built around speed under a deadline. One word appears at a time, you have a few seconds to type it, and every word you clear in a row builds a combo multiplier. There are eight rounds, each harder than the last, and your score, WPM and last five games are saved in your browser.</p>
@@ -110,18 +110,10 @@ export const bodyHtml = `
 <tr><td>8</td><td>10</td><td>4.5</td><td>45 s</td><td>Long words (5–10 letters)</td></tr>
 </tbody>
 </table>
-<p>Every word gets a fresh timer, so a slow word does not eat into the next. The words come from three built-in lists of lowercase English words: 60 three-letter words, 80 five-letter words and 258 longer words of 5 to 10 letters. On the get-ready screen these lists are labelled easy, medium and hard. A round is short, and the time pressure comes from the per-word timer rather than the length.</p>
+<p>Every word gets a fresh timer, so a slow word does not eat into the next. The words come from the same three built-in lists as <a href="/typing-game-falling-words">Falling Words</a> (60 three-letter, 80 five-letter and 258 longer words), which the get-ready screen labels easy, medium and hard. A round is short, and the time pressure comes from the per-word timer rather than the length.</p>
 
 <h2 id="scoring-and-combos">Scoring and the combo multiplier</h2>
-<p>A cleared word is worth points by its length, then multiplied by your combo.</p>
-<table>
-<thead><tr><th>Word length</th><th>Base points</th></tr></thead>
-<tbody>
-<tr><td>Up to 4 letters</td><td>10</td></tr>
-<tr><td>5 or 6 letters</td><td>25</td></tr>
-<tr><td>7 letters or more</td><td>50</td></tr>
-</tbody>
-</table>
+<p>A cleared word is worth points by its length, then multiplied by your combo. The base points are the same as in <a href="/typing-game-falling-words">Falling Words</a>: 10 for up to four letters, 25 for five or six and 50 for seven or more.</p>
 <table>
 <thead><tr><th>Words cleared in a row</th><th>Multiplier</th></tr></thead>
 <tbody>
@@ -139,25 +131,24 @@ export const bodyHtml = `
 <ul>
 <li><strong>Accuracy</strong> is words cleared divided by words cleared plus words that ran out of time. It is <em>not</em> keystroke accuracy: mistyped letters are not counted.</li>
 <li><strong>WPM</strong> is the total letters of the words you cleared, divided by five, divided by the minutes you spent playing. Time on the get-ready and round-complete screens is not counted, but the time spent on words you missed is.</li>
-<li><strong>Hits and misses</strong> in your results are the same two counts: words cleared and words that timed out.</li>
 </ul>
 
-<h2 id="how-word-attack-helps-your-typing">How Word Attack helps your typing, and where it does not</h2>
-<p>It is good for starting a word the instant you see it, for finishing under a deadline, and for keeping a rhythm without stopping to second-guess. The combo rewards steady, clean clearing over occasional bursts.</p>
-<p>It does not train capital letters, punctuation, numbers or long passages, and since accuracy ignores typos it will not show you how clean your typing is. Treat it as a short, focused change of pace alongside <a href="/typing-practice">typing practice</a>, the <a href="/typing-lessons">lessons</a> and the <a href="/">typing speed test</a>.</p>
+<h2 id="how-word-attack-helps-your-typing">What this game trains, and where it does not</h2>
+<p>Only one word is on screen, with its own countdown, so the skill here is starting at once and finishing before the clock does. The combo rewards steady, clean clearing over occasional bursts, which makes it a rhythm drill more than a reading drill. This is our own suggestion, not a studied result.</p>
+<p>Accuracy ignores typos, so it will not show how clean your typing is. Use it next to <a href="/typing-practice">typing practice</a>, the <a href="/typing-lessons">lessons</a> and the <a href="/">typing speed test</a>.</p>
 
 <h2 id="your-results-and-data">Your results and data</h2>
 <ul>
 <li><strong>Saved every round.</strong> A result is written at the end of each round, so stopping after round three still keeps those three rounds. The round you were in when you left is not saved.</li>
 <li><strong>High score:</strong> your best points total, shown on the start screen and kept in your browser.</li>
 <li><strong>Your last five games</strong> are listed under the start button, newest first, with score, WPM, words cleared and missed, accuracy, rounds played and a short coach note. The latest result also shows your best combo. One game appears as one entry that updates as you finish rounds.</li>
-<li><strong>Progress page:</strong> each finished round is saved as its own game session, so one full game adds up to eight sessions. The letters of the words you clear are counted as correct key presses, but typos are not recorded as errors. Games are excluded from your best WPM, best accuracy and the speed and accuracy achievements. See the <a href="/typing-progress">progress tracker guide</a>.</li>
-<li><strong>Privacy:</strong> everything is stored in your browser's local storage. There is no FreeTyper account and nothing you type is uploaded. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</li>
+<li><strong>Progress page:</strong> each finished round is saved as its own game session, so one full game adds up to eight. How games count toward your typing time, averages and best scores is explained in the <a href="/typing-progress">progress tracker guide</a>.</li>
+<li><strong>Privacy:</strong> everything is stored in your browser's local storage and nothing you type is uploaded. Visits to the site are measured with Google Analytics; see the <a href="/privacy">privacy policy</a>.</li>
 </ul>
 
 <h2 id="limits-of-word-attack">Limits of this game</h2>
 <ul>
-<li>English words only, from three built-in lists (60, 80 and 258 words), so repeats are normal.</li>
+<li>English words only, from the same small built-in lists as Falling Words, so repeats are normal.</li>
 <li>No pause during a round, and you cannot choose a starting round.</li>
 <li>Accuracy ignores typos.</li>
 <li>The game cannot be lost: it always runs through all eight rounds, and misses only lower your score and reset your combo.</li>

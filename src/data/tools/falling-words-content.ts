@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-10-03
+ * Last real edit: 2026-11-18 (de-duplicated against the Word Attack guide)
  */
 
 export const meta = {
@@ -61,7 +61,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Is the falling words game good for improving typing speed?',
     answer:
-      'It trains fast reading and quick recall of common words under time pressure, and it is a break from passages. It does not train capital letters, punctuation or long text, so use it alongside typing practice and the typing speed test.',
+      'What sets it apart is that several words are on screen at once, so you practise reading ahead and choosing which word to type next. That is our own view, not a studied result. It does not train capital letters, punctuation or long text, so use it alongside typing practice and the typing speed test.',
   },
   {
     question: 'Is my high score saved?',
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Falling Words Typing Game — Type Each Word Before It Lands</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-10-03">October 3, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>Falling Words is a free typing game. Words drop from the top of the play area and you type each one in the box below before it reaches the bottom. You have three lives, and the game gets faster and busier across ten tiers. It scores you by word length, tracks your WPM and personal best, and keeps your last five runs.</p>
@@ -130,19 +130,18 @@ export const bodyHtml = `
 <ul>
 <li><strong>WPM</strong> is the total letters of the words you cleared, divided by five, divided by the minutes since the game began. Spaces are not typed, and the wait for the first word counts, so it can be a little lower than your <a href="/">typing speed test</a> score.</li>
 <li><strong>Accuracy</strong> is words cleared divided by words cleared plus words dropped. It is <em>not</em> keystroke accuracy, because mistyped letters are not counted in this game. A run that clears 40 words and drops 10 shows 80%, however many typos you made along the way.</li>
-<li><strong>Hits and misses</strong> on the result card are the same two numbers: words cleared and words dropped.</li>
 </ul>
 
-<h2 id="how-falling-words-helps-your-typing">How Falling Words helps your typing, and where it does not</h2>
-<p>It is good at a few things. It trains you to read a word and begin typing it quickly, and it rewards you for finishing words cleanly instead of fixing them later, because there is no time to. It is also a break from typing passages.</p>
-<p>It does not train capital letters, punctuation, numbers or long text, and because accuracy here ignores typos, it will not tell you how clean your typing is. Use it as a warm-up or a change of pace next to <a href="/typing-practice">typing practice</a>, the <a href="/typing-lessons">lessons</a> and the speed test, not as your only training.</p>
+<h2 id="how-falling-words-helps-your-typing">What this game trains, and where it does not</h2>
+<p>Several words are on screen at once, so you are always choosing: which word to take next, and when to start reading the one after it. A sensible choice is the word closest to the bottom. That reading-ahead is what this game asks of you that a single passage does not. This is our own suggestion; the game has no study behind it, and it is also simply a break from typing passages.</p>
+<p>The words are lowercase, with no capitals, punctuation or numbers, and accuracy here ignores typos, so use it as a warm-up or change of pace next to <a href="/typing-practice">typing practice</a>, the <a href="/typing-lessons">lessons</a> and the <a href="/">typing speed test</a>, not as your only training.</p>
 
 <h2 id="your-results-and-data">Your results and data</h2>
 <ul>
 <li><strong>High score:</strong> your best points total, saved in your browser.</li>
 <li><strong>Your last five runs</strong> are listed under the start button, newest first, with score, WPM, words cleared and dropped, accuracy, tier reached and a short coach note.</li>
-<li><strong>Progress page:</strong> each run is saved as a game session and adds to your typing time. The letters of words you clear are counted as correct key presses, but typos are not recorded as errors, so the games make your key accuracy look slightly better than the tests do. Games are excluded from your best WPM, best accuracy and the speed and accuracy achievements. See the <a href="/typing-progress">progress tracker guide</a>.</li>
-<li><strong>Privacy:</strong> everything is stored in your browser's local storage. There is no FreeTyper account and nothing you type is uploaded. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</li>
+<li><strong>Progress page:</strong> each run is saved as one game session. How games count toward your typing time, averages and best scores is explained once, in the <a href="/typing-progress">progress tracker guide</a>.</li>
+<li><strong>Privacy:</strong> everything is stored in your browser's local storage and nothing you type is uploaded. Visits to the site are measured with Google Analytics; see the <a href="/privacy">privacy policy</a>.</li>
 </ul>
 
 <h2 id="limits-of-falling-words">Limits of this game</h2>
