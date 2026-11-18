@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-07
+ * Last real edit: 2026-11-18 (the pair score formula now lives in the practice guide only)
  */
 
 export const meta = {
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Typing Progress Tracker — WPM History, Streaks and Achievements</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-07">November 7, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This typing progress tracker turns the runs you finish on FreeTyper into a picture of how you are improving: your best WPM and accuracy, a chart of recent sessions, your practice streak, the keys you get wrong most often, and 14 achievements. It works with no account, and everything is stored privately in your browser.</p>
@@ -139,7 +139,7 @@ export const bodyHtml = `
 <p>The weakest-keys list is stricter. It only considers keys you have pressed at least five times, ranks them by accuracy, and shows the five lowest. Each bar is green at 90% accuracy or above, gold from 75%, and red below that. Hover any key on the heatmap to see its accuracy and press count.</p>
 <p>If one key is stubbornly red, check which finger owns it in the <a href="/keyboard-guide">keyboard guide</a>, then use the adaptive tab in <a href="/typing-practice">typing practice</a>, or click that letter in its letter row.</p>
 <h3>Weakest letter pairs</h3>
-<p>Below the weakest keys is a list of up to five letter pairs, two letters typed one after the other such as th or er. A pair is listed when it has at least five samples and scores 0.3 or more. The score is four times your recent error rate plus how much slower the pair is than your own median pair, so it shows both pairs you get wrong and pairs you type slowly. Each row shows the average time, how it compares with your typical pair, the share of errors, and how many times you typed it. Until about 100 letter pairs are recorded the page says it needs more typing. The data is kept only in this browser, and resetting progress clears it. The adaptive tab on the practice page builds its drills from the same pairs and keys; the <a href="/typing-practice">practice guide</a> explains the scoring in full.</p>
+<p>Below the weakest keys is a list of up to five letter pairs, two letters typed one after the other such as th or er. A pair is listed when it has at least five samples and scores 0.3 or more. The score mixes your recent error rate and how much slower the pair is than your own median pair, so it shows both pairs you get wrong and pairs you type slowly; the exact formula is in the <a href="/typing-practice">practice guide</a>. Each row shows the average time, how it compares with your typical pair, the share of errors, and how many times you typed it. Until about 100 letter pairs are recorded the page says it needs more typing. The data is kept only in this browser, and resetting progress clears it. The adaptive tab on the practice page builds its drills from the same pairs and keys.</p>
 
 <h2 id="streaks">How streaks work</h2>
 <p>Finishing at least one session on a calendar day, in your local time, keeps your streak going. Finishing one on the day after your last session extends it. Missing a whole day resets it to one the next time you practice. Your best streak is kept separately. The streak counts days, not minutes, so a single short run is enough to keep it alive.</p>

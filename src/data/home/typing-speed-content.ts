@@ -9,7 +9,7 @@
  * The FAQ list below is the single source for both the visible FAQ and the
  * FAQPage JSON-LD, so they cannot drift apart.
  *
- * Last real edit: 2026-11-10
+ * Last real edit: 2026-11-18 (the type-faster list now points to the practice guide)
  */
 
 export const meta = {
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Speed Test — Check Your WPM and Accuracy Online</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-10">November 10, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
   <span>~9 min read</span>
 </p>
 <p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
@@ -186,13 +186,7 @@ export const bodyHtml = `
 </ul>
 
 <h2 id="how-to-type-faster-after-the-test">How to type faster after the test</h2>
-<ol>
-<li><strong>Fix accuracy first.</strong> If you are under 95%, slow down until your runs are clean. Faster typists make fewer errors, not more, so speed follows control.</li>
-<li><strong>Learn where each finger belongs.</strong> The <a href="/keyboard-guide">keyboard guide</a> colours every key by finger, and the <a href="/typing-lessons">typing lessons</a> take you from the home row outwards in order.</li>
-<li><strong>Practice a little every day.</strong> Ten or twenty minutes daily is easier to keep up than a long session now and then. <a href="/typing-practice">Typing practice</a> offers quotes, news-style text, code and fun passages.</li>
-<li><strong>Train the keys you miss.</strong> FreeTyper records which keys you get wrong. The <a href="/typing-progress">progress page</a> shows them, and practice can build a drill around them.</li>
-<li><strong>Re-test every week or two</strong> under the same conditions, and compare the middle of three runs with the previous week's.</li>
-</ol>
+<p>Speed follows control, so if you are under 95% accuracy, slow down until your runs are clean (this is our suggestion, and faster typists do make fewer errors). Then learn where each finger belongs with the <a href="/keyboard-guide">keyboard guide</a> and the <a href="/typing-lessons">typing lessons</a>, and train the keys you miss: the <a href="/typing-progress">progress page</a> shows them and <a href="/typing-practice">typing practice</a> builds a drill around them. The practice page has our suggested routine and the reasons behind it. Re-test every week or two under the same conditions, and compare the middle of three runs with the previous week's.</p>
 
 <h2 id="privacy-and-your-results">Your results and privacy</h2>
 <p>Your latest results, the speed graph of your latest five runs, and your progress history are stored in your browser's local storage on this device. FreeTyper has no accounts and does not upload what you type or your scores. Clearing your site data erases the history, and a different browser or device starts from zero. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</p>
