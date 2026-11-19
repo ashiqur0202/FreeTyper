@@ -21,7 +21,8 @@ export default function LevelLadder({ net, avg }: LevelLadderProps) {
     <div className="mt-4" data-result-ladder>
       <div
         role="img"
-        aria-label={`Level ladder: ${net} net words per minute, ${name}, ${nextText}`}
+        aria-label={`Level ladder: ${net} net words per minute, ${name}, ${nextText}${avg !== null ? `, your average ${avg}` : ''}`}
+        title={SOURCE_NOTE}
         className="grid grid-cols-5 gap-1 pt-6"
       >
         {LEVELS.map((level, i) => {
@@ -64,17 +65,6 @@ export default function LevelLadder({ net, avg }: LevelLadderProps) {
           );
         })}
       </div>
-      <p className="mt-1.5 text-[11px] text-text-dim">
-        <strong className="font-medium text-text-bright">{name}</strong>
-        <span> · {nextText}</span>
-        {avg !== null && (
-          <span title="Your average net WPM in your earlier speed tests (up to the last 30)."> · avg {avg}</span>
-        )}
-        <span> · </span>
-        <span title={SOURCE_NOTE} className="cursor-help underline decoration-dotted underline-offset-2">
-          FreeTyper levels
-        </span>
-      </p>
     </div>
   );
 }

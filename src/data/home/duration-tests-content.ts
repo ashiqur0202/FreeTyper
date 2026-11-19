@@ -134,7 +134,7 @@ const oneMinute: DurationPage = {
 <ol>
 <li><strong>Use the same text type each time.</strong> Sentences contain capital letters and punctuation, code is full of symbols, and plain words are easiest, so the same typist scores differently on each. Compare like with like.</li>
 <li><strong>Take three runs and read the middle one.</strong> One lucky or unlucky minute is easy to get.</li>
-<li><strong>Check accuracy before speed.</strong> Our coach note says "hold accuracy" below 95%. That cut-off is our own, and a fast run with many mistakes says little about your typing.</li>
+<li><strong>Check accuracy before speed.</strong> We suggest 95% as a floor before you chase speed. That cut-off is our own, and a fast run with many mistakes says little about your typing.</li>
 <li><strong>Test at a similar time of day,</strong> sitting the same way, if you are tracking progress over weeks.</li>
 </ol>
 

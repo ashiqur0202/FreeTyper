@@ -689,10 +689,14 @@ export default function PracticeFeedback({
           </div>
         )}
 
-        <h3 className="mt-4 text-sm font-medium text-text-bright">{headline}</h3>
-        <p className="mt-1 max-w-xl text-sm leading-relaxed text-text">{latest.tip}</p>
+        {!detailed && (
+          <>
+            <h3 className="mt-4 text-sm font-medium text-text-bright">{headline}</h3>
+            <p className="mt-1 max-w-xl text-sm leading-relaxed text-text">{latest.tip}</p>
+          </>
+        )}
 
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className={`${detailed ? 'mt-4' : 'mt-3'} flex flex-wrap gap-2`}>
             {showGuideCta && (
               <Link
                 href="/keyboard-guide"
@@ -771,10 +775,12 @@ export default function PracticeFeedback({
                       {categoryLabel(entry.modeDetail)}
                     </span>
                   </div>
-                  <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-text-dim">
-                    {entry.headline ? `${entry.headline}. ` : ''}
-                    {entry.tip}
-                  </p>
+                  {entry.mode !== 'speed-test' && (
+                    <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-text-dim">
+                      {entry.headline ? `${entry.headline}. ` : ''}
+                      {entry.tip}
+                    </p>
+                  )}
                 </li>
               );
             })}
