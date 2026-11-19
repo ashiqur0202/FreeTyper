@@ -679,7 +679,7 @@ export default function TypingSpeedTest({
           </div>
 
           {/* The finished box sits over the text area and the hint row below it, so nothing moves on a computer (a phone grows a little: the box is taller there). */}
-          <div className={`relative ${showFinishedBox ? 'max-sm:min-h-[19rem]' : ''}`}>
+          <div className={`relative ${showFinishedBox ? 'finished-room' : ''}`}>
             <div
               ref={typingAreaRef}
               className={`relative mt-3 cursor-text overflow-hidden py-3 transition-[opacity,filter] duration-200 ${

@@ -109,7 +109,7 @@ export default function TestFinished({
         role="dialog"
         aria-label="Test finished"
         data-typing-ignore
-        className={`pointer-events-auto relative w-full max-w-[34rem] animate-fade-up rounded-2xl border bg-surface-raised px-4 py-3.5 shadow-2xl sm:px-5 ${
+        className={`test-finished pointer-events-auto relative w-full max-w-[34em] animate-fade-up rounded-[1em] border bg-surface-raised px-[1em] py-[0.875em] shadow-2xl sm:px-[1.25em] ${
           newBest ? 'border-accent shadow-[0_0_28px_var(--color-accent-bg)]' : 'border-accent/40'
         }`}
       >
@@ -117,71 +117,71 @@ export default function TestFinished({
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-2 top-2 rounded-md p-1 text-text-dim transition-colors hover:bg-surface hover:text-text-bright"
+          className="absolute right-[0.5em] top-[0.5em] rounded-md p-[0.25em] text-text-dim transition-colors hover:bg-surface hover:text-text-bright"
         >
-          <X className="h-3.5 w-3.5" />
+          <X className="size-[0.875em]" />
         </button>
 
-        <div className="flex min-h-6 flex-wrap items-center justify-between gap-x-3 gap-y-1 pr-7">
-          <div className="flex items-center gap-1.5">
+        <div className="flex min-h-[1.5em] flex-wrap items-center justify-between gap-x-[0.75em] gap-y-[0.25em] pr-[1.75em]">
+          <div className="flex items-center gap-[0.375em]">
             {!plain && (
-              <span className="rounded-full bg-accent-bg px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent">
+              <span className="rounded-full bg-accent-bg px-[0.625em] py-[0.125em] text-[0.625em] font-semibold uppercase tracking-wider text-accent">
                 {LEVELS[levelIndex(wpm)].key}
               </span>
             )}
             {newBest && (
               <span
-                className="rounded-full bg-accent px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
+                className="rounded-full bg-accent px-[0.625em] py-[0.125em] text-[0.625em] font-semibold uppercase tracking-wider"
                 style={{ color: ink }}
               >
                 new best
               </span>
             )}
           </div>
-          <p className="text-xs text-text-dim">
+          <p className="text-[0.75em] text-text-dim">
             <Note wpm={wpm} previousWpm={previousWpm} newBest={newBest} />
           </p>
         </div>
 
-        <div className="mt-2 flex items-end gap-5">
+        <div className="mt-[0.5em] flex items-end gap-[1.25em]">
           <div>
-            <p className="font-mono text-5xl font-extralight leading-none tabular-nums text-accent">{shown}</p>
-            <p className="mt-1 text-[10px] uppercase tracking-widest text-text-dim">net wpm</p>
+            <p className="font-mono text-[3em] font-extralight leading-none tabular-nums text-accent">{shown}</p>
+            <p className="mt-[0.25em] text-[0.625em] uppercase tracking-widest text-text-dim">net wpm</p>
           </div>
           <div>
-            <p className="font-mono text-2xl font-light leading-none tabular-nums text-text-bright">
+            <p className="font-mono text-[1.5em] font-light leading-none tabular-nums text-text-bright">
               {accuracy}
-              <span className="text-sm text-text-dim">%</span>
+              <span className="text-[0.58em] text-text-dim">%</span>
             </p>
-            <p className="mt-1 text-[10px] uppercase tracking-widest text-text-dim">accuracy</p>
+            <p className="mt-[0.25em] text-[0.625em] uppercase tracking-widest text-text-dim">accuracy</p>
           </div>
           <div>
-            <p className="font-mono text-2xl font-light leading-none tabular-nums text-text-bright">
+            <p className="font-mono text-[1.5em] font-light leading-none tabular-nums text-text-bright">
               {seconds}
-              <span className="text-sm text-text-dim">s</span>
+              <span className="text-[0.58em] text-text-dim">s</span>
             </p>
-            <p className="mt-1 text-[10px] uppercase tracking-widest text-text-dim">time</p>
+            <p className="mt-[0.25em] text-[0.625em] uppercase tracking-widest text-text-dim">time</p>
           </div>
         </div>
 
-        <div className="mt-3.5 flex flex-wrap gap-2">
+        <div className="mt-[0.875em] flex flex-wrap gap-[0.5em]">
           <button
             type="button"
             onClick={onAgain}
             style={{ color: ink }}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg bg-accent px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-90 max-sm:basis-full sm:flex-none"
+            className="inline-flex flex-1 items-center justify-center gap-[0.5em] rounded-[0.5em] bg-accent px-[1em] py-[0.625em] text-[0.875em] font-semibold transition-opacity hover:opacity-90 max-sm:basis-full sm:flex-none"
           >
             Test again
-            <kbd className="hidden rounded border border-current/40 px-1 font-mono text-[10px] sm:inline">Enter</kbd>
+            <kbd className="hidden rounded border border-current/40 px-[0.3em] font-mono text-[0.72em] sm:inline">Enter</kbd>
           </button>
           {challenge}
           <button
             type="button"
             onClick={onDetails}
-            className="inline-flex flex-1 items-center justify-center gap-2 rounded-lg border border-surface-border px-4 py-2.5 text-sm text-text transition-colors hover:border-accent/50 hover:text-accent max-sm:basis-full sm:flex-none"
+            className="inline-flex flex-1 items-center justify-center gap-[0.5em] rounded-[0.5em] border border-surface-border px-[1em] py-[0.625em] text-[0.875em] text-text transition-colors hover:border-accent/50 hover:text-accent max-sm:basis-full sm:flex-none"
           >
             See details
-            <ArrowDown className="h-3.5 w-3.5" />
+            <ArrowDown className="size-[1em]" />
           </button>
         </div>
       </div>

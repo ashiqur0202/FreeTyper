@@ -143,6 +143,13 @@ html[data-font-size="large"] .typing-text {
   line-height: 2.8rem;
 }
 
+/* Settings → Font size also scales the box shown over the text when a test ends (its sizes are in em). */
+:root { --box-scale: 1; }
+html[data-font-size="small"] { --box-scale: 0.875; }
+html[data-font-size="large"] { --box-scale: 1.2; }
+.test-finished { font-size: calc(1rem * var(--box-scale)); }
+@media (max-width: 639px) { .finished-room { min-height: calc(20rem * var(--box-scale)); } }
+
 /* Letters stay together; spaces between words are what justify stretches. */
 .word {
   display: inline-block;

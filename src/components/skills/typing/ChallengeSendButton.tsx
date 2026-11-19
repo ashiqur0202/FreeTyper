@@ -75,10 +75,10 @@ export default function ChallengeSendButton({
       type="button"
       onClick={send}
       className={`inline-flex items-center justify-center transition-colors hover:border-accent/40 hover:text-accent ${
-        large ? 'gap-2 rounded-lg border px-4 py-2.5 text-sm max-sm:basis-full' : 'gap-1 rounded-md border px-2.5 py-1 text-[11px]'
+        large ? 'gap-[0.5em] rounded-[0.5em] border px-[1em] py-[0.625em] text-[0.875em] max-sm:basis-full' : 'gap-1 rounded-md border px-2.5 py-1 text-[11px]'
       } ${emphasis ? 'border-accent/40 bg-accent-bg font-medium text-accent' : 'border-surface-border text-text-dim'}`}
     >
-      {copied ? <Check className={`${large ? 'h-4 w-4' : 'h-3 w-3'} text-accent`} /> : <Link2 className={large ? 'h-4 w-4' : 'h-3 w-3'} />}
+      {copied ? <Check className={`${large ? 'size-[1em]' : 'h-3 w-3'} text-accent`} /> : <Link2 className={large ? 'size-[1em]' : 'h-3 w-3'} />}
       <span aria-live="polite">{copied ? 'link copied' : (children ?? 'challenge a friend')}</span>
     </button>
   );
