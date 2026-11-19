@@ -636,7 +636,14 @@ export default function PracticeFeedback({
               sub={avgs ? `avg ${avgs.errors}` : undefined}
               title={avgs ? 'Your average mistakes in earlier speed tests, scaled to the length of this test.' : undefined}
             />
-            {detailed && <Tile value={gross} label="gross wpm" sub={avgs ? `avg ${avgs.gross}` : undefined} />}
+            {detailed && (
+              <Tile
+                value={gross}
+                label="gross wpm"
+                sub={avgs ? `avg ${avgs.gross}` : undefined}
+                title={avgs ? 'Your average gross WPM in your earlier speed tests (up to the last 30).' : undefined}
+              />
+            )}
             {run && (
               <Tile
                 value={`${run.consistency}%`}
@@ -716,6 +723,8 @@ export default function PracticeFeedback({
             <span className="tabular-nums text-text-bright">{avgWpm}</span> avg
             <span className="text-text-dim"> · </span>
             <span className="tabular-nums text-text-bright">{cleanCount}</span> clean
+            <span className="text-text-dim"> · </span>
+            of your last {log.length} {log.length === 1 ? 'run' : 'runs'} here
           </p>
         </div>
       </article>

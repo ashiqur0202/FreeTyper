@@ -67,7 +67,9 @@ export default function LevelLadder({ net, avg }: LevelLadderProps) {
       <p className="mt-1.5 text-[11px] text-text-dim">
         <strong className="font-medium text-text-bright">{name}</strong>
         <span> · {nextText}</span>
-        {avg !== null && <span> · avg {avg}</span>}
+        {avg !== null && (
+          <span title="Your average net WPM in your earlier speed tests (up to the last 30)."> · avg {avg}</span>
+        )}
         <span> · </span>
         <span title={SOURCE_NOTE} className="cursor-help underline decoration-dotted underline-offset-2">
           FreeTyper levels
