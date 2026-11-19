@@ -7,11 +7,11 @@
  * length or the reset time change, update this file in the same commit.
  *
  * Facts used here come from the code: a UTC date key, a seeded shuffle of the
- * 16 non-code practice passages, about 300 words, a fixed 60 seconds, a streak
+ * 15 non-code practice passages, about 300 words, a fixed 60 seconds, a streak
  * counting days with a run at 90 % accuracy or better, data kept only in
  * localStorage. No outside figures are used.
  *
- * Last real edit: 2026-11-19 (the result card is below the test screen)
+ * Last real edit: 2026-11-20 (passage count corrected to 15; the finished box and the rows)
  */
 
 export const dailyMeta = {
@@ -23,7 +23,7 @@ export const dailyMeta = {
 const byline = `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-19">November 19, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-20">November 20, 2026</time></span>
 </p>`;
 
 export const dailyPreviewHtml = `
@@ -38,8 +38,8 @@ export const dailyBodyHtml = `
 <p>When the minute ends, a small box over the text shows your result. Press Test again (or Enter) to run the same passage again as often as you like. Your run is in the performances list under the keyboard; click it to open the full result.</p>
 
 <h2 id="how-the-passage-is-chosen">How the daily passage is chosen</h2>
-<p>The page takes today's date in UTC, such as 2026-11-08, and uses it as the seed for a small random-number generator. That generator puts the 16 prose passages from our practice texts (the quotes, news and fun facts, not the code snippets) into an order, and the page joins them until there are about 300 words. Because the seed is only the date, every browser builds the same text for the same day, with no server involved. At 300 words the passage is longer than anyone can finish in a minute.</p>
-<p>The new passage appears at 00:00 UTC. If you leave the page open across that moment, the next run you start uses the new day's text. There are only 16 passages, so the same passage can come up on different days; what changes is the order, and so what you start with. If the text feels too easy or too hard, that is a limit of the current pool.</p>
+<p>The page takes today's date in UTC, such as 2026-11-08, and uses it as the seed for a small random-number generator. That generator puts the 15 prose passages from our practice texts (the quotes, news and fun facts, not the code snippets) into an order, and the page joins them until there are about 300 words. Because the seed is only the date, every browser builds the same text for the same day, with no server involved. At 300 words the passage is longer than anyone can finish in a minute.</p>
+<p>The new passage appears at 00:00 UTC. If you leave the page open across that moment, the next run you start uses the new day's text. There are only 15 passages, so the same passage can come up on different days; what changes is the order, and so what you start with. If the text feels too easy or too hard, that is a limit of the current pool.</p>
 
 <h2 id="streak-and-best-score">Streak and best score</h2>
 <ul>
