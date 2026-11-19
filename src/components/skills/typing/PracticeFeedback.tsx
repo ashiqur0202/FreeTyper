@@ -724,7 +724,7 @@ export default function PracticeFeedback({
             <span className="text-text-dim"> · </span>
             <span className="tabular-nums text-text-bright">{cleanCount}</span> clean
             <span className="text-text-dim"> · </span>
-            of your last {log.length} {log.length === 1 ? 'run' : 'runs'} here
+            last {log.length} {log.length === 1 ? 'run' : 'runs'} here
           </p>
         </div>
       </article>
