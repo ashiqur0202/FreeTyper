@@ -526,7 +526,7 @@ export default function TypingSpeedTest({
       ))}
 
       <div className="w-full">
-        {/* The test fills one screen, so the result card starts below the fold and cannot distract while typing. */}
+        {/* The test, the keyboard and the run rows fill at least one screen, so the long guide below starts under the fold. */}
         <div className={focusMode ? undefined : 'min-h-[100svh]'} data-test-screen>
           {daily && dailyKey && <DailyPanel dateKey={dailyKey} store={dailyStore} />}
           {challenge && challengeInfo && <ChallengePanel challenge={challengeInfo} run={challengeRun} />}
@@ -703,7 +703,6 @@ export default function TypingSpeedTest({
               compact
             />
           </div>
-        </div>
 
           <PracticeFeedback
             log={log}
@@ -758,6 +757,7 @@ export default function TypingSpeedTest({
               </>
             )}
           />
+        </div>
         </div>
 
       {/* Command palette */}

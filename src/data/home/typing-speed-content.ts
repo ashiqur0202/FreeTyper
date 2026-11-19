@@ -101,7 +101,7 @@ export const bodyHtml = `
 <li><strong>Choose a text type.</strong> <em>Words</em> shows common short English words in random order. <em>Sentences</em> shows quotes and short passages with capital letters and punctuation. <em>Code</em> shows programming snippets full of brackets and symbols.</li>
 <li><strong>Type.</strong> The clock starts on your first keystroke, not when the page loads. Every character has to match exactly: letter case, punctuation and spaces all count.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and the cursor moves on. Backspace steps back if you want to fix it.</li>
-<li><strong>Keep going.</strong> When the time runs out, a fresh text loads straight away, so you can run another test without clicking anything. The test fills one screen, so your result is below it, in the performances list: scroll down and click your latest run to open the full result.</li>
+<li><strong>Keep going.</strong> When the time runs out, a fresh text loads straight away, so you can run another test without clicking anything. Your run appears in the performances list under the keyboard: click it to open the full result.</li>
 </ul>
 
 <h2 id="how-wpm-and-accuracy-are-calculated">How WPM and accuracy are calculated</h2>
@@ -227,7 +227,7 @@ export const howToSteps: { name: string; text: string }[] = [
   },
   {
     name: 'Read your result',
-    text: 'When time runs out, read your net WPM, accuracy, gross WPM, correct and incorrect characters, rank, the speed graph, consistency and weak spots by scrolling down and clicking your latest run in the performances list.',
+    text: 'When time runs out, read your net WPM, accuracy, gross WPM, correct and incorrect characters, rank, the speed graph, consistency and weak spots by clicking your latest run in the performances list under the keyboard.',
   },
   {
     name: 'Repeat three times',

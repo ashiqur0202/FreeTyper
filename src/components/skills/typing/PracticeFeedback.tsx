@@ -826,12 +826,7 @@ function PerformanceList(props: PracticeFeedbackProps) {
 
   return (
     <div className="mt-10 w-full">
-      <div className="mb-8 flex items-center gap-4" aria-hidden>
-        <span className="h-px flex-1 bg-surface-border/80" />
-        <span className="h-1 w-1 rounded-full bg-surface-border" />
-        <span className="h-px flex-1 bg-surface-border/80" />
-      </div>
-      <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-text-dim">performances</p>
+      <p className="mb-2.5 text-[10px] uppercase tracking-[0.18em] text-text-dim">performances</p>
       <ul className="flex flex-col gap-1.5" data-performances>
         {log.map((entry, i) => {
           const open = entry.id === openId;
