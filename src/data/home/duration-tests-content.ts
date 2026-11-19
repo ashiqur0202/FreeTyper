@@ -14,7 +14,7 @@
  * SD 20.2, 168,960 volunteers; top 10 % above about 78, bottom 10 % below
  * about 26), checked against the paper's results table on 2026-11-08.
  *
- * Last real edit: 2026-11-10
+ * Last real edit: 2026-11-19 (study figures, limits and the Backspace rule are said once, on the 1 minute page and the home guide)
  */
 
 export type DurationPage = {
@@ -32,7 +32,7 @@ export type DurationPage = {
 const byline = (): string => `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-10">November 10, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-19">November 19, 2026</time></span>
 </p>`;
 
 const sourcesHtml = (extra: string): string => `
@@ -109,14 +109,14 @@ const oneMinute: DurationPage = {
 <p>The clock starts on your first keystroke and stops at 60 seconds. Net WPM is your correct characters divided by five, divided by the minutes; at one minute that is simply your correct characters divided by five. Accuracy is correct characters out of all characters typed. You can switch the text between words, sentences and code above the passage. The same rules apply on every length, and the <a href="/">typing speed test guide</a> explains them, including what Backspace does to your score.</p>
 
 <h2 id="what-one-minute-shows">What one minute shows, and what it does not</h2>
-<p>A minute is long enough to show your usual speed on a text you have not seen. It is short enough that one stumble, a slow start or a lucky run of easy words moves the number. That is plain arithmetic, not a measured figure. Our suggestion is to take three runs and trust the middle one, and to compare scores only on the same text type.</p>
+<p>A minute is long enough to show your usual speed on a text you have not seen. It is short enough that one stumble, a slow start or a lucky run of easy words moves the number. That is plain arithmetic, not a measured figure. The section on a more reliable score below has our suggestions.</p>
 <p>The speed graph under your result shows where the minute went. A dip in the gold line is a hard stretch; a wide gap to the dashed grey line means mistakes were costing you time.</p>
 
 <h2 id="typical-scores">What typical scores look like</h2>
 <p>In a study of 168,960 volunteers copying sentences (Dhakal and colleagues, CHI 2018), the mean was 51.56 WPM with a standard deviation of 20.2. The fastest tenth were above about 78 WPM and the slowest tenth below about 26. The volunteers chose to take part and the task was short sentences, so treat these as a reference point, not a target. Our post on <a href="/blog/good-typing-speed">what a good typing speed is</a> goes through the numbers and their limits.</p>
 
 <h2 id="score-in-characters">What a 1 minute score means in characters</h2>
-<p>Because the test is exactly one minute, your net WPM is your correct characters divided by five, nothing more. That makes it easy to turn a score into keystrokes. The table is plain arithmetic from the scoring rule, not data from users.</p>
+<p>Because the test is exactly one minute, it is easy to turn a score into keystrokes. The table is plain arithmetic from the scoring rule, not data from users.</p>
 <table>
 <thead><tr><th>Net WPM</th><th>Correct characters in 60 seconds</th><th>About how many keys a second</th></tr></thead>
 <tbody>
@@ -192,11 +192,6 @@ const threeMinute: DurationPage = {
       answer:
         'No. A new passage is built each time you start a test, and the passage is long enough for about 300 words a minute.',
     },
-    {
-      question: 'Are my 3 minute results saved?',
-      answer:
-        'Only in your own browser: the latest five test results and your progress totals. There is no account, and clearing your site data erases them.',
-    },
   ],
   howToSteps: [
     {
@@ -223,7 +218,7 @@ const threeMinute: DurationPage = {
 `,
   bodyHtml: `
 <h2 id="how-the-3-minute-test-works">How this 3 minute test works</h2>
-<p>The 180 seconds start on your first keystroke. Net WPM is correct characters divided by five, divided by three. Accuracy is correct characters out of characters typed, and Backspace removes the character you step back over. The full method is in the <a href="/">typing speed test guide</a>; it is the same on every length.</p>
+<p>The 180 seconds start on your first keystroke, and net WPM is correct characters divided by five, divided by three. Accuracy and the Backspace rule are the same on every length and are written out in the <a href="/">typing speed test guide</a>.</p>
 
 <h2 id="why-three-minutes">Why three minutes</h2>
 <p>A longer run averages out a slow first few seconds and one-off stumbles, so repeat scores should sit closer together than they do over one minute. That follows from how averages work; we have not measured it on FreeTyper. Three minutes is also long enough for the graph and the consistency score to mean something, which a 1 minute run only just allows.</p>
@@ -237,7 +232,7 @@ const threeMinute: DurationPage = {
 <p>How the graph, consistency and weak spots are calculated is written out in the <a href="/">home page guide</a>.</p>
 
 <h2 id="what-the-study-numbers-mean-here">What the study numbers mean here</h2>
-<p>The figures people quote come from Dhakal and colleagues (CHI 2018): 168,960 volunteers, mean 51.56 WPM, standard deviation 20.2. They copied short sentences, not a three-minute passage, so use them as a rough reference, not a target for this length. See <a href="/blog/good-typing-speed">what a good typing speed is</a> for the detail.</p>
+<p>The figures people quote come from Dhakal and colleagues (CHI 2018), where volunteers copied short sentences, not a three-minute passage, so use them as a rough reference and not a target for this length. The numbers and their limits are on the <a href="/1-minute-typing-test#typical-scores">1 minute test page</a> and in <a href="/blog/good-typing-speed">what a good typing speed is</a>.</p>
 
 <h2 id="three-minutes-in-characters">What a 3 minute score means in characters</h2>
 <p>Net WPM is correct characters divided by five, divided by three minutes. This is arithmetic from the rule, not user data.</p>
@@ -259,9 +254,8 @@ const threeMinute: DurationPage = {
 
 <h2 id="limits-of-the-3-minute-test">Limits of this test</h2>
 <ul>
-<li>It measures copying text, not writing your own.</li>
-<li>The certificate picture is a keepsake, not an official qualification, and employer or exam tests set their own rules.</li>
-<li>It is built for a physical keyboard.</li>
+<li>Three minutes should be steadier than one (that is reasoning, not something we measured), but it is still one run: repeat it on another day before you trust the number.</li>
+<li>The consistency score is our own measure, so compare it only with your own runs. The <a href="/#limits-of-this-test">home guide</a> lists the limits that apply to every length.</li>
 </ul>
 
 <h2 id="3-minute-typing-test-faq">3 minute typing test FAQ</h2>
@@ -300,11 +294,6 @@ const fiveMinute: DurationPage = {
       question: 'What if I get tired halfway through?',
       answer:
         'Finish the run anyway and look at the graph. A falling speed line, or mistakes bunching in the last minutes, shows where you tire. That is useful information, not a failed test.',
-    },
-    {
-      question: 'Are my 5 minute results saved?',
-      answer:
-        'Only in your own browser: the latest five test results and your progress totals. There is no account, and clearing your site data erases them.',
     },
   ],
   howToSteps: [
@@ -348,7 +337,7 @@ const fiveMinute: DurationPage = {
 <tr><td>80</td><td>2,000</td><td>400</td></tr>
 </tbody>
 </table>
-<p>A mistake you fix costs the time you spent fixing it, and the character you step back over is removed from the count. Over five minutes those small costs add up, which is one reason the same typist can score differently on a short and a long test.</p>
+<p>Over five minutes the time spent fixing mistakes adds up, which is one reason the same typist can score differently on a short and a long test.</p>
 
 <h2 id="pacing-a-five-minute-run">Pacing a five minute run</h2>
 <p>These are our suggestions, not a tested method.</p>
@@ -362,22 +351,19 @@ const fiveMinute: DurationPage = {
 <h2 id="preparing-for-a-long-run">Preparing for a long run</h2>
 <ul>
 <li><strong>Sit well.</strong> A relaxed, neutral wrist position matters more over five minutes; see <a href="/blog/fix-typing-posture-and-avoid-wrist-pain">posture and wrist pain</a>.</li>
-<li><strong>Warm up</strong> with a short passage in <a href="/typing-practice">typing practice</a> if you like. This is our suggestion.</li>
-<li><strong>Start at a pace you can hold.</strong> Rushing early and fixing mistakes late costs time.</li>
 <li><strong>Rest afterwards,</strong> and avoid back-to-back long runs.</li>
 </ul>
 
 <h2 id="five-minutes-and-job-tests">Five minutes and job or exam tests</h2>
-<p>Employer and exam typing tests choose their own length, text and scoring, so a result here will not match them exactly. Our post on <a href="/blog/data-entry-typing-test">data entry typing tests</a> explains how such tests are scored and how to prepare. This page is practice. Its certificate picture is a keepsake, not an official qualification.</p>
+<p>Employer and exam typing tests choose their own length, text and scoring, so a result here will not match them exactly. Our post on <a href="/blog/data-entry-typing-test">data entry typing tests</a> explains how such tests are scored and how to prepare. This page is practice.</p>
 
 <h2 id="typical-scores-over-five-minutes">Typical scores</h2>
-<p>The study people usually quote, Dhakal and colleagues (CHI 2018, 168,960 volunteers, mean 51.56 WPM, standard deviation 20.2), used short copied sentences, not five-minute passages. Use it as a rough reference only. See <a href="/blog/good-typing-speed">what a good typing speed is</a>.</p>
+<p>The study people usually quote, Dhakal and colleagues (CHI 2018), used short copied sentences, not five-minute passages, so use it as a rough reference only. The numbers are on the <a href="/1-minute-typing-test#typical-scores">1 minute test page</a>, and <a href="/blog/good-typing-speed">what a good typing speed is</a> covers their limits.</p>
 
 <h2 id="limits-of-the-5-minute-test">Limits of this test</h2>
 <ul>
-<li>It measures copying text, not writing your own.</li>
-<li>The certificate picture is a keepsake, not an official qualification.</li>
-<li>It is built for a physical keyboard.</li>
+<li>One long run in one sitting reflects how focused or tired you were that day, so compare it only with other 5 minute runs.</li>
+<li>The <a href="/#limits-of-this-test">home guide</a> lists the limits that apply to every length, and the certificate question below says what the certificate picture is.</li>
 </ul>
 
 <h2 id="5-minute-typing-test-faq">5 minute typing test FAQ</h2>

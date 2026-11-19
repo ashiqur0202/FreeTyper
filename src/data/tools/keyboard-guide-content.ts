@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-07
+ * Last real edit: 2026-11-18 (learning routine now lives in the lessons guide)
  */
 
 export const meta = {
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Keyboard Guide — Color-Coded Finger Placement for Touch Typing</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-07">November 7, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This keyboard guide shows the correct finger placement for each key on a standard US laptop keyboard (QWERTY). Every key is coloured by the finger that owns it, the eight home-row keys carry a small underline, and two drawn hands show which finger to use. Click or hover over any key, or press a key on your own keyboard, to see its finger, how to reach it and your own accuracy on it. It is a reference for learning touch typing and for working out why certain keys keep going wrong.</p>
@@ -125,15 +125,13 @@ export const bodyHtml = `
 </ul>
 <p>Use the pattern, not just the list. If your weak keys are mostly on the outer columns, such as Q, A, Z, P, the semicolon and the slash, the little fingers are the likely cause. If they are in the middle of the board, such as T, G, B, Y, H and N, it is often an index-finger reach problem. This is a pattern worth checking, not a diagnosis.</p>
 
-<h2 id="using-the-finger-map-to-learn-touch-typing">Using the finger placement map to learn touch typing</h2>
-<p>These are our recommendations, not guarantees.</p>
-<ol>
-<li><strong>Study the home row first.</strong> Tap each home-row key (A S D F, J K L and the semicolon) and set your hands to match the drawing.</li>
-<li><strong>Add one finger at a time.</strong> Tap a finger in the hands to see its whole column, then practice those keys.</li>
-<li><strong>Learn by doing.</strong> The <a href="/typing-lessons">typing lessons</a> introduce the rows in order, and the finger map is the reference to check when a key confuses you.</li>
-<li><strong>Return to home after each reach.</strong> Do not let your hands drift.</li>
-<li><strong>Come back with data.</strong> After some practice, return to the guide and see which keys have the lowest accuracy.</li>
-</ol>
+<h2 id="using-the-finger-map-to-learn-touch-typing">Using the finger map as a reference</h2>
+<p>This page is a map, not a course. For a step-by-step order and pass marks, use the <a href="/typing-lessons">typing lessons</a>. Our suggestions for using the map alongside them:</p>
+<ul>
+<li><strong>Match your hands to the drawing.</strong> Tap each home-row key (A S D F, J K L and the semicolon) and set your hands to match.</li>
+<li><strong>Check a confusing key.</strong> When a lesson key confuses you, tap it here to see its finger and how to reach it, or tap a finger to see its whole column.</li>
+<li><strong>Come back with data.</strong> After some practice, return and see which keys have the lowest accuracy.</li>
+</ul>
 
 <h2 id="finger-map-and-typing-speed">Does the finger map decide how fast you type?</h2>
 <p>Not by itself. In <a href="https://userinterfaces.aalto.fi/136Mkeystrokes/" rel="noopener" target="_blank">a study of 168,000 online typists</a> (Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018), the authors cite earlier work finding that people who do not use all their fingers, and have no touch-typing training, can still reach speeds comparable to touch typists. In their own analysis, which finger presses which key did not on its own explain why some typists were fast and others slow. Consistency in moving between awkward letter pairs mattered more.</p>
