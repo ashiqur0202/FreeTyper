@@ -9,7 +9,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-07
+ * Last real edit: 2026-11-19 (FAQ answers are short; the details live in the body sections only)
  */
 
 export const faqs: { question: string; answer: string }[] = [
@@ -21,32 +21,32 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'What does the Learn tab teach?',
     answer:
-      'It is a ladder of four levels, from Beginner to Mastery, with a practice box for every drill. Level 1 has seven short steps: move the pointer, click, double-click, right-click, drag and drop, scroll, and a mixed step. Level 2 trains accuracy and control, Level 3 speed and smooth movement, and Level 4 is a set of timed challenges. A drill finishes the moment you pass it, and finished drills are saved per device choice.',
+      'It is a ladder of four levels, Beginner, Comfortable, Skilled and Mastery, with a practice box for every drill. Level 1 starts with moving the pointer and clicking; Level 4 is timed challenges. A drill finishes the moment you pass it.',
   },
   {
     question: 'How do the levels unlock?',
     answer:
-      'Level 1 is open from the start. Each later level opens when you have passed every drill in the one before it, and a locked level shows what you need to open it. Passing a level gives you a rank: Beginner, Comfortable, Skilled or Master. Some drills have a pass mark, such as 80% accuracy on the small targets, and if you miss it you see your result and can try again. The pass marks are our own suggestions, not a research standard.',
+      'Level 1 is open from the start. Each later level opens when you have passed every drill in the one before it, and passing a level gives you a rank: Beginner, Comfortable, Skilled or Master. The pass marks are our own suggestions, not a research standard.',
   },
   {
     question: 'What are the Moving and Shrinking modes on the Aim tab?',
     answer:
-      'Classic keeps the target still. Moving makes the target drift across the play area, and it opens when you reach Level 3. Shrinking makes the target 4 pixels smaller with every hit, from 80 pixels down to 24, and it opens when you reach Level 4. Best scores are kept separately for each mode and size.',
+      'Classic keeps the target still. Moving makes it drift across the play area and opens at Level 3. Shrinking makes it smaller with every hit and opens at Level 4. Best scores are kept separately for each mode and size.',
   },
   {
     question: 'How does the Aim game score me?',
     answer:
-      'A run lasts 30 seconds with one round target on screen at a time. A click on the target is a hit and moves it somewhere else. A click anywhere else in the play area is a miss. Your score is hits minus misses, never below zero. Accuracy is hits divided by all your clicks, and the average reaction time is how long a target was on screen before you hit it.',
+      'A run lasts 30 seconds. A click on the target is a hit and a click anywhere else in the play area is a miss, and your score is hits minus misses, never below zero. Accuracy and average reaction time are shown with it.',
   },
   {
     question: 'What are the target sizes?',
     answer:
-      'Large is 80 pixels across, medium is 56 and small is 36. Until you pick a size the page starts on medium for a mouse and on large for a trackpad. These sizes are our own suggestion, not a researched standard, and your best score is kept separately for each size.',
+      'Large is 80 pixels across, medium is 56 and small is 36. They are our own suggestion, not a researched standard.',
   },
   {
     question: 'What do I do if a trackpad step does not work?',
     answer:
-      'Laptops differ: tap-to-click, two-finger right-click and tap-to-drag can each be turned off in the laptop\'s touchpad settings. If a trackpad step is still open after about ten seconds, the page shows a reminder to check those settings. You can always press the pad down instead of tapping it, and press its bottom-right corner for a right-click.',
+      'Tap-to-click, two-finger right-click and tap-to-drag can each be turned off in the touchpad settings of your laptop, so check those first. You can always press the pad down instead of tapping it.',
   },
   {
     question: 'Does it teach pinch-to-zoom or three-finger swipes?',
@@ -61,7 +61,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'What is saved, and is anything uploaded?',
     answer:
-      'Your device choice, the drills you have finished and your best Aim score for each mode and size are saved in your own browser, on this device only, and clearing your site data erases them. There is no account. Site visits are measured with Google Analytics, which also receives the name of a drill you finished, your device choice and the level, when you pass a level, and after an Aim run the mode, size, hits, accuracy and score. These are numbers and short labels only.',
+      'Your device choice, finished drills and best Aim scores are saved in your own browser, on this device only, and clearing your site data erases them. There is no account. Google Analytics also receives short labels and numbers about drills and Aim runs; the privacy section on this page and the privacy policy list what.',
   },
 ];
 
@@ -79,7 +79,7 @@ export const previewHtml = `
 <h2>Mouse and Trackpad Practice for Beginners</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-07">November 7, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-19">November 19, 2026</time></span>
   <span>~4 min read</span>
 </p>
 <p>This page lets you practise using a mouse or a laptop trackpad, from your first click to timed challenges. The Learn tab is a ladder of four levels, Beginner, Comfortable, Skilled and Mastery, with wording for the device you pick. Each level opens when you pass the one before it, and passing gives you a rank. The Aim tab is a 30-second game where you click round targets as fast and as accurately as you can. It is free, needs no signup, and your progress stays in your browser.</p>

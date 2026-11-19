@@ -10,7 +10,7 @@
  * progress. No outside statistics are used: we have no checked source for typical number-row speeds, and the
  * page says so. If the text, scoring, finger hints or saving change, update this file in the same commit.
  *
- * Last real edit: 2026-11-10
+ * Last real edit: 2026-11-19 (the FAQ and the body no longer repeat each other)
  */
 
 export const numberRowPage = {
@@ -30,7 +30,7 @@ export const numberRowPage = {
     {
       question: 'Why do my number row results not show in my progress?',
       answer:
-        'On purpose. Digits are typed at a different speed from sentences, so mixing them in would move your best WPM, your averages and your streak in a misleading way. These runs keep their own list of the last five on this device, and there is no level ladder or certificate for them.',
+        'On purpose. Digits are typed at a different speed from sentences, so mixing them in would move your best WPM, your averages and your streak in a misleading way. The latest five number row results are kept in their own list in your browser, on this device only. There is no account, clearing your site data erases them, and there is no level ladder or certificate for these runs.',
     },
     {
       question: 'Do the symbols need Shift?',
@@ -40,7 +40,7 @@ export const numberRowPage = {
     {
       question: 'How are digits scored compared with letters?',
       answer:
-        'The same way. Five characters count as one word, and every digit, symbol and space is one character. Net WPM is your correct characters divided by five, divided by the minutes. To turn a score into keystrokes, multiply by five: 40 WPM is 200 characters a minute.',
+        'The same way as letters: five characters count as one word, and every digit, symbol and space is one character. The formula and a score-to-keystrokes table are in the sections above.',
     },
     {
       question: 'How can I get faster at typing numbers?',
@@ -75,7 +75,7 @@ export const numberRowPage = {
 <h2>Number Row Typing Test — Practice Digits and Symbols</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-10">November 10, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-19">November 19, 2026</time></span>
 </p>
 <p>This free number row typing test has you type digits, in groups of two to six, on the row above your letters. Switch on "with symbols" to add the shifted keys, such as $, %, # and &amp;. When the time ends you get your net WPM, your accuracy and a strip that shows how long each digit from 0 to 9 took, with your slowest digit marked.</p>
 <p>Below: how the text is built, which finger belongs to each number key, how the score works, and what this test does not measure.</p>
@@ -124,12 +124,8 @@ export const numberRowPage = {
 <ul>
 <li>It measures copying digits and symbols, not entering real figures from a page or a screen, which is slower.</li>
 <li>We do not give typical speeds for typing numbers. We have not found a source we can check, so there is no level ladder or average here.</li>
-<li>It uses the number row. A separate numeric keypad is a different skill and is not covered.</li>
-<li>It is built for a physical keyboard.</li>
 </ul>
-
-<h2 id="where-your-results-go">Where your results go</h2>
-<p>The latest five number row results are saved in your own browser, on this device only, in their own list. They are not added to your progress totals, so they do not change your best WPM, your averages or your streak. There is no account, and clearing your site data erases them.</p>
+<p>Numeric keypads, phones and where your results are saved are answered in the FAQ below.</p>
 
 <h2 id="number-row-typing-test-faq">Number row typing test FAQ</h2>
 FAQ_HTML
