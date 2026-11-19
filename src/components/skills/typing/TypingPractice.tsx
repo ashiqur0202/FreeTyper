@@ -544,6 +544,7 @@ export default function TypingPractice() {
             log={log}
             currentCategory={category}
             onTryWeakKeys={() => changeCategory('adaptive')}
+            collapsible
           />
         </div>
     </div>

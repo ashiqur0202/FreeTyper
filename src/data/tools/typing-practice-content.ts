@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-18 (result card text now points to the speed test guide)
+ * Last real edit: 2026-11-20 (the last runs are rows that open into the result card)
  */
 
 export const meta = {
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Free Typing Practice — Adaptive Drills, Quotes, News and Code</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-20">November 20, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This free typing practice page gives you a short passage to type, scores it when you finish, and immediately loads the next one so you can keep going. You choose the kind of text: quotes, news-style passages, code snippets or fun facts. The first tab, adaptive, is the default: it builds each drill from the keys and letter pairs you are slowest or least accurate on.</p>
@@ -92,7 +92,7 @@ export const bodyHtml = `
 <li><strong>Type the passage.</strong> Practice is not timed. The run ends when you reach the end of the passage, and your WPM is measured over the time you took.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and you carry on, or press Backspace to step back. Scoring works exactly as in the <a href="/">typing speed test</a>: five characters make a word, and Backspace removes the character you step back over.</li>
 <li><strong>The next passage loads straight away</strong> so you can type again with no extra click. While a run is in progress, small buttons let you swap to a different passage or restart.</li>
-<li><strong>Your last five runs</strong> are listed under the keyboard, newest first, each with a short coach note.</li>
+<li><strong>Your last five runs</strong> are listed under the keyboard as rows, newest first. Click a row to open its full result card, which includes a short coach note.</li>
 </ul>
 
 <h2 id="practice-categories">The five practice tabs</h2>
@@ -137,7 +137,7 @@ export const bodyHtml = `
 <p>Click a letter to drill it by hand: you get 40 real words that contain that letter, with extra weight on words holding one of your weak pairs that end in it. The same letter keeps being drilled after each run until you pick another letter, choose another tab, or press "back to adaptive", which appears next to the count while you are drilling by hand. Letters are locked while a run is in progress. Only letters a to z are shown; digits and punctuation are counted in your key statistics but have no box yet.</p>
 
 <h2 id="the-result-card">The result card</h2>
-<p>After each run the card shows your WPM, accuracy and time, and how they compare with your previous run. For runs of 5 seconds or longer it adds the speed graph, a consistency score and a "weak spots" line; the <a href="/#the-speed-graph-and-weak-spots">typing speed test guide</a> explains those once for all the tools. What is specific to practice: the "drill these" button under the weak spots switches to the adaptive tab, and the curve is kept only for your latest five practice runs. The "share" button works as described in the <a href="/#share-your-result-as-a-picture">speed test guide</a>.</p>
+<p>Click a run in the list under the keyboard to open its result card. It shows your WPM, accuracy and time, and how they compare with the run before it. For runs of 5 seconds or longer it adds the speed graph, a consistency score and a "weak spots" line; the <a href="/#the-speed-graph-and-weak-spots">typing speed test guide</a> explains those once for all the tools. What is specific to practice: the "drill these" button under the weak spots switches to the adaptive tab, and the curve is kept only for your latest five practice runs. The "share" button works as described in the <a href="/#share-your-result-as-a-picture">speed test guide</a>.</p>
 
 <h2 id="practice-vs-lessons-vs-speed-test">Practice, lessons or speed test: which should you use?</h2>
 <ul>
@@ -192,7 +192,7 @@ export const howToSteps: { name: string; text: string }[] = [
   },
   {
     name: 'Read your result and coach note',
-    text: 'Check your WPM, accuracy and the coach note. If accuracy is below 95 percent, slow down on the next passage.',
+    text: 'Click your latest run in the list under the keyboard to see your WPM, accuracy and the coach note. If accuracy is below 95 percent, slow down on the next passage.',
   },
   {
     name: 'Keep going with the next passage',

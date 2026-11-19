@@ -162,6 +162,7 @@ export default function TypingLessons() {
         const entry: PracticeLogEntry = {
           ...updated,
           ...lessonCoachNote(updated, prev[0], prev),
+          passed,
         };
         const next = [entry, ...prev].slice(0, LOG_MAX);
         try {
@@ -570,7 +571,7 @@ export default function TypingLessons() {
           />
         </div>
 
-        <PracticeFeedback log={log} />
+        <PracticeFeedback log={log} collapsible />
       </div>
     </div>
   );

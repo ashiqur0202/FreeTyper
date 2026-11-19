@@ -21,6 +21,8 @@ export type PracticeLogEntry = TypingSession & {
   tone?: CoachTone;
   /** Speed test only: what is needed to send this run as a challenge link (the text's seed, type and length). */
   share?: { seed: string; mode: TextMode; seconds: number };
+  /** Lessons only: whether this attempt reached the accuracy the lesson asks for. */
+  passed?: boolean;
 };
 
 function pick(seed: string, options: string[]): string {
@@ -861,6 +863,15 @@ function PerformanceList(props: PracticeFeedbackProps) {
                   <span className="text-[11px] text-text-dim">err</span>
                   <span className="text-text-dim">·</span>
                   <span className="text-[11px] text-text-dim">{entry.duration}s</span>
+                  {entry.passed !== undefined && (
+                    <span
+                      className={`rounded-full px-1.5 py-0.5 text-[9px] uppercase tracking-wider ${
+                        entry.passed ? 'bg-correct/15 text-correct' : 'bg-error-bg text-error'
+                      }`}
+                    >
+                      {entry.passed ? 'passed' : 'not yet'}
+                    </span>
+                  )}
                   {entry.wpm === bestWpm && log.length > 1 && (
                     <span className="rounded-full bg-accent-bg px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-accent">
                       best
