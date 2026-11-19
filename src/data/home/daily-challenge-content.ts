@@ -11,7 +11,7 @@
  * counting days with a run at 90 % accuracy or better, data kept only in
  * localStorage. No outside figures are used.
  *
- * Last real edit: 2026-11-08
+ * Last real edit: 2026-11-19 (the result card is below the test screen)
  */
 
 export const dailyMeta = {
@@ -23,7 +23,7 @@ export const dailyMeta = {
 const byline = `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-08">November 8, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-19">November 19, 2026</time></span>
 </p>`;
 
 export const dailyPreviewHtml = `
@@ -35,7 +35,7 @@ export const dailyPreviewHtml = `
 export const dailyBodyHtml = `
 <h2 id="how-the-daily-challenge-works">How the daily challenge works</h2>
 <p>The test is the same one as on the <a href="/">home page</a>, set to 60 seconds and to sentences, and you cannot change either while you are on this page. The timer starts on your first keystroke. Net WPM is your correct characters divided by five, divided by the minutes, and accuracy is correct characters out of characters typed. The full method is in the <a href="/">typing speed test guide</a>, and the <a href="/1-minute-typing-test">1 minute test page</a> explains what a single minute can and cannot show.</p>
-<p>When the minute ends, the result card appears below the keyboard, the same passage is ready again, and you can run it as often as you like.</p>
+<p>When the minute ends, the same passage is ready again and you can run it as often as you like. The result card is below the test screen: scroll down to see it.</p>
 
 <h2 id="how-the-passage-is-chosen">How the daily passage is chosen</h2>
 <p>The page takes today's date in UTC, such as 2026-11-08, and uses it as the seed for a small random-number generator. That generator puts the 16 prose passages from our practice texts (the quotes, news and fun facts, not the code snippets) into an order, and the page joins them until there are about 300 words. Because the seed is only the date, every browser builds the same text for the same day, with no server involved. At 300 words the passage is longer than anyone can finish in a minute.</p>
@@ -102,7 +102,7 @@ export const dailyHowToSteps = [
   },
   {
     name: 'Read your result',
-    text: 'When time runs out, read your net WPM, accuracy and graph under the keyboard. A run at 90% accuracy or better counts toward your streak.',
+    text: 'When time runs out, scroll down to read your net WPM, accuracy and graph. A run at 90% accuracy or better counts toward your streak.',
   },
   {
     name: 'Share or try again',

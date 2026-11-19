@@ -526,6 +526,8 @@ export default function TypingSpeedTest({
       ))}
 
       <div className="w-full">
+        {/* The test fills one screen, so the result card starts below the fold and cannot distract while typing. */}
+        <div className={focusMode ? undefined : 'min-h-[100svh]'} data-test-screen>
           {daily && dailyKey && <DailyPanel dateKey={dailyKey} store={dailyStore} />}
           {challenge && challengeInfo && <ChallengePanel challenge={challengeInfo} run={challengeRun} />}
           <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
@@ -701,6 +703,7 @@ export default function TypingSpeedTest({
               compact
             />
           </div>
+        </div>
 
           <PracticeFeedback
             log={log}
