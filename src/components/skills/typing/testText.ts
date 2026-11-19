@@ -1,6 +1,6 @@
 import { practiceTexts } from './typingData';
-import { wordPools } from './gameData';
 import { seededRandom } from './dailyChallenge';
+import { DEFAULT_TEXT_LEVEL, generateSentences, generateWords, type TextLevel } from './textGenerator';
 
 export type TextMode = 'words' | 'sentences' | 'code';
 
@@ -24,40 +24,37 @@ function shuffled<T>(items: readonly T[], rand: () => number): T[] {
   return out;
 }
 
-/** The passage for a speed test of `seconds` in `mode`. `rand` decides the order; the default is Math.random. */
-export function generateTestText(mode: TextMode, seconds = 60, rand: () => number = Math.random): string {
-  if (mode === 'words') {
-    const pool = [...wordPools.easy, ...wordPools.medium];
-    const out: string[] = [];
-    const wanted = wordBudget(seconds, 2000);
-    while (out.length < wanted) out.push(...shuffled(pool, rand));
-    return out.slice(0, wanted).join(' ');
-  }
-  if (mode === 'code') {
-    const codeTexts = practiceTexts.filter((p) => p.category === 'code');
-    const chunks: string[] = [];
-    const wantedWords = Math.min(800, Math.max(200, Math.round(wordBudget(seconds, 800) * 0.6)));
-    while (chunks.join(' ').split(/\s+/).length < wantedWords) {
-      chunks.push(...shuffled(codeTexts, rand).map((p) => p.text));
-      if (codeTexts.length === 0) break;
-    }
-    return chunks.join(' ');
-  }
-  const proseTexts = practiceTexts.filter((p) => p.category !== 'code');
+/** Code snippets are fixed text (a code generator may come later): shuffled, joined until long enough. */
+function codeText(seconds: number, rand: () => number): string {
+  const codeTexts = practiceTexts.filter((p) => p.category === 'code');
   const chunks: string[] = [];
-  const wantedProse = wordBudget(seconds, 1500);
-  while (chunks.join(' ').split(/\s+/).length < wantedProse) {
-    chunks.push(...shuffled(proseTexts, rand).map((p) => p.text));
-    if (proseTexts.length === 0) break;
+  const wantedWords = Math.min(800, Math.max(200, Math.round(wordBudget(seconds, 800) * 0.6)));
+  while (chunks.join(' ').split(/\s+/).length < wantedWords) {
+    chunks.push(...shuffled(codeTexts, rand).map((p) => p.text));
+    if (codeTexts.length === 0) break;
   }
   return chunks.join(' ');
 }
 
 /**
- * The same passage for the same seed, mode and length, on any device. Every speed test is built this way
- * (with a fresh seed), so a finished run can be sent as a challenge link: the friend's page rebuilds the text
- * from the link's seed, mode and length.
+ * The same text for the same seed, mode, length and level, on any device. Sentences and words are made fresh by
+ * `textGenerator` (never a fixed passage); code uses the fixed snippets. Every speed test is built this way
+ * (with a new seed), so a finished run can be sent as a challenge link: the friend's page rebuilds the text
+ * from the link's seed, mode, length and level.
  */
-export function seededTestText(mode: TextMode, seconds: number, seed: string): string {
-  return generateTestText(mode, seconds, seededRandom(`freetyper-test-${mode}-${seconds}-${seed}`));
+export function seededTestText(mode: TextMode, seconds: number, seed: string, level: TextLevel = DEFAULT_TEXT_LEVEL): string {
+  if (mode === 'sentences') return generateSentences(`${seed}|${seconds}`, level, wordBudget(seconds, 1500));
+  if (mode === 'words') return generateWords(`${seed}|${seconds}`, level, wordBudget(seconds, 2000));
+  return codeText(seconds, seededRandom(`freetyper-test-code-${seconds}-${seed}`));
+}
+
+/** A text from a random source, without a seed to send (the generator needs a seed, so it is drawn from `rand`). */
+export function generateTestText(
+  mode: TextMode,
+  seconds = 60,
+  rand: () => number = Math.random,
+  level: TextLevel = DEFAULT_TEXT_LEVEL,
+): string {
+  if (mode === 'code') return codeText(seconds, rand);
+  return seededTestText(mode, seconds, Math.floor(rand() * 0xffffffff).toString(36), level);
 }

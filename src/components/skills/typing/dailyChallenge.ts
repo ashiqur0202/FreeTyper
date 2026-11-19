@@ -1,4 +1,5 @@
 import { practiceTexts } from './typingData';
+import { DEFAULT_TEXT_LEVEL, generateSentences } from './textGenerator';
 import { dailyStreak, pruneDaily, utcDateKey, type DailyDay, type DailyStore } from './dailyStreak';
 
 export { dailyStreak, utcDateKey, type DailyDay, type DailyStore };
@@ -35,13 +36,19 @@ export function seededRandom(label: string): () => number {
 }
 
 /**
- * The passage for one date: the practice passages that are not code, put in an
- * order decided only by the date, joined until there are about 300 words. There
- * are few passages, so the same passage can come up on different days; the order
- * (and so what you start with) changes.
+ * The passage for one date: fresh sentences made from the date (the same text for everyone on that day, a new
+ * one tomorrow), at the standard level, about 300 words. Nothing is picked from a fixed list.
  */
 export function dailyText(dateKey: string): string {
-  const rand = seeded(hashString(`freetyper-daily-${dateKey}`));
+  return generateSentences(`daily|${dateKey}`, DEFAULT_TEXT_LEVEL, DAILY_WORDS);
+}
+
+/**
+ * The older way of making a passage, from the fixed non-code practice passages put in an order by a seed.
+ * Kept only so challenge links made before the generator (`?c=...` with no `m`) show the text they always did.
+ */
+function legacyPassageText(label: string): string {
+  const rand = seeded(hashString(`freetyper-daily-${label}`));
   const pool = practiceTexts.filter((p) => p.category !== 'code').map((p) => p.text);
   const out: string[] = [];
   let words = 0;
@@ -53,7 +60,7 @@ export function dailyText(dateKey: string): string {
     }
     for (const t of order) {
       out.push(t);
-      words += t.split(/\s+/).length;
+      words += t.split(/s+/).length;
       if (words >= DAILY_WORDS) break;
     }
   }
@@ -89,7 +96,7 @@ export function recordDailyRun(dateKey: string, wpm: number, accuracy: number): 
   return kept;
 }
 
-/** The passage for a challenge link: the same generator as the daily one, seeded by the link's seed. */
+/** The passage of an older challenge link (no `m` in it): the fixed-passage way, as before, so old links keep their text. */
 export function challengeText(seed: string): string {
-  return dailyText(`challenge-${seed}`);
+  return legacyPassageText(`challenge-${seed}`);
 }

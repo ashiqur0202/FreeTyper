@@ -14,7 +14,7 @@
  * SD 20.2, 168,960 volunteers; top 10 % above about 78, bottom 10 % below
  * about 26), checked against the paper's results table on 2026-11-08.
  *
- * Last real edit: 2026-11-19 (study figures, limits and the Backspace rule are said once, on the 1 minute page and the home guide)
+ * Last real edit: 2026-11-20 (text is generated; the FAQ on repeats) (study figures, limits and the Backspace rule are said once, on the 1 minute page and the home guide)
  */
 
 export type DurationPage = {
@@ -32,7 +32,7 @@ export type DurationPage = {
 const byline = (): string => `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-19">November 19, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-20">November 20, 2026</time></span>
 </p>`;
 
 const sourcesHtml = (extra: string): string => `
@@ -190,7 +190,7 @@ const threeMinute: DurationPage = {
     {
       question: 'Do I get the same text every time?',
       answer:
-        'No. A new passage is built each time you start a test, and the passage is long enough for about 300 words a minute.',
+        'No. New text is made each time you start a test (sentences and words are generated, code snippets are a fixed set), and it is long enough for about 300 words a minute.',
     },
   ],
   howToSteps: [

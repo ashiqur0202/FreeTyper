@@ -7,11 +7,11 @@
  * length or the reset time change, update this file in the same commit.
  *
  * Facts used here come from the code: a UTC date key, a seeded shuffle of the
- * 15 non-code practice passages, about 300 words, a fixed 60 seconds, a streak
+ * sentences generated from the date (textGenerator, standard level), about 300 words, a fixed 60 seconds, a streak
  * counting days with a run at 90 % accuracy or better, data kept only in
  * localStorage. No outside figures are used.
  *
- * Last real edit: 2026-11-20 (passage count corrected to 15; the finished box and the rows)
+ * Last real edit: 2026-11-20 (the daily text is generated from the date, no fixed passages)
  */
 
 export const dailyMeta = {
@@ -28,7 +28,7 @@ const byline = `
 
 export const dailyPreviewHtml = `
 <h2>Daily Typing Challenge — One Text, Everyone, Every Day</h2>${byline}
-<p>This is a 60-second typing test with a fixed passage that changes once a day. Everyone who opens this page on the same day gets the same text, so a score of 70 WPM today means the same thing to anyone else who typed it. Your streak and your best score of the day are kept on this device.</p>
+<p>This is a 60-second typing test with a text that is the same for everyone and changes once a day. Everyone who opens this page on the same day gets the same text, so a score of 70 WPM today means the same thing to anyone else who typed it. Your streak and your best score of the day are kept on this device.</p>
 <p>Below: how the daily passage is chosen, what counts toward the streak, and what is and is not stored.</p>
 `;
 
@@ -38,8 +38,8 @@ export const dailyBodyHtml = `
 <p>When the minute ends, a small box over the text shows your result. Press Test again (or Enter) to run the same passage again as often as you like. Your run is in the performances list under the keyboard; click it to open the full result.</p>
 
 <h2 id="how-the-passage-is-chosen">How the daily passage is chosen</h2>
-<p>The page takes today's date in UTC, such as 2026-11-08, and uses it as the seed for a small random-number generator. That generator puts the 15 prose passages from our practice texts (the quotes, news and fun facts, not the code snippets) into an order, and the page joins them until there are about 300 words. Because the seed is only the date, every browser builds the same text for the same day, with no server involved. At 300 words the passage is longer than anyone can finish in a minute.</p>
-<p>The new passage appears at 00:00 UTC. If you leave the page open across that moment, the next run you start uses the new day's text. There are only 15 passages, so the same passage can come up on different days; what changes is the order, and so what you start with. If the text feels too easy or too hard, that is a limit of the current pool.</p>
+<p>The page takes today's date in UTC, such as 2026-11-08, and uses it as the seed for a small random-number generator. The generator is the one the speed test uses for sentences: it puts made-up everyday sentences together by rules from groups of words, at the standard difficulty, until there are about 300 words. Because the seed is only the date, every browser builds the same text for the same day, with no server involved and no fixed list of passages. At 300 words the passage is longer than anyone can finish in a minute.</p>
+<p>The new text appears at 00:00 UTC. If you leave the page open across that moment, the next run you start uses the new day's text. Each day's text is newly made, so it does not come from a short list that repeats. The daily test always uses the standard difficulty, so scores stay comparable from day to day; the difficulty menu of the speed test does not apply here.</p>
 
 <h2 id="streak-and-best-score">Streak and best score</h2>
 <ul>

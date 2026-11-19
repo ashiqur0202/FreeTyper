@@ -1,4 +1,5 @@
 import type { TextMode } from './testText';
+import { DEFAULT_TEXT_LEVEL, normalizeLevel, type TextLevel } from './textGenerator';
 
 const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 const SEED_RE = /^[a-z0-9]{4,12}$/;
@@ -18,6 +19,11 @@ export interface Challenge {
   mode: TextMode | null;
   /** Run length in seconds (60 for an older link). */
   seconds: number;
+  /**
+   * Text difficulty, 1 to 5. A link without `l` is standard (3), always: it was made before levels existed or
+   * with the standard level, so this default must never change.
+   */
+  level: TextLevel;
   /** The sender's net WPM and accuracy, or null when the link carries no score. */
   wpm: number | null;
   accuracy: number | null;
@@ -55,8 +61,8 @@ export function parseSeconds(search: string): number {
 }
 
 /**
- * Read `?c=<seed>&w=<wpm>&a=<accuracy>` and, for links made from a speed test, `&m=<mode>&d=<seconds>`.
- * Anything out of range is dropped rather than trusted; `m` and `d` count only together.
+ * Read `?c=<seed>&w=<wpm>&a=<accuracy>` and, for links made from a speed test, `&m=<mode>&d=<seconds>&l=<level>`.
+ * Anything out of range is dropped rather than trusted; `m` and `d` count only together; a missing or odd `l` is 3.
  */
 export function parseChallenge(search: string): Challenge | null {
   const params = new URLSearchParams(search);
@@ -65,7 +71,7 @@ export function parseChallenge(search: string): Challenge | null {
   const mode = MODES.find((x) => x === params.get('m')) ?? null;
   const d = allowedSeconds(params.get('d'));
   const typed = mode !== null && d !== null;
-  return { seed, mode: typed ? mode : null, seconds: typed ? d : 60, ...parseScore(search) };
+  return { seed, mode: typed ? mode : null, seconds: typed ? d : 60, level: typed ? normalizeLevel(params.get('l')) : DEFAULT_TEXT_LEVEL, ...parseScore(search) };
 }
 
 export function buildChallengeUrl(
@@ -75,9 +81,10 @@ export function buildChallengeUrl(
   accuracy: number,
   mode: TextMode | null = null,
   seconds = 60,
+  level: TextLevel = DEFAULT_TEXT_LEVEL,
 ): string {
   const base = `${origin}/typing-challenge?c=${seed}&w=${Math.round(wpm)}&a=${Math.round(accuracy)}`;
-  return mode ? `${base}&m=${mode}&d=${seconds}` : base;
+  return mode ? `${base}&m=${mode}&d=${seconds}&l=${level}` : base;
 }
 
 export function compareScores(mine: number, theirs: number): { delta: number; verdict: 'win' | 'tie' | 'behind' } {

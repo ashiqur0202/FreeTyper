@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { trackEvent } from '@/lib/analytics';
+import { DEFAULT_TEXT_LEVEL, normalizeLevel, type TextLevel } from '@/components/skills/typing/textGenerator';
 
 export type FontSize = 'small' | 'default' | 'large';
 export type KeyboardLayout = 'qwerty';
@@ -15,6 +16,8 @@ export interface UserSettings {
   showKeyboardHints: boolean;
   accentColor: AccentColor;
   theme: ThemeMode;
+  /** Difficulty of the speed test text, 1 (beginner) to 5 (expert). */
+  textLevel: TextLevel;
 }
 
 const STORAGE_KEY = 'freetyper-settings';
@@ -61,6 +64,7 @@ const defaultSettings: UserSettings = {
   showKeyboardHints: true,
   accentColor: 'gold',
   theme: 'dark',
+  textLevel: DEFAULT_TEXT_LEVEL,
 };
 
 export function applyAppearance(theme: ThemeMode, accent: AccentColor) {
@@ -103,7 +107,7 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored) as Partial<UserSettings>;
-        const next = { ...defaultSettings, ...parsed };
+        const next = { ...defaultSettings, ...parsed, textLevel: normalizeLevel(parsed.textLevel) };
         setSettings(next);
         applyAppearance(next.theme, next.accentColor);
         applyFontSize(next.fontSize);
