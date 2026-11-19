@@ -678,7 +678,8 @@ export default function TypingSpeedTest({
             />
           </div>
 
-          <div className={`relative transition-[min-height] duration-200 ${showFinishedBox ? 'min-h-[19rem] sm:min-h-[13.5rem]' : ''}`}>
+          {/* The finished box sits over the text area and the hint row below it, so nothing moves on a computer (a phone grows a little: the box is taller there). */}
+          <div className={`relative ${showFinishedBox ? 'max-sm:min-h-[19rem]' : ''}`}>
             <div
               ref={typingAreaRef}
               className={`relative mt-3 cursor-text overflow-hidden py-3 transition-[opacity,filter] duration-200 ${
@@ -696,36 +697,6 @@ export default function TypingSpeedTest({
                 style={{ transform: `translateY(-${scrollOffset}px)` }}
               />
             </div>
-            {showFinishedBox && finishedRun && (
-              <TestFinished
-                key={finishedRun.id}
-                wpm={finishedRun.wpm}
-                accuracy={finishedRun.accuracy}
-                seconds={finishedRun.duration}
-                previousWpm={log[1]?.wpm ?? null}
-                newBest={newBest}
-                plain={numberRow}
-                onAgain={() => startNewTest()}
-                onDetails={openNewestRun}
-                onClose={() => setPopupClosed(true)}
-                challenge={
-                  finishedShare ? (
-                    <ChallengeSendButton
-                      large
-                      wpm={finishedRun.wpm}
-                      source="finished_box"
-                      emphasis
-                      buildUrl={() =>
-                        buildChallengeUrl(window.location.origin, finishedShare.seed, finishedRun.wpm, finishedRun.accuracy, finishedShare.mode, finishedShare.seconds)
-                      }
-                    >
-                      Challenge a friend
-                    </ChallengeSendButton>
-                  ) : undefined
-                }
-              />
-            )}
-          </div>
 
           <input
           ref={inputRef}
@@ -763,6 +734,36 @@ export default function TypingSpeedTest({
               >
                 <RotateCcw className="h-4 w-4" />
               </button>
+            )}
+          </div>
+            {showFinishedBox && finishedRun && (
+              <TestFinished
+                key={finishedRun.id}
+                wpm={finishedRun.wpm}
+                accuracy={finishedRun.accuracy}
+                seconds={finishedRun.duration}
+                previousWpm={log[1]?.wpm ?? null}
+                newBest={newBest}
+                plain={numberRow}
+                onAgain={() => startNewTest()}
+                onDetails={openNewestRun}
+                onClose={() => setPopupClosed(true)}
+                challenge={
+                  finishedShare ? (
+                    <ChallengeSendButton
+                      large
+                      wpm={finishedRun.wpm}
+                      source="finished_box"
+                      emphasis
+                      buildUrl={() =>
+                        buildChallengeUrl(window.location.origin, finishedShare.seed, finishedRun.wpm, finishedRun.accuracy, finishedShare.mode, finishedShare.seconds)
+                      }
+                    >
+                      Challenge a friend
+                    </ChallengeSendButton>
+                  ) : undefined
+                }
+              />
             )}
           </div>
 
