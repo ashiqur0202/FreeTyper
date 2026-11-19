@@ -15,6 +15,7 @@ import { trackEvent } from '@/lib/analytics';
 import DailyPanel from './DailyPanel';
 import ChallengePanel from './ChallengePanel';
 import ChallengeSendButton from './ChallengeSendButton';
+import TestFinished from './TestFinished';
 import { CHALLENGE_SECONDS, buildChallengeUrl, newSeed, parseChallenge, type Challenge } from './challengeLink';
 import { seededTestText, type TextMode } from './testText';
 import {
@@ -134,6 +135,11 @@ export default function TypingSpeedTest({
   // The newest run beat every earlier run in the card list: a good moment to offer a challenge.
   const newBest = log.length > 1 && log[0].wpm > Math.max(...log.slice(1).map((r) => r.wpm));
   const [toasts, setToasts] = useState<Achievement[]>([]);
+  // The box over the text when a test ends; closing it leaves a one-line "Test again" instead.
+  const [popupClosed, setPopupClosed] = useState(false);
+  // Which run row is open in the list ("See details" opens the newest).
+  const [openRunId, setOpenRunId] = useState<string | null>(null);
+  const completedAtRef = useRef(0);
   const [customDuration, setCustomDuration] = useState<number | null>(null);
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [customValue, setCustomValue] = useState('');
@@ -162,6 +168,8 @@ export default function TypingSpeedTest({
 
   const handleComplete = useCallback((session: TypingSession) => {
     const { duration: dur, textMode: mode, customDuration: custom, rowMode: row } = settingsRef.current;
+    setPopupClosed(false);
+    completedAtRef.current = Date.now();
     const secs = custom ?? dur;
     const day = dailyRef.current;
     const friendRun = challengeRef.current;
@@ -297,6 +305,7 @@ export default function TypingSpeedTest({
 
       if (e.ctrlKey || e.altKey || e.metaKey) return;
 
+      // A finished test waits: typing does nothing here (Enter and Escape are handled by the effect below).
       if (isCompleteRef.current) {
         e.preventDefault();
         return;
@@ -395,6 +404,7 @@ export default function TypingSpeedTest({
       setCustomDuration(null);
     }
     setResult(null);
+    setPopupClosed(false);
     setScrollOffset(0);
     setLineHeight(0);
     setLastKeyFlash(null);
@@ -424,13 +434,33 @@ export default function TypingSpeedTest({
   startNewTestRef.current = startNewTest;
   const lastCompleteIdRef = useRef<string | null>(null);
 
+  // A finished test waits for a choice. Enter starts the next test (not in the first half second, so a key
+  // still on its way from the end of the test cannot do it); Escape leaves focus mode, or closes the box.
+  useEffect(() => {
+    if (!isComplete) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (ignoresTyping(e.target) || showCommandPaletteRef.current) return;
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+      if (e.key === 'Enter' && Date.now() - completedAtRef.current > 500) {
+        e.preventDefault();
+        startNewTest();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        if (focusModeRef.current) setFocusMode(false);
+        else setPopupClosed(true);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isComplete, startNewTest]);
+
   useEffect(() => {
     if (!isComplete || !result) return;
     if (lastCompleteIdRef.current === result.id) return;
     lastCompleteIdRef.current = result.id;
     const newA = checkAchievements();
     if (newA.length > 0) setToasts((t) => [...t, ...newA]);
-    startNewTestRef.current();
+    // No automatic restart: the person decides (box over the text: "Test again", "See details" ...).
   }, [isComplete, result, checkAchievements]);
 
   const applyCustomDuration = () => {
@@ -501,7 +531,19 @@ export default function TypingSpeedTest({
   }, [startNewTest, restart, customDuration, duration, numberRow]);
 
   const seconds = Math.ceil(timeLeft || activeDuration);
-  const progress = isRunning ? ((activeDuration - (timeLeft || 0)) / activeDuration) * 100 : 0;
+  const progress = isComplete ? 100 : isRunning ? ((activeDuration - (timeLeft || 0)) / activeDuration) * 100 : 0;
+  // The newest run (it is in the list the moment the test ends) and how it compares with the one before.
+  const finishedRun = isComplete ? log[0] : undefined;
+  const showFinishedBox = !!finishedRun && !popupClosed;
+  const finishedShare = finishedRun?.share;
+  const openNewestRun = () => {
+    if (!finishedRun) return;
+    setOpenRunId(finishedRun.id);
+    setPopupClosed(true);
+    requestAnimationFrame(() => {
+      document.querySelector('[data-performances] > li')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
   const isLowTime = isRunning && timeLeft < 10 && timeLeft < activeDuration * 0.1;
 
   if (!mounted || !text) {
@@ -612,16 +654,16 @@ export default function TypingSpeedTest({
             </div>
             <div className="flex items-center gap-3 font-mono text-sm text-text">
               <span className={`tabular-nums ${isLowTime && isRunning ? 'text-error' : 'text-text-bright'}`}>
-                {seconds}
+                {isComplete ? 0 : seconds}
               </span>
               <span className="text-text-dim">·</span>
               <span className="tabular-nums text-text-bright">
-                {isRunning ? wpm : '--'}
+                {isRunning || isComplete ? wpm : '--'}
                 <span className="text-text"> wpm</span>
               </span>
               <span className="text-text-dim">·</span>
               <span className="tabular-nums text-text-bright">
-                {isRunning ? accuracy : '--'}
+                {isRunning || isComplete ? accuracy : '--'}
                 <span className="text-text">%</span>
               </span>
             </div>
@@ -636,20 +678,53 @@ export default function TypingSpeedTest({
             />
           </div>
 
-          <div
-            ref={typingAreaRef}
-            className="relative mt-3 cursor-text overflow-hidden py-3"
-            style={{ height: typingWindowHeight(lineHeight) }}
-            onClick={() => inputRef.current?.focus({ preventScroll: true })}
-          >
-            <TypingPassage
-              chars={chars}
-              currentIndex={currentIndex}
-              firstCharRef={firstCharRef}
-              currentCharRef={currentCharRef}
-              className="transition-transform duration-150 ease-out"
-              style={{ transform: `translateY(-${scrollOffset}px)` }}
-            />
+          <div className={`relative transition-[min-height] duration-200 ${showFinishedBox ? 'min-h-[19rem] sm:min-h-[13.5rem]' : ''}`}>
+            <div
+              ref={typingAreaRef}
+              className={`relative mt-3 cursor-text overflow-hidden py-3 transition-[opacity,filter] duration-200 ${
+                showFinishedBox ? 'opacity-35 blur-[1.5px]' : ''
+              }`}
+              style={{ height: typingWindowHeight(lineHeight) }}
+              onClick={() => inputRef.current?.focus({ preventScroll: true })}
+            >
+              <TypingPassage
+                chars={chars}
+                currentIndex={currentIndex}
+                firstCharRef={firstCharRef}
+                currentCharRef={currentCharRef}
+                className="transition-transform duration-150 ease-out"
+                style={{ transform: `translateY(-${scrollOffset}px)` }}
+              />
+            </div>
+            {showFinishedBox && finishedRun && (
+              <TestFinished
+                key={finishedRun.id}
+                wpm={finishedRun.wpm}
+                accuracy={finishedRun.accuracy}
+                seconds={finishedRun.duration}
+                previousWpm={log[1]?.wpm ?? null}
+                newBest={newBest}
+                plain={numberRow}
+                onAgain={() => startNewTest()}
+                onDetails={openNewestRun}
+                onClose={() => setPopupClosed(true)}
+                challenge={
+                  finishedShare ? (
+                    <ChallengeSendButton
+                      large
+                      wpm={finishedRun.wpm}
+                      source="finished_box"
+                      emphasis
+                      buildUrl={() =>
+                        buildChallengeUrl(window.location.origin, finishedShare.seed, finishedRun.wpm, finishedRun.accuracy, finishedShare.mode, finishedShare.seconds)
+                      }
+                    >
+                      Challenge a friend
+                    </ChallengeSendButton>
+                  ) : undefined
+                }
+              />
+            )}
           </div>
 
           <input
@@ -667,7 +742,17 @@ export default function TypingSpeedTest({
         />
 
           <div className="mt-4 flex h-8 items-center justify-center">
-            {!isRunning ? (
+            {isComplete ? (
+              showFinishedBox ? null : (
+                <p className="text-sm text-text-dim">
+                  Test finished ·{' '}
+                  <button type="button" onClick={() => startNewTest()} className="text-accent hover:underline">
+                    test again
+                  </button>{' '}
+                  <kbd className="rounded border border-surface-border px-1 font-mono text-[10px]">Enter</kbd>
+                </p>
+              )
+            ) : !isRunning ? (
               <p className="text-sm text-text-dim">start typing to begin</p>
             ) : (
               <button
@@ -710,6 +795,8 @@ export default function TypingSpeedTest({
             plain={numberRow}
             afterStats={numberRow && digitStats ? <DigitStrip speeds={digitStats.speeds} slowest={digitStats.slowest} /> : undefined}
             collapsible
+            openId={openRunId}
+            onOpenChange={setOpenRunId}
             rowAction={(entry) =>
               entry.share ? (
                 <ChallengeSendButton

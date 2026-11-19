@@ -11,11 +11,13 @@ interface ChallengeSendButtonProps {
   /** Builds the link when the button is pressed (it needs `window.location.origin`). */
   buildUrl: () => string;
   /** Where the button is: the speed-test result card or the challenge page. */
-  source: 'result_card' | 'challenge_page' | 'history_row';
+  source: 'result_card' | 'challenge_page' | 'history_row' | 'finished_box';
   /** True when the run was compared with a friend's score first. */
   hasTarget?: boolean;
   /** Highlight it, for example after a new best. */
   emphasis?: boolean;
+  /** A bigger button, for the box shown when a test ends. */
+  large?: boolean;
   children?: ReactNode;
 }
 
@@ -29,6 +31,7 @@ export default function ChallengeSendButton({
   source,
   hasTarget = false,
   emphasis = true,
+  large = false,
   children,
 }: ChallengeSendButtonProps) {
   const [copied, setCopied] = useState(false);
@@ -71,11 +74,11 @@ export default function ChallengeSendButton({
     <button
       type="button"
       onClick={send}
-      className={`inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-[11px] transition-colors hover:border-accent/40 hover:text-accent ${
-        emphasis ? 'border-accent/40 bg-accent-bg font-medium text-accent' : 'border-surface-border text-text-dim'
-      }`}
+      className={`inline-flex items-center justify-center transition-colors hover:border-accent/40 hover:text-accent ${
+        large ? 'gap-2 rounded-lg border px-4 py-2.5 text-sm max-sm:basis-full' : 'gap-1 rounded-md border px-2.5 py-1 text-[11px]'
+      } ${emphasis ? 'border-accent/40 bg-accent-bg font-medium text-accent' : 'border-surface-border text-text-dim'}`}
     >
-      {copied ? <Check className="h-3 w-3 text-accent" /> : <Link2 className="h-3 w-3" />}
+      {copied ? <Check className={`${large ? 'h-4 w-4' : 'h-3 w-3'} text-accent`} /> : <Link2 className={large ? 'h-4 w-4' : 'h-3 w-3'} />}
       <span aria-live="polite">{copied ? 'link copied' : (children ?? 'challenge a friend')}</span>
     </button>
   );

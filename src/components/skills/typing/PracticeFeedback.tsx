@@ -525,6 +525,9 @@ interface PracticeFeedbackProps {
   collapsible?: boolean;
   /** A small action in the middle of each row (the speed test's challenge button). */
   rowAction?: (entry: PracticeLogEntry, index: number) => ReactNode;
+  /** Which row is open, when the parent decides (the "See details" button opens the newest). */
+  openId?: string | null;
+  onOpenChange?: (id: string | null) => void;
 }
 
 interface PracticeCardProps extends PracticeFeedbackProps {
@@ -819,8 +822,10 @@ function PracticeCard({
  * inside each row, so sharing does not need a click to find.
  */
 function PerformanceList(props: PracticeFeedbackProps) {
-  const { log, rowAction } = props;
-  const [openId, setOpenId] = useState<string | null>(null);
+  const { log, rowAction, onOpenChange } = props;
+  const [innerOpenId, setInnerOpenId] = useState<string | null>(null);
+  const openId = props.openId !== undefined ? props.openId : innerOpenId;
+  const setOpenId = (id: string | null) => (onOpenChange ? onOpenChange(id) : setInnerOpenId(id));
   if (log.length === 0) return null;
   const bestWpm = Math.max(...log.map((r) => r.wpm));
 

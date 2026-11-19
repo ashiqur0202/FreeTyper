@@ -101,7 +101,7 @@ export const bodyHtml = `
 <li><strong>Choose a text type.</strong> <em>Words</em> shows common short English words in random order. <em>Sentences</em> shows quotes and short passages with capital letters and punctuation. <em>Code</em> shows programming snippets full of brackets and symbols.</li>
 <li><strong>Type.</strong> The clock starts on your first keystroke, not when the page loads. Every character has to match exactly: letter case, punctuation and spaces all count.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and the cursor moves on. Backspace steps back if you want to fix it.</li>
-<li><strong>Keep going.</strong> When the time runs out, a fresh text loads straight away, so you can run another test without clicking anything. Your run appears in the performances list under the keyboard: click it to open the full result.</li>
+<li><strong>Keep going.</strong> When the time runs out, a small box over the text shows your net WPM, accuracy and how this run compares with your last one, with three buttons: Test again, Challenge a friend and See details. Nothing starts again until you choose, so you can look at your result first. Enter also starts the next test, and Esc closes the box. Your run is in the performances list under the keyboard: click it to open the full result.</li>
 </ul>
 
 <h2 id="how-wpm-and-accuracy-are-calculated">How WPM and accuracy are calculated</h2>
