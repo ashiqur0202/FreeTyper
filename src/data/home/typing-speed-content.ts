@@ -97,11 +97,11 @@ export const bodyHtml = `
 <li><strong>Choose a length.</strong> The presets are 15 seconds, 30 seconds, 1, 2, 3, 5, 10, 15 and 30 minutes. A custom option accepts anything from 1 to 120 minutes. Three lengths also have their own page that opens on that length, with a short note on what it shows: the <a href="/1-minute-typing-test">1 minute test</a>, the <a href="/3-minute-typing-test">3 minute test</a> and the <a href="/5-minute-typing-test">5 minute test</a>.</li>
 <li><strong>Or try the number row.</strong> The <a href="/number-row-typing-test">number row typing test</a> has you type digits, and optionally the shifted symbols above them, on the row above the letters. Its results are kept apart from this test and do not count toward your progress totals.</li>
 <li><strong>Or take the daily challenge.</strong> The <a href="/daily-typing-challenge">daily typing challenge</a> is a fixed 60-second test on a passage chosen by the date, so everyone gets the same text that day. It keeps a streak and your best score of the day in your browser.</li>
-<li><strong>Challenge a friend.</strong> After a test of 15 seconds to 5 minutes, "challenge a friend" under the result copies a link (on a phone it opens the share sheet). The friend's page builds the same text, in the same text type and for the same length, and shows your score as the target. The link holds a short code that picks the text, your net WPM and accuracy, the text type and the length. It has no name and no typed text, and the score is not verified, so treat it as a game between friends.</li>
+<li><strong>Challenge a friend.</strong> After a test of 15 seconds to 5 minutes, the "challenge" button on that run in the performances list (and "challenge a friend" in its opened result) copies a link (on a phone it opens the share sheet). The friend's page builds the same text, in the same text type and for the same length, and shows your score as the target. The link holds a short code that picks the text, your net WPM and accuracy, the text type and the length. It has no name and no typed text, and the score is not verified, so treat it as a game between friends.</li>
 <li><strong>Choose a text type.</strong> <em>Words</em> shows common short English words in random order. <em>Sentences</em> shows quotes and short passages with capital letters and punctuation. <em>Code</em> shows programming snippets full of brackets and symbols.</li>
 <li><strong>Type.</strong> The clock starts on your first keystroke, not when the page loads. Every character has to match exactly: letter case, punctuation and spaces all count.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and the cursor moves on. Backspace steps back if you want to fix it.</li>
-<li><strong>Keep going.</strong> When the time runs out, a fresh text loads straight away, so you can run another test without clicking anything. The test fills one screen, so your result is below it: scroll down to see it.</li>
+<li><strong>Keep going.</strong> When the time runs out, a fresh text loads straight away, so you can run another test without clicking anything. The test fills one screen, so your result is below it, in the performances list: scroll down and click your latest run to open the full result.</li>
 </ul>
 
 <h2 id="how-wpm-and-accuracy-are-calculated">How WPM and accuracy are calculated</h2>
@@ -153,11 +153,11 @@ export const bodyHtml = `
 <p>Only your latest five runs in each tool keep their graph, in your browser; the long progress history stores just the totals. Runs saved before this feature, and runs under 5 seconds, show the card without a graph. A very long run is reduced to at most 120 points on the graph.</p>
 
 <h2 id="share-your-result-as-a-picture">Sharing your result as a picture</h2>
-<p>The "share" button under the result card draws a 1200 by 630 pixel PNG of your latest run in the colours of the theme you are using. It shows your WPM, accuracy, time, errors, the consistency score and speed graph when the run has them, a rank label for speed tests, the date and the site name. It never contains the text you typed. The picture is drawn in your browser and is not uploaded anywhere.</p>
+<p>The "share" button in an opened result (click a run in the performances list) draws a 1200 by 630 pixel PNG of that run in the colours of the theme you are using. It shows your WPM, accuracy, time, errors, the consistency score and speed graph when the run has them, a rank label for speed tests, the date and the site name. It never contains the text you typed. The picture is drawn in your browser and is not uploaded anywhere.</p>
 <p>What the button does depends on your device. On a phone or tablet that supports it, it opens the system share sheet with the picture attached. On a computer it copies the picture to the clipboard, so you can paste it into a chat or a post. If the browser blocks clipboard images, it saves the PNG as a file and copies the old one-line text instead. The same button appears on the practice and lessons result cards.</p>
 
 <h2 id="typing-certificate">Downloading a typing certificate</h2>
-<p>After a speed test that ran for at least 30 seconds with at least 90% accuracy, a "certificate" button appears next to "share" on the result card. These two limits are our own suggestion: shorter runs are too noisy to certify, and 90% is the same bar as the daily challenge streak. The button asks for a name, which you can leave empty (the certificate then says "Typist"), and downloads a 1600 by 1131 pixel PNG on ivory paper with a gold seal. It shows your name, net WPM, accuracy, the test length, your FreeTyper level and the date.</p>
+<p>After a speed test that ran for at least 30 seconds with at least 90% accuracy, a "certificate" button appears next to "share" in the opened result. These two limits are our own suggestion: shorter runs are too noisy to certify, and 90% is the same bar as the daily challenge streak. The button asks for a name, which you can leave empty (the certificate then says "Typist"), and downloads a 1600 by 1131 pixel PNG on ivory paper with a gold seal. It shows your name, net WPM, accuracy, the test length, your FreeTyper level and the date.</p>
 <p>The certificate is a keepsake, not proof. It says on the picture that the test was timed in your browser and is not independently verified, and the levels are FreeTyper's own labels. The name is printed on the picture only and is remembered on this device so you do not have to type it again. It is not sent anywhere, and the picture is drawn in your browser. Only Latin letters use the script font; names in other alphabets are drawn in a standard font from your device.</p>
 
 <h2 id="what-is-a-good-typing-speed">What is a good typing speed, and what is the average?</h2>
@@ -176,7 +176,7 @@ export const bodyHtml = `
 <li><strong>Take three runs and use the middle one.</strong> Same length, same text type, same keyboard.</li>
 <li><strong>Compare like with like.</strong> Words mode usually reads higher than sentences, and code mode reads lower than both, because symbols are slow for everyone.</li>
 <li><strong>Expect repeats.</strong> Passages come from a built-in set, so after many runs you may meet text you have seen before. That can flatter a score slightly, so switch text type now and then.</li>
-<li><strong>Use the history.</strong> Your last five runs are listed under the test, and each result shows how it compares with the run before it.</li>
+<li><strong>Use the history.</strong> Your last five runs are listed under the test as rows, newest first. Click a row to open its full result, which shows how it compares with the run before it.</li>
 </ol>
 
 <h2 id="words-sentences-or-code">Words, sentences or code: which text type should you use?</h2>
@@ -227,7 +227,7 @@ export const howToSteps: { name: string; text: string }[] = [
   },
   {
     name: 'Read your result',
-    text: 'When time runs out, read your net WPM, accuracy, gross WPM, correct and incorrect characters, rank, the speed graph, consistency and weak spots below the test screen (scroll down).',
+    text: 'When time runs out, read your net WPM, accuracy, gross WPM, correct and incorrect characters, rank, the speed graph, consistency and weak spots by scrolling down and clicking your latest run in the performances list.',
   },
   {
     name: 'Repeat three times',

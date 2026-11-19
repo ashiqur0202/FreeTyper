@@ -1,8 +1,10 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
 import type { TypingSession } from './types';
+import type { TextMode } from './testText';
 import RunGraph from './RunGraph';
 import ShareResultButton from './ShareResultButton';
 import CertificateButton from './CertificateButton';
@@ -17,6 +19,8 @@ export type PracticeLogEntry = TypingSession & {
   tip: string;
   headline?: string;
   tone?: CoachTone;
+  /** Speed test only: what is needed to send this run as a challenge link (the text's seed, type and length). */
+  share?: { seed: string; mode: TextMode; seconds: number };
 };
 
 function pick(seed: string, options: string[]): string {
@@ -509,16 +513,28 @@ interface PracticeFeedbackProps {
   log: PracticeLogEntry[];
   currentCategory?: string;
   onTryWeakKeys?: () => void;
-  extraActions?: ReactNode;
+  /** Buttons on the card; a function gets the run the card shows (the speed test builds a link per run). */
+  extraActions?: ReactNode | ((entry: PracticeLogEntry, index: number) => ReactNode);
   /** All saved sessions; the speed test passes them so the card can show averages. */
   savedSessions?: TypingSession[];
   /** Number row runs: no level ladder or rank label (those levels are for ordinary text). */
   plain?: boolean;
-  /** Extra block shown under the stat tiles (the number row digit strip). */
+  /** Extra block shown under the stat tiles of the newest run (the number row digit strip). */
   afterStats?: ReactNode;
+  /** No big result card: the last runs are rows, and a click opens a row into the full card. */
+  collapsible?: boolean;
+  /** A small action in the middle of each row (the speed test's challenge button). */
+  rowAction?: (entry: PracticeLogEntry, index: number) => ReactNode;
 }
 
-export default function PracticeFeedback({
+interface PracticeCardProps extends PracticeFeedbackProps {
+  /** Which run in `log` the card shows (0 is the newest). */
+  index?: number;
+  /** Inside an opened row: only the card, with no divider and no history list under it. */
+  embedded?: boolean;
+}
+
+function PracticeCard({
   log,
   currentCategory,
   onTryWeakKeys,
@@ -526,24 +542,28 @@ export default function PracticeFeedback({
   savedSessions,
   plain = false,
   afterStats,
-}: PracticeFeedbackProps) {
-  if (log.length === 0) return null;
+  index = 0,
+  embedded = false,
+}: PracticeCardProps) {
+  if (log.length === 0 || !log[index]) return null;
 
-  const latest = log[0];
-  const prev = log[1];
+  const latest = log[index];
+  const prev = log[index + 1];
   const tone = latest.tone ?? 'steady';
   const headline = latest.headline ?? 'Last run';
   const bestWpm = Math.max(...log.map((r) => r.wpm));
   const avgWpm = Math.round(log.reduce((s, r) => s + r.wpm, 0) / log.length);
   const cleanCount = log.filter((r) => r.accuracy >= 95).length;
   const spark = [...log].reverse().map((r) => r.wpm);
-  const history = log.slice(1);
+  const history = embedded ? [] : log.slice(1);
   const showWeakCta =
     log.length >= 3 && latest.accuracy >= 95 && currentCategory !== 'adaptive' && !!onTryWeakKeys;
   const showGuideCta = latest.accuracy < 95;
   const isBest = latest.wpm === bestWpm && log.length > 1;
   const detailed = latest.mode === 'speed-test';
-  const avgs = detailed && savedSessions ? averages(savedSessions, latest.id, latest.duration) : null;
+  // An older run is compared with the tests before it, not with newer ones.
+  const sessionsBefore = savedSessions && index > 0 ? savedSessions.filter((s) => s.date < latest.date) : savedSessions;
+  const avgs = detailed && sessionsBefore ? averages(sessionsBefore, latest.id, latest.duration) : null;
   const gross = detailed ? grossWpm(latest) : 0;
   const words = detailed ? Math.max(0, Math.round(latest.correctChars / 5)) : 0;
   const run = latest.run;
@@ -551,12 +571,14 @@ export default function PracticeFeedback({
   const spots = run?.spots ?? [];
 
   return (
-    <div className="mt-10 w-full">
-      <div className="mb-8 flex items-center gap-4" aria-hidden>
-        <span className="h-px flex-1 bg-surface-border/80" />
-        <span className="h-1 w-1 rounded-full bg-surface-border" />
-        <span className="h-px flex-1 bg-surface-border/80" />
-      </div>
+    <div className={embedded ? 'w-full' : 'mt-10 w-full'}>
+      {!embedded && (
+        <div className="mb-8 flex items-center gap-4" aria-hidden>
+          <span className="h-px flex-1 bg-surface-border/80" />
+          <span className="h-1 w-1 rounded-full bg-surface-border" />
+          <span className="h-px flex-1 bg-surface-border/80" />
+        </div>
+      )}
 
       <article
         key={latest.id}
@@ -656,7 +678,7 @@ export default function PracticeFeedback({
         )}
 
         {detailed && !plain && <LevelLadder net={latest.wpm} avg={avgs ? avgs.net : null} />}
-        {afterStats}
+        {index === 0 && afterStats}
 
         {spots.length > 0 && (
           <div className="mt-3 flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-xs" data-result-spots>
@@ -714,7 +736,7 @@ export default function PracticeFeedback({
                 adaptive practice
               </button>
             )}
-            {extraActions}
+            {typeof extraActions === 'function' ? extraActions(latest, index) : extraActions}
             <ShareResultButton run={latest} />
             {canIssueCertificate(latest) && <CertificateButton run={latest} />}
           </div>
@@ -789,4 +811,92 @@ export default function PracticeFeedback({
       )}
     </div>
   );
+}
+
+/**
+ * The speed test's result area: the last runs as rows, newest first, with no big card. A click on a row
+ * opens the full card for that run under it (one at a time); a small action (the challenge link) sits
+ * inside each row, so sharing does not need a click to find.
+ */
+function PerformanceList(props: PracticeFeedbackProps) {
+  const { log, rowAction } = props;
+  const [openId, setOpenId] = useState<string | null>(null);
+  if (log.length === 0) return null;
+  const bestWpm = Math.max(...log.map((r) => r.wpm));
+
+  return (
+    <div className="mt-10 w-full">
+      <div className="mb-8 flex items-center gap-4" aria-hidden>
+        <span className="h-px flex-1 bg-surface-border/80" />
+        <span className="h-1 w-1 rounded-full bg-surface-border" />
+        <span className="h-px flex-1 bg-surface-border/80" />
+      </div>
+      <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-text-dim">performances</p>
+      <ul className="flex flex-col gap-1.5" data-performances>
+        {log.map((entry, i) => {
+          const open = entry.id === openId;
+          const toggle = () => setOpenId(open ? null : entry.id);
+          const panelId = `perf-${entry.id}`;
+          return (
+            <li
+              key={entry.id}
+              className={`rounded-lg border bg-surface-raised/30 ${
+                i === 0 ? 'border-accent/40' : 'border-surface-border/80'
+              }`}
+            >
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3 py-2">
+                <button
+                  type="button"
+                  onClick={toggle}
+                  aria-expanded={open}
+                  aria-controls={panelId}
+                  className="flex w-full min-w-0 items-baseline gap-2 text-left font-mono text-sm sm:w-auto sm:flex-1"
+                >
+                  <span className="text-base font-light tabular-nums text-accent">{entry.wpm}</span>
+                  <span className="text-[11px] text-text-dim">wpm</span>
+                  <span className="text-text-dim">·</span>
+                  <span className="tabular-nums text-text-bright">{entry.accuracy}%</span>
+                  <span className="text-text-dim">·</span>
+                  <span className="tabular-nums text-error">{entry.incorrectChars}</span>
+                  <span className="text-[11px] text-text-dim">err</span>
+                  <span className="text-text-dim">·</span>
+                  <span className="text-[11px] text-text-dim">{entry.duration}s</span>
+                  {entry.wpm === bestWpm && log.length > 1 && (
+                    <span className="rounded-full bg-accent-bg px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-accent">
+                      best
+                    </span>
+                  )}
+                </button>
+                {rowAction?.(entry, i)}
+                <button
+                  type="button"
+                  onClick={toggle}
+                  tabIndex={-1}
+                  aria-hidden
+                  className="ml-auto flex items-center gap-1.5 text-[11px] text-text-dim"
+                >
+                  <span>
+                    {timeAgo(entry.date)}
+                    <span> · </span>
+                    {categoryLabel(entry.modeDetail)}
+                  </span>
+                  <ChevronDown className={`h-3.5 w-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
+                </button>
+              </div>
+              {open && (
+                <div id={panelId} className="px-2 pb-2">
+                  <PracticeCard {...props} index={i} embedded />
+                </div>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+export default function PracticeFeedback(props: PracticeFeedbackProps) {
+  if (props.collapsible) return <PerformanceList {...props} />;
+  return <PracticeCard {...props} />;
 }

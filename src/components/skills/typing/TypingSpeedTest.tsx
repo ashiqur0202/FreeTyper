@@ -122,9 +122,8 @@ export default function TypingSpeedTest({
   const [challengeInfo, setChallengeInfo] = useState<Challenge | null>(null);
   const [challengeRun, setChallengeRun] = useState<{ wpm: number; accuracy: number } | null>(null);
   const challengeRef = useRef<Challenge | null>(null);
-  // Seed of the passage on screen, and the last finished speed test, which "challenge a friend" turns into a link.
+  // Seed of the passage on screen; each finished speed test keeps it (`share`), so "challenge a friend" can turn any listed run into a link.
   const textSeedRef = useRef<string | null>(null);
-  const [lastShare, setLastShare] = useState<{ seed: string; mode: TextMode; seconds: number; wpm: number; accuracy: number } | null>(null);
   const [dailyKey, setDailyKey] = useState<string | null>(null);
   const [dailyStore, setDailyStore] = useState<DailyStore>({});
   const dailyRef = useRef<string | null>(null);
@@ -181,7 +180,7 @@ export default function TypingSpeedTest({
     if (friendRun) setChallengeRun({ wpm: session.wpm, accuracy: session.accuracy });
     const seed = textSeedRef.current;
     const shareable = !numberRow && !day && !friendRun && seed !== null && CHALLENGE_SECONDS.includes(secs);
-    setLastShare(shareable ? { seed, mode, seconds: secs, wpm: session.wpm, accuracy: session.accuracy } : null);
+    const share = shareable ? { seed, mode, seconds: secs } : undefined;
     // Number row runs stay out of progress: digit speeds would shift best WPM, averages and the streak.
     if (numberRow) setDigitStats(digitSpeeds(digitTimesRef.current));
     else addSession(withoutRun(updated));
@@ -196,6 +195,7 @@ export default function TypingSpeedTest({
       const entry: PracticeLogEntry = {
         ...updated,
         ...speedTestCoachNote(updated, prev[0], prev),
+        ...(share ? { share } : {}),
       };
       const next = [entry, ...prev].slice(0, LOG_MAX);
       // A challenge run keeps no card history of its own: it is compared with the friend's score instead.
@@ -710,7 +710,22 @@ export default function TypingSpeedTest({
             savedSessions={numberRow ? undefined : savedProgress.sessions}
             plain={numberRow}
             afterStats={numberRow && digitStats ? <DigitStrip speeds={digitStats.speeds} slowest={digitStats.slowest} /> : undefined}
-            extraActions={
+            collapsible
+            rowAction={(entry) =>
+              entry.share ? (
+                <ChallengeSendButton
+                  wpm={entry.wpm}
+                  source="history_row"
+                  emphasis={false}
+                  buildUrl={() =>
+                    buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds)
+                  }
+                >
+                  challenge
+                </ChallengeSendButton>
+              ) : null
+            }
+            extraActions={(entry, i) => (
               <>
                 <Link
                   href="/typing-practice"
@@ -719,31 +734,29 @@ export default function TypingSpeedTest({
                   <PenTool className="h-3 w-3" />
                   practice
                 </Link>
-                {lastShare ? (
+                {entry.share ? (
                   <ChallengeSendButton
-                    wpm={lastShare.wpm}
+                    wpm={entry.wpm}
                     source="result_card"
-                    emphasis={newBest}
+                    emphasis={i === 0 && newBest}
                     buildUrl={() =>
-                      buildChallengeUrl(window.location.origin, lastShare.seed, lastShare.wpm, lastShare.accuracy, lastShare.mode, lastShare.seconds)
+                      buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds)
                     }
                   >
-                    {newBest ? 'new best: challenge a friend' : 'challenge a friend'}
+                    {i === 0 && newBest ? 'new best: challenge a friend' : 'challenge a friend'}
                   </ChallengeSendButton>
-                ) : !numberRow && (
+                ) : i === 0 && !numberRow && (
                   <Link
                     href="/typing-challenge"
                     title="Type a 60 second text, then send the link to a friend"
-                    className={`inline-flex items-center gap-1 rounded-md border px-2.5 py-1 text-[11px] transition-colors hover:border-accent/40 hover:text-accent ${
-                      newBest ? 'border-accent/40 bg-accent-bg font-medium text-accent' : 'border-surface-border text-text-dim'
-                    }`}
+                    className="inline-flex items-center gap-1 rounded-md border border-surface-border px-2.5 py-1 text-[11px] text-text-dim transition-colors hover:border-accent/40 hover:text-accent"
                   >
                     <Swords className="h-3 w-3" />
-                    {newBest ? 'new best: challenge a friend' : 'challenge a friend'}
+                    challenge a friend
                   </Link>
                 )}
               </>
-            }
+            )}
           />
         </div>
 

@@ -11,7 +11,7 @@ interface ChallengeSendButtonProps {
   /** Builds the link when the button is pressed (it needs `window.location.origin`). */
   buildUrl: () => string;
   /** Where the button is: the speed-test result card or the challenge page. */
-  source: 'result_card' | 'challenge_page';
+  source: 'result_card' | 'challenge_page' | 'history_row';
   /** True when the run was compared with a friend's score first. */
   hasTarget?: boolean;
   /** Highlight it, for example after a new best. */
