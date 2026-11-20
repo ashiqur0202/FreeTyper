@@ -44,18 +44,18 @@ html[data-theme="paper"] {
 }
 
 html[data-theme="light"] {
-  /* Cool sage-linen. Pending type is slate, not washed-out gray. */
-  --color-surface: #e8e9e4;
-  --color-surface-raised: #f2f3ee;
-  --color-surface-border: #d3d4ce;
+  /* Cool sage-linen, a step darker than before (2026-11-20) so it is easier on the eyes. Pending type is slate, not washed-out gray. */
+  --color-surface: #dfe0da;
+  --color-surface-raised: #eaebe5;
+  --color-surface-border: #c8c9c2;
   --color-text: #3a3e42;
-  --color-text-dim: #5c6166;
+  --color-text-dim: #585d62;
   --color-text-bright: #1c1f22;
   --color-correct: #3f4d3e;
-  --color-error: #c05656;
-  --color-error-bg: #c0565616;
-  --color-key-shadow: #d5d6d0;
-  --color-scrollbar: #c5c6c0;
+  --color-error: #b04646;
+  --color-error-bg: #b0464616;
+  --color-key-shadow: #caccc5;
+  --color-scrollbar: #b8b9b2;
   --color-typing-pending: #4a5056;
 }
 
