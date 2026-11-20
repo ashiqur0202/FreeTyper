@@ -33,26 +33,26 @@ export const ACCENT_COLORS: { id: AccentColor; color: string }[] = [
 
 export const THEMES: { id: ThemeMode; label: string; swatch: string }[] = [
   { id: 'dark', label: 'dark', swatch: '#323234' },
-  { id: 'light', label: 'light', swatch: '#dfe0da' },
+  { id: 'light', label: 'light', swatch: '#d0d5cb' },
   { id: 'midnight', label: 'midnight', swatch: '#0e0e10' },
   { id: 'paper', label: 'paper', swatch: '#e2d3b8' },
 ];
 
 const THEME_META: Record<ThemeMode, string> = {
   dark: '#323234',
-  light: '#dfe0da',
+  light: '#d0d5cb',
   midnight: '#0e0e10',
   paper: '#e2d3b8',
 };
 
 /** Darker accents so gold/cyan still read on pale backgrounds. */
 const ACCENT_ON_LIGHT: Record<AccentColor, string> = {
-  gold: '#a47c0d',
-  blue: '#376a82',
-  green: '#575e4b',
-  red: '#a94343',
-  purple: '#675481',
-  cyan: '#367479',
+  gold: '#7a6410',
+  blue: '#336176',
+  green: '#575e4c',
+  red: '#973e3e',
+  purple: '#65537d',
+  cyan: '#306367',
 };
 
 const DARK_THEMES: ThemeMode[] = ['dark', 'midnight'];

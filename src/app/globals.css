@@ -44,19 +44,19 @@ html[data-theme="paper"] {
 }
 
 html[data-theme="light"] {
-  /* Cool sage-linen, a step darker than before (2026-11-20) so it is easier on the eyes. Pending type is slate, not washed-out gray. */
-  --color-surface: #dfe0da;
-  --color-surface-raised: #eaebe5;
-  --color-surface-border: #c8c9c2;
-  --color-text: #3a3e42;
-  --color-text-dim: #585d62;
-  --color-text-bright: #1c1f22;
-  --color-correct: #3f4d3e;
-  --color-error: #b04646;
-  --color-error-bg: #b0464616;
-  --color-key-shadow: #caccc5;
-  --color-scrollbar: #b8b9b2;
-  --color-typing-pending: #4a5056;
+  /* Sage mist (2026-11-20, chosen by Ashiqur from three demos): a grey-green with little blue and about 20 % less brightness than the old linen, for eye comfort. Text, dim and pending text keep 4.8:1 or more on the page colour. */
+  --color-surface: #d0d5cb;
+  --color-surface-raised: #dce0d6;
+  --color-surface-border: #b9bfb3;
+  --color-text: #2f3a31;
+  --color-text-dim: #4f5a51;
+  --color-text-bright: #171e19;
+  --color-correct: #33472f;
+  --color-error: #983e39;
+  --color-error-bg: #983e3916;
+  --color-key-shadow: #bcc2b6;
+  --color-scrollbar: #aab0a4;
+  --color-typing-pending: #46514a;
 }
 
 html[data-theme="midnight"] {
