@@ -1,5 +1,10 @@
 import { courseLessons } from './courseData';
 import { PROGRESS_KEY, countDone, emptyProgress, firstOpenLesson, loadProgress } from './courseProgress';
+import { utcDateKey, type DailyStore } from './dailyStreak';
+import { levelIndex, LEVELS, nextStep } from './levelLadder';
+import { scoreLetters } from './letterStats';
+import { getPairStore } from './pairStats';
+import type { KeyStats } from './types';
 
 /**
  * A small read-only summary of the visitor's saved progress for the sidebar
@@ -11,6 +16,35 @@ import { PROGRESS_KEY, countDone, emptyProgress, firstOpenLesson, loadProgress }
 
 const PROGRESS_STORAGE_KEY = 'freetyper-progress';
 const GOAL_KEY = 'freetyper-daily-goal';
+// Written by TypingSpeedTest.tsx and dailyChallenge.ts; only read here.
+const SPEED_LOG_KEY = 'freetyper-speed-log';
+const DAILY_STORE_KEY = 'freetyper-daily-challenge';
+
+/** A key to drill: how many times it was typed wrong. */
+export interface WeakKey {
+  key: string;
+  misses: number;
+}
+
+/** The run behind the sidebar's "challenge a friend" button: the newest speed test that kept its text seed. */
+export interface ChallengeRun {
+  seed: string;
+  mode: 'words' | 'sentences' | 'code';
+  seconds: number;
+  level: number;
+  wpm: number;
+  accuracy: number;
+}
+
+/** Best speed test so far, with FreeTyper's own level and the gap to the next one (see levelLadder.ts). */
+export interface SpeedSummary {
+  best: number;
+  last: number;
+  level: string;
+  next: { name: string; gap: number } | null;
+}
+
+const MAX_WEAK_KEYS = 3;
 
 export const GOAL_OPTIONS = [5, 10, 15, 20] as const;
 export const DEFAULT_GOAL_MINUTES = 10;
@@ -29,6 +63,14 @@ export interface PracticeSummary {
   lessonsTotal: number;
   /** The next lesson to do, or null when the whole course is done. */
   nextLesson: { number: number; title: string } | null;
+  /** Speed tests only (not lessons, practice or number row); null before the first one. */
+  speed: SpeedSummary | null;
+  /** True when today's daily test has a counted run (UTC day, as the daily test itself uses). */
+  dailyDone: boolean;
+  /** Up to three keys judged weak or weakest, worst first. */
+  weakKeys: WeakKey[];
+  /** The newest speed test that can be sent as a challenge, or null. */
+  challengeRun: ChallengeRun | null;
 }
 
 export function localDateStr(d: Date): string {
@@ -64,6 +106,45 @@ export function nextGoal(current: number): number {
 interface StoredSession {
   date?: unknown;
   duration?: unknown;
+  wpm?: unknown;
+  mode?: unknown;
+  modeDetail?: unknown;
+}
+
+const isSpeedTest = (s: StoredSession) =>
+  s.mode === 'speed-test' && !(typeof s.modeDetail === 'string' && s.modeDetail.startsWith('number row'));
+
+function readChallengeRun(): ChallengeRun | null {
+  try {
+    const raw = localStorage.getItem(SPEED_LOG_KEY);
+    const list = raw ? (JSON.parse(raw) as unknown) : null;
+    if (!Array.isArray(list)) return null;
+    // Newest first. An older run without a saved seed or text level cannot be rebuilt as the same text.
+    for (const e of list) {
+      const sh = e?.share;
+      if (
+        sh && typeof sh.seed === 'string' && typeof sh.seconds === 'number' && typeof sh.level === 'number' &&
+        (sh.mode === 'words' || sh.mode === 'sentences' || sh.mode === 'code') &&
+        typeof e.wpm === 'number' && typeof e.accuracy === 'number'
+      ) {
+        return { seed: sh.seed, mode: sh.mode, seconds: sh.seconds, level: sh.level, wpm: e.wpm, accuracy: e.accuracy };
+      }
+    }
+  } catch {
+    /* unreadable data: no challenge run */
+  }
+  return null;
+}
+
+function readDailyDone(now: Date): boolean {
+  try {
+    const raw = localStorage.getItem(DAILY_STORE_KEY);
+    const store = raw ? (JSON.parse(raw) as DailyStore) : null;
+    const day = store?.[utcDateKey(now)];
+    return !!day && day.wpm > 0;
+  } catch {
+    return false;
+  }
 }
 
 export function readPracticeSummary(now: Date = new Date()): PracticeSummary {
@@ -76,19 +157,37 @@ export function readPracticeSummary(now: Date = new Date()): PracticeSummary {
   let todaySeconds = 0;
   let streak = 0;
   let streakAtRisk = false;
+  let bestSpeed = 0;
+  let lastSpeed = 0;
+  let lastSpeedDate = 0;
+  let weakKeys: WeakKey[] = [];
   try {
     const raw = localStorage.getItem(PROGRESS_STORAGE_KEY);
     if (raw) {
       const data = JSON.parse(raw) as {
         sessions?: StoredSession[];
         streak?: { current?: number; lastPracticeDate?: string };
+        keyStats?: Record<string, KeyStats>;
       };
       const list = Array.isArray(data.sessions) ? data.sessions : [];
       sessions = list.length;
       for (const s of list) {
         if (typeof s.date !== 'number' || typeof s.duration !== 'number') continue;
         if (localDateStr(new Date(s.date)) === today) todaySeconds += s.duration;
+        if (isSpeedTest(s) && typeof s.wpm === 'number') {
+          bestSpeed = Math.max(bestSpeed, s.wpm);
+          if (s.date >= lastSpeedDate) {
+            lastSpeedDate = s.date;
+            lastSpeed = s.wpm;
+          }
+        }
       }
+      const keyStats = data.keyStats && typeof data.keyStats === 'object' ? data.keyStats : {};
+      weakKeys = scoreLetters(keyStats, getPairStore())
+        .filter((l) => l.level === 'weak' || l.level === 'bad')
+        .sort((a, b) => b.score - a.score)
+        .slice(0, MAX_WEAK_KEYS)
+        .map((l) => ({ key: l.key, misses: keyStats[l.key]?.incorrectPresses ?? 0 }));
       const last = data.streak?.lastPracticeDate;
       const current = typeof data.streak?.current === 'number' ? data.streak.current : 0;
       if (last === today) streak = current;
@@ -122,6 +221,13 @@ export function readPracticeSummary(now: Date = new Date()): PracticeSummary {
     lessonsDone,
     lessonsTotal: courseLessons.length,
     nextLesson: courseDone || !lesson ? null : { number: lesson.number, title: lesson.title },
+    speed:
+      bestSpeed > 0
+        ? { best: Math.round(bestSpeed), last: Math.round(lastSpeed), level: LEVELS[levelIndex(bestSpeed)].name, next: nextStep(bestSpeed) }
+        : null,
+    dailyDone: readDailyDone(now),
+    weakKeys,
+    challengeRun: readChallengeRun(),
   };
 }
 
@@ -134,6 +240,9 @@ export function summaryCacheKey(now: Date = new Date()): string {
       localStorage.getItem(PROGRESS_STORAGE_KEY)?.slice(-80) ?? '',
       localStorage.getItem(PROGRESS_KEY) ?? '',
       localStorage.getItem(GOAL_KEY) ?? '',
+      localStorage.getItem(SPEED_LOG_KEY)?.length ?? 0,
+      localStorage.getItem(SPEED_LOG_KEY)?.slice(0, 60) ?? '',
+      localStorage.getItem(DAILY_STORE_KEY) ?? '',
     ].join('|');
   } catch {
     return 'none';
