@@ -95,6 +95,13 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 
 ## Log (newest first)
 
+### 2026-11-21 — Why 20 Nov had a huge event count (GA4 Events report for Nov 20 only, read by Claude; the single user was not isolated)
+- **20 Nov: 7,630 events, 206 users.** 4,971 (65 %) were `mouse_step_complete`, from only 22 users (226 each). Normal days are about 1,500 to 2,500 events in total.
+- **Country of those events: United Kingdom 4.7K of 4.97K**, then US 139, France 40, Nigeria 29. So almost all of it is one UK visitor or a few, not a traffic gain. Level averaged 3.8, so they were in Level 3 and 4 drills. The 18 Nov bump (about 2.8K) has the same shape.
+- **Cause in code:** `MouseLevels.finish()` sends `mouse_step_complete` on every completion, with no check that the step was already done, so replaying drills counts again (and a script could repeat it).
+- **Effect on numbers:** the 28 d event count (56K, +227 %) is inflated by roughly 8K (about 5K on Nov 20 plus about 2.8K on Nov 18, read off the chart). Do not read it as growth. Users, sessions and `test_complete` are not affected. Use events excluding `mouse_step_complete` for the growth verdict.
+- **Not done:** the event is unchanged (fix proposed: send it only the first time a step is completed); the exact user was not isolated.
+
 ### 2026-11-20 (later) — Friday check (GA4 28 d = Oct 23 to Nov 19, 7 d = Nov 13 to 19; GSC Oct 21 to Nov 17, Page indexing; Bing 12 Oct to 18 Nov and Site Explorer; all read by Claude (Bing was signed out at first, Ashiqur signed in, read again); mobile share, key events and events page 2 not read)
 - **GA4 28 d:** 2,310 users, 2.2K new, 4,175 sessions (1.82 a user), 47,465 events, average engagement 18m 18s. Against the 11-18 read: users +9 %, sessions +8 %, events +16 % (windows differ by 2 days). **Gap to the 12-31 target: users 2.2x, sessions 6.0x, events 2.1x.**
 - **GA4 7 d:** new users 794 (+40.0 %), returning 250 (+23.2 %). Sessions by source: bing / organic 1K (+48.4 %), direct 172, chatgpt.com 106 (+37.7 %), yahoo 47, google 39 (+77.3 %), app.nearpod.com 34 (first seen). Countries 7 d: US 322, India 195 (+116.7 %), Canada 38, Singapore 31, Myanmar 29. Cities: Nassau 24 (+300 %), Yangon 20; Abu Dhabi and Ashburn are now small (2 each), so those two oddities have faded.
