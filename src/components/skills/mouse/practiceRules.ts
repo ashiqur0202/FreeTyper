@@ -31,7 +31,8 @@ export const DAILY_GOAL_MINUTES = 10;
 export const DAILY_MIX_ROUNDS = 10;
 export const MIN_LEVEL = 1;
 export const MAX_LEVEL = 10;
-export const START_LEVEL = 2;
+/** Every skill starts at the easiest level and gets harder as the person does well. */
+export const START_LEVEL = 1;
 
 /** Hits needed in a round before a good accuracy moves the level up. Fewer are normal for slower skills. */
 export const MIN_HITS: Record<Exclude<SkillId, 'follow'>, number> = { click: 8, dbl: 6, scroll: 4, drag: 6, switch: 8, moving: 8, shrink: 8 };
