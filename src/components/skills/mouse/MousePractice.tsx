@@ -1,16 +1,15 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import type { Device } from './mouseData';
 import MouseLevels from './MouseLevels';
-import AimTrainer from './AimTrainer';
 import { useMouseProgress } from './useMouseProgress';
 
-type Tab = 'learn' | 'aim';
-
+// The "Mouse lessons" page (/mouse-practice): the four-level path. The free-choice, non-stop practice
+// lives on its own page (/mouse-practice-trainer, MouseTrainer.tsx).
 export default function MousePractice() {
   const { progress, setDevice } = useMouseProgress();
-  const [tab, setTab] = useState<Tab>('learn');
   const [touchNote, setTouchNote] = useState(false);
 
   const devices: { id: Device; label: string }[] = [
@@ -26,25 +25,10 @@ export default function MousePractice() {
       }}
     >
       <p className="mb-4 text-center text-sm text-text-dim">
-        Practise the mouse or your laptop trackpad. Pick what you use, then follow the steps.
+        Learn the mouse or your laptop trackpad one step at a time. Finish a step to open the next.
       </p>
 
       <div className="flex flex-wrap items-center justify-center gap-4">
-        <div className="mp-tabs" role="tablist" aria-label="Mode">
-          {(['learn', 'aim'] as Tab[]).map((t) => (
-            <button
-              key={t}
-              type="button"
-              role="tab"
-              aria-selected={tab === t}
-              className="mp-tab"
-              onClick={() => setTab(t)}
-            >
-              {t === 'learn' ? 'Learn' : 'Aim'}
-            </button>
-          ))}
-        </div>
-
         <div className="mp-tabs" role="group" aria-label="I am using">
           {devices.map((d) => (
             <button
@@ -58,6 +42,9 @@ export default function MousePractice() {
             </button>
           ))}
         </div>
+        <Link href="/mouse-practice-trainer" className="text-sm text-accent underline decoration-dotted underline-offset-2">
+          Want non-stop practice? Open Mouse practice
+        </Link>
       </div>
 
       {touchNote && (
@@ -69,7 +56,9 @@ export default function MousePractice() {
         </p>
       )}
 
-      <div className="mt-6 w-full">{tab === 'learn' ? <MouseLevels /> : <AimTrainer />}</div>
+      <div className="mt-6 w-full">
+        <MouseLevels />
+      </div>
     </div>
   );
 }

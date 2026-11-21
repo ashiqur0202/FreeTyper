@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { HINT_AFTER_MS, type Device } from './mouseData';
 import { COURSE } from './course';
 import {
   LEVEL_IDS,
+  LEVEL_ITEMS,
   LEVEL_NAMES,
   firstOpenIndex,
   isLevelPassed,
@@ -48,7 +50,6 @@ export default function MouseLevels() {
   const item = items[index];
   const Drill = item.Drill;
   const rank = rankOf(done);
-  const nextLocked = LEVEL_IDS.find((l) => !isLevelUnlocked(l, done));
 
   // One start event per drill attempt: the Drill below is remounted (new key) for every attempt, so the ref is keyed the same way.
   const startedKey = useRef<string | null>(null);
@@ -86,94 +87,150 @@ export default function MouseLevels() {
     setView(null);
   };
 
+  const firstUnpassed = LEVEL_IDS.find((l) => !isLevelPassed(l, done));
+  const levelDone = items.filter((it) => done.includes(it.id)).length;
+
   return (
-    <div className="mx-auto w-full max-w-2xl">
-      <p className="text-center text-sm text-text-dim">
-        {rank ? (
-          <>
-            Your rank: <span className="mp-rank">{rank}</span>
-          </>
-        ) : (
-          'Not ranked yet. Pass Level 1 to earn your first rank.'
-        )}
-      </p>
-
-      <div className="mp-levels mt-3" role="group" aria-label="Levels">
-        {LEVEL_IDS.map((l) => {
-          const unlocked = isLevelUnlocked(l, done);
-          const passed = isLevelPassed(l, done);
-          return (
-            <button
-              key={l}
-              type="button"
-              className="mp-level"
-              disabled={!unlocked}
-              aria-current={l === level ? 'true' : undefined}
-              onClick={() => pickLevel(l)}
-              title={unlocked ? undefined : `Pass Level ${l - 1} to open this`}
-            >
-              {l}. {LEVEL_NAMES[l].level}
-              {passed ? ' ✓' : unlocked ? '' : ' 🔒'}
-            </button>
-          );
-        })}
+    <div className="mx-auto w-full max-w-3xl">
+      <div className="mp-sum">
+        <p className="text-sm text-text-dim">
+          {rank ? (
+            <>
+              Your rank: <span className="mp-rank">{rank}</span>
+            </>
+          ) : (
+            'Not ranked yet. Pass Level 1 to earn your first rank.'
+          )}
+        </p>
+        <ol className="mp-hs mp-hs-rank" aria-label="Levels">
+          {LEVEL_IDS.map((l, n) => {
+            const passed = isLevelPassed(l, done);
+            const unlocked = isLevelUnlocked(l, done);
+            const state = passed ? 'done' : l === firstUnpassed ? 'cur' : 'locked';
+            const count = LEVEL_ITEMS[l].filter((id) => done.includes(id)).length;
+            return (
+              <li
+                key={l}
+                data-state={state}
+                data-sel={l === level}
+                className={n > 0 && isLevelPassed((l - 1) as LevelId, done) ? 'mp-lk' : undefined}
+              >
+                <button
+                  type="button"
+                  className="mp-hn"
+                  disabled={!unlocked}
+                  aria-current={l === level ? 'true' : undefined}
+                  aria-label={`Level ${l}: ${LEVEL_NAMES[l].level}${passed ? ', passed' : unlocked ? '' : ', locked'}`}
+                  title={unlocked ? undefined : `Pass Level ${l - 1} to open this`}
+                  onClick={() => pickLevel(l)}
+                >
+                  {passed ? <CheckIcon /> : unlocked ? l : <LockIcon />}
+                </button>
+                <div className="mp-hl">
+                  {LEVEL_NAMES[l].level}
+                  <small>{passed ? 'Passed' : unlocked ? `${count} of ${LEVEL_ITEMS[l].length}` : 'Locked'}</small>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
       </div>
-      {nextLocked && <p className="mt-2 text-center text-xs text-text-dim">Pass Level {nextLocked - 1} to open Level {nextLocked}.</p>}
 
-      <ol className="mp-dots mt-5" aria-label={`Level ${level} drills`}>
+      <div className="mt-5 flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-base font-semibold text-text-bright">
+          Level {level}: {LEVEL_NAMES[level].level}
+        </h2>
+        <span className="text-xs text-text-dim">
+          {levelDone} of {items.length} steps
+        </span>
+      </div>
+
+      <ol className="mp-hs mt-1" aria-label={`Level ${level} drills`}>
         {items.map((it, i) => {
           const isDone = done.includes(it.id);
+          const reachable = isDone || open === -1 || i <= open;
+          const state = isDone ? 'done' : reachable ? 'cur' : 'locked';
           return (
-            <li key={it.id}>
+            <li
+              key={it.id}
+              data-state={state}
+              data-sel={i === index}
+              className={i > 0 && done.includes(items[i - 1].id) ? 'mp-lk' : undefined}
+            >
               <button
                 type="button"
-                className={`mp-dot${isDone ? ' mp-dot-done' : ''}${i === index ? ' mp-dot-now' : ''}`}
+                className="mp-hn"
+                disabled={!reachable}
+                aria-current={i === index ? 'step' : undefined}
+                aria-label={`Drill ${i + 1}: ${it.title}${isDone ? ' (done)' : reachable ? '' : ' (locked)'}`}
+                title={reachable ? undefined : 'Finish the step before this one to open it'}
                 onClick={() => {
                   setView(i);
                   setJustPassed(null);
                 }}
-                aria-current={i === index ? 'step' : undefined}
-                aria-label={`Drill ${i + 1}: ${it.title}${isDone ? ' (done)' : ''}`}
               >
-                {isDone ? '✓' : i + 1}
+                {isDone ? <CheckIcon /> : reachable ? i + 1 : <LockIcon />}
               </button>
+              <div className="mp-hl">{it.title}</div>
             </li>
           );
         })}
       </ol>
 
       {justPassed === level && (
-        <div className="mt-4 text-center text-sm text-accent" role="status">
-          Level {level} passed. You are now {LEVEL_NAMES[level].rank}.
+        <div className="mt-4 rounded-xl border border-accent-dim px-4 py-3 text-center text-sm text-accent" role="status">
+          Level {level} passed. You are now {LEVEL_NAMES[level].rank}.{' '}
           {level < 4 ? (
-            <>
-              {' '}
-              <button type="button" className="mp-btn ml-2" onClick={() => pickLevel((level + 1) as LevelId)}>
-                Go to Level {level + 1}
-              </button>
-            </>
+            <button type="button" className="mp-btn ml-2" onClick={() => pickLevel((level + 1) as LevelId)}>
+              Go to Level {level + 1}
+            </button>
           ) : (
-            ' You have finished every level.'
+            'You have finished every level. '
           )}
+          <Link href="/mouse-practice-trainer" className="ml-2 underline decoration-dotted underline-offset-2">
+            Practise this on Mouse practice
+          </Link>
         </div>
       )}
 
-      <h2 className="mt-5 text-center text-lg font-medium text-text-bright">
-        Level {level}, drill {index + 1} of {items.length}: {item.title}
-      </h2>
-      <p className="mx-auto mt-2 max-w-xl text-center text-sm text-text-dim" aria-live="polite">
-        {item.text[device]}
-      </p>
+      <div className="mp-lesson mt-4">
+        <h3 className="text-base font-semibold text-text-bright">
+          {item.title}
+          <span className="ml-2 text-xs font-normal text-text-dim">
+            Drill {index + 1} of {items.length}
+          </span>
+        </h3>
+        <p className="mt-1 text-sm text-text-dim" aria-live="polite">
+          {item.text[device]}
+        </p>
 
-      <div className="mt-5" onPointerDownCapture={() => markStarted(false)} onPointerMove={() => markStarted(true)}>
-        <Drill key={`${device}-${item.id}`} device={device} onDone={() => finish(item.id)} />
+        <div className="mt-4" onPointerDownCapture={() => markStarted(false)} onPointerMove={() => markStarted(true)}>
+          <Drill key={`${device}-${item.id}`} device={device} onDone={() => finish(item.id)} />
+        </div>
+
+        {device === 'trackpad' && level <= 2 ? (
+          <TrackpadHint key={`${device}-${item.id}`} />
+        ) : (
+          <p className="mp-hint" aria-hidden="true" />
+        )}
       </div>
-
-      {device === 'trackpad' && level <= 2 ? (
-        <TrackpadHint key={`${device}-${item.id}`} />
-      ) : (
-        <p className="mp-hint" aria-hidden="true" />
-      )}
     </div>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M3 8.5l3.2 3.2L13 4.8" />
+    </svg>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3.5" y="7" width="9" height="6.5" rx="1.5" />
+      <path d="M5.5 7V5.2a2.5 2.5 0 015 0V7" />
+    </svg>
   );
 }
