@@ -88,20 +88,15 @@ export default function MouseLevels() {
   };
 
   const firstUnpassed = LEVEL_IDS.find((l) => !isLevelPassed(l, done));
-  const levelDone = items.filter((it) => done.includes(it.id)).length;
 
   return (
     <div className="mx-auto w-full max-w-3xl">
       <div className="mp-sum">
-        <p className="text-sm text-text-dim">
-          {rank ? (
-            <>
-              Your rank: <span className="mp-rank">{rank}</span>
-            </>
-          ) : (
-            'Not ranked yet. Pass Level 1 to earn your first rank.'
-          )}
-        </p>
+        {rank && (
+          <p className="text-sm text-text-dim">
+            Your rank: <span className="mp-rank">{rank}</span>
+          </p>
+        )}
         <ol className="mp-hs mp-hs-rank" aria-label="Levels">
           {LEVEL_IDS.map((l, n) => {
             const passed = isLevelPassed(l, done);
@@ -136,16 +131,11 @@ export default function MouseLevels() {
         </ol>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-base font-semibold text-text-bright">
-          Level {level}: {LEVEL_NAMES[level].level}
-        </h2>
-        <span className="text-xs text-text-dim">
-          {levelDone} of {items.length} steps
-        </span>
-      </div>
+      <h2 className="sr-only">
+        Level {level}: {LEVEL_NAMES[level].level}
+      </h2>
 
-      <ol className="mp-hs mt-1" aria-label={`Level ${level} drills`}>
+      <ol className="mp-hs mt-6" aria-label={`Level ${level} drills`}>
         {items.map((it, i) => {
           const isDone = done.includes(it.id);
           const reachable = isDone || open === -1 || i <= open;

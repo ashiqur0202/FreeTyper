@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import type { Device } from './mouseData';
 import MouseLevels from './MouseLevels';
 import { useMouseProgress } from './useMouseProgress';
@@ -24,10 +23,6 @@ export default function MousePractice() {
         if (e.pointerType === 'touch') setTouchNote(true);
       }}
     >
-      <p className="mb-4 text-center text-sm text-text-dim">
-        Learn the mouse or your laptop trackpad one step at a time. Finish a step to open the next.
-      </p>
-
       <div className="flex flex-wrap items-center justify-center gap-4">
         <div className="mp-tabs" role="group" aria-label="I am using">
           {devices.map((d) => (
@@ -42,9 +37,6 @@ export default function MousePractice() {
             </button>
           ))}
         </div>
-        <Link href="/mouse-practice-trainer" className="text-sm text-accent underline decoration-dotted underline-offset-2">
-          Want non-stop practice? Open Mouse practice
-        </Link>
       </div>
 
       {touchNote && (

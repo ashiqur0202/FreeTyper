@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import Link from 'next/link';
 import { trackEvent } from '@/lib/analytics';
 import { LEVEL_IDS, isLevelPassed } from './levelRules';
 import { useMouseProgress } from './useMouseProgress';
@@ -497,14 +496,6 @@ export default function MouseTrainer() {
           </ul>
         </div>
       )}
-
-      <p className="mt-foot-note">
-        New to the mouse?{' '}
-        <Link href="/mouse-practice" className="text-accent underline decoration-dotted underline-offset-2">
-          Start with Mouse lessons
-        </Link>
-        . The rounds, level steps and the 10-minute goal are our own suggestions, not a standard.
-      </p>
     </div>
   );
 }
