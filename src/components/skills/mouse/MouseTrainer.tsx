@@ -24,6 +24,7 @@ import {
   freshZones,
   isSlow,
   mainScore,
+  MAX_LEVEL,
   minutesToday,
   mixAt,
   suggestedSkills,
@@ -34,6 +35,7 @@ import {
   type RoundResult,
   type SkillId,
   type ZoneCount,
+  withLevel,
 } from './practiceRules';
 
 // Mouse practice (/mouse-practice): pick a skill and keep going. Rounds of 30 seconds follow one after
@@ -242,6 +244,13 @@ export default function MouseTrainer() {
     setPhase('idle');
   };
 
+  // The person can pick any level before a round; the game then keeps adjusting from there.
+  const canPickLevel = phase === 'idle' && pick !== 'mixed';
+  const pickLevel = (n: number) => {
+    if (!canPickLevel) return;
+    save(withLevel(current(), pick, n));
+  };
+
   const stop = () => {
     dailyRef.current = null;
     setDailyN(null);
@@ -307,10 +316,26 @@ export default function MouseTrainer() {
             <p className="mt-name">{name}</p>
             <p className="mt-job">{job}</p>
           </div>
-          <div className="mt-lvl">
-            <span>Level</span>
-            <b>{levelShown ?? '–'}</b>
-          </div>
+          {levelShown !== null && (
+            <div className="mt-lvl">
+              <span>Level, easy to hard</span>
+              <div className="mt-lvbar" role="group" aria-label="Level">
+                {Array.from({ length: MAX_LEVEL }, (_, i) => i + 1).map((n) => (
+                  <button
+                    key={n}
+                    type="button"
+                    className="mt-lvb"
+                    aria-pressed={n === levelShown}
+                    disabled={!canPickLevel}
+                    title={n === 1 ? 'Level 1: the easiest' : n === MAX_LEVEL ? `Level ${MAX_LEVEL}: the hardest` : `Level ${n}`}
+                    onClick={() => pickLevel(n)}
+                  >
+                    {n}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="mt-stats">

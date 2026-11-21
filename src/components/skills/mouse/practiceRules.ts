@@ -203,6 +203,11 @@ export function minutesToday(store: PracticeStore, today: string): number {
   return store.day === today ? store.seconds / 60 : 0;
 }
 
+/** The same data with one skill's level set by the person (clamped to 1 to 10). */
+export function withLevel(store: PracticeStore, skill: SkillId, level: number): PracticeStore {
+  return { ...store, levels: { ...store.levels, [skill]: clampLevel(level) } };
+}
+
 /** Add one finished round: set the skill's new level, add its seconds to today, keep the latest rounds. */
 export function addRound(store: PracticeStore, rec: RoundRecord, newLevel: number, seconds: number, today: string): PracticeStore {
   const sameDay = store.day === today;

@@ -5,7 +5,7 @@ import {
   sizeFor, movingSpeed, followSpeed, shrinkMs, scrollRows, scrollRowPx,
   accuracyOf, mainScore, adjustLevel, zoneOf, freshZones, troubleRate, weakestZone, isSlow,
   suggestedSkills, mixAt, defaultStore, parseStore, dayKey, minutesToday, addRound, compareWithLast,
-  MAX_SAVED_ROUNDS,
+  MAX_SAVED_ROUNDS, withLevel,
 } from '../src/components/skills/mouse/practiceRules.ts';
 
 let n = 0;
@@ -158,6 +158,16 @@ t('adding a round: new level, seconds add up on the same day, restart on a new d
   assert.equal(s.seconds, 30, 'a new day starts again');
   assert.equal(s.day, '2026-11-22');
   assert.equal(s.levels.dbl, START_LEVEL, 'other skills untouched');
+});
+t('picking a level sets only that skill, clamped to 1 to 10, without changing the old data', () => {
+  const s = defaultStore();
+  const a = withLevel(s, 'drag', 7);
+  assert.equal(a.levels.drag, 7);
+  assert.equal(a.levels.click, s.levels.click);
+  assert.equal(s.levels.drag, START_LEVEL, 'the original is not changed');
+  assert.equal(withLevel(s, 'drag', 99).levels.drag, MAX_LEVEL);
+  assert.equal(withLevel(s, 'drag', 0).levels.drag, MIN_LEVEL);
+  assert.equal(a.seconds, s.seconds);
 });
 t('only the latest rounds are kept', () => {
   let s = defaultStore();

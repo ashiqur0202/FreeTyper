@@ -32,7 +32,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'How does the level change?',
     answer:
-      'Each skill has its own level from 1 to 10 and starts at 1, the easiest. It goes up after a round with at least 90% accuracy and enough hits, and down after a round below 65%. A round where nothing is tried stops the rounds and changes nothing. Higher levels mean smaller targets, faster targets or longer lists. These steps are our own suggestions, not a researched standard.',
+      'Each skill has its own level from 1 to 10 and starts at 1, the easiest. It goes up after a round with at least 90% accuracy and enough hits, and down after a round below 65%. A round where nothing is tried stops the rounds and changes nothing. Higher levels mean smaller targets, faster targets or longer lists. You can also pick a level yourself from the row of numbers 1 to 10 above the play area, before a round starts, and the game then keeps adjusting from there. These steps are our own suggestions, not a researched standard.',
   },
   {
     question: 'What does the map of squares show?',
@@ -110,6 +110,7 @@ export const bodyHtml = `
 <li>The level goes <strong>up by one</strong> when accuracy is 90% or higher and you made enough hits: 8 for Click, Switch, Moving and Shrinking, 6 for Double-click and Drag, 4 for Scroll. Follow needs no minimum, because it counts time.</li>
 <li>The level goes <strong>down by one</strong> when accuracy is below 65%.</li>
 <li>Otherwise it stays the same.</li>
+<li>You can also <strong>pick a level yourself</strong>: the row of numbers 1 (the easiest) to 10 (the hardest) above the play area is clickable before a round starts. The level you pick is saved, and the game keeps adjusting from it.</li>
 </ul>
 <p>The result shows what happened and, if there was an earlier round of the same skill saved on this device, whether you did better or worse than it. These marks and steps are our own suggestions, not taken from a study or a standard.</p>
 

@@ -625,12 +625,17 @@ a:hover { color: var(--color-accent); }
 .mt-sk[aria-pressed="true"] { border-color: var(--color-accent); background: var(--color-accent-bg); color: var(--color-text-bright); }
 .mt-sk[disabled] { opacity: 0.55; cursor: not-allowed; }
 .mt-panel { overflow: hidden; border-radius: 0.9rem; border: 1px solid var(--color-surface-border); background: var(--color-surface); }
-.mt-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1rem 1.1rem 0.85rem; }
+.mt-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.8rem 1rem; padding: 1rem 1.1rem 0.85rem; }
 .mt-name { margin: 0; font-size: 1.05rem; font-weight: 600; color: var(--color-text-bright); }
 .mt-job { margin: 0.2rem 0 0; max-width: 52ch; font-size: 0.88rem; line-height: 1.5; color: var(--color-text-dim); }
 .mt-lvl { flex: none; text-align: right; }
+.mt-lvbar { display: flex; gap: 0.2rem; margin-top: 0.3rem; }
+.mt-lvb { width: 1.6rem; height: 1.6rem; padding: 0; border-radius: 0.4rem; border: 1px solid var(--color-surface-border); background: var(--color-surface); color: var(--color-text-dim); font-size: 0.72rem; font-variant-numeric: tabular-nums; cursor: pointer; }
+.mt-lvb:hover:not([disabled]) { border-color: var(--color-text-dim); }
+.mt-lvb[aria-pressed="true"] { border-color: var(--color-accent); background: var(--color-accent-bg); color: var(--color-accent); font-weight: 600; }
+.mt-lvb[disabled] { cursor: default; }
+.mt-lvb[disabled]:not([aria-pressed="true"]) { opacity: 0.55; }
 .mt-lvl span, .mt-st span { display: block; font-size: 0.66rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-text-dim); }
-.mt-lvl b { font-size: 1.5rem; font-weight: 500; line-height: 1.1; color: var(--color-accent); font-variant-numeric: tabular-nums; }
 .mt-stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--color-surface-border); border-bottom: 1px solid var(--color-surface-border); }
 .mt-st { min-width: 0; padding: 0.55rem 1.1rem 0.6rem; border-left: 1px solid var(--color-surface-border); }
 .mt-st:first-child { border-left: 0; }
