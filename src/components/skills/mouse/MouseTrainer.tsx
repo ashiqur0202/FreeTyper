@@ -24,9 +24,11 @@ import {
   freshZones,
   isSlow,
   mainScore,
+  LEVEL_UP_ACCURACY,
   MAX_LEVEL,
   minutesToday,
   mixAt,
+  newlyUnlocked,
   suggestedSkills,
   troubleRate,
   weakestZone,
@@ -56,6 +58,8 @@ type ResultView = {
   avg: number | null;
   onS: number;
   newLevel: number;
+  /** The level this round opened for the first time, if any. */
+  opened: number | null;
   change: -1 | 0 | 1;
   prev: { diff: number; unit: 'hits' | 'points' } | null;
 };
@@ -147,12 +151,13 @@ export default function MouseTrainer() {
     const main = mainScore(r.sk, res);
     const saved = current();
     const prev = compareWithLast(saved.rounds, r.sk, main);
+    const opened = newlyUnlocked(saved, r.sk, move.level);
     const rec: RoundRecord = { skill: r.sk, level: r.level, main, acc, at: Date.now() };
     save(addRound(saved, rec, move.level, ROUND_SECONDS, dayKey()));
     trackEvent('mouse_round_complete', { skill: r.sk, level: r.level, hits: r.hits, accuracy: acc ?? 0 });
 
     setZones(zonesRef.current.map((z) => ({ ...z })));
-    setResult({ sk: r.sk, level: r.level, hits: r.hits, acc, avg: mean(r.times), onS: r.onS, newLevel: move.level, change: move.change, prev });
+    setResult({ sk: r.sk, level: r.level, hits: r.hits, acc, avg: mean(r.times), onS: r.onS, newLevel: move.level, opened, change: move.change, prev });
     setStats((s) => ({ ...s, left: ROUND_SECONDS }));
 
     if (dailyRef.current !== null) {
@@ -270,6 +275,8 @@ export default function MouseTrainer() {
   const showSkill: SkillId | null = running || phase === 'break' ? skill : pick === 'mixed' ? null : pick;
   const follows = running && skill === 'follow';
   const levelShown = running ? stats.level : pick === 'mixed' ? null : store.levels[pick];
+  const levelSkill: SkillId | null = running ? skill : pick === 'mixed' ? null : pick;
+  const openTo = levelSkill ? store.unlocked[levelSkill] : 1;
   const today = dayKey();
   const minutes = ready ? minutesToday(store, today) + (running ? (ROUND_SECONDS - stats.left) / 60 : 0) : 0;
   // One list: the skills that match the lessons passed come first, the harder ones after.
@@ -312,30 +319,34 @@ export default function MouseTrainer() {
 
       <section className="mt-panel" aria-label="Practice area">
         <div className="mt-head">
-          <div>
+          <div className="mt-title">
             <p className="mt-name">{name}</p>
-            <p className="mt-job">{job}</p>
-          </div>
-          {levelShown !== null && (
-            <div className="mt-lvl">
-              <span>Level, easy to hard</span>
-              <div className="mt-lvbar" role="group" aria-label="Level">
-                {Array.from({ length: MAX_LEVEL }, (_, i) => i + 1).map((n) => (
-                  <button
-                    key={n}
-                    type="button"
-                    className="mt-lvb"
-                    aria-pressed={n === levelShown}
-                    disabled={!canPickLevel}
-                    title={n === 1 ? 'Level 1: the easiest' : n === MAX_LEVEL ? `Level ${MAX_LEVEL}: the hardest` : `Level ${n}`}
-                    onClick={() => pickLevel(n)}
-                  >
-                    {n}
-                  </button>
-                ))}
+            {levelShown !== null && (
+              <div className="mt-lvl">
+                <span>Lv</span>
+                <div className="mt-lvbar" role="group" aria-label="Level">
+                  {Array.from({ length: MAX_LEVEL }, (_, i) => i + 1).map((n) => {
+                    const open = n <= openTo;
+                    return (
+                      <button
+                        key={n}
+                        type="button"
+                        className="mt-lvb"
+                        aria-pressed={n === levelShown}
+                        aria-label={open ? `Level ${n}` : `Level ${n}, locked`}
+                        disabled={!canPickLevel || !open}
+                        title={open ? (n === 1 ? 'Level 1: the easiest' : `Level ${n}`) : `Locked. Reach ${LEVEL_UP_ACCURACY}% accuracy on Level ${n - 1} to open it.`}
+                        onClick={() => pickLevel(n)}
+                      >
+                        {open ? n : <LockIcon />}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+          <p className="mt-job">{job}</p>
         </div>
 
         <div className="mt-stats">
@@ -444,7 +455,9 @@ export default function MouseTrainer() {
             </p>
             <p className="text-text-dim">
               {result.change === 1
-                ? `Level up to ${result.newLevel}. Harder targets next time.`
+                ? result.opened
+                  ? `Level ${result.newLevel} unlocked. Harder targets next time.`
+                  : `Level up to ${result.newLevel}.`
                 : result.change === -1
                   ? `Level down to ${result.newLevel}. A little easier, so you can build up again.`
                   : `Level stays at ${result.level}.`}
@@ -521,5 +534,14 @@ export default function MouseTrainer() {
         </div>
       )}
     </div>
+  );
+}
+
+function LockIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3.5" y="7" width="9" height="6.5" rx="1.5" />
+      <path d="M5.5 7V5.2a2.5 2.5 0 015 0V7" />
+    </svg>
   );
 }

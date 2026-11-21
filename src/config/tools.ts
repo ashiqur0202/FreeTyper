@@ -90,7 +90,7 @@ const toolData: ToolData[] = [
     name: 'Mouse Practice',
     seoTitle: 'Mouse Practice Trainer — Non-Stop Click, Scroll & Aim Drills (Free)',
     description:
-      'Free non-stop mouse and trackpad practice: eight skills, 30-second rounds that follow one another, a level that adjusts to you and a map of where you miss. No signup.',
+      'Free non-stop mouse and trackpad practice: eight skills, 30-second rounds that follow one another, ten levels that open one at a time and a map of where you miss. No signup.',
     iconName: 'MousePointerClick',
     category: 'typing',
     featured: true,

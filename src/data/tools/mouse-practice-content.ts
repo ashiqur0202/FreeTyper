@@ -32,7 +32,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'How does the level change?',
     answer:
-      'Each skill has its own level from 1 to 10 and starts at 1, the easiest. It goes up after a round with at least 90% accuracy and enough hits, and down after a round below 65%. A round where nothing is tried stops the rounds and changes nothing. Higher levels mean smaller targets, faster targets or longer lists. You can also pick a level yourself from the row of numbers 1 to 10 above the play area, before a round starts, and the game then keeps adjusting from there. These steps are our own suggestions, not a researched standard.',
+      'Each skill has ten levels, from 1 (the easiest) to 10 (the hardest). Only Level 1 is open at first and the others show a padlock. A round with at least 90% accuracy and enough hits opens the next level and moves you to it, and a round below 65% moves you down one. Levels you have opened stay open, and you can click any open level before a round. Higher levels mean smaller targets, faster targets or longer lists. These marks are our own suggestions, not a researched standard.',
   },
   {
     question: 'What does the map of squares show?',
@@ -47,7 +47,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Why are some skills first in the list?',
     answer:
-      'Skills that practise a Mouse lessons level you have already passed come first in the list, and Level 1 skills come first for everyone. The rest follow, with their names in a dimmer colour. Nothing is locked: you can try any skill at any time, and the level adjusts to you. The level for the skill you picked is shown in the panel below.',
+      'Skills that practise a Mouse lessons level you have already passed come first in the list, and Level 1 skills come first for everyone. The rest follow, with their names in a dimmer colour. No skill is locked: you can try any skill at any time. Inside a skill, the levels open one at a time. The level for the skill you picked is shown in the panel below.',
   },
   {
     question: 'What happened to the Aim tab and my best scores?',
@@ -73,7 +73,7 @@ const faqHtml = faqs
 export const meta = {
   title: 'Mouse Practice Trainer — Non-Stop Click, Scroll & Aim Drills (Free)',
   description:
-    'Free non-stop mouse and trackpad practice: eight skills, 30-second rounds that follow one another, a level that adjusts to you and a map of where you miss. No signup.',
+    'Free non-stop mouse and trackpad practice: eight skills, 30-second rounds that follow one another, ten levels that open one at a time and a map of where you miss. No signup.',
 };
 
 export const previewHtml = `
@@ -83,7 +83,7 @@ export const previewHtml = `
   <span>Last updated <time datetime="2026-11-21">November 21, 2026</time></span>
   <span>~4 min read</span>
 </p>
-<p>This page is for repeating mouse skills until your hand is fast and steady. Pick one of eight skills, such as clicking circles, double-clicking, scrolling a list to find an item, dragging, or following a moving dot, and press Start. Rounds last 30 seconds and keep coming until you stop. The level adjusts to how you do, and a map of nine squares shows where on the screen you miss or are slow. It is free, needs no signup, and your progress stays in your browser.</p>
+<p>This page is for repeating mouse skills until your hand is fast and steady. Pick one of eight skills, such as clicking circles, double-clicking, scrolling a list to find an item, dragging, or following a moving dot, and press Start. Rounds last 30 seconds and keep coming until you stop. The levels run from 1 (easy) to 10 (hard) and open one at a time as you do well, and a map of nine squares shows where on the screen you miss or are slow. It is free, needs no signup, and your progress stays in your browser.</p>
 <p>New to the mouse? The <a href="/mouse-lessons">Mouse lessons</a> page teaches each move step by step. Below you will find how each skill works, how the level changes, what the map shows, what is saved, and what this page cannot do.</p>
 `;
 
@@ -104,13 +104,13 @@ export const bodyHtml = `
 <li><strong>Shrinking:</strong> a large target of 72 pixels shrinks while you aim at it. Click it before it vanishes; one that vanishes is a miss. It lasts about 2.4 seconds at level 1 and 0.9 seconds at level 10.</li>
 </ul>
 
-<h2 id="how-the-level-changes">How the level changes</h2>
-<p>Every skill has its own level from 1 to 10, and a new skill starts at level 1, the easiest. After each round:</p>
+<h2 id="how-the-levels-work">How the levels work</h2>
+<p>Every skill has ten levels, from 1 (the easiest) to 10 (the hardest), shown as a row of numbers above the play area. Each skill has its own row. Only Level 1 is open at first, and the others show a padlock. After each round:</p>
 <ul>
-<li>The level goes <strong>up by one</strong> when accuracy is 90% or higher and you made enough hits: 8 for Click, Switch, Moving and Shrinking, 6 for Double-click and Drag, 4 for Scroll. Follow needs no minimum, because it counts time.</li>
-<li>The level goes <strong>down by one</strong> when accuracy is below 65%.</li>
-<li>Otherwise it stays the same.</li>
-<li>You can also <strong>pick a level yourself</strong>: the row of numbers 1 (the easiest) to 10 (the hardest) above the play area is clickable before a round starts. The level you pick is saved, and the game keeps adjusting from it.</li>
+<li>A round with <strong>90% accuracy or higher</strong> and enough hits <strong>opens the next level</strong> and moves you to it. Enough hits means 8 for Click, Switch, Moving and Shrinking, 6 for Double-click and Drag, and 4 for Scroll. Follow needs no minimum, because it counts time.</li>
+<li>A round below <strong>65%</strong> moves you down one level. Levels you have already opened stay open.</li>
+<li>Otherwise you stay on the same level.</li>
+<li>Before a round starts you can click any open level, to practise it again or to go back to an easier one. Locked levels cannot be picked.</li>
 </ul>
 <p>The result shows what happened and, if there was an earlier round of the same skill saved on this device, whether you did better or worse than it. These marks and steps are our own suggestions, not taken from a study or a standard.</p>
 
@@ -118,7 +118,7 @@ export const bodyHtml = `
 <p>The play area is split into three rows and three columns. For every try, the page notes which square the target was in and whether the try was missed or slow. A hit counts as <strong>slow</strong> when it took more than 1.6 times your average hit time so far in that round, once you have three earlier hits. In Follow, about ten samples a second are taken, and a sample off the dot counts as trouble. Each square then shows the percent of its tries that were missed or slow, once it has at least 8 tries, and darker means more trouble. The square with the highest share is named under the map. The map covers this visit only and starts again when you reload the page.</p>
 
 <h2 id="suggested-skills-and-mixes">Suggested skills and mixes</h2>
-<p>Nothing on this page is locked. Skills that practise a level you have passed on the <a href="/mouse-lessons">Mouse lessons</a> page come first in the list, and the Level 1 skills (Click, Double-click and Scroll) come first for everyone. Skills for levels you have not passed yet follow with their names in a dimmer colour, and you can try them whenever you like. The level for the skill you picked is shown in the panel below.</p>
+<p>No skill is locked. Skills that practise a level you have passed on the <a href="/mouse-lessons">Mouse lessons</a> page come first in the list, and the Level 1 skills (Click, Double-click and Scroll) come first for everyone. Skills for levels you have not passed yet follow with their names in a dimmer colour, and you can try them whenever you like. Inside every skill the levels open one at a time. The level for the skill you picked is shown in the panel below.</p>
 <p><strong>Mixed</strong> goes through the marked skills in turn, one round each. <strong>Today's 5-minute mix</strong> does the same for 10 rounds of 30 seconds and then says it is done.</p>
 
 <h2 id="your-old-aim-scores">Your old Aim scores</h2>

@@ -5,7 +5,7 @@ import {
   sizeFor, movingSpeed, followSpeed, shrinkMs, scrollRows, scrollRowPx,
   accuracyOf, mainScore, adjustLevel, zoneOf, freshZones, troubleRate, weakestZone, isSlow,
   suggestedSkills, mixAt, defaultStore, parseStore, dayKey, minutesToday, addRound, compareWithLast,
-  MAX_SAVED_ROUNDS, withLevel,
+  MAX_SAVED_ROUNDS, withLevel, newlyUnlocked,
 } from '../src/components/skills/mouse/practiceRules.ts';
 
 let n = 0;
@@ -159,15 +159,43 @@ t('adding a round: new level, seconds add up on the same day, restart on a new d
   assert.equal(s.day, '2026-11-22');
   assert.equal(s.levels.dbl, START_LEVEL, 'other skills untouched');
 });
-t('picking a level sets only that skill, clamped to 1 to 10, without changing the old data', () => {
+t('only level 1 is open at first, for every skill', () => {
   const s = defaultStore();
-  const a = withLevel(s, 'drag', 7);
-  assert.equal(a.levels.drag, 7);
+  for (const k of SKILL_IDS) assert.equal(s.unlocked[k], 1, k);
+});
+t('picking a level sets only that skill and never goes above what is unlocked', () => {
+  const s = { ...defaultStore(), unlocked: { ...defaultStore().unlocked, drag: 7 } };
+  const a = withLevel(s, 'drag', 5);
+  assert.equal(a.levels.drag, 5);
   assert.equal(a.levels.click, s.levels.click);
   assert.equal(s.levels.drag, START_LEVEL, 'the original is not changed');
-  assert.equal(withLevel(s, 'drag', 99).levels.drag, MAX_LEVEL);
+  assert.equal(withLevel(s, 'drag', 99).levels.drag, 7, 'a locked level cannot be picked');
   assert.equal(withLevel(s, 'drag', 0).levels.drag, MIN_LEVEL);
+  assert.equal(withLevel(defaultStore(), 'click', 4).levels.click, 1, 'with nothing unlocked only level 1 can be picked');
   assert.equal(a.seconds, s.seconds);
+});
+t('a good round opens the next level and it stays open when you go back down', () => {
+  let s = defaultStore();
+  const rec = { skill: 'click', level: 1, main: 10, acc: 95, at: 1 };
+  assert.equal(newlyUnlocked(s, 'click', 2), 2);
+  s = addRound(s, rec, 2, 30, 'd');
+  assert.equal(s.unlocked.click, 2);
+  assert.equal(newlyUnlocked(s, 'click', 2), null, 'already open');
+  assert.equal(newlyUnlocked(s, 'click', 3), 3);
+  s = addRound(s, { ...rec, level: 2 }, 1, 30, 'd');
+  assert.equal(s.levels.click, 1, 'moved down');
+  assert.equal(s.unlocked.click, 2, 'still open');
+  assert.equal(s.unlocked.dbl, 1, 'other skills untouched');
+  assert.equal(withLevel(s, 'click', 2).levels.click, 2, 'can go back up to an open level');
+});
+t('data saved before levels could be locked: the level you were on stays open', () => {
+  const s = parseStore(JSON.stringify({ levels: { click: 4, dbl: 1 } }));
+  assert.equal(s.unlocked.click, 4);
+  assert.equal(s.unlocked.dbl, 1);
+  const t2 = parseStore(JSON.stringify({ levels: { click: 2 }, unlocked: { click: 6, dbl: 99, scroll: -3 } }));
+  assert.equal(t2.unlocked.click, 6);
+  assert.equal(t2.unlocked.dbl, MAX_LEVEL);
+  assert.equal(t2.unlocked.scroll, 1);
 });
 t('only the latest rounds are kept', () => {
   let s = defaultStore();

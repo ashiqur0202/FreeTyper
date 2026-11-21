@@ -149,7 +149,10 @@ export function mixAt(list: SkillId[], i: number): SkillId {
 
 export type RoundRecord = { skill: SkillId; level: number; main: number; acc: number | null; at: number };
 export type PracticeStore = {
+  /** The level each skill is on now. */
   levels: Record<SkillId, number>;
+  /** The highest level each skill has opened. Level 1 is open at first; a good round opens the next one. */
+  unlocked: Record<SkillId, number>;
   /** The local day (YYYY-MM-DD) that `seconds` belongs to. */
   day: string;
   seconds: number;
@@ -161,8 +164,12 @@ export const MAX_SAVED_ROUNDS = 12;
 
 export function defaultStore(): PracticeStore {
   const levels = {} as Record<SkillId, number>;
-  for (const k of SKILL_IDS) levels[k] = START_LEVEL;
-  return { levels, day: '', seconds: 0, rounds: [] };
+  const unlocked = {} as Record<SkillId, number>;
+  for (const k of SKILL_IDS) {
+    levels[k] = START_LEVEL;
+    unlocked[k] = START_LEVEL;
+  }
+  return { levels, unlocked, day: '', seconds: 0, rounds: [] };
 }
 
 export function dayKey(d: Date = new Date()): string {
@@ -183,6 +190,10 @@ export function parseStore(raw: string | null): PracticeStore {
     for (const k of SKILL_IDS) {
       const v = (p.levels as Record<string, unknown> | undefined)?.[k];
       if (typeof v === 'number' && Number.isFinite(v)) base.levels[k] = clampLevel(v);
+      const u = (p.unlocked as Record<string, unknown> | undefined)?.[k];
+      if (typeof u === 'number' && Number.isFinite(u)) base.unlocked[k] = clampLevel(u);
+      // A level you are on is always open (this also covers data saved before levels could be locked).
+      base.unlocked[k] = Math.max(base.unlocked[k], base.levels[k]);
     }
     if (typeof p.day === 'string') base.day = p.day;
     if (typeof p.seconds === 'number' && Number.isFinite(p.seconds) && p.seconds >= 0) base.seconds = p.seconds;
@@ -203,9 +214,15 @@ export function minutesToday(store: PracticeStore, today: string): number {
   return store.day === today ? store.seconds / 60 : 0;
 }
 
-/** The same data with one skill's level set by the person (clamped to 1 to 10). */
+/** The same data with one skill's level set by the person: 1 to 10, and never above what is unlocked. */
 export function withLevel(store: PracticeStore, skill: SkillId, level: number): PracticeStore {
-  return { ...store, levels: { ...store.levels, [skill]: clampLevel(level) } };
+  return { ...store, levels: { ...store.levels, [skill]: Math.min(clampLevel(level), store.unlocked[skill]) } };
+}
+
+/** The level a round has just opened for the first time, or null when nothing new opened. */
+export function newlyUnlocked(store: PracticeStore, skill: SkillId, newLevel: number): number | null {
+  const n = clampLevel(newLevel);
+  return n > store.unlocked[skill] ? n : null;
 }
 
 /** Add one finished round: set the skill's new level, add its seconds to today, keep the latest rounds. */
@@ -213,6 +230,7 @@ export function addRound(store: PracticeStore, rec: RoundRecord, newLevel: numbe
   const sameDay = store.day === today;
   return {
     levels: { ...store.levels, [rec.skill]: clampLevel(newLevel) },
+    unlocked: { ...store.unlocked, [rec.skill]: Math.max(store.unlocked[rec.skill], clampLevel(newLevel)) },
     day: today,
     seconds: (sameDay ? store.seconds : 0) + Math.max(0, seconds),
     rounds: [...store.rounds, rec].slice(-MAX_SAVED_ROUNDS),
