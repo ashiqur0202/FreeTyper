@@ -263,7 +263,8 @@ export default function MouseTrainer() {
   const levelShown = running ? stats.level : pick === 'mixed' ? null : store.levels[pick];
   const today = dayKey();
   const minutes = ready ? minutesToday(store, today) + (running ? (ROUND_SECONDS - stats.left) / 60 : 0) : 0;
-  const harder = SKILL_IDS.filter((k) => !suggested.includes(k));
+  // One list: the skills that match the lessons passed come first, the harder ones after.
+  const ordered = [...suggested, ...SKILL_IDS.filter((k) => !suggested.includes(k))];
   const weak = weakestZone(zones);
   const bests = Object.entries(progress.best).filter(([k, v]) => k in AIM_LABELS && v > 0);
 
@@ -274,10 +275,10 @@ export default function MouseTrainer() {
     <button
       key={k}
       type="button"
-      className="mt-sk"
+      className={`mt-sk${suggested.includes(k) ? '' : ' mt-hard'}`}
       aria-pressed={k === pick && dailyN === null}
       disabled={running}
-      title={SKILLS[k].blurb}
+      title={suggested.includes(k) ? SKILLS[k].blurb : `${SKILLS[k].blurb}. A harder skill: you can still try it.`}
       onClick={() => choose(k)}
     >
       <span>{SKILLS[k].name}</span>
@@ -287,29 +288,18 @@ export default function MouseTrainer() {
 
   return (
     <div className="mx-auto w-full max-w-3xl">
-      <div className="mt-pickers">
-        <div className="mt-mixrow">
-          <button
-            type="button"
-            className="mt-sk mt-mix"
-            aria-pressed={pick === 'mixed' && dailyN === null}
-            disabled={running}
-            onClick={() => choose('mixed')}
-          >
-            Mixed
-          </button>
-          <span>One round of each suggested skill, in turn</span>
-        </div>
-        <div>
-          <p className="mt-glab">Suggested for you</p>
-          <div className="mt-grid">{suggested.map((k) => skillButton(k))}</div>
-        </div>
-        {harder.length > 0 && (
-          <div>
-            <p className="mt-glab">Harder: try any time, the level adjusts to you</p>
-            <div className="mt-grid">{harder.map((k) => skillButton(k))}</div>
-          </div>
-        )}
+      <div className="mt-grid mt-pickers" role="group" aria-label="Skill">
+        <button
+          type="button"
+          className="mt-sk mt-mix"
+          aria-pressed={pick === 'mixed' && dailyN === null}
+          disabled={running}
+          title="One round of each suggested skill, in turn"
+          onClick={() => choose('mixed')}
+        >
+          <span>Mixed</span>
+        </button>
+        {ordered.map((k) => skillButton(k))}
       </div>
 
       <section className="mt-panel" aria-label="Practice area">
