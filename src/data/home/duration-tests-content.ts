@@ -14,7 +14,7 @@
  * SD 20.2, 168,960 volunteers; top 10 % above about 78, bottom 10 % below
  * about 26), checked against the paper's results table on 2026-11-08.
  *
- * Last real edit: 2026-11-20 (text is generated; the FAQ on repeats) (study figures, limits and the Backspace rule are said once, on the 1 minute page and the home guide)
+ * Last real edit: 2026-11-21 (3 and 5 minute pages got their own sections: 30-second pacing blocks, text level and the challenge link for 3 minutes; minute checkpoints, three phases and comparable runs for 5 minutes; their visible dates are 2026-11-21 and the 1 minute page keeps 2026-11-20). Earlier: 2026-11-20 (text is generated; the FAQ on repeats) (study figures, limits and the Backspace rule are said once, on the 1 minute page and the home guide)
  */
 
 export type DurationPage = {
@@ -29,10 +29,10 @@ export type DurationPage = {
   howToName: string;
 };
 
-const byline = (): string => `
+const byline = (iso: string, label: string): string => `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-20">November 20, 2026</time></span>
+  <span>Last updated <time datetime="${iso}">${label}</time></span>
 </p>`;
 
 const sourcesHtml = (extra: string): string => `
@@ -100,7 +100,7 @@ const oneMinute: DurationPage = {
     },
   ],
   previewHtml: `
-<h2>1 Minute Typing Test — Check Your WPM in 60 Seconds</h2>${byline()}
+<h2>1 Minute Typing Test — Check Your WPM in 60 Seconds</h2>${byline('2026-11-20', 'November 20, 2026')}
 <p>This is a free 1 minute typing test. Press a key to start the 60 seconds, type the text, and you get your net words per minute, your accuracy and a graph of your speed through the minute. It is the fastest way to see roughly where you stand.</p>
 <p>Below: what a single minute can and cannot tell you, what typical scores look like, and when a longer test gives a better answer.</p>
 `,
@@ -192,6 +192,16 @@ const threeMinute: DurationPage = {
       answer:
         'No. New text is made each time you start a test (sentences and words are generated, code snippets are a fixed set), and it is long enough for about 300 words a minute.',
     },
+    {
+      question: 'Can I challenge a friend to a 3 minute test?',
+      answer:
+        'Yes. After a finished 3 minute run on sentences, words or code, press Challenge a friend. The link rebuilds the same text and length for your friend and shows your score as the target. The number row test and the daily challenge cannot be shared this way.',
+    },
+    {
+      question: 'Which text level should I use for 3 minutes?',
+      answer:
+        'Use one level for a whole series of runs. Standard (level 3) is the default. Harder levels have longer words and more punctuation, so scores on different levels do not compare.',
+    },
   ],
   howToSteps: [
     {
@@ -212,7 +222,7 @@ const threeMinute: DurationPage = {
     },
   ],
   previewHtml: `
-<h2>3 Minute Typing Test — A Steadier WPM Check</h2>${byline()}
+<h2>3 Minute Typing Test — A Steadier WPM Check</h2>${byline('2026-11-21', 'November 21, 2026')}
 <p>This is a free 3 minute typing test. The timer starts on your first key. When it ends you get net WPM, accuracy, a speed graph and a consistency score, which show whether you kept your pace or slowed down.</p>
 <p>Below: why three minutes tells you more than one, how to read the graph, and what the study numbers can and cannot say about a run this long.</p>
 `,
@@ -234,23 +244,31 @@ const threeMinute: DurationPage = {
 <h2 id="what-the-study-numbers-mean-here">What the study numbers mean here</h2>
 <p>The figures people quote come from Dhakal and colleagues (CHI 2018), where volunteers copied short sentences, not a three-minute passage, so use them as a rough reference and not a target for this length. The numbers and their limits are on the <a href="/1-minute-typing-test#typical-scores">1 minute test page</a> and in <a href="/blog/good-typing-speed">what a good typing speed is</a>.</p>
 
-<h2 id="three-minutes-in-characters">What a 3 minute score means in characters</h2>
-<p>Net WPM is correct characters divided by five, divided by three minutes. This is arithmetic from the rule, not user data.</p>
-<table>
-<thead><tr><th>Net WPM</th><th>Correct characters in 3 minutes</th><th>Words (5 characters each)</th></tr></thead>
-<tbody>
-<tr><td>20</td><td>300</td><td>60</td></tr>
-<tr><td>40</td><td>600</td><td>120</td></tr>
-<tr><td>60</td><td>900</td><td>180</td></tr>
-<tr><td>80</td><td>1,200</td><td>240</td></tr>
-</tbody>
-</table>
-
 <h2 id="why-your-line-might-fall">Why your speed line might fall</h2>
 <p>If the gold line sinks across the three minutes, the test cannot say why, but there are a few usual suspects, which are possible readings and not findings: you started faster than you can hold, you tensed up, or mistakes began to pile up and slowed you down. The red dots and the gap to the dashed grey line help tell them apart: dots clustered late point to mistakes, and a steady fall with few dots points to pace or fatigue. Our post on <a href="/blog/improve-typing-accuracy">improving typing accuracy</a> goes through what the research says about errors.</p>
 
 <h2 id="using-the-3-minute-test-to-improve">Using it to improve</h2>
 <p>Our suggestion, not a measured method: take one 3 minute test a few times a week at a similar time of day, read the graph, then spend practice time on the keys and pairs it flags. <a href="/typing-practice">Typing practice</a> has an adaptive tab for that, and our post on <a href="/blog/how-to-type-faster">how to type faster</a> covers what the research does and does not support.</p>
+
+<h2 id="pacing-in-thirty-second-blocks">Pacing a 3 minute run in 30-second blocks</h2>
+<p>Three minutes is six blocks of 30 seconds. Net WPM is correct characters divided by five, divided by the minutes. If you hold a steady net WPM, you need the same number of correct characters in every block: the speed times five characters times half a minute. The table is arithmetic from that rule, not user data, and its last column is the six blocks added up.</p>
+<table>
+<thead><tr><th>Steady net WPM</th><th>Correct characters in each 30 seconds</th><th>Words in each 30 seconds</th><th>Correct characters in the whole 3 minutes</th></tr></thead>
+<tbody>
+<tr><td>30</td><td>75</td><td>15</td><td>450</td></tr>
+<tr><td>40</td><td>100</td><td>20</td><td>600</td></tr>
+<tr><td>50</td><td>125</td><td>25</td><td>750</td></tr>
+<tr><td>60</td><td>150</td><td>30</td><td>900</td></tr>
+<tr><td>80</td><td>200</td><td>40</td><td>1,200</td></tr>
+</tbody>
+</table>
+<p>Our suggestion for using it: pick the row just above your last result and think in blocks instead of chasing every second. Afterwards, split the gold line into six stretches and see which stretch dipped first; that is the block to work on.</p>
+
+<h2 id="choose-a-text-level-for-3-minutes">Choosing a text level for a 3 minute run</h2>
+<p>For sentences and words, the test has a difficulty menu with five text levels, from 1 (Beginner) to 5 (Expert). Standard, level 3, is the default. Higher levels bring longer words and more punctuation, digits and quotation marks, so the same typist should expect a lower score on a harder level. That is the effect of harder text, not a figure we measured. For a series of 3 minute runs, pick one level and keep it, because a score on level 4 cannot be compared with one on level 2. Code snippets and the number row test have their own text and ignore this menu.</p>
+
+<h2 id="challenge-a-friend-over-three-minutes">Challenge a friend over 3 minutes</h2>
+<p>After a finished 3 minute run on sentences, words or code, the Challenge a friend button makes a link. The link holds a short code that rebuilds the same text, the text type, the 3 minute length, the text level, and your net WPM and accuracy. When your friend opens it, they type the same text for the same three minutes, and the page shows your score as the target. Nothing is uploaded and there is no account. The number row test and the daily challenge cannot be shared this way, because they have their own rules. A longer run averages out lucky stretches, so a 3 minute result is a steadier target to chase than a 15 second one; that is reasoning, not something we measured.</p>
 
 <h2 id="limits-of-the-3-minute-test">Limits of this test</h2>
 <ul>
@@ -291,6 +309,16 @@ const fiveMinute: DurationPage = {
         'It can help to type a short passage in practice first. That is our suggestion, not something we have measured. Sit properly, with your wrists in a neutral position; our post on posture and wrist pain covers what is known about that.',
     },
     {
+      question: 'What should my total be after each minute?',
+      answer:
+        'It depends on your pace. A steady 40 WPM is about 200 correct characters a minute and 60 WPM about 300. The checkpoint table on this page lists the totals. Use it after the run to see where you fell behind your own pace.',
+    },
+    {
+      question: 'Can I compare a 5 minute score with a 1 minute score?',
+      answer:
+        'Not directly. A longer run averages out a fast start and includes any fade, so the two numbers measure slightly different things. Compare 5 minute runs with 5 minute runs.',
+    },
+    {
       question: 'What if I get tired halfway through?',
       answer:
         'Finish the run anyway and look at the graph. A falling speed line, or mistakes bunching in the last minutes, shows where you tire. That is useful information, not a failed test.',
@@ -315,7 +343,7 @@ const fiveMinute: DurationPage = {
     },
   ],
   previewHtml: `
-<h2>5 Minute Typing Test — Speed Over a Longer Run</h2>${byline()}
+<h2>5 Minute Typing Test — Speed Over a Longer Run</h2>${byline('2026-11-21', 'November 21, 2026')}
 <p>This is a free 5 minute typing test. The timer starts on your first key. You get net WPM, accuracy, a speed graph and a consistency score, so you can see whether your speed and accuracy hold for the whole five minutes or fade.</p>
 <p>Below: what a longer run shows, how to prepare, and what this test is not.</p>
 `,
@@ -325,19 +353,6 @@ const fiveMinute: DurationPage = {
 
 <h2 id="what-five-minutes-shows">What five minutes shows</h2>
 <p>The longest of our three preset lengths shows how your speed and accuracy hold, not only how fast you can go for a minute. If your gold line starts high and sinks, or mistakes cluster in the last minutes, you are starting too hard, tiring, or losing focus. We read the graph this way as a reasonable interpretation; the test cannot tell you which cause it is.</p>
-
-<h2 id="five-minutes-in-characters">What a 5 minute score means in characters</h2>
-<p>Net WPM is correct characters divided by five, divided by five minutes. The table is arithmetic from the rule, not user data.</p>
-<table>
-<thead><tr><th>Net WPM</th><th>Correct characters in 5 minutes</th><th>Words (5 characters each)</th></tr></thead>
-<tbody>
-<tr><td>20</td><td>500</td><td>100</td></tr>
-<tr><td>40</td><td>1,000</td><td>200</td></tr>
-<tr><td>60</td><td>1,500</td><td>300</td></tr>
-<tr><td>80</td><td>2,000</td><td>400</td></tr>
-</tbody>
-</table>
-<p>Over five minutes the time spent fixing mistakes adds up, which is one reason the same typist can score differently on a short and a long test.</p>
 
 <h2 id="pacing-a-five-minute-run">Pacing a five minute run</h2>
 <p>These are our suggestions, not a tested method.</p>
@@ -359,6 +374,26 @@ const fiveMinute: DurationPage = {
 
 <h2 id="typical-scores-over-five-minutes">Typical scores</h2>
 <p>The study people usually quote, Dhakal and colleagues (CHI 2018), used short copied sentences, not five-minute passages, so use it as a rough reference only. The numbers are on the <a href="/1-minute-typing-test#typical-scores">1 minute test page</a>, and <a href="/blog/good-typing-speed">what a good typing speed is</a> covers their limits.</p>
+
+<h2 id="minute-by-minute-checkpoints">Minute-by-minute checkpoints</h2>
+<p>Five minutes is five blocks of one minute. Net WPM is correct characters divided by five, divided by the minutes, so at a steady speed the correct characters you have typed by the end of each minute grow by the same step: the speed times five characters. The table is arithmetic from that rule, not user data, and its last column is the five-minute total.</p>
+<table>
+<thead><tr><th>Steady net WPM</th><th>After 1 minute</th><th>After 2</th><th>After 3</th><th>After 4</th><th>After 5</th></tr></thead>
+<tbody>
+<tr><td>30</td><td>150</td><td>300</td><td>450</td><td>600</td><td>750</td></tr>
+<tr><td>40</td><td>200</td><td>400</td><td>600</td><td>800</td><td>1,000</td></tr>
+<tr><td>50</td><td>250</td><td>500</td><td>750</td><td>1,000</td><td>1,250</td></tr>
+<tr><td>60</td><td>300</td><td>600</td><td>900</td><td>1,200</td><td>1,500</td></tr>
+<tr><td>80</td><td>400</td><td>800</td><td>1,200</td><td>1,600</td><td>2,000</td></tr>
+</tbody>
+</table>
+<p>Use it after the run, not during it. Compare the first and the last minute of your graph with these steps: a last minute clearly below the first is the fade that a five-minute test exists to show. Over five minutes the time spent fixing mistakes also adds up, which is one reason the same typist can score differently on a short and a long test.</p>
+
+<h2 id="three-phases-of-a-long-run">Three phases of a long run</h2>
+<p>These are our own suggestions, not a tested method. Think of a long run as a settle, a hold and a finish. Use the first minute to find a pace that feels slightly easy. Hold that pace through minutes two to four without chasing the clock. In the last minute, speed up only if your mistakes have stayed low. The graph then answers two plain questions: did the hold stay level, and did the finish cost accuracy?</p>
+
+<h2 id="keeping-five-minute-results-comparable">Keeping 5 minute results comparable</h2>
+<p>The list under the keyboard shows your last five speed-test runs of any length, newest first, and the result card compares a run with your earlier speed tests. Those comparisons only mean something when the runs are alike: the same length, the same text type (sentences, words or code), and for sentences and words the same text level. Change one thing at a time. A simple routine, again our suggestion: one 5 minute run a week on the same level and at a similar time of day, and read the graph before you read the number.</p>
 
 <h2 id="limits-of-the-5-minute-test">Limits of this test</h2>
 <ul>

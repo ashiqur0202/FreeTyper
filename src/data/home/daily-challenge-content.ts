@@ -11,7 +11,7 @@
  * counting days with a run at 90 % accuracy or better, data kept only in
  * localStorage. No outside figures are used.
  *
- * Last real edit: 2026-11-20 (the daily text is generated from the date, no fixed passages)
+ * Last real edit: 2026-11-21 (added: when the text changes in each time zone, three worked streak examples, comparing with a friend; two FAQs). Earlier: 2026-11-20 (the daily text is generated from the date, no fixed passages)
  */
 
 export const dailyMeta = {
@@ -23,7 +23,7 @@ export const dailyMeta = {
 const byline = `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-20">November 20, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-21">November 21, 2026</time></span>
 </p>`;
 
 export const dailyPreviewHtml = `
@@ -54,6 +54,31 @@ export const dailyBodyHtml = `
 <h2 id="using-it-well">Using it well</h2>
 <p>These are suggestions, not measured results. Because the text is the same for everyone each day, it is a fair way to compare yourself with a friend: send them the share picture and ask them to type the same day's passage. For your own progress, look at the trend over several days instead of one score, since one run swings with how awake you are. If you are still learning the keys, the <a href="/typing-lessons">typing lessons</a> and <a href="/typing-practice">adaptive practice</a> will move your speed more than repeating this test.</p>
 
+<h2 id="when-the-text-changes-where-you-live">When the text changes where you live</h2>
+<p>The challenge day follows UTC, not your local clock, so the new text appears at 00:00 UTC. That is a different local time in different places:</p>
+<table>
+<thead><tr><th>Place (in northern winter)</th><th>UTC offset</th><th>The new text appears at</th></tr></thead>
+<tbody>
+<tr><td>Dhaka</td><td>UTC+6</td><td>06:00, the same date</td></tr>
+<tr><td>Delhi</td><td>UTC+5:30</td><td>05:30, the same date</td></tr>
+<tr><td>London</td><td>UTC+0</td><td>00:00, the same date</td></tr>
+<tr><td>New York</td><td>UTC&minus;5</td><td>19:00 the evening before</td></tr>
+<tr><td>Los Angeles</td><td>UTC&minus;8</td><td>16:00 the afternoon before</td></tr>
+</tbody>
+</table>
+<p>The London, New York and Los Angeles rows move by one hour in summer because of daylight-saving time. A run belongs to the UTC date on which you start it. So west of London, an evening run can already belong to tomorrow's challenge day and count for that day's streak, and east of UTC, an early-morning run before 00:00 UTC still belongs to the previous date.</p>
+
+<h2 id="reading-your-streak">Reading your streak: three examples</h2>
+<p>The streak is the number of UTC days in a row with a counted run (90% accuracy or better), ending today. If today has no counted run yet, it shows the chain that ended yesterday. Worked from that rule:</p>
+<ul>
+<li>You counted on Monday, Tuesday and Wednesday. After your Wednesday run the streak is <strong>3</strong>, and on Thursday morning, before a run, it still shows <strong>3</strong>.</li>
+<li>You then skip Thursday completely. On Friday, before any run, yesterday has no counted run, so the streak shows <strong>0</strong>. A counted run on Friday makes it <strong>1</strong>.</li>
+<li>You run on Thursday but reach only 85% accuracy. The run is saved in your results, but the day does not count, so it is the same as skipping it.</li>
+</ul>
+
+<h2 id="comparing-with-a-friend">Comparing with a friend</h2>
+<p>The passage depends only on the UTC date, so you and a friend get the same text on the same UTC day without sending anything, and you can compare net WPM and accuracy directly. Two cautions that follow from the rules: near 00:00 UTC one of you may already be on the next day's text, and the daily test always uses the Standard text level and 60 seconds, so only compare daily runs with daily runs. For a comparison on a text and length you choose, finish any regular speed test and use its Challenge a friend button: the link rebuilds that run's text for your friend. The daily challenge itself cannot be shared that way.</p>
+
 <h2 id="sources-and-method">Sources and method</h2>
 <ul class="article-sources">
 <li>Scoring and rules: how the test works, the same as the <a href="/">typing speed test</a>.</li>
@@ -81,6 +106,16 @@ export const dailyFaqs = [
     question: 'Is there a leaderboard or an account?',
     answer:
       'No. Your streak and best scores are stored only in your browser on this device, and nothing is uploaded. Use the share button to send a result as a picture.',
+  },
+  {
+    question: 'When does the daily text change in my time zone?',
+    answer:
+      'At 00:00 UTC. That is 06:00 in Dhaka, 05:30 in Delhi, 00:00 in London in winter, and 19:00 the evening before in New York in winter. The table on this page lists more places.',
+  },
+  {
+    question: 'Does a late-evening run count for today or tomorrow?',
+    answer:
+      'For the UTC date on which you start it. West of London that can be tomorrow in the evening, and east of UTC a run before 00:00 UTC still belongs to the previous date.',
   },
   {
     question: 'Can I run the daily challenge more than once?',
