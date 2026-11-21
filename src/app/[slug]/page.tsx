@@ -59,6 +59,13 @@ import {
   faqs as mouseFaqs,
   howToSteps as mouseHowToSteps,
 } from '@/data/tools/mouse-practice-content';
+import {
+  meta as trainerMeta,
+  previewHtml as trainerPreviewHtml,
+  bodyHtml as trainerBodyHtml,
+  faqs as trainerFaqs,
+  howToSteps as trainerHowToSteps,
+} from '@/data/tools/mouse-practice-trainer-content';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -140,6 +147,15 @@ const seoToolPages: Record<
     h1: 'Mouse and Trackpad Practice for Beginners',
     howToName: 'How to Practise Mouse and Trackpad Skills on FreeTyper',
   },
+  'mouse-practice-trainer': {
+    meta: trainerMeta,
+    previewHtml: trainerPreviewHtml,
+    bodyHtml: trainerBodyHtml,
+    faqs: trainerFaqs,
+    howToSteps: trainerHowToSteps,
+    h1: 'Mouse Practice Trainer: Non-Stop Drills',
+    howToName: 'How to Use the FreeTyper Mouse Practice Trainer',
+  },
 };
 
 export async function generateStaticParams() {
@@ -201,7 +217,8 @@ export default async function ToolPage({ params }: PageProps) {
             slug === 'typing-lessons' ||
             slug === 'typing-game-falling-words' ||
             slug === 'typing-game-word-attack' ||
-            slug === 'mouse-practice'
+            slug === 'mouse-practice' ||
+            slug === 'mouse-practice-trainer'
               ? 'flex min-h-screen flex-col justify-start px-8 pt-16 pb-12 sm:px-10 md:pt-10 lg:px-12'
               : 'flex min-h-screen items-center justify-center px-8 py-12 sm:px-10 lg:px-12'
           }

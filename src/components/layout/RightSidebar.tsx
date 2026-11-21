@@ -7,11 +7,12 @@ import PracticeCard from './PracticeCard';
 // The left sidebar already lists every page; these are the main tools, kept folded so the top of this sidebar stays about the visitor.
 const links = [
   { href: '/', label: 'Speed test' },
-  { href: '/typing-practice', label: 'Practice' },
-  { href: '/typing-lessons', label: 'Lessons' },
+  { href: '/typing-practice', label: 'Typing practice' },
+  { href: '/typing-lessons', label: 'Typing lessons' },
   { href: '/keyboard-guide', label: 'Keyboard guide' },
   { href: '/typing-progress', label: 'Progress' },
-  { href: '/mouse-practice', label: 'Mouse practice' },
+  { href: '/mouse-practice', label: 'Mouse lessons' },
+  { href: '/mouse-practice-trainer', label: 'Mouse practice' },
   { href: '/blog', label: 'Blog' },
 ];
 

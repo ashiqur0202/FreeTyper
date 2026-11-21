@@ -13,6 +13,7 @@ import {
   ArrowDown,
   Crosshair,
   Mouse,
+  MousePointerClick,
   BookOpen,
   Settings,
   Menu,
@@ -26,13 +27,22 @@ import AppearanceControls from './AppearanceControls';
 const navGroups = [
   {
     label: null,
+    items: [{ href: '/', label: 'start', icon: Timer }],
+  },
+  {
+    label: 'keyboard',
     items: [
-      { href: '/', label: 'start', icon: Timer },
       { href: '/typing-lessons', label: 'lessons', icon: GraduationCap },
       { href: '/typing-practice', label: 'practice', icon: PenTool },
       { href: '/keyboard-guide', label: 'guide', icon: Keyboard },
       { href: '/typing-progress', label: 'progress', icon: BarChart3 },
-      { href: '/mouse-practice', label: 'mouse', icon: Mouse },
+    ],
+  },
+  {
+    label: 'mouse',
+    items: [
+      { href: '/mouse-practice', label: 'lessons', icon: Mouse },
+      { href: '/mouse-practice-trainer', label: 'practice', icon: MousePointerClick },
     ],
   },
   {

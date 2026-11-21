@@ -7,6 +7,7 @@ import {
   ArrowDown,
   Crosshair,
   Mouse,
+  MousePointerClick,
 } from 'lucide-react';
 
 export type ToolData = {
@@ -76,11 +77,21 @@ const toolData: ToolData[] = [
   },
   {
     id: 'mouse-practice',
-    name: 'Mouse Practice',
+    name: 'Mouse Lessons',
     seoTitle: 'Mouse Practice for Beginners — Free Mouse & Trackpad Exercises',
     description:
-      'Free mouse and trackpad practice from beginner to mastery: four levels of drills, ranks, and a 30-second aim game. No signup.',
+      'Free mouse and trackpad lessons from beginner to mastery: four levels of drills that open one step at a time, with ranks. No signup.',
     iconName: 'Mouse',
+    category: 'typing',
+    featured: true,
+  },
+  {
+    id: 'mouse-practice-trainer',
+    name: 'Mouse Practice',
+    seoTitle: 'Mouse Practice Trainer — Non-Stop Click, Scroll & Aim Drills (Free)',
+    description:
+      'Free non-stop mouse and trackpad practice: eight skills, 30-second rounds that follow one another, a level that adjusts to you and a map of where you miss. No signup.',
+    iconName: 'MousePointerClick',
     category: 'typing',
     featured: true,
   },
@@ -115,6 +126,7 @@ const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   ArrowDown,
   Crosshair,
   Mouse,
+  MousePointerClick,
 };
 
 /** Serializable tool data (no functions) — safe for server → client */

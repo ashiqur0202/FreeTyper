@@ -1,15 +1,17 @@
 /**
- * Guide content for /mouse-practice.
+ * Guide content for /mouse-practice ("Mouse lessons"). The non-stop practice page is /mouse-practice-trainer
+ * (its own guide: mouse-practice-trainer-content.ts).
  *
- * Describes `MousePractice.tsx`, `MouseLevels.tsx`, `course.tsx` (the four levels and their wording),
- * `drills.tsx`, `drills2.tsx`, `drills3.tsx`, `drills4.tsx`, `AimTrainer.tsx`, `mouseData.ts`,
- * `levelRules.ts` (unlocking, ranks and every pass mark), `aimScoring.ts` and `useMouseProgress.ts`
- * (storage key `freetyper-mouse`). If a drill, a pass mark, an Aim mode or what is saved changes,
+ * Describes `MousePractice.tsx`, `MouseLevels.tsx` (the horizontal path: four ranks in a row, a row of drills,
+ * each drill opening when the one before is finished), `course.tsx` (the four levels and their wording),
+ * `drills.tsx`, `drills2.tsx`, `drills3.tsx`, `drills4.tsx`, `AimTrainer.tsx` (now only inside the Shrinking
+ * targets drill), `mouseData.ts`, `levelRules.ts` (unlocking, ranks and every pass mark), `aimScoring.ts` and
+ * `useMouseProgress.ts` (storage key `freetyper-mouse`). If a drill, a pass mark or what is saved changes,
  * update this file in the same commit.
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-19 (FAQ answers are short; the details live in the body sections only)
+ * Last real edit: 2026-11-21 (lessons became a step-by-step path; the Aim tab moved to the Mouse practice page)
  */
 
 export const faqs: { question: string; answer: string }[] = [
@@ -19,29 +21,24 @@ export const faqs: { question: string; answer: string }[] = [
       'Both. A browser cannot tell a laptop trackpad from a mouse, so the page asks which one you are using and changes the wording and the steps to match, for example "tap the pad" instead of "press the left button". The checks underneath are the same for both, so you pass a step the same way on either.',
   },
   {
-    question: 'What does the Learn tab teach?',
+    question: 'What do Mouse lessons teach?',
     answer:
-      'It is a ladder of four levels, Beginner, Comfortable, Skilled and Mastery, with a practice box for every drill. Level 1 starts with moving the pointer and clicking; Level 4 is timed challenges. A drill finishes the moment you pass it.',
+      'A path of four levels, Beginner, Comfortable, Skilled and Mastery, with a practice box for every drill. Level 1 starts with moving the pointer and clicking; Level 4 is timed challenges. A drill finishes the moment you pass it, and that opens the next one.',
   },
   {
     question: 'How do the levels unlock?',
     answer:
-      'Level 1 is open from the start. Each later level opens when you have passed every drill in the one before it, and passing a level gives you a rank: Beginner, Comfortable, Skilled or Master. The pass marks are our own suggestions, not a research standard.',
+      'Level 1 is open from the start. Inside a level, each drill opens when you have finished the one before it. Each later level opens when you have passed every drill in the one before it, and passing a level gives you a rank: Beginner, Comfortable, Skilled or Master. The pass marks are our own suggestions, not a research standard.',
   },
   {
-    question: 'What are the Moving and Shrinking modes on the Aim tab?',
+    question: 'Where did the Aim tab go?',
     answer:
-      'Classic keeps the target still. Moving makes it drift across the play area and opens at Level 3. Shrinking makes it smaller with every hit and opens at Level 4. Best scores are kept separately for each mode and size.',
+      'Aim now lives on its own page, Mouse practice, as part of non-stop practice with more skills. Your best Aim scores are kept and shown there. The Shrinking targets drill in Level 4 here still uses the same scoring.',
   },
   {
-    question: 'How does the Aim game score me?',
+    question: 'How are the two timed drills scored?',
     answer:
-      'A run lasts 30 seconds. A click on the target is a hit and a click anywhere else in the play area is a miss, and your score is hits minus misses, never below zero. Accuracy and average reaction time are shown with it.',
-  },
-  {
-    question: 'What are the target sizes?',
-    answer:
-      'Large is 80 pixels across, medium is 56 and small is 36. They are our own suggestion, not a researched standard.',
+      'The shrinking-target drill runs 30 seconds: a click on the target is a hit, a click anywhere else in the play area is a miss, and the score is hits minus misses, never below zero. The gauntlet takes away the wrong actions from the right ones. Both need 15 or more to pass.',
   },
   {
     question: 'What do I do if a trackpad step does not work?',
@@ -72,24 +69,24 @@ const faqHtml = faqs
 export const meta = {
   title: 'Mouse Practice for Beginners — Free Mouse & Trackpad Exercises',
   description:
-    'Free mouse and trackpad practice from beginner to mastery: four levels of drills, ranks, and a 30-second aim game. No signup.',
+    'Free mouse and trackpad lessons from beginner to mastery: four levels of drills that open one step at a time, with ranks. No signup.',
 };
 
 export const previewHtml = `
 <h2>Mouse and Trackpad Practice for Beginners</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-19">November 19, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-21">November 21, 2026</time></span>
   <span>~4 min read</span>
 </p>
-<p>This page lets you practise using a mouse or a laptop trackpad, from your first click to timed challenges. The Learn tab is a ladder of four levels, Beginner, Comfortable, Skilled and Mastery, with wording for the device you pick. Each level opens when you pass the one before it, and passing gives you a rank. The Aim tab is a 30-second game where you click round targets as fast and as accurately as you can. It is free, needs no signup, and your progress stays in your browser.</p>
-<p>Below you will find how the levels work, what each drill asks of you, how the Aim game scores a run, what is saved, and what the page cannot teach.</p>
+<p>This page teaches you to use a mouse or a laptop trackpad, from your first click to timed challenges. It is a path of four levels, Beginner, Comfortable, Skilled and Mastery, with wording for the device you pick. You work through one drill at a time: finishing a drill opens the next, each level opens when you pass the one before it, and passing gives you a rank. It is free, needs no signup, and your progress stays in your browser. When you want non-stop practice instead of lessons, the <a href="/mouse-practice-trainer">Mouse practice</a> page has rounds you can repeat for as long as you like.</p>
+<p>Below you will find how the path works, what each drill asks of you, how the timed drills score, what is saved, and what the page cannot teach.</p>
 `;
 
 export const bodyHtml = `
-<h2 id="how-the-learn-tab-works">How the Learn tab works: four levels</h2>
+<h2 id="how-mouse-lessons-work">How Mouse lessons work: four levels</h2>
 <p>First choose <strong>Mouse</strong> or <strong>Trackpad</strong> at the top of the tool. The page cannot detect which one you have, because a laptop trackpad looks like a mouse to a web page, so the choice is yours and it is remembered. It changes the instructions only: with a mouse you press the left button, with a trackpad you press or tap the pad.</p>
-<p>The Learn tab shows one drill at a time, with the instruction above a practice box. <strong>Level 1, Beginner</strong> has seven steps:</p>
+<p>The four ranks run along the top of the tool and the drills of the level you are on run in a row beneath them, with the instruction above one practice box. A drill is open when you have finished the one before it; the rest show a padlock. <strong>Level 1, Beginner</strong> has seven steps:</p>
 <ol>
 <li><strong>Move the pointer</strong> onto three glowing circles in turn. No click is needed.</li>
 <li><strong>Click</strong> the circle once.</li>
@@ -99,7 +96,7 @@ export const bodyHtml = `
 <li><strong>Scroll</strong> down the list. The step finishes once you have moved a good way down it.</li>
 <li><strong>Put it together:</strong> three prompts in a row, in the order click, right-click, double-click.</li>
 </ol>
-<p>A drill finishes the moment you do the action, and the numbered dots fill in. They are saved for each device choice, and you can tap any dot to practise that drill again.</p>
+<p>A drill finishes the moment you do the action, and its circle in the row turns into a tick and opens the next one. Finished drills are saved for each device choice, and you can click any finished drill in the row to practise it again.</p>
 
 <h2 id="levels-two-to-four">Levels 2 to 4: comfortable, skilled, mastery</h2>
 <p>Each level opens when you have passed every drill in the one before. All pass marks below are our own suggestions.</p>
@@ -108,23 +105,15 @@ export const bodyHtml = `
 <li><strong>Level 3, Skilled</strong> trains speed and smooth movement: click a drifting circle eight times; move the pointer along a narrow path from a start dot to an end dot while staying inside the path at least 85% of the time; make five double-clicks within 20 seconds of your first click; right-click a circle three times and choose the named item from a menu; and drag four numbered cards into their slots.</li>
 <li><strong>Level 4, Mastery</strong> is timed: a 60-second gauntlet where the circle asks for a click, a double-click, a right-click or a drag and you score the right actions minus the wrong ones (15 or more to pass); a 30-second shrinking-target run (score 15 or more); and 20 tiny circles (24 pixels) with at least 90% of your clicks hitting.</li>
 </ul>
-<p>If you miss a pass mark, the drill shows your result and a Try again button, and nothing is saved as finished until you pass. A locked level shows what you need to open it. Passing Level 1, 2, 3 or 4 gives you the rank Beginner, Comfortable, Skilled or Master, shown at the top of the tab. Progress is saved for Mouse and for Trackpad separately, and the pass marks are the same for both, so a rank means the same on either. Levels 3 and 4 may simply feel harder on a trackpad.</p>
+<p>If you miss a pass mark, the drill shows your result and a Try again button, and nothing is saved as finished until you pass. A locked level shows what you need to open it. Passing Level 1, 2, 3 or 4 gives you the rank Beginner, Comfortable, Skilled or Master, shown at the top of the tool. Progress is saved for Mouse and for Trackpad separately, and the pass marks are the same for both, so a rank means the same on either. Levels 3 and 4 may simply feel harder on a trackpad.</p>
 
 <h2 id="mouse-versus-trackpad">Mouse versus trackpad</h2>
 <p>The instructions differ where the hardware does. For a right-click, a mouse has a right button; a trackpad usually uses a two-finger tap or the bottom-right corner of the pad. For dragging, a trackpad needs you to press and hold while sliding, or to use tap-to-drag if your laptop has it. For scrolling, a mouse has a wheel and a trackpad uses two fingers sliding up or down.</p>
 <p>Laptops are set up differently, and tap-to-click, two-finger right-click and tap-to-drag can each be switched off in the touchpad settings. If a trackpad step is still open after about ten seconds, the page reminds you to check those settings. It does not name menus for particular laptops or systems.</p>
 
-<h2 id="how-the-aim-game-scores">How the Aim game scores a run</h2>
-<p>Choose a target size, then press Start. A run lasts 30 seconds. One round target is on screen at a time:</p>
-<ul>
-<li>A click on the target is a <strong>hit</strong> and the target jumps to a new place.</li>
-<li>A click anywhere else in the play area is a <strong>miss</strong>.</li>
-<li><strong>Score</strong> is hits minus misses, and never goes below zero.</li>
-<li><strong>Accuracy</strong> is hits divided by all your clicks, as a whole percent. With no clicks it shows 0.</li>
-<li><strong>Average reaction</strong> is the time from a target appearing to you hitting it, in milliseconds.</li>
-</ul>
-<p>The three sizes are large (80 pixels across), medium (56) and small (36). Until you choose, a mouse starts on medium and a trackpad on large. These sizes are our own suggestion, not a researched standard.</p>
-<p>The Aim tab has three modes. <strong>Classic</strong> keeps the target still. <strong>Moving</strong> makes it drift across the play area and opens when you reach Level 3. <strong>Shrinking</strong> makes it 4 pixels smaller with every hit, from 80 down to 24 pixels, and opens when you reach Level 4. Your best score is saved for each mode and size.</p>
+<h2 id="how-the-timed-drills-score">How the timed drills score</h2>
+<p>Two Level 4 drills are timed. The <strong>shrinking-target drill</strong> lasts 30 seconds with one round target on screen at a time that gets 4 pixels smaller with every hit, from 80 down to 24 pixels. A click on the target is a <strong>hit</strong> and the target jumps to a new place; a click anywhere else in the play area is a <strong>miss</strong>. Your score is hits minus misses and never goes below zero, and you need 15 or more to pass. The <strong>gauntlet</strong> lasts 60 seconds and scores the right actions minus the wrong ones, also with 15 or more to pass. Accuracy and average reaction time are shown after the shrinking-target run, and your best score is saved on this device.</p>
+<p>The old Aim tab, with its Classic, Moving and Shrinking modes, now lives on the <a href="/mouse-practice-trainer">Mouse practice</a> page, which also has more skills. Your saved best Aim scores are shown there.</p>
 
 <h2 id="what-this-page-cannot-teach">What this page cannot teach</h2>
 <ul>
@@ -133,12 +122,12 @@ export const bodyHtml = `
 <li>Anything for people who cannot use a pointing device. This page needs one.</li>
 <li>Touchscreens. It still runs, but it is built for a mouse or a laptop trackpad.</li>
 </ul>
-<p>The page does not claim that using it will make you faster or more accurate. The Aim numbers are only a way to see your own scores change over time on this device.</p>
+<p>The page does not claim that using it will make you faster or more accurate. The scores are only a way to see your own results change over time on this device.</p>
 
 <h2 id="your-data-and-privacy">Your data and privacy</h2>
 <p>Your device choice, the drills you have finished and your best Aim scores are stored in your browser's local storage on this device. There is no FreeTyper account. Clearing your site data erases them. Visits to the site are measured with Google Analytics, which also receives the name of a drill you finished, your device choice and the level, when you pass a level, and after an Aim run the mode, size, hits, accuracy and score: numbers and short labels only. The <a href="/privacy">privacy policy</a> has the details.</p>
 
-<h2 id="mouse-practice-faq">Mouse practice FAQ</h2>
+<h2 id="mouse-lessons-faq">Mouse lessons FAQ</h2>
 ${faqHtml}
 
 <h2 id="sources-and-method">Sources and method</h2>
@@ -156,7 +145,7 @@ export const howToSteps: { name: string; text: string }[] = [
   },
   {
     name: 'Start with Level 1',
-    text: 'Work through move, click, double-click, right-click, drag and drop, scroll and the final mixed step. Each one finishes as soon as you do the action.',
+    text: 'Work through move, click, double-click, right-click, drag and drop, scroll and the final mixed step. Each one finishes as soon as you do the action, and that opens the next.',
   },
   {
     name: 'Pass a level to open the next',
@@ -164,14 +153,10 @@ export const howToSteps: { name: string; text: string }[] = [
   },
   {
     name: 'Practise a drill again',
-    text: 'Tap any numbered dot above the practice box to go back to that drill.',
+    text: 'Click any finished drill in the row above the practice box to go back to it.',
   },
   {
-    name: 'Try the Aim game',
-    text: 'Open the Aim tab, choose a target size and press Start. Click each target for 30 seconds; a click that misses costs a point.',
-  },
-  {
-    name: 'Beat your best',
-    text: 'Your best score for each size is saved in your browser. Run again and compare your score, accuracy and reaction time.',
+    name: 'Keep going on Mouse practice',
+    text: 'When you pass a level, open the Mouse practice page for non-stop rounds of the skills you have learned.',
   },
 ];

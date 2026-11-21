@@ -10,6 +10,7 @@ const TypingProgress = dynamic(() => import('@/components/skills/typing/TypingPr
 const FallingWordsGame = dynamic(() => import('@/components/skills/typing/FallingWordsGame'));
 const WordAttackGame = dynamic(() => import('@/components/skills/typing/WordAttackGame'));
 const MousePractice = dynamic(() => import('@/components/skills/mouse/MousePractice'));
+const MouseTrainer = dynamic(() => import('@/components/skills/mouse/MouseTrainer'));
 
 const componentMap: Record<string, React.ComponentType> = {
   'typing-lessons': TypingLessons,
@@ -20,6 +21,7 @@ const componentMap: Record<string, React.ComponentType> = {
   'typing-game-falling-words': FallingWordsGame,
   'typing-game-word-attack': WordAttackGame,
   'mouse-practice': MousePractice,
+  'mouse-practice-trainer': MouseTrainer,
 };
 
 export default function ToolClient({ toolId }: { toolId: string }) {
