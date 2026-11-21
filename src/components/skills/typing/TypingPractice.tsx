@@ -211,6 +211,7 @@ export default function TypingPractice() {
     handleBackspace,
   } = useTypingEngine({
     text,
+    onStart: () => trackEvent('practice_start', { category: categoryRef.current }),
     onComplete: handleComplete,
     onKeyStats: (key, correct, ctx) => {
       updateKeyStats(key, correct);

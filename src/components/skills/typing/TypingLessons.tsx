@@ -188,6 +188,11 @@ export default function TypingLessons() {
     handleBackspace,
   } = useTypingEngine({
     text,
+    onStart: () => {
+      const current = courseLessons[activeNumberRef.current - 1];
+      // attempt counts the same way as in lesson_attempt, so a start pairs with its attempt.
+      trackEvent('lesson_start', { lesson_number: current.number, attempt: (progressRef.current.attempts[current.id] ?? 0) + 1 });
+    },
     onComplete: handleComplete,
     onKeyStats: (key, correct, ctx) => {
       updateKeyStats(key, correct);

@@ -184,6 +184,17 @@ export default function TypingSpeedTest({
   const settingsRef = useRef({ duration, textMode, customDuration, rowMode, level: settings.textLevel });
   settingsRef.current = { duration, textMode, customDuration, rowMode, level: settings.textLevel };
 
+  // Labels shared by test_start and test_complete, so the two events can be compared one to one.
+  const testLabels = useCallback(() => {
+    const { duration: dur, textMode: mode, customDuration: custom, rowMode: row, level } = settingsRef.current;
+    const special = dailyRef.current ? 'daily' : challengeRef.current ? 'challenge' : null;
+    return {
+      duration_s: custom ?? dur,
+      text_mode: numberRow ? `number_row_${row}` : (special ?? mode),
+      text_level: numberRow || special || mode === 'code' ? 0 : level,
+    };
+  }, [numberRow]);
+
   const handleComplete = useCallback((session: TypingSession) => {
     const { duration: dur, textMode: mode, customDuration: custom, rowMode: row, level } = settingsRef.current;
     setPopupClosed(false);
@@ -211,9 +222,7 @@ export default function TypingSpeedTest({
     if (numberRow) setDigitStats(digitSpeeds(digitTimesRef.current));
     else addSession(withoutRun(updated));
     trackEvent('test_complete', {
-      duration_s: secs,
-      text_mode: numberRow ? `number_row_${row}` : day ? 'daily' : friendRun ? 'challenge' : mode,
-      text_level: numberRow || day || friendRun || mode === 'code' ? 0 : level,
+      ...testLabels(),
       wpm: session.wpm,
       accuracy: session.accuracy,
     });
@@ -238,12 +247,13 @@ export default function TypingSpeedTest({
       }
       return next;
     });
-  }, [addSession, numberRow]);
+  }, [addSession, numberRow, testLabels]);
 
   const { chars, currentIndex, wpm, accuracy, isRunning, isComplete, timeLeft, restart, handleInput, handleBackspace } =
     useTypingEngine({
       text,
       timed: duration,
+      onStart: () => trackEvent('test_start', testLabels()),
       onComplete: handleComplete,
       onKeyStats: (key, correct, ctx) => {
       updateKeyStats(key, correct);

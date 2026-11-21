@@ -106,6 +106,7 @@ export default function AimTrainer({ lockedMode, passScore, onPass }: Props) {
   };
 
   const start = () => {
+    trackEvent('aim_run_start', { mode, size });
     events.current = [];
     setCounts({ hits: 0, misses: 0 });
     setResult(null);

@@ -70,6 +70,7 @@ export default function FallingWordsGame() {
   }, []);
 
   const startGame = useCallback(() => {
+    trackEvent('game_start', { game: 'falling_words' });
     setGameState('playing');
     setWords([]);
     wordsRef.current = [];

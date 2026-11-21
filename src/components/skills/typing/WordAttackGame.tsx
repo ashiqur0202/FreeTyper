@@ -194,6 +194,7 @@ export default function WordAttackGame() {
   }, []);
 
   const startGame = useCallback(() => {
+    trackEvent('game_start', { game: 'word_attack' });
     stopTimer();
     closingRoundRef.current = false;
     currentRoundRef.current = 0;
