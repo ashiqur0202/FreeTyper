@@ -47,7 +47,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Why are some skills first in the list?',
     answer:
-      'Skills that practise a Mouse lessons level you have already passed come first in the list, and Level 1 skills come first for everyone. The rest follow, with their names in a dimmer colour. Nothing is locked: you can try any skill at any time, and the level adjusts to you. Each button shows your current level for that skill.',
+      'Skills that practise a Mouse lessons level you have already passed come first in the list, and Level 1 skills come first for everyone. The rest follow, with their names in a dimmer colour. Nothing is locked: you can try any skill at any time, and the level adjusts to you. The level for the skill you picked is shown in the panel below.',
   },
   {
     question: 'What happened to the Aim tab and my best scores?',
@@ -117,7 +117,7 @@ export const bodyHtml = `
 <p>The play area is split into three rows and three columns. For every try, the page notes which square the target was in and whether the try was missed or slow. A hit counts as <strong>slow</strong> when it took more than 1.6 times your average hit time so far in that round, once you have three earlier hits. In Follow, about ten samples a second are taken, and a sample off the dot counts as trouble. Each square then shows the percent of its tries that were missed or slow, once it has at least 8 tries, and darker means more trouble. The square with the highest share is named under the map. The map covers this visit only and starts again when you reload the page.</p>
 
 <h2 id="suggested-skills-and-mixes">Suggested skills and mixes</h2>
-<p>Nothing on this page is locked. Skills that practise a level you have passed on the <a href="/mouse-lessons">Mouse lessons</a> page come first in the list, and the Level 1 skills (Click, Double-click and Scroll) come first for everyone. Skills for levels you have not passed yet follow with their names in a dimmer colour, and you can try them whenever you like. Each button shows your current level for that skill, for example Lv 3.</p>
+<p>Nothing on this page is locked. Skills that practise a level you have passed on the <a href="/mouse-lessons">Mouse lessons</a> page come first in the list, and the Level 1 skills (Click, Double-click and Scroll) come first for everyone. Skills for levels you have not passed yet follow with their names in a dimmer colour, and you can try them whenever you like. The level for the skill you picked is shown in the panel below.</p>
 <p><strong>Mixed</strong> goes through the marked skills in turn, one round each. <strong>Today's 5-minute mix</strong> does the same for 10 rounds of 30 seconds and then says it is done.</p>
 
 <h2 id="your-old-aim-scores">Your old Aim scores</h2>

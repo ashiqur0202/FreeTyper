@@ -618,10 +618,9 @@ a:hover { color: var(--color-accent); }
 .mt-pickers { margin-bottom: 1rem; }
 .mt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.4rem, 1fr)); gap: 0.5rem; }
 .mt-sk { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; padding: 0.55rem 0.8rem; border-radius: 0.65rem; border: 1px solid var(--color-surface-border); background: var(--color-surface); color: var(--color-text); font-size: 0.88rem; text-align: left; cursor: pointer; }
-.mt-sk > span:first-child { white-space: nowrap; }
-.mt-lv { font-size: 0.7rem; color: var(--color-text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mt-sk { white-space: nowrap; }
 .mt-mix { font-weight: 600; }
-.mt-hard > span:first-child { color: var(--color-text-dim); }
+.mt-hard { color: var(--color-text-dim); }
 .mt-sk:hover:not([disabled]) { border-color: var(--color-text-dim); }
 .mt-sk[aria-pressed="true"] { border-color: var(--color-accent); background: var(--color-accent-bg); color: var(--color-text-bright); }
 .mt-sk[disabled] { opacity: 0.55; cursor: not-allowed; }

@@ -281,8 +281,7 @@ export default function MouseTrainer() {
       title={suggested.includes(k) ? SKILLS[k].blurb : `${SKILLS[k].blurb}. A harder skill: you can still try it.`}
       onClick={() => choose(k)}
     >
-      <span>{SKILLS[k].name}</span>
-      <span className="mt-lv">Lv {store.levels[k]}</span>
+      {SKILLS[k].name}
     </button>
   );
 
