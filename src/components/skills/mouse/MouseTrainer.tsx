@@ -36,7 +36,7 @@ import {
   type ZoneCount,
 } from './practiceRules';
 
-// Mouse practice (/mouse-practice-trainer): pick a skill and keep going. Rounds of 30 seconds follow one after
+// Mouse practice (/mouse-practice): pick a skill and keep going. Rounds of 30 seconds follow one after
 // another, the level adjusts to the person, and a 3 x 3 map shows where on the screen they have most trouble.
 // The skills themselves are drawn by practiceSkills.ts; the numbers and saved data are in practiceRules.ts.
 

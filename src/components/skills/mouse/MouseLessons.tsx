@@ -5,9 +5,9 @@ import type { Device } from './mouseData';
 import MouseLevels from './MouseLevels';
 import { useMouseProgress } from './useMouseProgress';
 
-// The "Mouse lessons" page (/mouse-practice): the four-level path. The free-choice, non-stop practice
-// lives on its own page (/mouse-practice-trainer, MouseTrainer.tsx).
-export default function MousePractice() {
+// The "Mouse lessons" page (/mouse-lessons): the four-level path. The free-choice, non-stop practice
+// lives on its own page (/mouse-practice, MouseTrainer.tsx).
+export default function MouseLessons() {
   const { progress, setDevice } = useMouseProgress();
   const [touchNote, setTouchNote] = useState(false);
 

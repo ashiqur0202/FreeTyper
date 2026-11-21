@@ -177,7 +177,7 @@ export default function MouseLevels() {
           ) : (
             'You have finished every level. '
           )}
-          <Link href="/mouse-practice-trainer" className="ml-2 underline decoration-dotted underline-offset-2">
+          <Link href="/mouse-practice" className="ml-2 underline decoration-dotted underline-offset-2">
             Practise this on Mouse practice
           </Link>
         </div>

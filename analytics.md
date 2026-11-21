@@ -96,7 +96,7 @@ Each item names the insight it answers (#) and the number that tells us if it wo
 ## Log (newest first)
 
 ### 2026-11-21 (events added) — Mouse practice page
-- New GA4 events from the Mouse practice page (`/mouse-practice-trainer`): `mouse_round_start` (`skill`, `level`) and `mouse_round_complete` (`skill`, `level`, `hits`, `accuracy`). A round where nothing was tried sends only the start (the rounds pause), so starts minus finishes also counts abandoned rounds. Read them split by `skill`; the old `aim_run_*` events now come only from the Shrinking targets drill in Mouse lessons. Not live until pushed.
+- New GA4 events from the Mouse practice page (`/mouse-practice`): `mouse_round_start` (`skill`, `level`) and `mouse_round_complete` (`skill`, `level`, `hits`, `accuracy`). A round where nothing was tried sends only the start (the rounds pause), so starts minus finishes also counts abandoned rounds. Read them split by `skill`; the old `aim_run_*` events now come only from the Shrinking targets drill in Mouse lessons. Not live until pushed.
 
 ### 2026-11-21 — Why 20 Nov had a huge event count (GA4 Events report for Nov 20 only, read by Claude; the single user was not isolated)
 - **20 Nov: 7,630 events, 206 users.** 4,971 (65 %) were `mouse_step_complete`, from only 22 users (226 each). Normal days are about 1,500 to 2,500 events in total.

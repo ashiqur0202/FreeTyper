@@ -58,14 +58,14 @@ import {
   bodyHtml as mouseBodyHtml,
   faqs as mouseFaqs,
   howToSteps as mouseHowToSteps,
-} from '@/data/tools/mouse-practice-content';
+} from '@/data/tools/mouse-lessons-content';
 import {
   meta as trainerMeta,
   previewHtml as trainerPreviewHtml,
   bodyHtml as trainerBodyHtml,
   faqs as trainerFaqs,
   howToSteps as trainerHowToSteps,
-} from '@/data/tools/mouse-practice-trainer-content';
+} from '@/data/tools/mouse-practice-content';
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -138,16 +138,16 @@ const seoToolPages: Record<
     h1: 'Word Attack Typing Game — Combos & Timed Rounds',
     howToName: 'How to Play FreeTyper Word Attack',
   },
-  'mouse-practice': {
+  'mouse-lessons': {
     meta: mouseMeta,
     previewHtml: mousePreviewHtml,
     bodyHtml: mouseBodyHtml,
     faqs: mouseFaqs,
     howToSteps: mouseHowToSteps,
-    h1: 'Mouse and Trackpad Practice for Beginners',
-    howToName: 'How to Practise Mouse and Trackpad Skills on FreeTyper',
+    h1: 'Mouse and Trackpad Lessons for Beginners',
+    howToName: 'How to Learn Mouse and Trackpad Skills on FreeTyper',
   },
-  'mouse-practice-trainer': {
+  'mouse-practice': {
     meta: trainerMeta,
     previewHtml: trainerPreviewHtml,
     bodyHtml: trainerBodyHtml,
@@ -217,8 +217,8 @@ export default async function ToolPage({ params }: PageProps) {
             slug === 'typing-lessons' ||
             slug === 'typing-game-falling-words' ||
             slug === 'typing-game-word-attack' ||
-            slug === 'mouse-practice' ||
-            slug === 'mouse-practice-trainer'
+            slug === 'mouse-lessons' ||
+            slug === 'mouse-practice'
               ? 'flex min-h-screen flex-col justify-start px-8 pt-16 pb-12 sm:px-10 md:pt-10 lg:px-12'
               : 'flex min-h-screen items-center justify-center px-8 py-12 sm:px-10 lg:px-12'
           }

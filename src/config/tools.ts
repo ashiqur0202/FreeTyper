@@ -76,9 +76,9 @@ const toolData: ToolData[] = [
     featured: true,
   },
   {
-    id: 'mouse-practice',
+    id: 'mouse-lessons',
     name: 'Mouse Lessons',
-    seoTitle: 'Mouse Practice for Beginners — Free Mouse & Trackpad Exercises',
+    seoTitle: 'Mouse Lessons for Beginners — Free Mouse & Trackpad Lessons',
     description:
       'Free mouse and trackpad lessons from beginner to mastery: four levels of drills that open one step at a time, with ranks. No signup.',
     iconName: 'Mouse',
@@ -86,7 +86,7 @@ const toolData: ToolData[] = [
     featured: true,
   },
   {
-    id: 'mouse-practice-trainer',
+    id: 'mouse-practice',
     name: 'Mouse Practice',
     seoTitle: 'Mouse Practice Trainer — Non-Stop Click, Scroll & Aim Drills (Free)',
     description:

@@ -41,8 +41,8 @@ const navGroups = [
   {
     label: 'mouse',
     items: [
-      { href: '/mouse-practice', label: 'lessons', icon: Mouse },
-      { href: '/mouse-practice-trainer', label: 'practice', icon: MousePointerClick },
+      { href: '/mouse-lessons', label: 'lessons', icon: Mouse },
+      { href: '/mouse-practice', label: 'practice', icon: MousePointerClick },
     ],
   },
   {
