@@ -27,7 +27,7 @@ import AppearanceControls from './AppearanceControls';
 const navGroups = [
   {
     label: null,
-    items: [{ href: '/', label: 'speed test', icon: Timer }],
+    items: [{ href: '/', label: 'typing speed test', icon: Timer }],
   },
   {
     label: 'keyboard',
