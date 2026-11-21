@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { HINT_AFTER_MS, type Device } from './mouseData';
 import { COURSE } from './course';
 import {
@@ -50,6 +50,20 @@ export default function MouseLevels() {
   const rank = rankOf(done);
   const nextLocked = LEVEL_IDS.find((l) => !isLevelUnlocked(l, done));
 
+  // One start event per drill attempt: the Drill below is remounted (new key) for every attempt, so the ref is keyed the same way.
+  const startedKey = useRef<string | null>(null);
+  const finishedAt = useRef(0);
+  const markStarted = (viaMove: boolean) => {
+    const key = `${device}-${item.id}`;
+    if (startedKey.current === key) return;
+    // The pointer is still moving when a drill ends: that tail must not count as the next drill starting.
+    if (Date.now() - finishedAt.current < 700) return;
+    // Only the "Move the pointer" drill needs no click, so only there does moving count as starting.
+    if (viaMove && item.id !== 'move') return;
+    startedKey.current = key;
+    trackEvent('mouse_step_start', { step: item.id, device, level });
+  };
+
   const pickLevel = (l: LevelId) => {
     setLevelView(l);
     setView(null);
@@ -58,10 +72,12 @@ export default function MouseLevels() {
 
   const finish = (id: string) => {
     const wasPassed = isLevelPassed(level, done);
-    // Count a drill once per device: replaying a finished drill must not add events.
+    // Every finished drill is an event, replays included. first_time lets a report split repeats from new drills.
     const firstTime = !done.includes(id);
+    startedKey.current = null;
+    finishedAt.current = Date.now();
     completeStep(device, id);
-    if (firstTime) trackEvent('mouse_step_complete', { step: id, device, level });
+    trackEvent('mouse_step_complete', { step: id, device, level, first_time: firstTime });
     if (!wasPassed && isLevelPassed(level, [...done, id])) {
       trackEvent('level_pass', { level, device });
       setLevelView(level);
@@ -149,7 +165,7 @@ export default function MouseLevels() {
         {item.text[device]}
       </p>
 
-      <div className="mt-5">
+      <div className="mt-5" onPointerDownCapture={() => markStarted(false)} onPointerMove={() => markStarted(true)}>
         <Drill key={`${device}-${item.id}`} device={device} onDone={() => finish(item.id)} />
       </div>
 
