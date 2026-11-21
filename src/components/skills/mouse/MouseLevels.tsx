@@ -58,8 +58,10 @@ export default function MouseLevels() {
 
   const finish = (id: string) => {
     const wasPassed = isLevelPassed(level, done);
+    // Count a drill once per device: replaying a finished drill must not add events.
+    const firstTime = !done.includes(id);
     completeStep(device, id);
-    trackEvent('mouse_step_complete', { step: id, device, level });
+    if (firstTime) trackEvent('mouse_step_complete', { step: id, device, level });
     if (!wasPassed && isLevelPassed(level, [...done, id])) {
       trackEvent('level_pass', { level, device });
       setLevelView(level);
