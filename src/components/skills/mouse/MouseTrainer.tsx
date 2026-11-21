@@ -270,34 +270,44 @@ export default function MouseTrainer() {
   const name = dailyN !== null ? "Today's 5-minute mix" : showSkill ? SKILLS[showSkill].name : 'Mixed';
   const job = showSkill ? SKILLS[showSkill].job : MIXED_JOB;
 
-  const skillButton = (k: PickId, label: string, mark: boolean) => (
+  const skillButton = (k: SkillId) => (
     <button
       key={k}
       type="button"
-      className={`mt-sk${mark ? ' mt-sug' : ''}`}
+      className="mt-sk"
       aria-pressed={k === pick && dailyN === null}
       disabled={running}
-      title={k === 'mixed' ? 'One round of each suggested skill' : SKILLS[k].blurb}
+      title={SKILLS[k].blurb}
       onClick={() => choose(k)}
     >
-      {label}
+      <span>{SKILLS[k].name}</span>
+      <span className="mt-lv">Lv {store.levels[k]}</span>
     </button>
   );
 
   return (
     <div className="mx-auto w-full max-w-3xl">
       <div className="mt-pickers">
+        <div className="mt-mixrow">
+          <button
+            type="button"
+            className="mt-sk mt-mix"
+            aria-pressed={pick === 'mixed' && dailyN === null}
+            disabled={running}
+            onClick={() => choose('mixed')}
+          >
+            Mixed
+          </button>
+          <span>One round of each suggested skill, in turn</span>
+        </div>
         <div>
           <p className="mt-glab">Suggested for you</p>
-          <div className="mt-grid">
-            {skillButton('mixed', 'Mixed', true)}
-            {suggested.map((k) => skillButton(k, SKILLS[k].name, true))}
-          </div>
+          <div className="mt-grid">{suggested.map((k) => skillButton(k))}</div>
         </div>
         {harder.length > 0 && (
           <div>
             <p className="mt-glab">Harder: try any time, the level adjusts to you</p>
-            <div className="mt-grid">{harder.map((k) => skillButton(k, SKILLS[k].name, false))}</div>
+            <div className="mt-grid">{harder.map((k) => skillButton(k))}</div>
           </div>
         )}
       </div>

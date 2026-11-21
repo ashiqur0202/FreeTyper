@@ -617,9 +617,12 @@ a:hover { color: var(--color-accent); }
 /* Mouse practice (/mouse-practice-trainer) */
 .mt-pickers { display: grid; gap: 0.9rem; margin-bottom: 1rem; }
 .mt-glab { margin: 0 0 0.5rem; font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-text-dim); }
-.mt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(7.4rem, 1fr)); gap: 0.5rem; }
-.mt-sk { position: relative; padding: 0.55rem 1.6rem 0.55rem 0.8rem; border-radius: 0.65rem; border: 1px solid var(--color-surface-border); background: var(--color-surface); color: var(--color-text); font-size: 0.88rem; text-align: left; cursor: pointer; }
-.mt-sk.mt-sug::after { content: ""; position: absolute; top: 50%; right: 0.7rem; width: 0.4rem; height: 0.4rem; margin-top: -0.2rem; border-radius: 9999px; background: var(--color-accent); }
+.mt-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr)); gap: 0.5rem; }
+.mt-sk { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; padding: 0.55rem 0.8rem; border-radius: 0.65rem; border: 1px solid var(--color-surface-border); background: var(--color-surface); color: var(--color-text); font-size: 0.88rem; text-align: left; cursor: pointer; }
+.mt-sk > span:first-child { white-space: nowrap; }
+.mt-lv { font-size: 0.7rem; color: var(--color-text-dim); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mt-mixrow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; font-size: 0.8rem; color: var(--color-text-dim); }
+.mt-mix { padding: 0.55rem 1.3rem; font-weight: 600; }
 .mt-sk:hover:not([disabled]) { border-color: var(--color-text-dim); }
 .mt-sk[aria-pressed="true"] { border-color: var(--color-accent); background: var(--color-accent-bg); color: var(--color-text-bright); }
 .mt-sk[disabled] { opacity: 0.55; cursor: not-allowed; }

@@ -47,7 +47,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'What does "suggested for you" mean?',
     answer:
-      'Skills that practise a Mouse lessons level you have already passed are marked with a gold dot, and Level 1 skills are marked for everyone. Nothing is locked: you can try any skill at any time, and the level adjusts to you.',
+      'Skills that practise a Mouse lessons level you have already passed are listed under "Suggested for you", and Level 1 skills are listed there for everyone. The rest are listed as harder. Nothing is locked: you can try any skill at any time, and the level adjusts to you. Each button shows your current level for that skill.',
   },
   {
     question: 'What happened to the Aim tab and my best scores?',
@@ -117,7 +117,7 @@ export const bodyHtml = `
 <p>The play area is split into three rows and three columns. For every try, the page notes which square the target was in and whether the try was missed or slow. A hit counts as <strong>slow</strong> when it took more than 1.6 times your average hit time so far in that round, once you have three earlier hits. In Follow, about ten samples a second are taken, and a sample off the dot counts as trouble. Each square then shows the percent of its tries that were missed or slow, once it has at least 8 tries, and darker means more trouble. The square with the highest share is named under the map. The map covers this visit only and starts again when you reload the page.</p>
 
 <h2 id="suggested-skills-and-mixes">Suggested skills and mixes</h2>
-<p>Nothing on this page is locked. Skills that practise a level you have passed on the <a href="/mouse-practice">Mouse lessons</a> page are marked with a gold dot, and the Level 1 skills (Click, Double-click and Scroll) are marked for everyone. Skills for levels you have not passed yet are listed as harder, and you can try them whenever you like.</p>
+<p>Nothing on this page is locked. Skills that practise a level you have passed on the <a href="/mouse-practice">Mouse lessons</a> page are listed under "Suggested for you", and the Level 1 skills (Click, Double-click and Scroll) are listed there for everyone. Skills for levels you have not passed yet are listed as harder, and you can try them whenever you like. Each button shows your current level for that skill, for example Lv 3.</p>
 <p><strong>Mixed</strong> goes through the marked skills in turn, one round each. <strong>Today's 5-minute mix</strong> does the same for 10 rounds of 30 seconds and then says it is done.</p>
 
 <h2 id="your-old-aim-scores">Your old Aim scores</h2>
@@ -148,7 +148,7 @@ ${faqHtml}
 export const howToSteps: { name: string; text: string }[] = [
   {
     name: 'Pick a skill',
-    text: 'Choose Click, Double-click, Scroll, Drag, Switch, Moving, Follow or Shrinking. Skills with a gold dot match the Mouse lessons levels you have passed. Choose Mixed for a bit of each.',
+    text: 'Choose Click, Double-click, Scroll, Drag, Switch, Moving, Follow or Shrinking. The ones under Suggested for you match the Mouse lessons levels you have passed. Choose Mixed for a bit of each.',
   },
   {
     name: 'Press Start',
