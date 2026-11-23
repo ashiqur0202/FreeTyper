@@ -14,6 +14,8 @@ import PracticeFeedback, { type CoachTone, type PracticeLogEntry } from './Pract
 import { useKeySound } from './useKeySound';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import { trackEvent } from '@/lib/analytics';
+import { fingerMap } from './typingData';
+import { FINGER_NAMES, PLAIN_FINGER } from './guideLayout';
 import { readPracticeSummary } from './practiceSummary';
 import {
   KEY_ORDER,
@@ -52,6 +54,18 @@ function smartNote(dir: number, reasons: string[]): { headline: string; tip: str
     tip: reasons.join(' '),
     tone: dir > 0 ? 'up' : dir < 0 ? 'warn' : 'steady',
   };
+}
+
+/** "Left index finger. Reach up one row from the home row, press, and come back." */
+function fingerLine(key: string): string {
+  const f = fingerMap[key];
+  const name = f ? `${f.hand === 'left' ? 'Left' : 'Right'} ${PLAIN_FINGER[FINGER_NAMES[f.finger]]} finger. ` : '';
+  const reach = 'asdfghjkl'.includes(key)
+    ? 'It is on the home row, so just press it.'
+    : 'qwertyuiop'.includes(key)
+      ? 'Reach up one row from the home row, press, and come back.'
+      : 'Reach down one row from the home row, press, and come back.';
+  return name + reach;
 }
 
 export default function SmartLessons() {
@@ -217,6 +231,8 @@ export default function SmartLessons() {
   const li = levelIndex(state.unlocked);
   const focus = focusOf(state);
   const practicing = [...focus.fresh, ...focus.weak];
+  // The key to explain: the new key, else the weakest one, else the first key for someone who has not started.
+  const main = focus.fresh[0] ?? focus.weak[0] ?? (state.rounds === 0 ? KEY_ORDER[0] : undefined);
   const mins = Math.floor(today.seconds / 60);
   const goalDone = today.seconds >= today.goal * 60;
 
@@ -316,6 +332,14 @@ export default function SmartLessons() {
                     {k}
                   </kbd>
                 ))}
+              </p>
+            )}
+            {main && (
+              <p className="mt-1 max-w-3xl text-xs leading-relaxed text-text-dim">
+                <kbd className="mr-1.5 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
+                  {main}
+                </kbd>
+                {fingerLine(main)}
               </p>
             )}
           </div>
