@@ -14,8 +14,6 @@ import PracticeFeedback, { type CoachTone, type PracticeLogEntry } from './Pract
 import { useKeySound } from './useKeySound';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import { trackEvent } from '@/lib/analytics';
-import { fingerMap } from './typingData';
-import { FINGER_NAMES, PLAIN_FINGER } from './guideLayout';
 import { readGoalMinutes, readPracticeSummary } from './practiceSummary';
 import {
   KEY_ORDER,
@@ -53,18 +51,6 @@ function smartNote(dir: number, reasons: string[]): { headline: string; tip: str
     tip: reasons.join(' '),
     tone: dir > 0 ? 'up' : dir < 0 ? 'warn' : 'steady',
   };
-}
-
-/** "Left index finger. Reach up one row from the home row, press, and come back." */
-function fingerLine(key: string): string {
-  const f = fingerMap[key];
-  const name = f ? `${f.hand === 'left' ? 'Left' : 'Right'} ${PLAIN_FINGER[FINGER_NAMES[f.finger]]} finger. ` : '';
-  const reach = 'asdfghjkl'.includes(key)
-    ? 'It is on the home row, so just press it.'
-    : 'qwertyuiop'.includes(key)
-      ? 'Reach up one row from the home row, press, and come back.'
-      : 'Reach down one row from the home row, press, and come back.';
-  return name + reach;
 }
 
 export default function SmartLessons() {
@@ -229,9 +215,7 @@ export default function SmartLessons() {
 
   const li = levelIndex(state.unlocked);
   const focus = focusOf(state);
-  const main = focus.fresh[0] ?? focus.weak[0];
-  const isNew = focus.fresh.length > 0;
-  const more = focus.weak.filter((k) => k !== main);
+  const practicing = [...focus.fresh, ...focus.weak];
   const mins = Math.floor(today.seconds / 60);
   const goalDone = today.seconds >= today.goal * 60;
 
@@ -316,27 +300,23 @@ export default function SmartLessons() {
         {/* The key to work on, and live speed and accuracy */}
         <div className="mb-3 flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
           <div className="min-w-0 flex-1">
-            {main && state.rounds > 0 ? (
-              <>
-                <p className="text-sm text-text-bright">
-                  <span className="text-text-dim">{isNew ? 'New key' : 'Extra practice'} · </span>
-                  <kbd className="rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
-                    {main}
+            {practicing.length > 0 && state.rounds > 0 && (
+              <p className="flex flex-wrap items-center gap-1.5 text-sm">
+                <span className="text-text-dim">Practicing</span>
+                {practicing.map((k) => (
+                  <kbd
+                    key={k}
+                    className={`rounded border px-1.5 py-0.5 font-mono text-[10px] uppercase ${
+                      focus.fresh.includes(k)
+                        ? 'border-accent bg-accent-bg text-accent'
+                        : 'border-surface-border bg-surface-raised text-text-bright'
+                    }`}
+                  >
+                    {k}
                   </kbd>
-                  {more.length > 0 && (
-                    <span className="ml-2 inline-flex flex-wrap items-center gap-1 align-middle text-xs text-text-dim">
-                      also
-                      {more.map((k) => (
-                        <kbd key={k} className="rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-text-bright">
-                          {k}
-                        </kbd>
-                      ))}
-                    </span>
-                  )}
-                </p>
-                <p className="mt-1 max-w-3xl text-xs leading-relaxed text-text-dim">{fingerLine(main)}</p>
-              </>
-            ) : null}
+                ))}
+              </p>
+            )}
           </div>
           <div className="flex items-center gap-3 font-mono text-sm text-text">
             <span className="tabular-nums text-text-bright">
