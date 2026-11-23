@@ -14,6 +14,7 @@ import { practiceTexts } from './typingData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
+import AdaptivePractice from './AdaptivePractice';
 import { useKeySound } from './useKeySound';
 import { trackEvent } from '@/lib/analytics';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
@@ -81,7 +82,8 @@ export default function TypingPractice() {
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [scrollOffset, setScrollOffset] = useState(0);
   const [lineHeight, setLineHeight] = useState(0);
-  const [weakFocus, setWeakFocus] = useState<AdaptiveInfo | null>(null);
+  const [, setWeakFocus] = useState<AdaptiveInfo | null>(null);
+  const [pinKey, setPinKey] = useState<string | null>(null);
   const [letterScores, setLetterScores] = useState<LetterScore[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -284,6 +286,7 @@ export default function TypingPractice() {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      if (categoryRef.current === 'adaptive') return;
       if (e.ctrlKey || e.altKey || e.metaKey) return;
 
       if (isCompleteRef.current) {
@@ -351,6 +354,7 @@ export default function TypingPractice() {
     if (isRunningRef.current) return;
     // Choosing a tab (including "weak keys") ends a letter drill and goes back to the automatic one.
     focusKeyRef.current = null;
+    setPinKey(null);
     if (cat === category) {
       if (cat === 'adaptive') nextTextRef.current();
       return;
@@ -363,6 +367,7 @@ export default function TypingPractice() {
   const pickKey = (key: string) => {
     if (isRunningRef.current) return;
     focusKeyRef.current = key;
+    setPinKey(key);
     if (category !== 'adaptive') {
       setCategory('adaptive');
       setResult(null);
@@ -371,33 +376,7 @@ export default function TypingPractice() {
     }
   };
 
-  if (!mounted || !text) {
-    return (
-      <div className="w-full">
-        <div className="flex flex-wrap items-center gap-1">
-          {CATEGORIES.map((c) => (
-            <span key={c.id} className="px-2.5 py-1 text-xs text-text-dim">
-              {c.label}
-            </span>
-          ))}
-        </div>
-        <div className="h-20" />
-      </div>
-    );
-  }
-
-  return (
-    <div className="flex w-full flex-col items-center">
-      {toasts.map((a, i) => (
-        <AchievementToast
-          key={a.id + i}
-          achievement={a}
-          onClose={() => setToasts((t) => t.filter((_, j) => j !== i))}
-        />
-      ))}
-
-      <div className="w-full">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+  const tabRow = (
             <div className="flex flex-wrap items-center gap-1">
               {CATEGORIES.map((cat) => (
                 <button
@@ -415,6 +394,38 @@ export default function TypingPractice() {
                 </button>
               ))}
             </div>
+  );
+
+  if (!mounted || !text) {
+    return (
+      <div className="w-full">
+        <div className="flex flex-wrap items-center gap-1">
+          {CATEGORIES.map((c) => (
+            <span key={c.id} className="px-2.5 py-1 text-xs text-text-dim">
+              {c.label}
+            </span>
+          ))}
+        </div>
+        <div className="h-20" />
+      </div>
+    );
+  }
+
+  if (category === 'adaptive') return <AdaptivePractice tabs={tabRow} pinKey={pinKey} />;
+
+  return (
+    <div className="flex w-full flex-col items-center">
+      {toasts.map((a, i) => (
+        <AchievementToast
+          key={a.id + i}
+          achievement={a}
+          onClose={() => setToasts((t) => t.filter((_, j) => j !== i))}
+        />
+      ))}
+
+      <div className="w-full">
+          <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+            {tabRow}
             <div className="flex items-center gap-3 font-mono text-sm text-text">
               <span className="tabular-nums text-text-bright">
                 {isRunning ? wpm : '--'}
@@ -430,40 +441,12 @@ export default function TypingPractice() {
 
           <LetterRow
             scores={letterScores}
-            focusKey={category === 'adaptive' ? (weakFocus?.key ?? null) : null}
-            manual={category === 'adaptive' && weakFocus?.kind === 'manual'}
+            focusKey={null}
+            manual={false}
             disabled={isRunning}
             onPick={pickKey}
             onBack={() => changeCategory('adaptive')}
           />
-
-          {category === 'adaptive' && weakFocus && (
-            <p
-              className={weakFocus.kind === 'auto' || weakFocus.kind === 'manual' ? 'sr-only' : 'mb-3 text-xs leading-relaxed text-text-dim'}
-              data-weak-focus={weakFocus.kind}
-            >
-              {weakFocus.kind === 'warmup' && <>Warming up: type a little so adaptive practice can learn your keys.</>}
-              {weakFocus.kind === 'auto' && (
-                <>
-                  {weakFocus.reason === 'new' ? 'Next key to learn: ' : `Your ${weakFocus.level === 'bad' ? 'weakest' : weakFocus.level === 'weak' ? 'weak' : 'next'} key: `}
-                  {weakFocus.key?.toUpperCase()}.
-                  {weakFocus.items.length > 0 && <> Slow pairs: {weakFocus.items.join(', ')}.</>}
-                </>
-              )}
-              {weakFocus.kind === 'manual' && <>Drilling the key {weakFocus.key?.toUpperCase()}.</>}
-              {weakFocus.kind === 'pairs' && (
-                <>
-                  All keys good. Slowest pairs:{' '}
-                  {weakFocus.items.map((p) => (
-                    <kbd key={p} className="mr-1 rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] text-accent">
-                      {p}
-                    </kbd>
-                  ))}
-                </>
-              )}
-              {weakFocus.kind === 'mixed' && <>All keys good. Keep going to find new weak spots.</>}
-            </p>
-          )}
 
           <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
             <div
