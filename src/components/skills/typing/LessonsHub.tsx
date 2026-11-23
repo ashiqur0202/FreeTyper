@@ -54,8 +54,8 @@ export default function LessonsHub() {
       role="tab"
       aria-selected={mode === m}
       onClick={() => choose(m)}
-      className={`rounded-md px-3.5 py-1.5 text-sm font-medium transition-colors ${
-        mode === m ? 'bg-accent-bg text-accent ring-1 ring-accent' : 'text-text-dim hover:text-text'
+      className={`rounded-md px-2.5 py-1 text-sm transition-all ${
+        mode === m ? 'bg-accent-bg font-medium text-text-bright' : 'text-text-dim hover:bg-surface-raised hover:text-text'
       }`}
     >
       {label}
@@ -64,8 +64,8 @@ export default function LessonsHub() {
 
   return (
     <div className="w-full">
-      <div className="mb-3 flex justify-end">
-        <div role="tablist" aria-label="Lesson mode" className="flex gap-0.5 rounded-lg border border-surface-border bg-surface p-0.5">
+      <div className="mb-3 flex">
+        <div role="tablist" aria-label="Lesson mode" className="flex gap-1">
           {tab('smart', 'Smart lessons')}
           {tab('course', 'Course · 34 lessons')}
         </div>

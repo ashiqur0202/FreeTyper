@@ -10,6 +10,7 @@ import type { Achievement, TypingSession } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import TypingPassage from './TypingPassage';
+import PracticeFeedback, { type CoachTone, type PracticeLogEntry } from './PracticeFeedback';
 import { useKeySound } from './useKeySound';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import { trackEvent } from '@/lib/analytics';
@@ -32,6 +33,28 @@ import {
   type SmartState,
 } from './smartEngine';
 
+const LOG_KEY = 'freetyper-smart-log';
+const LOG_MAX = 5;
+
+function loadLog(): PracticeLogEntry[] {
+  try {
+    const raw = localStorage.getItem(LOG_KEY);
+    const parsed = raw ? (JSON.parse(raw) as unknown) : null;
+    return Array.isArray(parsed) ? (parsed as PracticeLogEntry[]).slice(0, LOG_MAX) : [];
+  } catch {
+    return [];
+  }
+}
+
+/** The headline and tip a result row opens with: what the path does next, and why. */
+function smartNote(dir: number, reasons: string[]): { headline: string; tip: string; tone: CoachTone } {
+  return {
+    headline: dir > 0 ? 'Harder next' : dir < 0 ? 'Easier next' : 'Holding steady',
+    tip: reasons.join(' '),
+    tone: dir > 0 ? 'up' : dir < 0 ? 'warn' : 'steady',
+  };
+}
+
 /** "Left index finger. Reach up one row from the home row, press, and come back." */
 function fingerLine(key: string): string {
   const f = fingerMap[key];
@@ -50,6 +73,7 @@ export default function SmartLessons() {
   const [coach, setCoach] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
+  const [log, setLog] = useState<PracticeLogEntry[]>([]);
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [today, setToday] = useState({ seconds: 0, goal: 10 });
@@ -76,10 +100,17 @@ export default function SmartLessons() {
     (session: TypingSession) => {
       const prev = stateRef.current;
       const outcome = applyRound(prev, samplesRef.current, session.accuracy, session.wpm);
-      const level = LEVELS[levelIndex(outcome.state.unlocked)].name;
-      addSession(
-        withoutRun({ ...session, mode: 'lesson' as const, modeDetail: `Smart lessons · ${level} · ${outcome.state.unlocked} keys` }),
-      );
+      const updated = { ...session, mode: 'lesson' as const, modeDetail: `Smart lessons · ${outcome.state.unlocked} keys` };
+      addSession(withoutRun(updated));
+      setLog((prevLog) => {
+        const next = [{ ...updated, ...smartNote(outcome.summary.dir, outcome.reasons) }, ...prevLog].slice(0, LOG_MAX);
+        try {
+          localStorage.setItem(LOG_KEY, JSON.stringify(next));
+        } catch {
+          /* storage full or blocked */
+        }
+        return next;
+      });
       stateRef.current = outcome.state;
       setState(outcome.state);
       saveState(outcome.state);
@@ -97,7 +128,7 @@ export default function SmartLessons() {
     [addSession],
   );
 
-  const { chars, currentIndex, isRunning, isComplete, restart, handleInput, handleBackspace } = useTypingEngine({
+  const { chars, currentIndex, wpm, accuracy, isRunning, isComplete, restart, handleInput, handleBackspace } = useTypingEngine({
     text: round.text,
     onStart: () => {
       trackEvent('smart_round_start', { keys: stateRef.current.unlocked, difficulty: stateRef.current.difficulty });
@@ -136,6 +167,7 @@ export default function SmartLessons() {
     stateRef.current = saved;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, so it must run after hydration
     setState(saved);
+    setLog(loadLog());
     setMounted(true);
     refreshToday();
     const first = generateRoundText(saved);
@@ -200,11 +232,8 @@ export default function SmartLessons() {
   const main = focus.fresh[0] ?? focus.weak[0];
   const isNew = focus.fresh.length > 0;
   const more = focus.weak.filter((k) => k !== main);
-  const last = state.history[state.history.length - 1];
-  const before = state.history[state.history.length - 2];
   const mins = Math.floor(today.seconds / 60);
   const goalDone = today.seconds >= today.goal * 60;
-  const goalPct = Math.min(100, (today.seconds / (today.goal * 60)) * 100);
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -212,129 +241,126 @@ export default function SmartLessons() {
         <AchievementToast key={a.id + i} achievement={a} onClose={() => setToasts((t) => t.filter((_, j) => j !== i))} />
       ))}
 
-      <div className="flex w-full flex-col gap-3">
-        {/* Level, daily goal and the keys */}
-        <div className="flex flex-col gap-2.5 rounded-xl border border-surface-border bg-surface px-3.5 py-2.5">
-          <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-2">
-            <div className="flex flex-wrap gap-1.5" aria-label="Level">
-              {LEVELS.map((l, i) => {
-                const locked = i > li;
-                return (
-                  <span
-                    key={l.name}
-                    title={locked ? `Locked. Unlocks at ${l.from} keys (${l.from - state.unlocked} more).` : i === li ? 'Your level now.' : 'Passed.'}
-                    className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-xs font-semibold ${
-                      i === li
-                        ? 'border-accent bg-accent-bg text-accent'
-                        : locked
-                          ? 'border-dashed border-surface-border text-text-dim opacity-60'
-                          : 'border-surface-border text-text-bright'
-                    }`}
-                  >
-                    {locked && <Lock className="h-2.5 w-2.5" aria-hidden="true" />}
-                    {l.name}
-                  </span>
-                );
-              })}
-            </div>
-            <div className="flex items-center gap-2.5 text-xs text-text-dim">
-              <span>
-                {goalDone ? 'Daily goal done' : <>Daily goal <b className="tabular-nums text-text-bright">{mins}</b> of {today.goal} min</>}
-              </span>
-              <span className="h-1.5 w-32 overflow-hidden rounded-full bg-surface-border" role="img" aria-label={`Daily goal ${Math.round(goalPct)} percent`}>
-                <span className="block h-full rounded-full bg-accent" style={{ width: `${goalPct}%` }} />
-              </span>
-            </div>
-          </div>
-
-          <div className="grid gap-[3px]" style={{ gridTemplateColumns: 'repeat(13, minmax(0, 1fr))' }} role="list" aria-label="Keys in the order they unlock">
-            {KEY_ORDER.split('').map((k, i) => {
-              const open = i < state.unlocked;
-              const m = open ? mastery(state, k) : 0;
-              const fresh = focus.fresh.includes(k);
-              const weak = focus.weak.includes(k);
-              const st = state.keys[k];
+      <div className="w-full">
+        {/* Level (like the course's stage tabs) and the daily goal */}
+        <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+          <div className="flex flex-wrap items-center gap-1" aria-label="Level">
+            {LEVELS.map((l, i) => {
+              const locked = i > li;
               return (
                 <span
-                  key={k}
-                  role="listitem"
-                  title={
-                    open
-                      ? `${k.toUpperCase()}: score ${m.toFixed(2)}, typed ${st?.n ?? 0} times${st ? `, ${Math.round(st.acc * 100)}% accurate` : ''}`
-                      : `${k.toUpperCase()}: locked${i === state.unlocked ? '. Next to unlock.' : '.'}`
-                  }
-                  className={`relative grid h-7 place-items-center rounded-md border font-mono text-[0.8rem] font-semibold uppercase ${
-                    open ? 'border-surface-border text-text-bright' : 'border-dashed border-surface-border text-text-dim opacity-40'
+                  key={l.name}
+                  title={locked ? `Locked. Unlocks at ${l.from} keys (${l.from - state.unlocked} more).` : i === li ? 'Your level now.' : 'Passed.'}
+                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs ${
+                    i === li ? 'bg-accent-bg font-medium text-text-bright' : locked ? 'text-text-dim/40' : 'text-text'
                   }`}
-                  style={{
-                    background: open ? `color-mix(in srgb, var(--color-correct) ${Math.round(m * 60)}%, var(--color-surface-raised))` : undefined,
-                    boxShadow: open ? `0 2px 0 ${fresh ? 'var(--color-accent)' : weak ? 'var(--color-error)' : 'var(--color-surface-border)'}` : undefined,
-                    color: fresh ? 'var(--color-accent)' : undefined,
-                  }}
                 >
-                  {k}
-                  {!open && <Lock className="absolute right-0.5 top-0.5 h-2 w-2" aria-hidden="true" />}
+                  {locked && <Lock className="h-3 w-3" aria-hidden="true" />}
+                  {l.name}
                 </span>
               );
             })}
           </div>
+          <p className="text-[11px] text-text-dim">
+            {goalDone ? (
+              'Daily goal done'
+            ) : (
+              <>
+                Daily goal <span className="tabular-nums text-text-bright">{mins}</span> of {today.goal} min
+              </>
+            )}
+          </p>
         </div>
 
-        {/* After the first round: where you are and what the next round works on */}
-        {state.rounds > 0 && (
-          <div className="flex flex-wrap items-baseline justify-between gap-x-3 text-xs text-text-dim">
-            <span className="font-semibold uppercase tracking-wider">Round {state.rounds + 1}</span>
-            {last && (
-              <span>
-                Last round{' '}
-                <b className="tabular-nums text-text-bright">
-                  {last.wpm} wpm · {Math.round(last.accuracy)}%
-                </b>
-                {before && (
-                  <span className="tabular-nums">
-                    {' '}
-                    (before {before.wpm} wpm · {Math.round(before.accuracy)}%)
-                  </span>
-                )}
+        {/* All 26 keys in one row, in the order they unlock */}
+        <div
+          className="mb-3 grid gap-px"
+          style={{ gridTemplateColumns: 'repeat(26, minmax(0, 1fr))' }}
+          role="list"
+          aria-label="Keys in the order they unlock"
+        >
+          {KEY_ORDER.split('').map((k, i) => {
+            const open = i < state.unlocked;
+            const m = open ? mastery(state, k) : 0;
+            const fresh = focus.fresh.includes(k);
+            const weak = focus.weak.includes(k);
+            const st = state.keys[k];
+            return (
+              <span
+                key={k}
+                role="listitem"
+                title={
+                  open
+                    ? `${k.toUpperCase()}: score ${m.toFixed(2)}, typed ${st?.n ?? 0} times${st ? `, ${Math.round(st.acc * 100)}% accurate` : ''}`
+                    : `${k.toUpperCase()}: locked${i === state.unlocked ? '. Next to unlock.' : '.'}`
+                }
+                className={`relative flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-md py-1 font-mono text-[11px] uppercase sm:text-xs ${
+                  fresh
+                    ? 'bg-accent-bg font-medium text-accent'
+                    : weak
+                      ? 'text-error'
+                      : open
+                        ? 'text-text-bright'
+                        : 'text-text-dim/40'
+                }`}
+              >
+                {open ? k : <Lock className="h-3 w-3" aria-label={`${k} locked`} />}
+                <span className="h-0.5 w-3/5 overflow-hidden rounded-full bg-surface-raised" aria-hidden="true">
+                  <span className="block h-full rounded-full bg-correct" style={{ width: `${Math.round(m * 100)}%` }} />
+                </span>
               </span>
-            )}
-          </div>
-        )}
+            );
+          })}
+        </div>
 
-        {main && state.rounds > 0 && (
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-surface-raised px-3 py-1.5">
-            <span
-              className={`grid h-8 w-8 place-items-center rounded-md border-2 bg-surface font-mono text-base font-bold uppercase ${
-                isNew ? 'border-accent text-accent' : 'border-surface-border text-text-bright'
-              }`}
-            >
-              {main}
-            </span>
-            <div className="min-w-0 flex-1 text-sm">
-              <p className="font-semibold text-text-bright">
-                {isNew ? 'New key' : 'Extra practice'} · {main.toUpperCase()}
-              </p>
-              <p className="text-text">{fingerLine(main)}</p>
-            </div>
-            {more.length > 0 && (
-              <p className="flex items-center gap-1.5 text-xs text-text-dim">
-                Also practice
-                {more.map((k) => (
-                  <kbd key={k} className="rounded-md border border-surface-border bg-surface px-2 font-mono font-bold text-text-bright">
-                    {k}
+        {/* The key to work on, and live speed and accuracy */}
+        <div className="mb-3 flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+          <div className="min-w-0 flex-1">
+            {main && state.rounds > 0 ? (
+              <>
+                <p className="text-sm text-text-bright">
+                  <span className="text-text-dim">{isNew ? 'New key' : 'Extra practice'} · </span>
+                  <kbd className="rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent">
+                    {main}
                   </kbd>
-                ))}
-              </p>
-            )}
+                  {more.length > 0 && (
+                    <span className="ml-2 inline-flex flex-wrap items-center gap-1 align-middle text-xs text-text-dim">
+                      also
+                      {more.map((k) => (
+                        <kbd key={k} className="rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-text-bright">
+                          {k}
+                        </kbd>
+                      ))}
+                    </span>
+                  )}
+                </p>
+                <p className="mt-1 max-w-3xl text-xs leading-relaxed text-text-dim">{fingerLine(main)}</p>
+              </>
+            ) : null}
           </div>
-        )}
+          <div className="flex items-center gap-3 font-mono text-sm text-text">
+            <span className="tabular-nums text-text-bright">
+              {isRunning ? wpm : '--'}
+              <span className="text-text"> wpm</span>
+            </span>
+            <span className="text-text-dim">·</span>
+            <span className="tabular-nums text-text-bright">
+              {isRunning ? accuracy : '--'}
+              <span className="text-text">%</span>
+            </span>
+          </div>
+        </div>
+
+        <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
+          <div
+            className={`h-full rounded-full bg-accent transition-all duration-150 ${isRunning ? 'progress-glow' : ''}`}
+            style={{ width: chars.length ? `${Math.min(100, (currentIndex / chars.length) * 100)}%` : '0%' }}
+          />
+        </div>
 
         {/* The text */}
-        <div
-          className="cursor-text rounded-lg bg-surface-raised px-4 py-3"
-          onClick={() => inputRef.current?.focus({ preventScroll: true })}
-        >
-          <TypingPassage chars={chars} currentIndex={currentIndex} firstCharRef={firstCharRef} currentCharRef={currentCharRef} />
+        <div className="relative mt-3 min-h-[7rem] cursor-text py-3" onClick={() => inputRef.current?.focus({ preventScroll: true })}>
+          <TypingPassage chars={chars} currentIndex={currentIndex} firstCharRef={firstCharRef} currentCharRef={currentCharRef} className="transition-transform duration-150 ease-out" />
         </div>
         <input
           ref={inputRef}
@@ -350,12 +376,19 @@ export default function SmartLessons() {
           onInput={(e) => handleMobileInput(e, processChar, handleBackspace)}
         />
 
-        <p className="min-h-[1.25rem] text-xs text-text-dim" role="status">
-          {isRunning ? '' : coach[0] ?? ''}
-        </p>
+        <div className="mt-4 flex min-h-8 flex-wrap items-center justify-center gap-x-4 gap-y-1 text-center">
+          {!isRunning && coach[0] && (
+            <p role="status" className="text-sm text-text">
+              {coach[0]}
+            </p>
+          )}
+        </div>
 
-        {/* The keyboard */}
-        <LiveKeyboard nextChar={chars[currentIndex]?.char} lastKeyCorrect={lastKeyFlash} compact />
+        <div className="mt-4 animate-fade-up">
+          <LiveKeyboard nextChar={chars[currentIndex]?.char} lastKeyCorrect={lastKeyFlash} compact />
+        </div>
+
+        <PracticeFeedback log={log} collapsible />
       </div>
     </div>
   );
