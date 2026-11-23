@@ -30,6 +30,7 @@ import {
   openKeys,
   planOf,
   saveState,
+  segmentLines,
   type KeySample,
   type PracticePlan,
   type SmartState,
@@ -96,6 +97,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
   const sessionDifficultyRef = useRef(2);
   const startScoresRef = useRef<Record<string, number>>({});
   const lastCompleteIdRef = useRef<string | null>(null);
+  const textBoxRef = useRef<HTMLDivElement>(null);
 
   const { addSession, updateKeyStats, checkAchievements } = useTypingProgress();
 
@@ -111,7 +113,12 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
   const startSegment = useCallback(
     (restartEngine: (t: string) => void) => {
       const nextPlan = planOf(stateRef.current, pinnedRef.current);
-      const round = generatePracticeSegment(stateRef.current, nextPlan);
+      // Fill whole lines: Beginner one, Intermediate two, Advanced three. A line holds as many letters as fit in the box.
+      const box = textBoxRef.current;
+      const sample = box?.querySelector('.char')?.getBoundingClientRect().width;
+      const perLine = box ? Math.floor(box.clientWidth / (sample && sample > 4 ? sample : 11.3)) : 80;
+      const target = Math.round(Math.max(60, perLine * segmentLines(stateRef.current) * 0.9));
+      const round = generatePracticeSegment(stateRef.current, nextPlan, Math.min(target, 320));
       samplesRef.current = [];
       setPlan(nextPlan);
       setText(round.text);
@@ -508,7 +515,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
         </div>
 
         {/* The text */}
-        <div className="relative mt-2 min-h-[6.5rem] cursor-text py-3" onClick={() => inputRef.current?.focus({ preventScroll: true })}>
+        <div ref={textBoxRef} className="relative mt-2 min-h-[6.5rem] cursor-text py-3" onClick={() => inputRef.current?.focus({ preventScroll: true })}>
           <TypingPassage chars={chars} currentIndex={currentIndex} firstCharRef={firstCharRef} currentCharRef={currentCharRef} className="transition-transform duration-150 ease-out" />
         </div>
         <input

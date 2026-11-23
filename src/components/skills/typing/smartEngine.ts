@@ -19,7 +19,7 @@ export const START_KEYS = 6;
 /** Speed target per key in ms (about 33 wpm), used only until the typist has data. After that the yardstick is their own median. */
 export const TARGET_MS = 360;
 export const ROUND_WORDS = 12;
-/** Practice: words in one segment, and segments in one session. */
+/** Practice: a segment without a measured screen is about this many words; the screen sets the real length. */
 export const SEGMENT_WORDS = 8;
 export const SESSION_SEGMENTS = 4;
 /** A key needs this many presses before it can count as learned. */
@@ -170,7 +170,7 @@ export interface RoundText {
   realWords: number;
 }
 
-function buildText(state: SmartState, weight: (k: string) => number, words: number, rand: Rand): RoundText {
+function buildText(state: SmartState, weight: (k: string) => number, size: { words?: number; chars?: number }, rand: Rand): RoundText {
   const keys = openKeys(state);
   const open = new Set(keys);
   const target = 3 + state.difficulty * 0.45;
@@ -178,7 +178,10 @@ function buildText(state: SmartState, weight: (k: string) => number, words: numb
   const out: string[] = [];
   let prev = '';
   let realWords = 0;
-  for (let i = 0; i < words; i++) {
+  const maxWords = size.words ?? 80;
+  const maxChars = size.chars ?? Infinity;
+  let total = 0;
+  for (let i = 0; i < maxWords && total < maxChars; i++) {
     let w: string;
     if (pool.length >= 10 && rand() < 0.85) {
       w = pickWeighted(
@@ -198,8 +201,9 @@ function buildText(state: SmartState, weight: (k: string) => number, words: numb
     }
     prev = w;
     if (state.difficulty >= 5 && rand() < (state.difficulty - 4) * 0.05) w = w.charAt(0).toUpperCase() + w.slice(1);
-    if (state.difficulty >= 6 && i < words - 1 && rand() < (state.difficulty - 5) * 0.05) w += rand() < 0.5 ? ',' : '.';
+    if (state.difficulty >= 6 && rand() < (state.difficulty - 5) * 0.05) w += rand() < 0.5 ? ',' : '.';
     out.push(w);
+    total += w.length + 1;
   }
   out[out.length - 1] = out[out.length - 1].replace(/[,.]$/, '') + '.';
   return { text: out.join(' '), realWords };
@@ -207,14 +211,22 @@ function buildText(state: SmartState, weight: (k: string) => number, words: numb
 
 /** The text for the next Smart lessons round: only open keys, weak keys more often, harder as difficulty rises. */
 export function generateRoundText(state: SmartState, rand: Rand = Math.random): RoundText {
-  return buildText(state, (k) => weightOf(state, k), ROUND_WORDS, rand);
+  return buildText(state, (k) => weightOf(state, k), { words: ROUND_WORDS }, rand);
 }
 
-/** One Practice segment: the same text, weighted by the session plan (focus 5, almost there 2.5, review 2, the rest 1). */
-export function generatePracticeSegment(state: SmartState, plan: PracticePlan, rand: Rand = Math.random): RoundText {
+/** How many lines of text a Practice segment fills: Beginner 1, Intermediate 2, Advanced 3. */
+export function segmentLines(state: SmartState): number {
+  return levelIndex(state.unlocked) + 1;
+}
+
+/**
+ * One Practice segment, weighted by the session plan (focus 5, almost there 2.5, review 2, the rest 1).
+ * It runs until it holds about `targetChars` letters, which the screen turns into whole lines (see segmentLines).
+ */
+export function generatePracticeSegment(state: SmartState, plan: PracticePlan, targetChars: number = SEGMENT_WORDS * 6, rand: Rand = Math.random): RoundText {
   const weight = (k: string) =>
     plan.fresh.includes(k) ? 4 : plan.focus.includes(k) ? 5 : plan.almost.includes(k) ? 2.5 : plan.review.includes(k) ? 2 : 1;
-  return buildText(state, weight, SEGMENT_WORDS, rand);
+  return buildText(state, weight, { chars: targetChars }, rand);
 }
 
 /** Opens the next key when every open key has enough presses and a good enough score. */

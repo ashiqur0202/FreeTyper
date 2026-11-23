@@ -102,7 +102,7 @@ export const bodyHtml = `
 <table>
 <thead><tr><th>Tab</th><th>What it contains</th><th>Passage length</th></tr></thead>
 <tbody>
-<tr><td>Adaptive</td><td>Four segments per session, built from the keys you have open and your own scores</td><td>8 words per segment</td></tr>
+<tr><td>Adaptive</td><td>Four segments per session, built from the keys you have open and your own scores</td><td>1 to 3 lines per segment, by level</td></tr>
 <tr><td>Quotes</td><td>Five short quotations, with capital letters and punctuation</td><td>about 12–31 words</td></tr>
 <tr><td>News</td><td>Five news-style passages on technology, space, climate, health and privacy</td><td>about 24–30 words</td></tr>
 <tr><td>Code</td><td>Five snippets: a React component, Python, TypeScript, SQL and CSS</td><td>about 23–30 words</td></tr>
@@ -115,7 +115,7 @@ export const bodyHtml = `
 <ol>
 <li><strong>Keys unlock by skill.</strong> You start with six home-row keys (F J D K S L). The keys then open in this order: A E G H I O R T U N M C B W Y P V Q X Z. The next key opens when every open key has been typed at least 6 times and scores 0.7 or more. Locked keys show a padlock in the row at the top. A line above the row shows Beginner, Intermediate and Advanced with a dot where you are (6 to 11 open keys, 12 to 19, 20 to 26: our own labels), and to the right the keys the session is working on now and the keys kept for review. These are the same keys as in <a href="/typing-lessons">Smart lessons</a>: a key you open in one place is open in the other.</li>
 <li><strong>A score for every key.</strong> It runs from 0 to 1. Accuracy counts most (it is cubed) and speed less, and speed is judged against your own median time per key, not a fixed number, so slow and fast typists both get a fair list.</li>
-<li><strong>A plan, not one key.</strong> Each session is four segments of 8 words. The text favours up to three keys to fix: keys with fewer than 6 presses first, then the lowest scores. Keys that score 0.65 to 0.8 get extra weight as "almost there", and two strong keys you have not typed for the longest are added for review so they do not slip. The words come from the same list of about 890 common English words, using only open keys, with made-up letter groups filling in while few keys are open.</li>
+<li><strong>A plan, not one key.</strong> Each session is four segments. A segment fills about one line of text for Beginner, two lines for Intermediate and three for Advanced, so the text grows with you (how many letters that is depends on the width of your screen). The text favours up to three keys to fix: keys with fewer than 6 presses first, then the lowest scores. Keys that score 0.65 to 0.8 get extra weight as "almost there", and two strong keys you have not typed for the longest are added for review so they do not slip. The words come from the same list of about 890 common English words, using only open keys, with made-up letter groups filling in while few keys are open.</li>
 <li><strong>It re-plans during the session.</strong> After every segment the scores are updated and the plan is rebuilt, so a key you just fixed leaves the focus list and the next one steps in. The fold under the keyboard, "How this session adapted", lists every change in words.</li>
 <li><strong>Difficulty follows you.</strong> It runs from 1 to 10 and moves by at most one step away from where the session started: up after a segment of 95% accuracy or better at a decent speed, down under 88%. Higher steps mean longer words, then capitals (from step 5), then commas and full stops (from step 6).</li>
 <li><strong>Click a key to make it the focus.</strong> Clicking an open key in the row puts it first in the plan until you click it again. Keys never unlock in the middle of a session, only at its end.</li>
@@ -167,7 +167,7 @@ export const bodyHtml = `
 <li>Twenty fixed passages in the quotes, news, code and fun tabs, so repeats are normal.</li>
 <li>Passages are short, and runs are untimed, so WPM from a single run is rough.</li>
 <li>English text and the QWERTY layout only.</li>
-<li>Adaptive practice targets letters, not fingers, and covers a to z only: digits and symbols do not unlock yet. Its numbers (6 presses, a score of 0.7, 8-word segments, four segments a session) are our own starting values and have not been tested on learners.</li>
+<li>Adaptive practice targets letters, not fingers, and covers a to z only: digits and symbols do not unlock yet. Its numbers (6 presses, a score of 0.7, one to three lines per segment, four segments a session) are our own starting values and have not been tested on learners.</li>
 <li>For a physical keyboard, not a phone.</li>
 </ul>
 
