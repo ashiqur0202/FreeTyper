@@ -17,12 +17,14 @@ import { trackEvent } from '@/lib/analytics';
 import { readPracticeSummary } from './practiceSummary';
 import {
   KEY_ORDER,
+  LEVELS,
   SESSION_SEGMENTS,
   SMART_GOAL_MINUTES,
   applySegment,
   emptyState,
   finishSession,
   generatePracticeSegment,
+  levelIndex,
   loadState,
   mastery,
   openKeys,
@@ -379,12 +381,64 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
           </div>
 
           <div className="flex min-w-0 flex-col gap-2">
-            <div className="flex justify-between gap-3 text-xs text-text-dim">
-              <span>
-                <b className="font-semibold text-text-bright">{state.unlocked}</b> of 26 keys open
-              </span>
-              <span>
-                {state.unlocked < 26 ? `Next key: ${KEY_ORDER[state.unlocked].toUpperCase()} (opens when every key is good)` : 'All keys open'}
+            <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 text-xs text-text-dim">
+              <div
+                className="w-full max-w-[21rem]"
+                role="img"
+                aria-label={`Level: ${LEVELS[levelIndex(state.unlocked)].name}. ${state.unlocked} of 26 keys open.`}
+                title={`You are here: ${LEVELS[levelIndex(state.unlocked)].name} (${state.unlocked} of 26 keys open)`}
+              >
+                <div className="relative">
+                  <div className="grid gap-[3px]" style={{ gridTemplateColumns: '30fr 40fr 30fr' }}>
+                    {LEVELS.map((l, i) => {
+                      const to = i < 2 ? LEVELS[i + 1].from : 26;
+                      const fill = Math.max(0, Math.min(1, (state.unlocked - l.from) / (to - l.from)));
+                      return (
+                        <span key={l.name} className="block h-1 overflow-hidden rounded-full bg-surface-raised">
+                          <span className="block h-full rounded-full bg-accent" style={{ width: `${fill * 100}%` }} />
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <span
+                    className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-surface shadow-[0_0_0_3px_var(--color-accent-bg)]"
+                    style={{ left: `${Math.min(100, Math.max(0, ((state.unlocked - 6) / 20) * 100))}%` }}
+                    aria-hidden="true"
+                  />
+                </div>
+                <div className="mt-1.5 grid text-[11px]" style={{ gridTemplateColumns: '30fr 40fr 30fr' }} aria-hidden="true">
+                  {LEVELS.map((l, i) => (
+                    <span
+                      key={l.name}
+                      className={`text-center ${i === levelIndex(state.unlocked) ? 'font-semibold text-accent' : i < levelIndex(state.unlocked) ? 'text-text' : 'text-text-dim/60'}`}
+                    >
+                      {l.name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <span className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
+                {plan.focus.length > 0 && (
+                  <span className="inline-flex items-center gap-1">
+                    {plan.fresh.length > 0 ? 'New' : pinned ? 'Your pick' : 'Practicing'}
+                    {plan.focus.map((k) => (
+                      <kbd key={k} className="rounded border border-accent bg-accent-bg px-1.5 py-px font-mono text-[10px] font-bold uppercase text-accent">
+                        {k}
+                      </kbd>
+                    ))}
+                  </span>
+                )}
+                {plan.review.length > 0 && (
+                  <span className="inline-flex items-center gap-1">
+                    Review
+                    {plan.review.map((k) => (
+                      <kbd key={k} className="rounded border border-surface-border bg-surface-raised px-1.5 py-px font-mono text-[10px] font-bold uppercase text-text-bright">
+                        {k}
+                      </kbd>
+                    ))}
+                  </span>
+                )}
+                {plan.focus.length === 0 && plan.review.length === 0 && state.unlocked >= 26 && 'All keys open'}
               </span>
             </div>
             <div className="grid gap-0.5" style={{ gridTemplateColumns: 'repeat(26, minmax(0, 1fr))' }} role="group" aria-label="Your letters, click an open one to make it the focus">
@@ -433,44 +487,13 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
           </div>
         </section>
 
-        {/* The plan for this session */}
-        <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-sm text-text-dim">
-          {plan.focus.length > 0 && (
-            <span className="inline-flex items-center gap-1.5">
-              {plan.fresh.length > 0 ? 'New and weak' : pinned ? 'Your pick' : 'Focus'}
-              {plan.focus.map((k) => (
-                <kbd key={k} className="rounded border border-accent bg-accent-bg px-1.5 py-px font-mono text-[10px] font-bold uppercase text-accent">
-                  {k}
-                </kbd>
-              ))}
-            </span>
-          )}
-          {plan.almost.length > 0 && (
-            <span className="inline-flex items-center gap-1.5">
-              Almost there
-              {plan.almost.map((k) => (
-                <kbd key={k} className="rounded border border-surface-border bg-surface-raised px-1.5 py-px font-mono text-[10px] font-bold uppercase text-text-bright">
-                  {k}
-                </kbd>
-              ))}
-            </span>
-          )}
-          {plan.review.length > 0 && (
-            <span className="inline-flex items-center gap-1.5">
-              Review
-              {plan.review.map((k) => (
-                <kbd key={k} className="rounded border border-surface-border bg-surface-raised px-1.5 py-px font-mono text-[10px] font-bold uppercase text-text-bright">
-                  {k}
-                </kbd>
-              ))}
-            </span>
-          )}
-          {plan.focus.length === 0 && <span>Every open key is good. Review and harder text, then the next key opens.</span>}
-        </div>
-
         {/* Segments of this session */}
         <div>
-          <div className="grid grid-cols-4 gap-1" aria-hidden="true">
+          <div
+            className="grid grid-cols-4 gap-1"
+            role="img"
+            aria-label={`Segment ${Math.min(segIdx + 1, SESSION_SEGMENTS)} of ${SESSION_SEGMENTS}`}
+          >
             {Array.from({ length: SESSION_SEGMENTS }, (_, i) => (
               <span key={i} className="block h-[3px] overflow-hidden rounded-sm bg-surface-raised">
                 <span
@@ -482,9 +505,6 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
               </span>
             ))}
           </div>
-          <p className="mt-1 text-[11px] text-text-dim">
-            Segment {Math.min(segIdx + 1, SESSION_SEGMENTS)} of {SESSION_SEGMENTS} · difficulty {state.difficulty} of 10
-          </p>
         </div>
 
         {/* The text */}
@@ -535,7 +555,8 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
               </ul>
             )}
             <p className="mt-3 text-xs text-text-dim">
-              The next key opens when every open key has been typed 6 times or more and scores 0.7 or more (accuracy counts most, speed less, judged against your own
+              In the key row, a gold ring marks the keys this session works on, an underline marks keys kept for review, and ▲ ▼ show how a key moved since the
+              session started. Difficulty is {state.difficulty} of 10; it moves by one step at most per session. The next key opens when every open key has been typed 6 times or more and scores 0.7 or more (accuracy counts most, speed less, judged against your own
               median speed). These numbers are our own starting values.
             </p>
           </div>
