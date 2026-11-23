@@ -9,7 +9,10 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-20 (the last attempts are rows that open into the result card)
+ * Also describes Smart lessons as coded in `smartEngine.ts` and `SmartLessons.tsx` (the page shows both modes through `LessonsHub.tsx`).
+ * If a number in the Smart lessons section changes in `smartEngine.ts`, change it here in the same commit.
+ *
+ * Last real edit: 2026-11-24 (Smart lessons added beside the course)
  */
 
 export const meta = {
@@ -84,7 +87,7 @@ export const previewHtml = `
 <h2>Free Typing Lessons — Learn Touch Typing Step by Step</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-20">November 20, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-24">November 24, 2026</time></span>
   <span>~7 min read</span>
 </p>
 <p>These free typing lessons are a course of 34 short lessons in six stages. You begin with two keys on the home row, add the rest of the home row, then the top and bottom rows, then Shift and punctuation, then numbers and symbols, and finish with speed and accuracy practice. A live keyboard above the text shows which key comes next, and your progress is saved in your browser without an account.</p>
@@ -106,7 +109,19 @@ export const bodyHtml = `
 </table>
 <p>Every lesson shows the keys it introduces and a short note on which finger moves where. The order is our own design and follows the finger map in the <a href="/keyboard-guide">keyboard guide</a>. It is not a proven method.</p>
 
-<h2 id="how-the-lessons-work">How the lessons work</h2>
+<h2 id="smart-lessons">Smart lessons: a path that adapts to you</h2>
+<p>The lessons page has two modes, chosen with the tabs at the top: <strong>Smart lessons</strong> and the <strong>Course</strong> of 34 fixed lessons described below. Your choice is remembered in this browser. A first-time visitor lands on Smart lessons; someone who has already passed course lessons lands on the Course.</p>
+<ul>
+<li><strong>No fixed list.</strong> You start with six keys (F J D K S L). Every round is 12 words of new text built only from the keys that are open. With few keys open many of the words are made-up letter groups; as more keys open, more of them are real words from the same built-in list of common English words.</li>
+<li><strong>Keys unlock by skill.</strong> The keys open in this order: F J D K S L, then A E G H I O R T U N M C B W Y P V Q X Z. Each key gets a score from 0 to 1, where accuracy counts most and speed less (the speed target is a fixed 360 ms per key, about 33 WPM). The next key unlocks when every open key has been typed at least 6 times and scores 0.7 or more. Locked keys show a padlock in the key row.</li>
+<li><strong>Weak keys come up more often.</strong> A new key gets the most weight until it has been typed 6 times, then keys with low scores come up more often than strong ones. The bar above the text names the key to focus on and which finger types it.</li>
+<li><strong>Difficulty goes up or down after every round.</strong> It runs from 1 to 10. It goes up one step after a round of 95% accuracy or better at a decent speed, goes down one step under 88%, and otherwise stays. Higher steps mean longer words, then capitals (from step 5), then commas and full stops (from step 6). A fast but sloppy round does not raise it.</li>
+<li><strong>Levels.</strong> Beginner is 6 to 11 open keys, Intermediate is 12 to 19 and Advanced is 20 to 26. Intermediate and Advanced show a padlock until you reach them. The names and cut-offs are our own labels, not a standard.</li>
+<li><strong>Daily goal.</strong> The bar above the text uses the same daily goal and minutes as the right sidebar. A finished round counts as practice time and keeps your streak.</li>
+</ul>
+<p>The rules above are starting values we chose and have not tested on learners, so treat the path as a suggestion and use the Course if you prefer a fixed order. Smart lessons covers letters, capitals, commas and full stops only; digits and symbols are in Course stages 4 and 5. The per-key counts that drive the path are stored in this browser under one key and never uploaded.</p>
+
+<h2 id="how-the-lessons-work">How the Course lessons work</h2>
 <ul>
 <li><strong>New text every attempt.</strong> The text is built when you start the lesson, from real words, sentences or short drills. It only ever uses keys you have unlocked, so you are never asked for a key you have not met. The words come from a built-in list of about 900 common English words.</li>
 <li><strong>A pass mark.</strong> You pass a lesson with 95% accuracy or better. The accuracy challenge (lesson 32) needs 98%.</li>
@@ -161,7 +176,7 @@ export const bodyHtml = `
 </ul>
 
 <h2 id="your-progress-and-privacy">Your progress and privacy</h2>
-<p>Which lessons you have passed or skipped, and your latest five lesson results, are stored in your browser's local storage on this device. There is no FreeTyper account, and your typing is not uploaded. Clearing your site data resets the course to lesson 1. Visits to the site are measured with Google Analytics, along with anonymous usage counts such as that a lesson was attempted and whether it was passed; the <a href="/privacy">privacy policy</a> has the details.</p>
+<p>Your Smart lessons progress (how often and how accurately you typed each key) and, for the Course, which lessons you have passed or skipped and your latest five lesson results, are stored in your browser's local storage on this device. There is no FreeTyper account, and your typing is not uploaded. Clearing your site data resets the course to lesson 1. Visits to the site are measured with Google Analytics, along with anonymous usage counts such as that a lesson was attempted and whether it was passed; the <a href="/privacy">privacy policy</a> has the details.</p>
 
 <h2 id="typing-lessons-faq">Typing lessons FAQ</h2>
 ${faqHtml}

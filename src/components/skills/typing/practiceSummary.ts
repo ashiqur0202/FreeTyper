@@ -46,7 +46,7 @@ export interface SpeedSummary {
 
 const MAX_WEAK_KEYS = 3;
 
-export const GOAL_OPTIONS = [5, 10, 15, 20] as const;
+export const GOAL_OPTIONS = [5, 10, 15, 20, 30, 60] as const;
 export const DEFAULT_GOAL_MINUTES = 10;
 
 export interface PracticeSummary {

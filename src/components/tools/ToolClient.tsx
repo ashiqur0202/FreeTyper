@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 
-const TypingLessons = dynamic(() => import('@/components/skills/typing/TypingLessons'));
+const LessonsHub = dynamic(() => import('@/components/skills/typing/LessonsHub'));
 const TypingPractice = dynamic(() => import('@/components/skills/typing/TypingPractice'));
 const TypingSpeedTest = dynamic(() => import('@/components/skills/typing/TypingSpeedTest'));
 const KeyboardGuide = dynamic(() => import('@/components/skills/typing/KeyboardGuide'));
@@ -13,7 +13,7 @@ const MouseLessons = dynamic(() => import('@/components/skills/mouse/MouseLesson
 const MouseTrainer = dynamic(() => import('@/components/skills/mouse/MouseTrainer'));
 
 const componentMap: Record<string, React.ComponentType> = {
-  'typing-lessons': TypingLessons,
+  'typing-lessons': LessonsHub,
   'typing-practice': TypingPractice,
   'typing-speed-test': TypingSpeedTest,
   'keyboard-guide': KeyboardGuide,
