@@ -23,6 +23,8 @@ export const SETTLED_PRESSES = 6;
 export const UNLOCK_SCORE = 0.7;
 export const MAX_DIFFICULTY = 10;
 export const HISTORY_MAX = 30;
+/** The daily goal shown on the Smart lessons page, in minutes. It does not follow the sidebar goal. */
+export const SMART_GOAL_MINUTES = 30;
 
 export interface KeyState {
   /** Presses so far. */

@@ -14,10 +14,11 @@ import PracticeFeedback, { type CoachTone, type PracticeLogEntry } from './Pract
 import { useKeySound } from './useKeySound';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import { trackEvent } from '@/lib/analytics';
-import { readGoalMinutes, readPracticeSummary } from './practiceSummary';
+import { readPracticeSummary } from './practiceSummary';
 import {
   KEY_ORDER,
   LEVELS,
+  SMART_GOAL_MINUTES,
   applyRound,
   emptyState,
   focusOf,
@@ -62,7 +63,7 @@ export default function SmartLessons() {
   const [log, setLog] = useState<PracticeLogEntry[]>([]);
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
-  const [today, setToday] = useState({ seconds: 0, goal: 10 });
+  const [today, setToday] = useState({ seconds: 0, goal: SMART_GOAL_MINUTES });
 
   const inputRef = useRef<HTMLInputElement>(null);
   const firstCharRef = useRef<HTMLSpanElement>(null);
@@ -76,7 +77,7 @@ export default function SmartLessons() {
   const refreshToday = useCallback(() => {
     try {
       const s = readPracticeSummary();
-      setToday({ seconds: s.todaySeconds, goal: readGoalMinutes() });
+      setToday({ seconds: s.todaySeconds, goal: SMART_GOAL_MINUTES });
     } catch {
       /* no history yet */
     }
