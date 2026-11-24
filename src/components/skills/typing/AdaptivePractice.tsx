@@ -15,8 +15,10 @@ import { useKeySound } from './useKeySound';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
 import { trackEvent } from '@/lib/analytics';
 import { readPracticeSummary } from './practiceSummary';
+import { unlockRequirement } from './engine/levels';
 import {
   KEY_ORDER,
+  START_KEYS,
   LEVELS,
   SESSION_SEGMENTS,
   SMART_GOAL_MINUTES,
@@ -37,6 +39,8 @@ import {
 } from './smartEngine';
 
 const LOG_KEY = 'freetyper-adaptive-log';
+/** The level line is as wide as the keys it spans: Beginner 1 to 12, Intermediate 12 to 20, Advanced 20 to 26. */
+const TRACK_COLUMNS = `${LEVELS[1].from - LEVELS[0].from}fr ${LEVELS[2].from - LEVELS[1].from}fr ${KEY_ORDER.length - LEVELS[2].from}fr`;
 const LOG_MAX = 5;
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
 /** The same four colors the letter row used before (good, okay, weak, weakest). */
@@ -396,7 +400,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
                 title={`You are here: ${LEVELS[levelIndex(state.unlocked)].name} (${state.unlocked} of 26 keys open)`}
               >
                 <div className="relative">
-                  <div className="grid gap-[3px]" style={{ gridTemplateColumns: '30fr 40fr 30fr' }}>
+                  <div className="grid gap-[3px]" style={{ gridTemplateColumns: TRACK_COLUMNS }}>
                     {LEVELS.map((l, i) => {
                       const to = i < 2 ? LEVELS[i + 1].from : 26;
                       const fill = Math.max(0, Math.min(1, (state.unlocked - l.from) / (to - l.from)));
@@ -409,11 +413,11 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
                   </div>
                   <span
                     className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-surface shadow-[0_0_0_3px_var(--color-accent-bg)]"
-                    style={{ left: `${Math.min(100, Math.max(0, ((state.unlocked - 6) / 20) * 100))}%` }}
+                    style={{ left: `${Math.min(100, Math.max(0, ((state.unlocked - START_KEYS) / (KEY_ORDER.length - START_KEYS)) * 100))}%` }}
                     aria-hidden="true"
                   />
                 </div>
-                <div className="mt-1.5 grid text-[11px]" style={{ gridTemplateColumns: '30fr 40fr 30fr' }} aria-hidden="true">
+                <div className="mt-1.5 grid text-[11px]" style={{ gridTemplateColumns: TRACK_COLUMNS }} aria-hidden="true">
                   {LEVELS.map((l, i) => (
                     <span
                       key={l.name}
@@ -563,8 +567,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
             )}
             <p className="mt-3 text-xs text-text-dim">
               In the key row, a gold ring marks the keys this session works on, an underline marks keys kept for review, and ▲ ▼ show how a key moved since the
-              session started. Difficulty is {state.difficulty} of 10; it moves by one step at most per session. The next key opens when every open key has been typed 6 times or more and scores 0.7 or more (accuracy counts most, speed less, judged against your own
-              median speed). These numbers are our own starting values.
+              session started. Difficulty is {state.difficulty} of 10; it moves by one step at most per session. The next key opens when every open key has been typed {unlockRequirement(state.unlocked).presses} times or more and scores {unlockRequirement(state.unlocked).score} or more (easy keys ask for less, hard keys for more; accuracy counts most, speed less, judged against your own median speed). These numbers are our own starting values.
             </p>
           </div>
         </details>

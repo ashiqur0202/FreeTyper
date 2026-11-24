@@ -1,4 +1,7 @@
 import { COURSE_WORDS } from './courseWords';
+import { KEY_ORDER, START_KEYS, LEVELS, levelIndex, unlockRequirement } from './engine/levels';
+
+export { KEY_ORDER, START_KEYS, LEVELS, levelIndex };
 
 /**
  * The engine behind Smart lessons: no fixed lesson list. Keys unlock one at a time by skill, and the
@@ -13,9 +16,6 @@ import { COURSE_WORDS } from './courseWords';
 type Rand = () => number;
 
 export const SMART_KEY = 'freetyper-smart-progress';
-/** Unlock order: home row first, then the keys that make the most real words. */
-export const KEY_ORDER = 'fjdkslaeghiortunmcbwypvqxz';
-export const START_KEYS = 6;
 /** Speed target per key in ms (about 33 wpm), used only until the typist has data. After that the yardstick is their own median. */
 export const TARGET_MS = 360;
 export const ROUND_WORDS = 12;
@@ -24,8 +24,6 @@ export const SEGMENT_WORDS = 8;
 export const SESSION_SEGMENTS = 4;
 /** A key needs this many presses before it can count as learned. */
 export const SETTLED_PRESSES = 6;
-/** Every key in play needs this score (0 to 1) before the next key unlocks. */
-export const UNLOCK_SCORE = 0.7;
 export const MAX_DIFFICULTY = 10;
 export const HISTORY_MAX = 30;
 /** The daily goal shown on the Smart lessons page, in minutes. It does not follow the sidebar goal. */
@@ -68,16 +66,6 @@ export interface KeySample {
   correct: boolean;
   /** Ms since the previous keystroke; undefined at the start or after a Backspace. */
   gapMs?: number;
-}
-
-export const LEVELS = [
-  { name: 'Beginner', from: START_KEYS },
-  { name: 'Intermediate', from: 12 },
-  { name: 'Advanced', from: 20 },
-] as const;
-
-export function levelIndex(unlocked: number): number {
-  return unlocked >= LEVELS[2].from ? 2 : unlocked >= LEVELS[1].from ? 1 : 0;
 }
 
 export function emptyState(): SmartState {
@@ -232,7 +220,8 @@ export function generatePracticeSegment(state: SmartState, plan: PracticePlan, t
 /** Opens the next key when every open key has enough presses and a good enough score. */
 export function tryUnlock(state: SmartState): { unlocked: number; key?: string } {
   if (state.unlocked >= KEY_ORDER.length) return { unlocked: state.unlocked };
-  const ready = openKeys(state).every((k) => keyOf(state, k).n >= SETTLED_PRESSES && mastery(state, k) >= UNLOCK_SCORE);
+  const need = unlockRequirement(state.unlocked);
+  const ready = openKeys(state).every((k) => keyOf(state, k).n >= need.presses && mastery(state, k) >= need.score);
   return ready ? { unlocked: state.unlocked + 1, key: KEY_ORDER[state.unlocked] } : { unlocked: state.unlocked };
 }
 
@@ -318,7 +307,7 @@ export function applyRound(prev: SmartState, samples: KeySample[], accuracy: num
     history: [...prev.history, summary].slice(-HISTORY_MAX),
   };
   const reasons = [sentence];
-  if (unlockedKey) reasons.push(`New key unlocked: ${unlockedKey.toUpperCase()}. Every key in play was typed ${SETTLED_PRESSES}+ times and scored ${UNLOCK_SCORE} or more.`);
+  if (unlockedKey) reasons.push(`New key unlocked: ${unlockedKey.toUpperCase()}. Every key in play was typed ${unlockRequirement(unlocked - 1).presses}+ times and scored ${unlockRequirement(unlocked - 1).score} or more.`);
   return { state, summary, reasons };
 }
 
