@@ -19,9 +19,8 @@ export const SMART_KEY = 'freetyper-smart-progress';
 /** Speed target per key in ms (about 33 wpm), used only until the typist has data. After that the yardstick is their own median. */
 export const TARGET_MS = 360;
 export const ROUND_WORDS = 12;
-/** Practice: a segment without a measured screen is about this many words; the screen sets the real length. */
+/** Practice: a text without a measured screen is about this many words; the screen sets the real length. */
 export const SEGMENT_WORDS = 8;
-export const SESSION_SEGMENTS = 4;
 /** A key needs this many presses before it can count as learned. */
 export const SETTLED_PRESSES = 6;
 export const MAX_DIFFICULTY = 10;
@@ -306,8 +305,8 @@ export interface SegmentOutcome {
 }
 
 /**
- * Fold one finished Practice segment into the state. Difficulty moves by at most one step away from where
- * the session started. Keys never unlock here, only at the end of the session (see finishSession).
+ * Fold one finished Practice text into the state: update the keys, move the difficulty by at most one step. The
+ * Practice page calls finishSession right after it, so a key can open the moment a text is finished.
  */
 export function applySegment(
   prev: SmartState,
@@ -402,7 +401,7 @@ export interface SessionOutcome {
   note: string;
 }
 
-/** The end of a Practice session: maybe open the next key, count the session and write the summary sentence. */
+/** After a finished Practice text: maybe open the next key, count the round and write the summary sentence. */
 export function finishSession(state: SmartState, startScores: Record<string, number>, pinned?: string | null): SessionOutcome {
   const opened = tryUnlock(state);
   const next: SmartState = { ...state, unlocked: opened.unlocked, rounds: state.rounds + 1 };
@@ -416,8 +415,8 @@ export function finishSession(state: SmartState, startScores: Record<string, num
   if (opened.key) note += `New key unlocked: ${opened.key.toUpperCase()}. Every key you had is good, so the next one opens. `;
   if (improved.length) note += `Better: ${improved.map((k) => k.toUpperCase()).join(', ')}. `;
   note += plan.focus.length
-    ? `Next session focuses on ${plan.focus.map((k) => k.toUpperCase()).join(', ')}.`
-    : 'Every key is good. Next session is review plus harder text.';
+    ? `The next text focuses on ${plan.focus.map((k) => k.toUpperCase()).join(', ')}.`
+    : 'Every key is good. The next text is review plus harder words.';
   if (slipped) note += ` Watch ${slipped.toUpperCase()}, it slipped.`;
   return { state: next, unlockedKey: opened.key, note };
 }

@@ -20,7 +20,6 @@ import {
   KEY_ORDER,
   START_KEYS,
   LEVELS,
-  SESSION_SEGMENTS,
   SMART_GOAL_MINUTES,
   applySegment,
   emptyState,
@@ -61,29 +60,20 @@ function loadLog(): PracticeLogEntry[] {
   }
 }
 
-interface SegmentStat {
-  wpm: number;
-  accuracy: number;
-  duration: number;
-  correctChars: number;
-  incorrectChars: number;
-  totalChars: number;
-}
-
 /**
  * The adaptive tab of the Practice page. Keys unlock by skill (the same keys as Smart lessons), a session is
  * four short segments, and the plan (what to fix, what is almost there, what to review) and the difficulty
- * are recalculated after every segment. The rules live in smartEngine.ts; the Lessons guide describes them.
+ * are recalculated after EVERY finished text, and the next key can open right then. The rules live in smartEngine.ts;
+ * the Lessons guide describes them.
  */
 export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactNode; pinKey?: string | null }) {
   const [state, setState] = useState<SmartState>(emptyState);
   const [plan, setPlan] = useState<PracticePlan>(() => planOf(emptyState()));
   const [text, setText] = useState('');
-  const [segIdx, setSegIdx] = useState(0);
   const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState<TypingSession | null>(null);
   const [log, setLog] = useState<PracticeLogEntry[]>([]);
-  const [reasons, setReasons] = useState<{ seg: number; text: string }[]>([]);
+  const [reasons, setReasons] = useState<string[]>([]);
   const [note, setNote] = useState('');
   const [pinned, setPinned] = useState<string | null>(pinKey);
   const [startScores, setStartScores] = useState<Record<string, number>>({});
@@ -97,9 +87,6 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
   const stateRef = useRef(state);
   const pinnedRef = useRef<string | null>(pinKey);
   const samplesRef = useRef<KeySample[]>([]);
-  const segStatsRef = useRef<SegmentStat[]>([]);
-  const segIdxRef = useRef(0);
-  const sessionDifficultyRef = useRef(2);
   const startScoresRef = useRef<Record<string, number>>({});
   const lastCompleteIdRef = useRef<string | null>(null);
   const textBoxRef = useRef<HTMLDivElement>(null);
@@ -114,9 +101,13 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
     }
   }, []);
 
-  /** A new segment: the plan is recalculated from the latest scores and the text follows it. */
-  const startSegment = useCallback(
+  /** The next text: remember where every key stands (for the arrows), recalculate the plan from the latest scores, generate. */
+  const startText = useCallback(
     (restartEngine: (t: string) => void) => {
+      const snap: Record<string, number> = {};
+      for (const k of openKeys(stateRef.current)) snap[k] = mastery(stateRef.current, k);
+      startScoresRef.current = snap;
+      setStartScores(snap);
       const nextPlan = planOf(stateRef.current, pinnedRef.current);
       // Fill whole lines: Beginner one, Intermediate two, Advanced three. A line holds as many letters as fit in the box.
       const box = textBoxRef.current;
@@ -134,6 +125,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
     [],
   );
 
+  /** A finished text: update the keys, move the difficulty, maybe open the next key, write the note. All of it right now. */
   const handleComplete = useCallback(
     (session: TypingSession) => {
       const outcome = applySegment(
@@ -141,70 +133,42 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
         samplesRef.current,
         session.accuracy,
         session.wpm,
-        sessionDifficultyRef.current,
+        stateRef.current.difficulty,
         pinnedRef.current,
       );
+      const end = finishSession(outcome.state, startScoresRef.current, pinnedRef.current);
+      stateRef.current = end.state;
       addSession(withoutRun({ ...session, mode: 'practice' as const, modeDetail: 'adaptive' }));
-      trackEvent('practice_complete', { category: 'adaptive', wpm: session.wpm, accuracy: session.accuracy });
-      segStatsRef.current.push({
+      trackEvent('practice_complete', {
+        category: 'adaptive',
         wpm: session.wpm,
         accuracy: session.accuracy,
-        duration: session.duration,
-        correctChars: session.correctChars,
-        incorrectChars: session.incorrectChars,
-        totalChars: session.totalChars,
+        keys: end.state.unlocked,
+        difficulty: end.state.difficulty,
       });
-      const doneSegments = segIdxRef.current + 1;
-      setReasons((r) => [...r, ...outcome.reasons.map((t) => ({ seg: doneSegments, text: t }))]);
-      stateRef.current = outcome.state;
-
-      if (doneSegments >= SESSION_SEGMENTS) {
-        const end = finishSession(outcome.state, startScoresRef.current, pinnedRef.current);
-        stateRef.current = end.state;
-        const stats = segStatsRef.current;
-        const avg = (pick: (s: SegmentStat) => number) => Math.round(stats.reduce((a, s) => a + pick(s), 0) / stats.length);
-        const sum = (pick: (s: SegmentStat) => number) => stats.reduce((a, s) => a + pick(s), 0);
-        const accuracy = avg((s) => s.accuracy);
-        const tone: CoachTone = end.unlockedKey ? 'best' : accuracy >= 95 ? 'up' : accuracy < 88 ? 'warn' : 'steady';
-        const entry: PracticeLogEntry = {
-          id: `${session.id}-session`,
-          date: session.date,
-          wpm: avg((s) => s.wpm),
-          accuracy,
-          correctChars: sum((s) => s.correctChars),
-          incorrectChars: sum((s) => s.incorrectChars),
-          totalChars: sum((s) => s.totalChars),
-          duration: Math.round(sum((s) => s.duration)),
-          mode: 'practice',
-          modeDetail: `adaptive · ${end.state.unlocked} keys`,
-          headline: end.unlockedKey ? `New key: ${end.unlockedKey.toUpperCase()}` : accuracy >= 95 ? 'Clean session' : accuracy < 88 ? 'Easier next' : 'Keep going',
-          tip: end.note,
-          tone,
-        };
-        setLog((prev) => {
-          const next = [entry, ...prev].slice(0, LOG_MAX);
-          try {
-            localStorage.setItem(LOG_KEY, JSON.stringify(next));
-          } catch {
-            /* storage full or blocked */
-          }
-          return next;
-        });
-        setNote(end.note);
-        trackEvent('practice_session_complete', {
-          keys: end.state.unlocked,
-          difficulty: end.state.difficulty,
-          accuracy,
-          wpm: entry.wpm,
-        });
-        if (end.unlockedKey) trackEvent('smart_key_unlock', { keys: end.state.unlocked, source: 'practice' });
-        segIdxRef.current = SESSION_SEGMENTS;
-      } else {
-        segIdxRef.current = doneSegments;
-      }
-      setState(stateRef.current);
-      saveState(stateRef.current);
-      setSegIdx(segIdxRef.current);
+      if (end.unlockedKey) trackEvent('smart_key_unlock', { keys: end.state.unlocked, source: 'practice' });
+      const tone: CoachTone = end.unlockedKey ? 'best' : session.accuracy >= 95 ? 'up' : session.accuracy < 88 ? 'warn' : 'steady';
+      const entry: PracticeLogEntry = {
+        ...session,
+        mode: 'practice',
+        modeDetail: `adaptive · ${end.state.unlocked} keys`,
+        headline: end.unlockedKey ? `New key: ${end.unlockedKey.toUpperCase()}` : session.accuracy >= 95 ? 'Clean text' : session.accuracy < 88 ? 'Easier next' : 'Keep going',
+        tip: end.note,
+        tone,
+      };
+      setLog((prev) => {
+        const next = [entry, ...prev].slice(0, LOG_MAX);
+        try {
+          localStorage.setItem(LOG_KEY, JSON.stringify(next));
+        } catch {
+          /* storage full or blocked */
+        }
+        return next;
+      });
+      setReasons(outcome.reasons);
+      setNote(end.note);
+      setState(end.state);
+      saveState(end.state);
       setResult(session);
     },
     [addSession],
@@ -232,21 +196,6 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
     currentIndexRef.current = currentIndex;
   });
 
-  /** A new session: remember where every key stands, so the row can show what moved. */
-  const startSession = useCallback(() => {
-    sessionDifficultyRef.current = stateRef.current.difficulty;
-    const snap: Record<string, number> = {};
-    for (const k of openKeys(stateRef.current)) snap[k] = mastery(stateRef.current, k);
-    startScoresRef.current = snap;
-    setStartScores(snap);
-    segStatsRef.current = [];
-    segIdxRef.current = 0;
-    setSegIdx(0);
-    setReasons([]);
-    startSegment(restart);
-    isCompleteRef.current = false;
-  }, [restart, startSegment]);
-
   // Read the saved path only after the page has loaded (it lives in this browser's localStorage).
   useEffect(() => {
     const saved = loadState();
@@ -256,23 +205,22 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
     setLog(loadLog());
     setMounted(true);
     refreshToday();
-    startSession();
+    startText(restart);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // After a finished segment the next one starts at once; after the fourth a new session begins.
+  // After a finished text the next one starts at once.
   useEffect(() => {
     if (!isComplete || !result) return;
     if (lastCompleteIdRef.current === result.id) return;
     lastCompleteIdRef.current = result.id;
     const achieved = checkAchievements();
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- runs once per finished segment, after the session was saved
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- runs once per finished text, after it was saved
     if (achieved.length > 0) setToasts((t) => [...t, ...achieved]);
     refreshToday();
-    if (segIdxRef.current >= SESSION_SEGMENTS) startSession();
-    else startSegment(restart);
+    startText(restart);
     isCompleteRef.current = false;
-  }, [isComplete, result, checkAchievements, refreshToday, startSession, startSegment, restart]);
+  }, [isComplete, result, checkAchievements, refreshToday, startText, restart]);
 
   const playKeySound = useKeySound();
   const processChar = useCallback(
@@ -517,24 +465,12 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
           </div>
         </section>
 
-        {/* Segments of this session */}
-        <div>
+        {/* How far through this text */}
+        <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
           <div
-            className="grid grid-cols-4 gap-1"
-            role="img"
-            aria-label={`Segment ${Math.min(segIdx + 1, SESSION_SEGMENTS)} of ${SESSION_SEGMENTS}`}
-          >
-            {Array.from({ length: SESSION_SEGMENTS }, (_, i) => (
-              <span key={i} className="block h-[3px] overflow-hidden rounded-sm bg-surface-raised">
-                <span
-                  className={`block h-full ${i < segIdx ? 'bg-correct' : 'bg-accent'}`}
-                  style={{
-                    width: i < segIdx ? '100%' : i === segIdx && chars.length ? `${Math.min(100, (currentIndex / chars.length) * 100)}%` : '0%',
-                  }}
-                />
-              </span>
-            ))}
-          </div>
+            className={`h-full rounded-full bg-accent transition-all duration-150 ${isRunning ? 'progress-glow' : ''}`}
+            style={{ width: chars.length ? `${Math.min(100, (currentIndex / chars.length) * 100)}%` : '0%' }}
+          />
         </div>
 
         {/* The text */}
@@ -570,23 +506,22 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
         <PracticeFeedback log={log} collapsible />
 
         <details className="mt-4 rounded-xl border border-surface-border bg-surface">
-          <summary className="cursor-pointer select-none px-3.5 py-3 text-sm font-semibold text-text-bright">How this session adapted</summary>
+          <summary className="cursor-pointer select-none px-3.5 py-3 text-sm font-semibold text-text-bright">How the last text adapted</summary>
           <div className="px-3.5 pb-4 text-sm">
             {reasons.length === 0 ? (
-              <p className="text-text-dim">Nothing yet. Finish a segment and the changes are listed here.</p>
+              <p className="text-text-dim">Nothing yet. Finish a text and the changes are listed here.</p>
             ) : (
               <ul className="flex flex-col gap-1.5">
                 {reasons.map((r, i) => (
                   <li key={i} className="text-text">
-                    <span className="text-text-dim">Segment {r.seg}: </span>
-                    {r.text}
+                    {r}
                   </li>
                 ))}
               </ul>
             )}
             <p className="mt-3 text-xs text-text-dim">
-              In the key row, a gold ring marks the keys this session works on, an underline marks keys kept for review, and ▲ ▼ show how a key moved since the
-              session started. Difficulty is {state.difficulty} of 10; it moves by one step at most per session. The next key opens when every open key has been typed {unlockRequirement(state.unlocked).presses} times or more and scores {unlockRequirement(state.unlocked).score} or more (easy keys ask for less, hard keys for more; accuracy counts most, speed less, judged against your own median speed). These numbers are our own starting values.
+              In the key row, a gold ring marks the keys this text works on, an underline marks keys kept for review, and ▲ ▼ show how a key moved with your last
+              text. Difficulty is {state.difficulty} of 10; it moves by one step at most per text. The next key opens when every open key has been typed {unlockRequirement(state.unlocked).presses} times or more and scores {unlockRequirement(state.unlocked).score} or more (easy keys ask for less, hard keys for more; accuracy counts most, speed less, judged against your own median speed). These numbers are our own starting values.
             </p>
           </div>
         </details>

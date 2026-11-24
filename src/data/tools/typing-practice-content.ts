@@ -42,7 +42,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'How does adaptive practice choose what to drill?',
     answer:
-      'Each key you have open gets a score from 0 to 1 that counts accuracy most and speed less, judged against your own median speed. A session is four short segments. Most of the text goes to up to three keys to fix (new keys first, then the lowest scores), some to keys that are almost there, and a few strong keys are repeated for review. After every segment the scores, the plan and the difficulty are recalculated. A new key opens when every open key has been typed at least 6 times and scores 0.7 or more. All of this stays in your browser.',
+      'Each key you have open gets a score from 0 to 1 that counts accuracy most and speed less, judged against your own median speed. Every finished text is calculated at once. Most of the text goes to up to three keys to fix (new keys first, then the lowest scores), some to keys that are almost there, and a few strong keys are repeated for review. Right after each text the scores, the plan and the difficulty are recalculated, and the next text is made from them. A new key opens when every open key has been typed enough times and scores high enough (see the list below). All of this stays in your browser.',
   },
   {
     question: 'Is typing practice timed?',
@@ -105,7 +105,7 @@ export const bodyHtml = `
 <table>
 <thead><tr><th>Tab</th><th>What it contains</th><th>Length</th></tr></thead>
 <tbody>
-<tr><td>Adaptive</td><td>Words and made-up everyday sentences built from the keys you have open and your own scores, in sessions of four segments</td><td>1 to 3 lines per segment, by level</td></tr>
+<tr><td>Adaptive</td><td>Words and made-up everyday sentences built from the keys you have open and your own scores, one text at a time, recalculated after each</td><td>1 to 3 lines, by level</td></tr>
 <tr><td>Quotes</td><td>36 quotations, each an exact sentence or two from a public-domain book or document</td><td>about 40 to 220 characters each; two or three are joined for longer levels</td></tr>
 <tr><td>Facts</td><td>55 short facts in our own words, each checked against a Wikipedia article</td><td>about 35 to 130 characters each; two or three are joined for longer levels</td></tr>
 <tr><td>Code</td><td>Short snippets in JavaScript, Python, SQL, CSS and HTML, generated from templates, one line each</td><td>1 to 3 lines, by level</td></tr>
@@ -121,10 +121,10 @@ export const bodyHtml = `
 <ol>
 <li><strong>Keys unlock by skill.</strong> You start with one key (F). The keys open from easy to hard, one at a time, in this order: F J D A S L (the home row), E, K G H (the rest of the home row), then I R U T N O C M W, and last the far and rare keys B Y P V X Q Z. The next key opens when every open key has been typed enough times and scores high enough: easy keys ask for little (6 presses and a score of 0.65) and the far keys ask for more (up to 10 presses and 0.75). Locked keys show a padlock in the row at the top. A line above the row shows Beginner, Intermediate and Advanced with a dot where you are (1 to 11 open keys, 12 to 19, 20 to 26: our own labels), and to the right the keys the session is working on now and the keys kept for review. These are the same keys as in <a href="/typing-lessons">Smart lessons</a>: a key you open in one place is open in the other.</li>
 <li><strong>A score for every key.</strong> It runs from 0 to 1. Accuracy counts most (it is cubed) and speed less, and speed is judged against your own median time per key, not a fixed number, so slow and fast typists both get a fair list.</li>
-<li><strong>A plan, not one key.</strong> Each session is four segments. A segment fills about one line of text for Beginner, two lines for Intermediate and three for Advanced, so the text grows with you (how many letters that is depends on the width of your screen). The text favours up to three keys to fix: keys with fewer than 6 presses first, then the lowest scores. Keys that score 0.65 to 0.8 get extra weight as "almost there", and two strong keys you have not typed for the longest are added for review so they do not slip. The text uses your open keys. While you have five or fewer open, the next two keys in the order are previewed in about 30 percent of the letters, so the text is not all one letter. Previewed keys are drawn with a dashed outline in the key row, do not count toward unlocking and never show as weak. The first rounds are short (about 12, 24 and 36 letters with one, two and three keys open). Beginner segments are words (real words from a bank of about 1,200 when enough fit, made-up letter groups while few keys are open). At Intermediate about half of the segments, and at Advanced most, are made-up everyday sentences when your open keys can make them, such as a person doing something with a thing in a place. The sentences are invented and say nothing about the real world; the grammar follows rules (people eat food and read books), and capitals start from difficulty 5, commas from 6 and questions from 7.</li>
-<li><strong>It re-plans during the session.</strong> After every segment the scores are updated and the plan is rebuilt, so a key you just fixed leaves the focus list and the next one steps in. The fold under the keyboard, "How this session adapted", lists every change in words.</li>
-<li><strong>Difficulty follows you.</strong> It runs from 1 to 10 and moves by at most one step away from where the session started: up after a segment of 95% accuracy or better at a decent speed, down under 88%. Higher steps mean longer words, then capitals (from step 5), then commas and full stops (from step 6).</li>
-<li><strong>Click a key to make it the focus.</strong> Clicking an open key in the row puts it first in the plan until you click it again. Keys never unlock in the middle of a session, only at its end.</li>
+<li><strong>A plan, not one key.</strong> Every text is one round. A text fills about one line of text for Beginner, two lines for Intermediate and three for Advanced, so the text grows with you (how many letters that is depends on the width of your screen). The text favours up to three keys to fix: keys with fewer than 6 presses first, then the lowest scores. Keys that score 0.65 to 0.8 get extra weight as "almost there", and two strong keys you have not typed for the longest are added for review so they do not slip. The text uses your open keys. While you have five or fewer open, the next two keys in the order are previewed in about 30 percent of the letters, so the text is not all one letter. Previewed keys are drawn with a dashed outline in the key row, do not count toward unlocking and never show as weak. The first rounds are short (about 12, 24 and 36 letters with one, two and three keys open). Beginner texts are words (real words from a bank of about 1,200 when enough fit, made-up letter groups while few keys are open). At Intermediate about half of the texts, and at Advanced most, are made-up everyday sentences when your open keys can make them, such as a person doing something with a thing in a place. The sentences are invented and say nothing about the real world; the grammar follows rules (people eat food and read books), and capitals start from difficulty 5, commas from 6 and questions from 7.</li>
+<li><strong>It re-plans after every text.</strong> The moment you finish a text the scores are updated and the plan is rebuilt, so a key you just fixed leaves the focus list and the next one steps in, and the next text appears. The fold under the keyboard, "How the last text adapted", lists every change in words.</li>
+<li><strong>Difficulty follows you.</strong> It runs from 1 to 10 and moves by at most one step per text: up after a text of 95% accuracy or better at a decent speed, down under 88%. Higher steps mean longer words, then capitals (from step 5), then commas and full stops (from step 6).</li>
+<li><strong>Click a key to make it the focus.</strong> Clicking an open key in the row puts it first in the plan until you click it again. A key can open the moment you finish a text.</li>
 <li><strong>Daily practice goal.</strong> The ring at the top counts today's minutes from every typing page toward a goal of 30 minutes.</li>
 </ol>
 <h3>Letter pairs</h3>
@@ -173,7 +173,7 @@ export const bodyHtml = `
 <li>The quotes and facts libraries are small (36 quotes, 55 facts), so repeats are normal. The quotes come from old books, so some wording and spelling is dated.</li>
 <li>Passages are short, and runs are untimed, so WPM from a single run is rough.</li>
 <li>English text and the QWERTY layout only.</li>
-<li>Adaptive practice targets letters, not fingers, and covers a to z only: digits and symbols do not unlock yet. Its numbers (6 presses, a score of 0.7, one to three lines per segment, four segments a session) are our own starting values and have not been tested on learners.</li>
+<li>Adaptive practice targets letters, not fingers, and covers a to z only: digits and symbols do not unlock yet. Its numbers (6 presses, a score of 0.7, one to three lines per text) are our own starting values and have not been tested on learners.</li>
 <li>For a physical keyboard, not a phone.</li>
 </ul>
 
@@ -211,6 +211,6 @@ export const howToSteps: { name: string; text: string }[] = [
   },
   {
     name: 'Let adaptive practice drill your weak keys',
-    text: 'Keep typing on the adaptive tab. It plans each session from your scores, drills the keys that cost you the most errors and opens the next key when the ones you have are good. Click an open key in the row to make it the focus.',
+    text: 'Keep typing on the adaptive tab. It recalculates after every text from your scores, drills the keys that cost you the most errors and opens the next key when the ones you have are good. Click an open key in the row to make it the focus.',
   },
 ];
