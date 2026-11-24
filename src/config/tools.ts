@@ -40,7 +40,7 @@ const toolData: ToolData[] = [
     name: 'Typing Practice',
     seoTitle: 'Free Typing Practice Online — Quotes, Code & Weak-Key Drills',
     description:
-      'Free typing practice exercises online: quotes, news, code and fun passages, plus an adaptive drill from the keys and letter pairs you miss most. No signup.',
+      'Free typing practice exercises online: checked quotes and facts, generated code, plus an adaptive plan that opens keys as you get good at them. No signup.',
     iconName: 'PenTool',
     category: 'typing',
     featured: true,
