@@ -49,6 +49,15 @@ export function levelIndex(unlocked: number): number {
   return unlocked >= LEVELS[2].from ? 2 : unlocked >= LEVELS[1].from ? 1 : 0;
 }
 
+/**
+ * The hardest text a level gets (the 1 to 10 text difficulty): Beginner stops at 4 (letters only, no capitals and no
+ * punctuation: those start at 5 and 6), Intermediate at 7, Advanced at 10. So a typist who types well on six keys gets
+ * longer words, not capitals and commas, until the level changes.
+ */
+export function difficultyCap(unlocked: number): number {
+  return [4, 7, 10][levelIndex(unlocked)];
+}
+
 export function levelName(unlocked: number): string {
   return LEVELS[levelIndex(unlocked)].name;
 }

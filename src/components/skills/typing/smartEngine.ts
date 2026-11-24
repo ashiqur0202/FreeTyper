@@ -1,8 +1,8 @@
 import { generateAdaptiveText } from './engine/adaptive';
 import { TUNING } from './engine/tuning';
-import { KEY_ORDER, START_KEYS, LEVELS, levelIndex, previewKeys, shortRoundChars, unlockRequirement } from './engine/levels';
+import { KEY_ORDER, START_KEYS, LEVELS, difficultyCap, levelIndex, previewKeys, shortRoundChars, unlockRequirement } from './engine/levels';
 
-export { KEY_ORDER, START_KEYS, LEVELS, levelIndex, previewKeys, shortRoundChars };
+export { KEY_ORDER, START_KEYS, LEVELS, difficultyCap, levelIndex, previewKeys, shortRoundChars };
 
 /**
  * The engine behind Smart lessons: no fixed lesson list. Keys unlock one at a time by skill, and the
@@ -134,7 +134,7 @@ function buildText(state: SmartState, weight: (k: string) => number, size: { wor
   const r = generateAdaptiveText({
     open: new Set(openKeys(state)),
     weight,
-    difficulty: state.difficulty,
+    difficulty: Math.min(state.difficulty, difficultyCap(state.unlocked)),
     unlocked: state.unlocked,
     words: size.words,
     targetChars: size.chars,
@@ -249,7 +249,7 @@ export function applyRound(prev: SmartState, samples: KeySample[], accuracy: num
   const f0 = focusOf({ ...mid, rounds: prev.rounds + 1 });
   const aim = f0.weak.concat(f0.fresh).slice(0, 3).join(', ').toUpperCase();
   if ((accuracy >= TUNING.upAccuracy && ratio >= TUNING.upRatio) || (accuracy >= TUNING.upHighAccuracy && ratio >= TUNING.upHighRatio)) {
-    if (difficulty < MAX_DIFFICULTY) {
+    if (difficulty < Math.min(MAX_DIFFICULTY, difficultyCap(prev.unlocked))) {
       difficulty++;
       dir = 1;
       sentence = `Accuracy ${acc}% at ${wpm} wpm. Next text is a step harder: ${
@@ -382,7 +382,7 @@ export function applySegment(
   let difficulty = prev.difficulty;
   let dir: -1 | 0 | 1 = 0;
   if ((accuracy >= TUNING.upAccuracy && ratio >= TUNING.upRatio) || (accuracy >= TUNING.upHighAccuracy && ratio >= TUNING.upHighRatio)) {
-    if (difficulty < MAX_DIFFICULTY && difficulty < sessionDifficulty + 1) {
+    if (difficulty < Math.min(MAX_DIFFICULTY, difficultyCap(prev.unlocked)) && difficulty < sessionDifficulty + 1) {
       difficulty++;
       dir = 1;
     }
@@ -461,7 +461,7 @@ export function loadState(): SmartState {
     return {
       version: 1,
       unlocked: Math.min(KEY_ORDER.length, Math.max(START_KEYS, Math.round(p.unlocked as number))),
-      difficulty: Math.min(MAX_DIFFICULTY, Math.max(1, Math.round(p.difficulty as number))),
+      difficulty: Math.min(MAX_DIFFICULTY, Math.max(1, Math.round(p.difficulty as number)), difficultyCap(Math.min(KEY_ORDER.length, Math.max(START_KEYS, Math.round(p.unlocked as number))))),
       rounds: Number.isFinite(p.rounds) ? (p.rounds as number) : 0,
       keys,
       history: Array.isArray(p.history) ? (p.history as RoundSummary[]).slice(-HISTORY_MAX) : [],

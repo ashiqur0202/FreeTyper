@@ -41,6 +41,8 @@ for (let u = 1; u <= 26; u++) {
       const problems = Q.checkText(r.text, { open, minChars: 2, maxChars: 400, allowRepeats: u <= 2 });
       if (problems.length) fail(`u=${u} d=${d}: ${problems.join(', ')} :: ${r.text.slice(0, 80)}`);
       if (/[A-Z]/.test(r.text) && d < 5) fail('capital below difficulty 5: ' + r.text.slice(0, 60));
+      // a Beginner (fewer than 12 keys) gets no capitals and no commas or question marks, even with a high saved difficulty
+      if (u < 12 && /[A-Z,?]/.test(r.text)) fail('capital or punctuation for a Beginner (' + u + ' keys, difficulty ' + d + '): ' + r.text.slice(0, 60));
       if (/[?]/.test(r.text)) sentenceTexts++;
     }
   }
