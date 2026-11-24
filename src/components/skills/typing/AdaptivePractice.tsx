@@ -31,6 +31,7 @@ import {
   mastery,
   openKeys,
   planOf,
+  previewKeys,
   saveState,
   segmentLines,
   type KeySample,
@@ -328,6 +329,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
     );
   }
 
+  const preview = previewKeys(state.unlocked);
   const goalSeconds = SMART_GOAL_MINUTES * 60;
   const goalPct = Math.min(1, todaySeconds / goalSeconds);
   const goalDone = todaySeconds >= goalSeconds;
@@ -449,6 +451,16 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
                     ))}
                   </span>
                 )}
+                {preview.length > 0 && (
+                  <span className="inline-flex items-center gap-1" title="Shown a little so the text is not all one letter. They do not count yet.">
+                    Preview
+                    {preview.map((k) => (
+                      <kbd key={k} className="rounded border border-dashed border-accent/60 px-1.5 py-px font-mono text-[10px] font-bold uppercase text-text-dim">
+                        {k}
+                      </kbd>
+                    ))}
+                  </span>
+                )}
                 {plan.focus.length === 0 && plan.review.length === 0 && state.unlocked >= 26 && 'All keys open'}
               </span>
             </div>
@@ -456,14 +468,21 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
               {ALPHABET.map((k) => {
                 const pos = KEY_ORDER.indexOf(k);
                 if (pos >= state.unlocked) {
+                  const previewed = preview.includes(k);
                   return (
                     <span
                       key={k}
-                      title={`${k.toUpperCase()}: locked${pos === state.unlocked ? '. Next to unlock.' : '.'}`}
-                      className="flex flex-col items-center gap-0.5 rounded-md py-0.5 font-mono text-[0.6rem] font-semibold uppercase text-text-dim opacity-45 @md:text-[0.8rem]"
+                      title={
+                        previewed
+                          ? `${k.toUpperCase()}: preview. It appears a little so the text is not all one letter. It does not count yet.`
+                          : `${k.toUpperCase()}: locked${pos === state.unlocked ? '. Next to unlock.' : '.'}`
+                      }
+                      className={`flex flex-col items-center gap-0.5 rounded-md py-0.5 font-mono text-[0.6rem] font-semibold uppercase text-text-dim @md:text-[0.8rem] ${
+                        previewed ? 'outline outline-1 outline-dashed outline-accent/60' : 'opacity-45'
+                      }`}
                     >
                       {k}
-                      <Lock className="h-2.5 w-2.5" aria-label={`${k} locked`} />
+                      {previewed ? <span className="h-[3px]" aria-hidden="true" /> : <Lock className="h-2.5 w-2.5" aria-label={`${k} locked`} />}
                     </span>
                   );
                 }

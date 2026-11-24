@@ -1,7 +1,7 @@
 import { generateAdaptiveText } from './engine/adaptive';
-import { KEY_ORDER, START_KEYS, LEVELS, levelIndex, unlockRequirement } from './engine/levels';
+import { KEY_ORDER, START_KEYS, LEVELS, levelIndex, previewKeys, shortRoundChars, unlockRequirement } from './engine/levels';
 
-export { KEY_ORDER, START_KEYS, LEVELS, levelIndex };
+export { KEY_ORDER, START_KEYS, LEVELS, levelIndex, previewKeys, shortRoundChars };
 
 /**
  * The engine behind Smart lessons: no fixed lesson list. Keys unlock one at a time by skill, and the
@@ -139,13 +139,14 @@ function buildText(state: SmartState, weight: (k: string) => number, size: { wor
     words: size.words,
     targetChars: size.chars,
     rand,
+    preview: previewKeys(state.unlocked),
   });
   return { text: r.text, realWords: r.real };
 }
 
 /** The text for the next Smart lessons round: only open keys, weak keys more often, harder as difficulty rises. */
 export function generateRoundText(state: SmartState, rand: Rand = Math.random): RoundText {
-  return buildText(state, (k) => weightOf(state, k), { words: ROUND_WORDS }, rand);
+  return buildText(state, (k) => weightOf(state, k), { words: shortRoundChars(state.unlocked) ? 6 : ROUND_WORDS }, rand);
 }
 
 /** How many lines of text a Practice segment fills: Beginner 1, Intermediate 2, Advanced 3. */
@@ -160,7 +161,8 @@ export function segmentLines(state: SmartState): number {
 export function generatePracticeSegment(state: SmartState, plan: PracticePlan, targetChars: number = SEGMENT_WORDS * 6, rand: Rand = Math.random): RoundText {
   const weight = (k: string) =>
     plan.fresh.includes(k) ? 4 : plan.focus.includes(k) ? 5 : plan.almost.includes(k) ? 2.5 : plan.review.includes(k) ? 2 : 1;
-  return buildText(state, weight, { chars: targetChars }, rand);
+  const short = shortRoundChars(state.unlocked);
+  return buildText(state, weight, { chars: short ? Math.min(targetChars, short) : targetChars }, rand);
 }
 
 /** Opens the next key when every open key has enough presses and a good enough score. */
@@ -180,11 +182,19 @@ export interface RoundOutcome {
 
 /** Fold a finished round into the state: update the keys, move difficulty, maybe unlock a key. */
 export function applyRound(prev: SmartState, samples: KeySample[], accuracy: number, wpm: number): RoundOutcome {
+  // Preview keys (letters shown before they open) never count: not in a key's stats and not in the round's accuracy.
+  const counted = samples.filter((x) => {
+    const i = KEY_ORDER.indexOf(x.key.toLowerCase());
+    return i < 0 || i < prev.unlocked;
+  });
+  if (counted.length > 0 && counted.length < samples.length) {
+    accuracy = (counted.filter((x) => x.correct).length / counted.length) * 100;
+  }
   const keys: Record<string, KeyState> = { ...prev.keys };
   const per: Record<string, { n: number; ok: number; ts: number; tn: number }> = {};
   let gapSum = 0;
   let gapN = 0;
-  for (const s of samples) {
+  for (const s of counted) {
     const k = s.key.toLowerCase();
     if (s.correct && s.gapMs) {
       gapSum += s.gapMs;
@@ -311,11 +321,19 @@ export function applySegment(
   const scoreBefore: Record<string, number> = {};
   for (const k of openKeys(prev)) scoreBefore[k] = mastery(prev, k);
 
+  // Preview keys (letters shown before they open) never count: not in a key's stats and not in the round's accuracy.
+  const counted = samples.filter((x) => {
+    const i = KEY_ORDER.indexOf(x.key.toLowerCase());
+    return i < 0 || i < prev.unlocked;
+  });
+  if (counted.length > 0 && counted.length < samples.length) {
+    accuracy = (counted.filter((x) => x.correct).length / counted.length) * 100;
+  }
   const keys: Record<string, KeyState> = { ...prev.keys };
   const per: Record<string, { n: number; ok: number; ts: number; tn: number }> = {};
   let gapSum = 0;
   let gapN = 0;
-  for (const smp of samples) {
+  for (const smp of counted) {
     const k = smp.key.toLowerCase();
     if (smp.correct && smp.gapMs) {
       gapSum += smp.gapMs;

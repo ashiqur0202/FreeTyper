@@ -18,6 +18,7 @@ export interface AdaptiveRequest {
   words?: number;
   targetChars?: number;
   rand: Rand;
+  preview?: readonly string[];
 }
 
 export interface AdaptiveText {
@@ -52,6 +53,7 @@ export function generateAdaptiveText(req: AdaptiveRequest): AdaptiveText {
     words: req.words,
     targetChars: req.targetChars,
     rand: req.rand,
+    preview: req.preview,
   });
   return { text: words.join(' '), real, kind: 'words' };
 }

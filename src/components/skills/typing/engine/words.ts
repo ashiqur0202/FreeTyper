@@ -36,16 +36,22 @@ export interface WordsRequest {
   words?: number;
   targetChars?: number;
   rand: Rand;
+  /** Keys shown a little although they are not open yet (see PREVIEW_UNTIL in levels.ts). */
+  preview?: readonly string[];
 }
 
-function pseudoWord(open: string[], weight: (k: string) => number, target: number, rand: Rand): string {
+/** The share of the letters that previews make up while a few keys are open (checked in scripts/text-engine/engine-check.js). */
+export const PREVIEW_SHARE = 0.3;
+
+function pseudoWord(open: string[], weight: (k: string) => number, target: number, rand: Rand, alternate: boolean): string {
   const vowels = open.filter((k) => 'aeiou'.includes(k));
   const cons = open.filter((k) => !'aeiou'.includes(k));
   const len = Math.max(open.length === 1 ? 2 : 3, Math.round(target + (rand() * 2 - 1)));
   let word = '';
   let useVowel = rand() < 0.4;
   for (let i = 0; i < len; i++) {
-    const pool = useVowel && vowels.length ? vowels : cons.length ? cons : vowels;
+    // without an open vowel every letter is simply picked by weight (a previewed vowel must not take every other place)
+    const pool = !alternate ? open : useVowel && vowels.length ? vowels : cons.length ? cons : vowels;
     word += pickWeighted(pool, weight, rand);
     useVowel = !useVowel;
   }
@@ -54,10 +60,23 @@ function pseudoWord(open: string[], weight: (k: string) => number, target: numbe
 
 /** The words of a text, as a list (the caller joins them). Capitals and punctuation come in as difficulty rises. */
 export function generateWordList(req: WordsRequest): { words: string[]; real: number } {
-  const open = [...req.open];
+  const preview = (req.preview ?? []).filter((k) => !req.open.has(k));
+  const allowed = new Set<string>([...req.open, ...preview]);
+  const open = [...allowed];
+  const openList = [...req.open];
+  const alternate = openList.some((k) => 'aeiou'.includes(k));
+  // all previews together weigh PREVIEW_SHARE of the total, whatever the number of open keys
+  const openTotal = openList.reduce((a, k) => a + req.weight(k), 0);
+  const previewEach = preview.length ? ((PREVIEW_SHARE / (1 - PREVIEW_SHARE)) * openTotal) / preview.length : 0;
+  const letterWeight = (c: string) => (req.open.has(c) ? req.weight(c) : previewEach);
   const d = Math.min(10, Math.max(1, req.difficulty));
   const target = 3 + d * 0.45;
-  const pool = allWords().filter((w) => [...w].every((c) => req.open.has(c)));
+  // a real word may use previews, but mostly open letters: no word that is mostly previews
+  const pool = allWords().filter((w) => {
+    if (![...w].every((c) => allowed.has(c))) return false;
+    const previewLetters = [...w].filter((c) => !req.open.has(c)).length;
+    return previewLetters / w.length <= 0.34;
+  });
   const maxWords = req.words ?? 80;
   const maxChars = req.targetChars ?? Infinity;
   const out: string[] = [];
@@ -71,7 +90,7 @@ export function generateWordList(req: WordsRequest): { words: string[]; real: nu
         pool.filter((x) => !recent.includes(x)),
         (x) => {
           let s = 0;
-          for (const c of x) s += req.weight(c);
+          for (const c of x) s += letterWeight(c);
           const dl = x.length - target;
           return Math.pow(s / x.length, 1.5) * Math.exp(-(dl * dl) / 6);
         },
@@ -79,9 +98,9 @@ export function generateWordList(req: WordsRequest): { words: string[]; real: nu
       );
       real++;
     } else {
-      w = pseudoWord(open, req.weight, target, req.rand);
+      w = pseudoWord(open, letterWeight, target, req.rand, alternate);
       // a made-up group should not repeat a recent one (with one or two keys that cannot be avoided)
-      for (let tries = 0; tries < 8 && recent.includes(w) && open.length > 2; tries++) w = pseudoWord(open, req.weight, target, req.rand);
+      for (let tries = 0; tries < 8 && recent.includes(w) && open.length > 2; tries++) w = pseudoWord(open, letterWeight, target, req.rand, alternate);
     }
     recent.push(w);
     if (recent.length > 5) recent.shift();

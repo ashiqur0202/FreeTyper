@@ -16,6 +16,26 @@ export const KEY_ORDER = 'fjdaslekghirutnocmwbypvxqz';
 /** Everyone starts with ONE key (F) and earns the rest one at a time. */
 export const START_KEYS = 1;
 
+/**
+ * While only a few keys are open the text cannot be real words, and with ONE key it would be "ffff". So the next
+ * keys in the order are PREVIEWED: they appear in a little of the text, mostly as a way to see them. They do not
+ * count toward unlocking and never show as weak. Previews stop once PREVIEW_UNTIL keys are open, by which time
+ * real words (sad, fads, dads) fit. The share is in engine/words.ts.
+ */
+export const PREVIEW_UNTIL = 5;
+/** Rounds are short only for the very first keys. */
+export const SHORT_UNTIL = 3;
+export const PREVIEW_COUNT = 2;
+
+export function previewKeys(unlocked: number): string[] {
+  return unlocked <= PREVIEW_UNTIL ? KEY_ORDER.slice(unlocked, unlocked + PREVIEW_COUNT).split('') : [];
+}
+
+/** The first rounds are short (a few seconds), so the narrow text is over quickly: about 12 letters with one key, 24 with two, 36 with three. */
+export function shortRoundChars(unlocked: number): number | null {
+  return unlocked <= SHORT_UNTIL ? 12 * unlocked : null;
+}
+
 /** Beginner, Intermediate and Advanced by how many keys are open. `from` is the first key count of a level. */
 export const LEVELS = [
   { name: 'Beginner', from: START_KEYS },

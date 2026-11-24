@@ -27,6 +27,7 @@ import {
   generateRoundText,
   levelIndex,
   loadState,
+  previewKeys,
   mastery,
   saveState,
   type KeySample,
@@ -231,6 +232,7 @@ export default function SmartLessons() {
   const li = levelIndex(state.unlocked);
   const focus = focusOf(state);
   const practicing = [...focus.fresh, ...focus.weak];
+  const preview = previewKeys(state.unlocked);
   // The key to explain: the new key, else the weakest one, else the first key for someone who has not started.
   const main = focus.fresh[0] ?? focus.weak[0] ?? (state.rounds === 0 ? KEY_ORDER[0] : undefined);
   const mins = Math.floor(today.seconds / 60);
@@ -293,7 +295,9 @@ export default function SmartLessons() {
                 title={
                   open
                     ? `${k.toUpperCase()}: score ${m.toFixed(2)}, typed ${st?.n ?? 0} times${st ? `, ${Math.round(st.acc * 100)}% accurate` : ''}`
-                    : `${k.toUpperCase()}: locked${i === state.unlocked ? '. Next to unlock.' : '.'}`
+                    : preview.includes(k)
+                      ? `${k.toUpperCase()}: preview. It appears a little so the text is not all one letter. It does not count yet.`
+                      : `${k.toUpperCase()}: locked${i === state.unlocked ? '. Next to unlock.' : '.'}`
                 }
                 className={`relative flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-md py-1 font-mono text-[10px] uppercase @md:text-xs ${
                   fresh
@@ -302,10 +306,12 @@ export default function SmartLessons() {
                       ? 'text-error'
                       : open
                         ? 'text-text-bright'
-                        : 'text-text-dim/40'
+                        : preview.includes(k)
+                          ? 'text-text-dim outline outline-1 outline-dashed outline-accent/60'
+                          : 'text-text-dim/40'
                 }`}
               >
-                {open ? k : <Lock className="h-3 w-3" aria-label={`${k} locked`} />}
+                {open || preview.includes(k) ? k : <Lock className="h-3 w-3" aria-label={`${k} locked`} />}
                 <span className="h-0.5 w-3/5 overflow-hidden rounded-full bg-surface-raised" aria-hidden="true">
                   <span className="block h-full rounded-full bg-correct" style={{ width: `${Math.round(m * 100)}%` }} />
                 </span>
@@ -332,6 +338,17 @@ export default function SmartLessons() {
                     {k}
                   </kbd>
                 ))}
+              </p>
+            )}
+            {preview.length > 0 && (
+              <p className="mt-1 flex flex-wrap items-center gap-1.5 text-xs text-text-dim">
+                Preview
+                {preview.map((k) => (
+                  <kbd key={k} className="rounded border border-dashed border-accent/60 px-1.5 py-0.5 font-mono text-[10px] uppercase text-text-dim">
+                    {k}
+                  </kbd>
+                ))}
+                <span>they appear a little and do not count yet</span>
               </p>
             )}
             {main && (
