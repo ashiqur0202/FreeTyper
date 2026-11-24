@@ -214,12 +214,15 @@ export function generateCode(req: CodeRequest): CodeText {
   }
 
   const parts: string[] = [];
+  const used = new Set<Template>();
   let total = 0;
   for (let guard = 0; total < req.targetChars && guard < 40; guard++) {
-    let piece = pickWeighted(chain, weightOf, req.rand).make(ctx);
-    // no statement twice in one snippet
-    for (let tries = 0; tries < 6 && parts.includes(piece); tries++) piece = pickWeighted(chain, weightOf, req.rand).make(ctx);
+    // a different kind of statement each time, until every kind has been used
+    const fresh = chain.filter((t) => !used.has(t));
+    const t = pickWeighted(fresh.length ? fresh : chain, weightOf, req.rand);
+    const piece = t.make(ctx);
     if (parts.includes(piece)) continue;
+    used.add(t);
     parts.push(piece);
     total += piece.length + join.length;
   }

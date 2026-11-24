@@ -10,13 +10,13 @@ import { generatePairDrill, generateKeyDrill } from './pairDrill';
 import { scoreLetters, summarize, pickFocus, MIN_JUDGED_TO_ADAPT, type LetterScore, type LetterLevel } from './letterStats';
 import LetterRow from './LetterRow';
 import { COURSE_WORDS } from './courseWords';
-import { practiceTexts } from './typingData';
 import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import AdaptivePractice from './AdaptivePractice';
-import { loadState, segmentLines } from './smartEngine';
-import { pickPassage, loadRecentPassages, rememberPassage } from './passagePicker';
+import { loadState, planOf, segmentLines, levelIndex } from './smartEngine';
+import { factItems, loadRecentPassages, pickPassage, quoteItems, rememberPassage } from './engine/library';
+import { CODE_LANGUAGE_NAMES, generateCode } from './engine/code';
 import { useKeySound } from './useKeySound';
 import { trackEvent } from '@/lib/analytics';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
@@ -26,7 +26,7 @@ import PracticeFeedback, {
 } from './PracticeFeedback';
 import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 
-type Category = 'adaptive' | 'quotes' | 'news' | 'code' | 'fun';
+type Category = 'adaptive' | 'quotes' | 'facts' | 'code';
 
 type AdaptiveInfo = {
   kind: 'warmup' | 'auto' | 'pairs' | 'mixed' | 'manual';
@@ -43,9 +43,8 @@ function randomWords(count: number): string {
 const CATEGORIES: { id: Category; label: string }[] = [
   { id: 'adaptive', label: 'adaptive' },
   { id: 'quotes', label: 'quotes' },
-  { id: 'news', label: 'news' },
+  { id: 'facts', label: 'facts' },
   { id: 'code', label: 'code' },
-  { id: 'fun', label: 'fun' },
 ];
 
 const LOG_KEY = 'freetyper-practice-log';
@@ -140,17 +139,23 @@ export default function TypingPractice() {
         setWeakFocus({ kind: 'mixed', items: [] });
         return randomWords(40);
       }
-      const pool = practiceTexts.filter((p) => p.category === cat);
-      if (pool.length === 0) return practiceTexts[0].text;
-      // The passages are fixed, but which one comes next follows the typist: their focus keys, the length their
-      // level fills (one, two or three lines) and their text difficulty. See passagePicker.ts.
+      // Quotes and facts are checked texts, code is generated; which one comes next follows the typist: their focus
+      // keys, the length their level fills (one, two or three lines) and their text difficulty (see engine/).
       const smart = loadState();
       const box = typingAreaRef.current;
       const sample = box?.querySelector('.char')?.getBoundingClientRect().width;
       const perLine = box ? Math.floor(box.clientWidth / (sample && sample > 4 ? sample : 11.3)) : 80;
       const target = Math.min(320, Math.round(Math.max(60, perLine * segmentLines(smart) * 0.9)));
-      const choice = pickPassage(pool, smart, target, loadRecentPassages());
-      rememberPassage(choice.id);
+      if (cat === 'code') {
+        const plan = planOf(smart);
+        const weight = (k: string) => (plan.fresh.includes(k) ? 4 : plan.focus.includes(k) ? 5 : plan.almost.includes(k) ? 2.5 : plan.review.includes(k) ? 2 : 1);
+        const made = generateCode({ level: levelIndex(smart.unlocked) as 0 | 1 | 2, weight, targetChars: target, rand: Math.random });
+        setPickNote(`${CODE_LANGUAGE_NAMES[made.language]} code, made for your level.`);
+        return made.text;
+      }
+      const library = cat === 'quotes' ? quoteItems() : factItems();
+      const choice = pickPassage(library, smart, target, loadRecentPassages());
+      for (const id of choice.ids) rememberPassage(id);
       setPickNote(choice.note);
       return choice.text;
     },
