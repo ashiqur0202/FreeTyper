@@ -336,7 +336,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
         <AchievementToast key={a.id + i} achievement={a} onClose={() => setToasts((t) => t.filter((_, j) => j !== i))} />
       ))}
 
-      <div className="w-full">
+      <div className="w-full @container">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
           {tabs}
           <div className="flex items-center gap-3 font-mono text-sm text-text">
@@ -354,7 +354,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
 
         {/* Daily practice and the keys */}
         <section
-          className="mb-3 grid items-center gap-x-6 gap-y-3 rounded-2xl border border-surface-border bg-surface px-4 py-3 md:grid-cols-[auto_minmax(0,1fr)]"
+          className="mb-3 grid items-center gap-x-6 gap-y-3 rounded-2xl border border-surface-border bg-surface px-4 py-3 @2xl:grid-cols-[auto_minmax(0,1fr)]"
           aria-label="Daily practice and keys"
         >
           <div className="flex items-center gap-3.5">
@@ -456,7 +456,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
                     <span
                       key={k}
                       title={`${k.toUpperCase()}: locked${pos === state.unlocked ? '. Next to unlock.' : '.'}`}
-                      className="flex flex-col items-center gap-0.5 rounded-md py-0.5 font-mono text-[0.8rem] font-semibold uppercase text-text-dim opacity-45"
+                      className="flex flex-col items-center gap-0.5 rounded-md py-0.5 font-mono text-[0.6rem] font-semibold uppercase text-text-dim opacity-45 @md:text-[0.8rem]"
                     >
                       {k}
                       <Lock className="h-2.5 w-2.5" aria-label={`${k} locked`} />
@@ -477,7 +477,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
                     disabled={isRunning}
                     aria-pressed={pinned === k}
                     title={`${k.toUpperCase()}: ${st?.n ? `score ${m.toFixed(2)}, ${Math.round(st.acc * 100)}% accurate, ${Math.round(st.ms)} ms` : 'new key'}${inFocus ? '. In this session’s focus.' : isReview ? '. Review key.' : ''} Click to make it the focus.`}
-                    className={`relative flex flex-col items-center gap-[3px] rounded-md px-0 py-[3px] font-mono text-[0.8rem] font-semibold uppercase text-text-bright transition-colors ${
+                    className={`relative flex flex-col items-center gap-[3px] rounded-md px-0 py-[3px] font-mono text-[0.6rem] font-semibold uppercase text-text-bright transition-colors @md:text-[0.8rem] ${
                       inFocus ? 'bg-accent-bg ring-1 ring-accent' : isReview ? 'shadow-[inset_0_-2px_0_var(--color-text-dim)]' : 'hover:bg-surface-raised'
                     } ${isRunning ? 'cursor-not-allowed' : 'cursor-pointer'}`}
                   >

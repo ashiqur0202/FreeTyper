@@ -242,7 +242,7 @@ export default function SmartLessons() {
         <AchievementToast key={a.id + i} achievement={a} onClose={() => setToasts((t) => t.filter((_, j) => j !== i))} />
       ))}
 
-      <div className="w-full">
+      <div className="w-full @container">
         {/* Level (like the course's stage tabs) and the daily goal */}
         <div className="mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
           <div className="flex flex-wrap items-center gap-1" aria-label="Level">
@@ -295,7 +295,7 @@ export default function SmartLessons() {
                     ? `${k.toUpperCase()}: score ${m.toFixed(2)}, typed ${st?.n ?? 0} times${st ? `, ${Math.round(st.acc * 100)}% accurate` : ''}`
                     : `${k.toUpperCase()}: locked${i === state.unlocked ? '. Next to unlock.' : '.'}`
                 }
-                className={`relative flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-md py-1 font-mono text-[11px] uppercase sm:text-xs ${
+                className={`relative flex min-w-0 flex-col items-center justify-center gap-0.5 rounded-md py-1 font-mono text-[10px] uppercase @md:text-xs ${
                   fresh
                     ? 'bg-accent-bg font-medium text-accent'
                     : weak
