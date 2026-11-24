@@ -1,4 +1,4 @@
-import { KEY_ORDER, openKeys, planOf, type SmartState } from '../smartEngine';
+import { KEY_ORDER, openKeys, planOf, planWeight, type SmartState } from '../smartEngine';
 import { QUOTES } from './library/quotes';
 import { FACTS } from './library/facts';
 import { rateDifficulty } from './rating';
@@ -56,8 +56,9 @@ function chooseOne(
 ): { item: LibraryItem; lockedShare: number } {
   const plan = planOf(state);
   const open = new Set(openKeys(state));
-  const weightOfKey = (k: string) =>
-    plan.fresh.includes(k) ? 4 : plan.focus.includes(k) ? 5 : plan.almost.includes(k) ? 2.5 : plan.review.includes(k) ? 2 : open.has(k) ? 1 : 0.6;
+  const planWeightOf = planWeight(plan);
+  // a key that is not open yet counts a little, so texts that use it are only slightly less likely
+  const weightOfKey = (k: string) => (open.has(k) ? planWeightOf(k) : 0.6);
   const scored = pool.map((p) => {
     const lower = p.text.toLowerCase().replace(/[^a-z]/g, '');
     let sum = 0;

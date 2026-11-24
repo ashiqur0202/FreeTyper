@@ -14,7 +14,7 @@ import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import AdaptivePractice from './AdaptivePractice';
-import { loadState, planOf, segmentLines, levelIndex } from './smartEngine';
+import { loadState, planOf, planWeight, segmentLines, levelIndex } from './smartEngine';
 import { factItems, loadRecentPassages, pickPassage, quoteItems, rememberPassage } from './engine/library';
 import { CODE_LANGUAGE_NAMES, generateCode } from './engine/code';
 import { useKeySound } from './useKeySound';
@@ -148,7 +148,7 @@ export default function TypingPractice() {
       const target = Math.min(320, Math.round(Math.max(60, perLine * segmentLines(smart) * 0.9)));
       if (cat === 'code') {
         const plan = planOf(smart);
-        const weight = (k: string) => (plan.fresh.includes(k) ? 4 : plan.focus.includes(k) ? 5 : plan.almost.includes(k) ? 2.5 : plan.review.includes(k) ? 2 : 1);
+        const weight = planWeight(plan);
         const made = generateCode({ level: levelIndex(smart.unlocked) as 0 | 1 | 2, weight, targetChars: target, rand: Math.random });
         setPickNote(`${CODE_LANGUAGE_NAMES[made.language]} code, made for your level.`);
         return made.text;

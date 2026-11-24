@@ -1,4 +1,5 @@
 import { generateAdaptiveText } from './engine/adaptive';
+import { TUNING } from './engine/tuning';
 import { KEY_ORDER, START_KEYS, LEVELS, levelIndex, previewKeys, shortRoundChars, unlockRequirement } from './engine/levels';
 
 export { KEY_ORDER, START_KEYS, LEVELS, levelIndex, previewKeys, shortRoundChars };
@@ -111,7 +112,7 @@ export function focusOf(state: SmartState): Focus {
   const newest = KEY_ORDER[state.unlocked - 1];
   const fresh = state.rounds > 0 && state.unlocked > START_KEYS && keyOf(state, newest).n < SETTLED_PRESSES ? [newest] : [];
   const weak = openKeys(state)
-    .filter((k) => keyOf(state, k).n >= SETTLED_PRESSES && mastery(state, k) < 0.8)
+    .filter((k) => keyOf(state, k).n >= SETTLED_PRESSES && mastery(state, k) < TUNING.focusBelow)
     .sort((a, b) => mastery(state, a) - mastery(state, b))
     .slice(0, 3);
   return { fresh, weak };
@@ -119,7 +120,7 @@ export function focusOf(state: SmartState): Focus {
 
 function weightOf(state: SmartState, k: string): number {
   if (keyOf(state, k).n < SETTLED_PRESSES) return 4;
-  return 1 + 5 * (1 - mastery(state, k));
+  return 1 + TUNING.lessonWeakBoost * (1 - mastery(state, k));
 }
 
 export interface RoundText {
@@ -153,13 +154,26 @@ export function segmentLines(state: SmartState): number {
   return levelIndex(state.unlocked) + 1;
 }
 
+/** How much a key weighs in the next text: a new key, a key to fix, a key almost there, a key kept for review, or any other key. */
+export function planWeight(plan: PracticePlan): (k: string) => number {
+  return (k) =>
+    plan.fresh.includes(k)
+      ? TUNING.freshWeight
+      : plan.focus.includes(k)
+        ? TUNING.focusWeight
+        : plan.almost.includes(k)
+          ? TUNING.almostWeight
+          : plan.review.includes(k)
+            ? TUNING.reviewWeight
+            : 1;
+}
+
 /**
  * One Practice segment, weighted by the session plan (focus 5, almost there 2.5, review 2, the rest 1).
  * It runs until it holds about `targetChars` letters, which the screen turns into whole lines (see segmentLines).
  */
 export function generatePracticeSegment(state: SmartState, plan: PracticePlan, targetChars: number = SEGMENT_WORDS * 6, rand: Rand = Math.random): RoundText {
-  const weight = (k: string) =>
-    plan.fresh.includes(k) ? 4 : plan.focus.includes(k) ? 5 : plan.almost.includes(k) ? 2.5 : plan.review.includes(k) ? 2 : 1;
+  const weight = planWeight(plan);
   const short = shortRoundChars(state.unlocked);
   return buildText(state, weight, { chars: short ? Math.min(targetChars, short) : targetChars }, rand);
 }
@@ -168,7 +182,15 @@ export function generatePracticeSegment(state: SmartState, plan: PracticePlan, t
 export function tryUnlock(state: SmartState): { unlocked: number; key?: string } {
   if (state.unlocked >= KEY_ORDER.length) return { unlocked: state.unlocked };
   const need = unlockRequirement(state.unlocked);
-  const ready = openKeys(state).every((k) => keyOf(state, k).n >= need.presses && mastery(state, k) >= need.score);
+  const open = openKeys(state);
+  const enough = open.every((k) => keyOf(state, k).n >= need.presses);
+  const scores = open.map((k) => mastery(state, k));
+  const ready = TUNING.unlockByAverage
+    ? enough &&
+      scores.reduce((a, b) => a + b, 0) / scores.length >= need.score + TUNING.unlockMeanBonus &&
+      Math.min(...scores) >= need.score - TUNING.unlockFloorGap &&
+      scores.filter((x) => x < need.score).length <= TUNING.unlockAllowLow
+    : enough && Math.min(...scores) >= need.score;
   return ready ? { unlocked: state.unlocked + 1, key: KEY_ORDER[state.unlocked] } : { unlocked: state.unlocked };
 }
 
@@ -213,7 +235,7 @@ export function applyRound(prev: SmartState, samples: KeySample[], accuracy: num
     const a = p.ok / p.n;
     const m = p.tn ? p.ts / p.tn : cur?.ms ?? TARGET_MS * 2;
     keys[k] = cur && cur.n > 0
-      ? { n: cur.n + p.n, acc: cur.acc + (a - cur.acc) * 0.4, ms: cur.ms + (m - cur.ms) * 0.4, last: prev.rounds + 1 }
+      ? { n: cur.n + p.n, acc: cur.acc + (a - cur.acc) * TUNING.emaRound, ms: cur.ms + (m - cur.ms) * TUNING.emaRound, last: prev.rounds + 1 }
       : { n: p.n, acc: a, ms: m, last: prev.rounds + 1 };
   }
 
@@ -226,7 +248,7 @@ export function applyRound(prev: SmartState, samples: KeySample[], accuracy: num
   const mid: SmartState = { ...prev, keys };
   const f0 = focusOf({ ...mid, rounds: prev.rounds + 1 });
   const aim = f0.weak.concat(f0.fresh).slice(0, 3).join(', ').toUpperCase();
-  if ((accuracy >= 95 && ratio >= 0.8) || (accuracy >= 97.5 && ratio >= 0.6)) {
+  if ((accuracy >= TUNING.upAccuracy && ratio >= TUNING.upRatio) || (accuracy >= TUNING.upHighAccuracy && ratio >= TUNING.upHighRatio)) {
     if (difficulty < MAX_DIFFICULTY) {
       difficulty++;
       dir = 1;
@@ -236,7 +258,7 @@ export function applyRound(prev: SmartState, samples: KeySample[], accuracy: num
     } else {
       sentence = `Accuracy ${acc}%. You are at the top setting, so it holds.`;
     }
-  } else if (accuracy < 88) {
+  } else if (accuracy < TUNING.downAccuracy) {
     if (difficulty > 1) {
       difficulty--;
       dir = -1;
@@ -262,7 +284,7 @@ export function applyRound(prev: SmartState, samples: KeySample[], accuracy: num
     history: [...prev.history, summary].slice(-HISTORY_MAX),
   };
   const reasons = [sentence];
-  if (unlockedKey) reasons.push(`New key unlocked: ${unlockedKey.toUpperCase()}. Every key in play was typed ${unlockRequirement(unlocked - 1).presses}+ times and scored ${unlockRequirement(unlocked - 1).score} or more.`);
+  if (unlockedKey) reasons.push(`New key unlocked: ${unlockedKey.toUpperCase()}. Your open keys were each typed ${unlockRequirement(unlocked - 1).presses}+ times and average ${(unlockRequirement(unlocked - 1).score + TUNING.unlockMeanBonus).toFixed(2)} or more.`);
   return { state, summary, reasons };
 }
 
@@ -285,12 +307,12 @@ export function planOf(state: SmartState, pinned?: string | null): PracticePlan 
   const ranked = keys
     .filter((k) => keyOf(state, k).n >= SETTLED_PRESSES)
     .sort((a, b) => mastery(state, a) - mastery(state, b));
-  let focus = fresh.concat(ranked.filter((k) => mastery(state, k) < 0.8));
+  let focus = fresh.concat(ranked.filter((k) => mastery(state, k) < TUNING.focusBelow));
   if (pinned && keys.includes(pinned)) focus = [pinned, ...focus.filter((k) => k !== pinned)];
   focus = focus.slice(0, 3);
-  const almost = ranked.filter((k) => !focus.includes(k) && mastery(state, k) >= 0.65 && mastery(state, k) < 0.8).slice(0, 2);
+  const almost = ranked.filter((k) => !focus.includes(k) && mastery(state, k) >= TUNING.almostFrom && mastery(state, k) < TUNING.focusBelow).slice(0, 2);
   const review = ranked
-    .filter((k) => !focus.includes(k) && mastery(state, k) >= 0.8)
+    .filter((k) => !focus.includes(k) && mastery(state, k) >= TUNING.focusBelow)
     .sort((a, b) => (keyOf(state, a).last ?? 0) - (keyOf(state, b).last ?? 0))
     .slice(0, 2);
   return { focus, almost, review, fresh };
@@ -352,19 +374,19 @@ export function applySegment(
     const a = p.ok / p.n;
     const m = p.tn ? p.ts / p.tn : cur?.ms ?? TARGET_MS * 2;
     keys[k] = cur && cur.n > 0
-      ? { n: cur.n + p.n, acc: cur.acc + (a - cur.acc) * 0.35, ms: cur.ms + (m - cur.ms) * 0.35, last: prev.rounds + 1 }
+      ? { n: cur.n + p.n, acc: cur.acc + (a - cur.acc) * TUNING.emaText, ms: cur.ms + (m - cur.ms) * TUNING.emaText, last: prev.rounds + 1 }
       : { n: p.n, acc: a, ms: m, last: prev.rounds + 1 };
   }
 
   const ratio = yardstick({ ...prev, keys }) / (gapN ? gapSum / gapN : TARGET_MS);
   let difficulty = prev.difficulty;
   let dir: -1 | 0 | 1 = 0;
-  if ((accuracy >= 95 && ratio >= 0.85) || (accuracy >= 97.5 && ratio >= 0.6)) {
+  if ((accuracy >= TUNING.upAccuracy && ratio >= TUNING.upRatio) || (accuracy >= TUNING.upHighAccuracy && ratio >= TUNING.upHighRatio)) {
     if (difficulty < MAX_DIFFICULTY && difficulty < sessionDifficulty + 1) {
       difficulty++;
       dir = 1;
     }
-  } else if (accuracy < 88) {
+  } else if (accuracy < TUNING.downAccuracy) {
     if (difficulty > 1 && difficulty > sessionDifficulty - 1) {
       difficulty--;
       dir = -1;

@@ -16,6 +16,7 @@ import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInp
 import { trackEvent } from '@/lib/analytics';
 import { readPracticeSummary } from './practiceSummary';
 import { unlockRequirement } from './engine/levels';
+import { TUNING } from './engine/tuning';
 import {
   KEY_ORDER,
   START_KEYS,
@@ -521,7 +522,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
             )}
             <p className="mt-3 text-xs text-text-dim">
               In the key row, a gold ring marks the keys this text works on, an underline marks keys kept for review, and ▲ ▼ show how a key moved with your last
-              text. Difficulty is {state.difficulty} of 10; it moves by one step at most per text. The next key opens when every open key has been typed {unlockRequirement(state.unlocked).presses} times or more and scores {unlockRequirement(state.unlocked).score} or more (easy keys ask for less, hard keys for more; accuracy counts most, speed less, judged against your own median speed). These numbers are our own starting values.
+              text. Difficulty is {state.difficulty} of 10; it moves by one step at most per text. The next key opens when each open key has been typed {unlockRequirement(state.unlocked).presses} times or more, the average score of your open keys is {(unlockRequirement(state.unlocked).score + TUNING.unlockMeanBonus).toFixed(2)} or more, and no key is below {(unlockRequirement(state.unlocked).score - TUNING.unlockFloorGap).toFixed(2)} (easy keys ask for less, hard keys for more; accuracy counts most, speed less, judged against your own median speed). These numbers are our own starting values.
             </p>
           </div>
         </details>

@@ -11,7 +11,7 @@ function build(rel) {
   fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, ts.transpileModule(src, { compilerOptions: { module: 'commonjs', target: 'es2019' } }).outputText);
 }
-['smartEngine', 'courseWords', 'engine/levels', 'engine/rng', 'engine/rating', 'engine/quality', 'engine/lexicon', 'engine/sentences', 'engine/words', 'engine/adaptive'].forEach(build);
+['smartEngine', 'courseWords', 'engine/levels', 'engine/tuning', 'engine/rng', 'engine/rating', 'engine/quality', 'engine/lexicon', 'engine/sentences', 'engine/words', 'engine/adaptive'].forEach(build);
 const E = require(out + 'smartEngine.js');
 const Q = require(out + 'engine/quality.js');
 const S = require(out + 'engine/sentences.js');

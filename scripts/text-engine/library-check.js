@@ -6,7 +6,7 @@ const ts = require('typescript');
 const fs = require('fs'), path = require('path');
 const root = require('path').join(__dirname, '..', '..', 'src', 'components', 'skills', 'typing') + '/';
 const out = process.argv[2] + '/eng/';
-for (const rel of ['smartEngine', 'courseWords', 'engine/levels', 'engine/rng', 'engine/rating', 'engine/quality', 'engine/lexicon', 'engine/sentences', 'engine/words', 'engine/adaptive', 'engine/library', 'engine/library/quotes', 'engine/library/facts']) {
+for (const rel of ['smartEngine', 'courseWords', 'engine/levels', 'engine/tuning', 'engine/rng', 'engine/rating', 'engine/quality', 'engine/lexicon', 'engine/sentences', 'engine/words', 'engine/adaptive', 'engine/library', 'engine/library/quotes', 'engine/library/facts']) {
   const src = fs.readFileSync(root + rel + '.ts', 'utf8');
   const dest = out + rel + '.js'; fs.mkdirSync(path.dirname(dest), { recursive: true });
   fs.writeFileSync(dest, ts.transpileModule(src, { compilerOptions: { module: 'commonjs', target: 'es2019' } }).outputText);

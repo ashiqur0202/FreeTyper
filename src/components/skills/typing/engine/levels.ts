@@ -11,6 +11,8 @@
  * the older order (F J D K S L A E ...) it gives real words two keys sooner at almost the same reach cost, and
  * Advanced is exactly the far and rare keys. Same order as the guides.
  */
+import { TUNING } from './tuning';
+
 export const KEY_ORDER = 'fjdaslekghirutnocmwbypvxqz';
 
 /** Everyone starts with ONE key (F) and earns the rest one at a time. */
@@ -57,11 +59,14 @@ export function linesForLevel(unlocked: number): number {
 }
 
 /**
- * What the NEXT key asks for before it opens. Easy keys open quickly and hard keys ask for more: the score every
- * open key must reach goes from 0.65 (the second key) to 0.75 (the last), and the presses each key needs from 6
- * to 10. `open` is how many keys are open now.
+ * What the NEXT key asks for before it opens. Easy keys open quickly and hard keys ask for more: the bar goes from 0.60
+ * (the second key) to 0.70 (the last) and the presses each key needs from 5 to 8. The average score of the open keys
+ * must reach the bar plus a margin, and no key may be far under the bar (see tryUnlock in smartEngine.ts and
+ * engine/tuning.ts). `open` is how many keys are open now.
  */
 export function unlockRequirement(open: number): { score: number; presses: number } {
   const t = Math.min(1, Math.max(0, open / (KEY_ORDER.length - 1)));
-  return { score: Math.round((0.65 + 0.1 * t) * 100) / 100, presses: 6 + Math.floor(t * 4.99) };
+  const score = TUNING.unlockScoreFirst + (TUNING.unlockScoreLast - TUNING.unlockScoreFirst) * t;
+  const presses = TUNING.unlockPressesFirst + (TUNING.unlockPressesLast - TUNING.unlockPressesFirst) * t;
+  return { score: Math.round(score * 100) / 100, presses: Math.floor(presses + 0.01) };
 }
