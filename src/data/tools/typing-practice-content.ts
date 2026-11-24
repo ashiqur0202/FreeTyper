@@ -54,7 +54,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Why do I keep seeing the same passages?',
     answer:
-      'The quotes, news, code and fun categories each hold five built-in passages, twenty in all, and the next passage is chosen at random from the category you picked. Repeats are expected. The adaptive drill is generated fresh every time, so it does not repeat in the same way.',
+      'The quotes, news, code and fun categories each hold five built-in passages, twenty in all. The passages are fixed, but the next one is chosen to suit you: the choice favours passages with your focus keys, about as long as your level fills (one, two or three lines) and about as hard as your text difficulty, and it avoids the last eight shown. Repeats are still expected with so few passages. The adaptive tab is generated fresh every time, so it does not repeat in the same way.',
   },
   {
     question: 'Does typing practice count toward my progress?',
@@ -109,7 +109,7 @@ export const bodyHtml = `
 <tr><td>Fun</td><td>Five trivia passages, such as facts about octopuses, honey and keyboard history</td><td>about 36–41 words</td></tr>
 </tbody>
 </table>
-<p>That is twenty built-in passages in the quotes, news, code and fun tabs, and the next one is picked at random from the category you chose. You will see repeats, and that is a limit of the current text library, not a bug. Because the passages are short, a single run is a noisy measure of speed; average several runs before you draw conclusions.</p>
+<p>That is twenty built-in passages in the quotes, news, code and fun tabs, and the next one is chosen for you from the category you picked. Each passage gets a weight: higher when it contains the keys your adaptive practice is working on (up to three), when its length is close to what your level fills (about one line for Beginner, two for Intermediate, three for Advanced), and when its difficulty (our own estimate from word length, capitals, punctuation, digits and code symbols, on the same 1 to 10 scale as your text difficulty) is close to yours; passages that use keys you have not opened yet are slightly less likely, and the last eight shown are strongly avoided. The pick is still random, weighted by that score. Under the text a short line says why it was picked. Your scores come only from the adaptive tab and Smart lessons, so these tabs read your progress but do not change it. You will still see repeats, and that is a limit of the current text library, not a bug. Because the passages are short, a single run is a noisy measure of speed; average several runs before you draw conclusions.</p>
 
 <h2 id="how-adaptive-practice-works">How adaptive practice works</h2>
 <ol>

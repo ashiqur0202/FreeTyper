@@ -15,6 +15,8 @@ import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import AdaptivePractice from './AdaptivePractice';
+import { loadState, segmentLines } from './smartEngine';
+import { pickPassage, loadRecentPassages, rememberPassage } from './passagePicker';
 import { useKeySound } from './useKeySound';
 import { trackEvent } from '@/lib/analytics';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
@@ -84,6 +86,7 @@ export default function TypingPractice() {
   const [lineHeight, setLineHeight] = useState(0);
   const [, setWeakFocus] = useState<AdaptiveInfo | null>(null);
   const [pinKey, setPinKey] = useState<string | null>(null);
+  const [pickNote, setPickNote] = useState('');
   const [letterScores, setLetterScores] = useState<LetterScore[]>([]);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -106,6 +109,7 @@ export default function TypingPractice() {
       if (cat !== 'adaptive') {
         setWeakFocus(null);
       } else {
+        setPickNote('');
         const store = getPairStore();
         const weakPairs = weakPairsOf(store, 10).map((p) => p.pair);
         // A letter picked by hand in the row above.
@@ -138,7 +142,17 @@ export default function TypingPractice() {
       }
       const pool = practiceTexts.filter((p) => p.category === cat);
       if (pool.length === 0) return practiceTexts[0].text;
-      return pool[Math.floor(Math.random() * pool.length)].text;
+      // The passages are fixed, but which one comes next follows the typist: their focus keys, the length their
+      // level fills (one, two or three lines) and their text difficulty. See passagePicker.ts.
+      const smart = loadState();
+      const box = typingAreaRef.current;
+      const sample = box?.querySelector('.char')?.getBoundingClientRect().width;
+      const perLine = box ? Math.floor(box.clientWidth / (sample && sample > 4 ? sample : 11.3)) : 80;
+      const target = Math.min(320, Math.round(Math.max(60, perLine * segmentLines(smart) * 0.9)));
+      const choice = pickPassage(pool, smart, target, loadRecentPassages());
+      rememberPassage(choice.id);
+      setPickNote(choice.note);
+      return choice.text;
     },
     [],
   );
@@ -491,9 +505,9 @@ export default function TypingPractice() {
           onInput={(e) => handleMobileInput(e, processChar, handleBackspace)}
         />
 
-          <div className="mt-4 flex h-8 items-center justify-center gap-4">
+          <div className="mt-4 flex min-h-8 items-center justify-center gap-4">
             {!isRunning ? (
-              <p className="text-sm text-text-dim">start typing to begin</p>
+              <p className="text-center text-sm text-text-dim">{pickNote ? `${pickNote} Start typing to begin.` : 'start typing to begin'}</p>
             ) : (
               <>
                 <button
