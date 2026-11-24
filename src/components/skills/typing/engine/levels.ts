@@ -5,11 +5,13 @@
  */
 
 /**
- * The order the keys open in, from easy to hard: the home row first (the two index fingers, then middle, ring
- * and little finger), then the keys that are one reach away and make the most real words, then the far and rare
- * keys. Same order as the Smart lessons guide.
+ * The order the keys open in, from easy to hard. It was chosen by measuring (see freetyper.md): the home row first,
+ * the vowel A early (the first six keys F J D A S L already make real words such as sad, lad, ads), E next, the rest
+ * of the home row, then the keys one reach away (I R U T N O C M W), and last the far and rare keys. Compared with
+ * the older order (F J D K S L A E ...) it gives real words two keys sooner at almost the same reach cost, and
+ * Advanced is exactly the far and rare keys. Same order as the guides.
  */
-export const KEY_ORDER = 'fjdkslaeghiortunmcbwypvqxz';
+export const KEY_ORDER = 'fjdaslekghirutnocmwbypvxqz';
 
 /** Everyone starts with ONE key (F) and earns the rest one at a time. */
 export const START_KEYS = 1;

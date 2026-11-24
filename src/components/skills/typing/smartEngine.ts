@@ -1,4 +1,4 @@
-import { COURSE_WORDS } from './courseWords';
+import { generateAdaptiveText } from './engine/adaptive';
 import { KEY_ORDER, START_KEYS, LEVELS, levelIndex, unlockRequirement } from './engine/levels';
 
 export { KEY_ORDER, START_KEYS, LEVELS, levelIndex };
@@ -123,78 +123,24 @@ function weightOf(state: SmartState, k: string): number {
   return 1 + 5 * (1 - mastery(state, k));
 }
 
-function pickWeighted<T>(items: T[], weight: (x: T) => number, rand: Rand): T {
-  let sum = 0;
-  const ws = items.map((x) => {
-    const w = weight(x);
-    sum += w;
-    return w;
-  });
-  let r = rand() * sum;
-  for (let i = 0; i < items.length; i++) {
-    r -= ws[i];
-    if (r <= 0) return items[i];
-  }
-  return items[items.length - 1];
-}
-
-function pseudoWord(weight: (k: string) => number, keys: string[], target: number, rand: Rand): string {
-  const vowels = keys.filter((k) => 'aeiou'.includes(k));
-  const cons = keys.filter((k) => !'aeiou'.includes(k));
-  const len = Math.max(3, Math.round(target + (rand() * 2 - 1)));
-  let word = '';
-  let useVowel = rand() < 0.4;
-  for (let i = 0; i < len; i++) {
-    const pool = useVowel && vowels.length ? vowels : cons.length ? cons : vowels;
-    word += pickWeighted(pool, weight, rand);
-    useVowel = !useVowel;
-  }
-  return word;
-}
-
 export interface RoundText {
   text: string;
   /** How many of the words are real words (the rest are made-up letter groups). */
   realWords: number;
 }
 
+/** The text of a round or segment is made by the text engine (engine/), from the open keys and the weights. */
 function buildText(state: SmartState, weight: (k: string) => number, size: { words?: number; chars?: number }, rand: Rand): RoundText {
-  const keys = openKeys(state);
-  const open = new Set(keys);
-  const target = 3 + state.difficulty * 0.45;
-  const pool = COURSE_WORDS.filter((w) => [...w].every((c) => open.has(c)));
-  const out: string[] = [];
-  let prev = '';
-  let realWords = 0;
-  const maxWords = size.words ?? 80;
-  const maxChars = size.chars ?? Infinity;
-  let total = 0;
-  for (let i = 0; i < maxWords && total < maxChars; i++) {
-    let w: string;
-    if (pool.length >= 10 && rand() < 0.85) {
-      w = pickWeighted(
-        pool,
-        (x) => {
-          let s = 0;
-          for (const c of x) s += weight(c);
-          const d = x.length - target;
-          const v = Math.pow(s / x.length, 1.5) * Math.exp(-(d * d) / 6);
-          return x === prev ? v * 0.05 : v;
-        },
-        rand,
-      );
-      realWords++;
-    } else {
-      w = pseudoWord(weight, keys, target, rand);
-    }
-    prev = w;
-    if (state.difficulty >= 5 && rand() < (state.difficulty - 4) * 0.05) w = w.charAt(0).toUpperCase() + w.slice(1);
-    if (state.difficulty >= 6 && rand() < (state.difficulty - 5) * 0.05) w += rand() < 0.5 ? ',' : '.';
-    out.push(w);
-    total += w.length + 1;
-  }
-  out[out.length - 1] = out[out.length - 1].replace(/[,.]$/, '') + '.';
-  return { text: out.join(' '), realWords };
+  const r = generateAdaptiveText({
+    open: new Set(openKeys(state)),
+    weight,
+    difficulty: state.difficulty,
+    unlocked: state.unlocked,
+    words: size.words,
+    targetChars: size.chars,
+    rand,
+  });
+  return { text: r.text, realWords: r.real };
 }
 
 /** The text for the next Smart lessons round: only open keys, weak keys more often, harder as difficulty rises. */
