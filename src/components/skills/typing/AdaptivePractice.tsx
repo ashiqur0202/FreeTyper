@@ -466,14 +466,6 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
           </div>
         </section>
 
-        {/* How far through this text */}
-        <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
-          <div
-            className={`h-full rounded-full bg-accent transition-all duration-150 ${isRunning ? 'progress-glow' : ''}`}
-            style={{ width: chars.length ? `${Math.min(100, (currentIndex / chars.length) * 100)}%` : '0%' }}
-          />
-        </div>
-
         {/* The text */}
         <div ref={textBoxRef} className="relative mt-2 min-h-[6.5rem] cursor-text py-3" onClick={() => inputRef.current?.focus({ preventScroll: true })}>
           <TypingPassage chars={chars} currentIndex={currentIndex} firstCharRef={firstCharRef} currentCharRef={currentCharRef} className="transition-transform duration-150 ease-out" />
