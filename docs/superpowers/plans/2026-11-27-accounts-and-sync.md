@@ -29,7 +29,7 @@ Optional login. Guest mode stays the default and keeps working. Login adds two t
 | 0 | Ship the current release (`feat/text-types`) | Claude, Ashiqur says go | not started | |
 | 1 | Verify tools and prepare (docs, DNS, local setup) | both | in progress | SPF, DMARC, reverse DNS done; Postgres created; no mail server exists; backups, local Docker Postgres, Google keys, docs reading still open |
 | 2 | Demo of login, account page, merge prompt | Claude | not started | |
-| 3 | Foundation: schema, migration, Google login | Claude | not started | |
+| 3 | Foundation: schema, migration, Google login | Claude | in progress | Branch `feat/accounts` (not pushed). Built: `src/lib/db/schema.ts` (user, session, account, verification, user_progress with jsonb), `src/lib/db/index.ts` (lazy pool), `src/lib/auth.ts` (Google only, account linking, 30 day cookie), `src/app/api/auth/[...all]/route.ts` (503 `accounts_unavailable` when unset), migration `drizzle/0000_init_accounts.sql`, `npm run test:accounts` (6 checks on in-memory PGlite, no Docker). Checked: tsc, build and start with NO env (site 200, auth route 503), lint on new files clean. Still open: real Google login (needs the Google key), migration applied to the Coolify database, env vars in Coolify. |
 | 4 | Progress model and sync (merge, offline, tests) | Claude | not started | |
 | 5 | UI: header button, /login, /account, merge prompt | Claude | not started | |
 | 6 | Privacy page, cookie notice, guides, freetyper.md | Claude | not started | |

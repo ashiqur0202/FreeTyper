@@ -1,0 +1,60 @@
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { nextCookies } from 'better-auth/next-js';
+import { databaseConfigured, getDb } from './db';
+import * as schema from './db/schema';
+
+/**
+ * Optional login. Guest mode never depends on any of this: when the settings
+ * are missing the account routes answer "unavailable" and the site works as it
+ * always did. The auth object is built on first use, never at import or build.
+ *
+ * Login methods: Google now; email code and magic link come in a later release.
+ * No password login.
+ */
+
+/** True when every setting login needs is present. */
+export function authConfigured(): boolean {
+  return (
+    databaseConfigured() &&
+    !!process.env.BETTER_AUTH_SECRET &&
+    !!process.env.BETTER_AUTH_URL &&
+    !!process.env.GOOGLE_CLIENT_ID &&
+    !!process.env.GOOGLE_CLIENT_SECRET
+  );
+}
+
+/** The database handed to the auth adapter: the real one in the app, an in-memory Postgres in tests/test-accounts-db.mjs. */
+type AuthDb = Parameters<typeof drizzleAdapter>[0];
+
+export function createAuth(db: AuthDb) {
+  const baseURL = process.env.BETTER_AUTH_URL as string;
+  return betterAuth({
+    baseURL,
+    secret: process.env.BETTER_AUTH_SECRET,
+    trustedOrigins: [baseURL],
+    database: drizzleAdapter(db, { provider: 'pg', schema }),
+    socialProviders: {
+      google: {
+        clientId: process.env.GOOGLE_CLIENT_ID as string,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      },
+    },
+    // The same verified email from two methods is one account, never two.
+    account: { accountLinking: { enabled: true, trustedProviders: ['google'] } },
+    session: { expiresIn: 60 * 60 * 24 * 30, updateAge: 60 * 60 * 24 },
+    advanced: {
+      useSecureCookies: process.env.NODE_ENV === 'production',
+      defaultCookieAttributes: { httpOnly: true, sameSite: 'lax' },
+    },
+    // Must stay last: it lets server actions set cookies.
+    plugins: [nextCookies()],
+  });
+}
+
+let instance: ReturnType<typeof createAuth> | null = null;
+
+export function getAuth() {
+  if (!instance) instance = createAuth(getDb());
+  return instance;
+}
