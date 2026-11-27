@@ -21,7 +21,7 @@ export type PracticeLogEntry = TypingSession & {
   headline?: string;
   tone?: CoachTone;
   /** Speed test only: what is needed to send this run as a challenge link (the text's seed, type and length). */
-  share?: { seed: string; mode: TextMode; seconds: number; level: TextLevel };
+  share?: { seed: string; mode: TextMode; seconds: number; level: TextLevel; gen?: 1 | 2 };
   /** Lessons only: whether this attempt reached the accuracy the lesson asks for. */
   passed?: boolean;
 };

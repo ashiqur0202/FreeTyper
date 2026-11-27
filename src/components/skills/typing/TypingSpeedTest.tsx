@@ -17,7 +17,7 @@ import ChallengePanel from './ChallengePanel';
 import ChallengeSendButton from './ChallengeSendButton';
 import TestFinished from './TestFinished';
 import { CHALLENGE_SECONDS, buildChallengeUrl, newSeed, parseChallenge, type Challenge } from './challengeLink';
-import { seededTestText, type TextMode } from './testText';
+import { TEST_TEXT_VERSION, seededTestText, type TextMode } from './testText';
 import { DEFAULT_TEXT_LEVEL, TEXT_LEVELS, normalizeLevel, type TextLevel } from './textGenerator';
 import { loadRecent, pickFreshSeed, rememberText } from './recentText';
 import {
@@ -50,8 +50,21 @@ import PracticeStrip from './PracticeStrip';
 const TEXT_MODES: { id: TextMode; label: string }[] = [
   { id: 'words', label: 'words' },
   { id: 'sentences', label: 'sentences' },
+  { id: 'quotes', label: 'quotes' },
+  { id: 'facts', label: 'facts' },
   { id: 'code', label: 'code' },
+  { id: 'mixed', label: 'mixed' },
 ];
+
+/** One line under the text before a test starts: what this kind of text is. */
+const TEXT_MODE_NOTES: Record<TextMode, string> = {
+  words: 'Common English words in random order.',
+  sentences: 'Made-up everyday sentences.',
+  quotes: 'Checked quotes from public-domain books. A long test can repeat them.',
+  facts: 'Short facts, each checked against Wikipedia. A long test can repeat them.',
+  code: 'Short code made fresh each time.',
+  mixed: 'Sentences, quotes, facts and code, one after another.',
+};
 
 interface DurationOption {
   seconds: number;
@@ -218,7 +231,7 @@ export default function TypingSpeedTest({
     if (friendRun) setChallengeRun({ wpm: session.wpm, accuracy: session.accuracy });
     const seed = textSeedRef.current;
     const shareable = !numberRow && !day && !friendRun && seed !== null && CHALLENGE_SECONDS.includes(secs);
-    const share = shareable ? { seed, mode, seconds: secs, level } : undefined;
+    const share = shareable ? { seed, mode, seconds: secs, level, gen: TEST_TEXT_VERSION } : undefined;
     // Number row runs stay out of progress: digit speeds would shift best WPM, averages and the streak.
     if (numberRow) setDigitStats(digitSpeeds(digitTimesRef.current));
     else addSession(withoutRun(updated));
@@ -293,12 +306,12 @@ export default function TypingSpeedTest({
     } else if (challenge) {
       // No usable link (or none at all): start a fresh challenge the person can send on.
       const parsed = parseChallenge(window.location.search);
-      const info: Challenge = parsed ?? { seed: newSeed(), mode: 'sentences', seconds: 60, level: DEFAULT_TEXT_LEVEL, wpm: null, accuracy: null };
+      const info: Challenge = parsed ?? { seed: newSeed(), mode: 'sentences', seconds: 60, level: DEFAULT_TEXT_LEVEL, gen: TEST_TEXT_VERSION, wpm: null, accuracy: null };
       challengeRef.current = info;
       setChallengeInfo(info);
       setDuration(info.seconds);
       if (info.mode) setTextMode(info.mode);
-      setText(info.mode ? seededTestText(info.mode, info.seconds, info.seed, info.level) : challengeText(info.seed));
+      setText(info.mode ? seededTestText(info.mode, info.seconds, info.seed, info.level, info.gen) : challengeText(info.seed));
       if (parsed?.wpm != null) trackEvent('challenge_link_open');
     } else if (numberRow) {
       setText(numberRowText('digits', initialDuration));
@@ -447,7 +460,7 @@ export default function TypingSpeedTest({
       next = dailyText(key);
     } else if (challengeRef.current) {
       const c = challengeRef.current;
-      next = c.mode ? seededTestText(c.mode, c.seconds, c.seed, c.level) : challengeText(c.seed);
+      next = c.mode ? seededTestText(c.mode, c.seconds, c.seed, c.level, c.gen) : challengeText(c.seed);
     } else if (numberRow) {
       next = numberRowText(rowMode, dur ?? customDuration ?? duration);
     } else {
@@ -548,6 +561,26 @@ export default function TypingSpeedTest({
         setTextMode('sentences');
         setResult(null);
         setText(freshTest(textSeedRef, 'sentences', customDuration ?? duration, settings.textLevel));
+        restart();
+        break;
+      case 'quotes':
+      case 'q':
+        setTextMode('quotes');
+        setResult(null);
+        setText(freshTest(textSeedRef, 'quotes', customDuration ?? duration, settings.textLevel));
+        restart();
+        break;
+      case 'facts':
+        setTextMode('facts');
+        setResult(null);
+        setText(freshTest(textSeedRef, 'facts', customDuration ?? duration, settings.textLevel));
+        restart();
+        break;
+      case 'mixed':
+      case 'm':
+        setTextMode('mixed');
+        setResult(null);
+        setText(freshTest(textSeedRef, 'mixed', customDuration ?? duration, settings.textLevel));
         restart();
         break;
       case 'code':
@@ -657,7 +690,8 @@ export default function TypingSpeedTest({
               }
             />
             {!fixedRun && (
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-1.5">
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 px-3 py-1.5">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1" role="group" aria-label="Text type">
               {numberRow && NUMBER_ROW_MODES.map((m) => (
                 <button
                   key={m.id}
@@ -698,31 +732,38 @@ export default function TypingSpeedTest({
                   {m.label}
                 </button>
               ))}
-              {!fixedRun && !numberRow && textMode !== 'code' && (
-                <select
-                  aria-label="Text difficulty"
-                  title="Text difficulty"
-                  value={settings.textLevel}
-                  disabled={isRunning}
-                  onChange={(e) => {
-                    const lv = normalizeLevel(e.target.value);
-                    updateSetting('textLevel', lv);
-                    const next = freshTest(textSeedRef, textMode, customDuration ?? duration, lv);
-                    setText(next);
-                    restart(next);
-                  }}
-                  className={`rounded-md bg-transparent px-1 py-1 text-xs text-text-dim transition-all hover:bg-surface-raised hover:text-text focus-visible:outline-2 focus-visible:outline-accent ${
-                    isRunning ? 'cursor-not-allowed opacity-30' : 'cursor-pointer'
-                  }`}
-                >
-                  {TEXT_LEVELS.map((l) => (
-                    <option key={l.level} value={l.level} className="bg-surface text-text">
-                      {l.level} · {l.name}
-                    </option>
-                  ))}
-                </select>
-              )}
-              <span className="flex-1" />
+              </div>
+              <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
+                {!numberRow && (
+                  <span className="flex flex-wrap items-center gap-1" role="group" aria-label="Difficulty level">
+                    <span className="mr-0.5 text-xs text-text-dim">Level</span>
+                    {TEXT_LEVELS.map((l) => {
+                      const on = settings.textLevel === l.level;
+                      return (
+                        <button
+                          key={l.level}
+                          type="button"
+                          aria-pressed={on}
+                          disabled={isRunning}
+                          title={`${l.level} · ${l.name}`}
+                          onClick={() => {
+                            if (isRunning) return;
+                            const lv = normalizeLevel(l.level);
+                            updateSetting('textLevel', lv);
+                            const next = freshTest(textSeedRef, textMode, customDuration ?? duration, lv);
+                            setText(next);
+                            restart(next);
+                          }}
+                          className={`rounded-full border px-2.5 py-0.5 text-xs tabular-nums transition-colors ${
+                            on ? 'border-accent bg-accent-bg text-accent' : 'border-surface-border text-text hover:text-text-bright'
+                          } ${isRunning ? 'cursor-not-allowed opacity-30' : 'cursor-pointer'}`}
+                        >
+                          {on ? `${l.level} ${l.name}` : l.level}
+                        </button>
+                      );
+                    })}
+                  </span>
+                )}
               <button
                 onClick={() => setFocusMode(!focusMode)}
                 className="flex items-center justify-center rounded-md p-1.5 text-text-dim transition-all hover:bg-surface-raised hover:text-text"
@@ -730,6 +771,7 @@ export default function TypingSpeedTest({
               >
                 {focusMode ? <Minimize className="h-3.5 w-3.5" /> : <Maximize className="h-3.5 w-3.5" />}
               </button>
+              </div>
             </div>
             )}
             <div className="h-[3px] w-full bg-surface-raised">
@@ -786,7 +828,9 @@ export default function TypingSpeedTest({
                 </p>
               )
             ) : !isRunning ? (
-              <p className="text-sm text-text-dim">start typing to begin</p>
+              <p className="text-sm text-text-dim">
+                {!fixedRun && !numberRow ? `${TEXT_MODE_NOTES[textMode]} ` : ''}start typing to begin
+              </p>
             ) : (
               <button
                 type="button"
@@ -818,7 +862,7 @@ export default function TypingSpeedTest({
                       source="finished_box"
                       emphasis
                       buildUrl={() =>
-                        buildChallengeUrl(window.location.origin, finishedShare.seed, finishedRun.wpm, finishedRun.accuracy, finishedShare.mode, finishedShare.seconds, finishedShare.level)
+                        buildChallengeUrl(window.location.origin, finishedShare.seed, finishedRun.wpm, finishedRun.accuracy, finishedShare.mode, finishedShare.seconds, finishedShare.level, finishedShare.gen ?? 1)
                       }
                     >
                       Challenge a friend
@@ -867,7 +911,7 @@ export default function TypingSpeedTest({
                   source="history_row"
                   emphasis={false}
                   buildUrl={() =>
-                    buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds, entry.share!.level)
+                    buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds, entry.share!.level, entry.share!.gen ?? 1)
                   }
                 >
                   challenge
@@ -889,7 +933,7 @@ export default function TypingSpeedTest({
                     source="result_card"
                     emphasis={i === 0 && newBest}
                     buildUrl={() =>
-                      buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds, entry.share!.level)
+                      buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds, entry.share!.level, entry.share!.gen ?? 1)
                     }
                   >
                     {i === 0 && newBest ? 'new best: challenge a friend' : 'challenge a friend'}

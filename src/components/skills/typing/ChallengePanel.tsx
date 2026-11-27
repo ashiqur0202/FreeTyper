@@ -51,7 +51,7 @@ export default function ChallengePanel({ challenge, run }: ChallengePanelProps) 
           source="challenge_page"
           hasTarget={target !== null}
           buildUrl={() =>
-            buildChallengeUrl(window.location.origin, challenge.seed, run.wpm, run.accuracy, challenge.mode, challenge.seconds, challenge.level)
+            buildChallengeUrl(window.location.origin, challenge.seed, run.wpm, run.accuracy, challenge.mode, challenge.seconds, challenge.level, challenge.gen)
           }
         />
       )}

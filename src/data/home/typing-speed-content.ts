@@ -9,13 +9,13 @@
  * The FAQ list below is the single source for both the visible FAQ and the
  * FAQPage JSON-LD, so they cannot drift apart.
  *
- * Last real edit: 2026-11-20 (fresh generated text and difficulty levels; challenge a friend item; the type-faster list points to the practice guide)
+ * Last real edit: 2026-11-27 (text types: quotes, facts and mixed added, code made by the code generator; the five difficulty levels are visible pills; challenge links carry a text version)
  */
 
 export const meta = {
   title: 'Free Typing Speed Test — Check Your WPM & Accuracy Online',
   description:
-    'Free typing speed test with net WPM, gross WPM and accuracy. 15 seconds to 30 minutes, words, sentences or code. No signup, results stay in your browser.',
+    'Free typing speed test with net WPM, gross WPM and accuracy. 15 seconds to 30 minutes; words, sentences, quotes, facts, code or mixed, at five difficulty levels. No signup, results stay in your browser.',
 };
 
 export const faqs: { question: string; answer: string }[] = [
@@ -84,7 +84,7 @@ export const previewHtml = `
 <h2>Free Typing Speed Test — Check Your WPM and Accuracy Online</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-20">November 20, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
   <span>~9 min read</span>
 </p>
 <p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
@@ -97,8 +97,8 @@ export const bodyHtml = `
 <li><strong>Choose a length.</strong> The presets are 15 seconds, 30 seconds, 1, 2, 3, 5, 10, 15 and 30 minutes. A custom option accepts anything from 1 to 120 minutes. Three lengths also have their own page that opens on that length, with a short note on what it shows: the <a href="/1-minute-typing-test">1 minute test</a>, the <a href="/3-minute-typing-test">3 minute test</a> and the <a href="/5-minute-typing-test">5 minute test</a>.</li>
 <li><strong>Or try the number row.</strong> The <a href="/number-row-typing-test">number row typing test</a> has you type digits, and optionally the shifted symbols above them, on the row above the letters. Its results are kept apart from this test and do not count toward your progress totals.</li>
 <li><strong>Or take the daily challenge.</strong> The <a href="/daily-typing-challenge">daily typing challenge</a> is a fixed 60-second test on a passage chosen by the date, so everyone gets the same text that day. It keeps a streak and your best score of the day in your browser.</li>
-<li><strong>Challenge a friend.</strong> After a test of 15 seconds to 5 minutes, the "challenge" button on that run in the performances list (and "challenge a friend" in its opened result) copies a link (on a phone it opens the share sheet). The friend's page builds the same text, in the same text type, for the same length and at the same difficulty, and shows your score as the target. The link holds a short code that picks the text, your net WPM and accuracy, the text type, the length and the difficulty. It has no name and no typed text, and the score is not verified, so treat it as a game between friends.</li>
-<li><strong>Choose a text type and a difficulty.</strong> <em>Words</em> shows common English words in random order, from short everyday words to long ones. <em>Sentences</em> shows made-up everyday sentences with capital letters and punctuation. They are put together by rules from groups of words, so every test is new, and they make no claims about the real world. <em>Code</em> shows programming snippets full of brackets and symbols; those are a small fixed set. The difficulty menu next to the text types runs from 1 (Beginner: short words and short sentences) to 5 (Expert: long words, commas, longer clauses, numbers and quotation marks). Standard (3) is the default, and your choice is saved on this device.</li>
+<li><strong>Challenge a friend.</strong> After a test of 15 seconds to 5 minutes, the "challenge" button on that run in the performances list (and "challenge a friend" in its opened result) copies a link (on a phone it opens the share sheet). The friend's page builds the same text, in the same text type, for the same length and at the same difficulty, and shows your score as the target. The link holds a short code that picks the text, your net WPM and accuracy, the text type, the length, the difficulty and, for newer links, a version number (so an older link keeps giving the same text it always did). It has no name and no typed text, and the score is not verified, so treat it as a game between friends.</li>
+<li><strong>Choose a text type and a difficulty.</strong> There are six text types on the left of the options row. <em>Words</em> shows common English words in random order, from short everyday words to long ones. <em>Sentences</em> shows made-up everyday sentences with capital letters and punctuation. Both are put together by rules from groups of words, so every test is new, and they make no claims about the real world. <em>Quotes</em> shows exact sentences from public-domain books and documents, and <em>Facts</em> shows short facts, each checked against a Wikipedia article; both come from the same small checked libraries as the <a href="/typing-practice">practice page</a> (36 quotes and 55 facts), joined in an order drawn from the test's code, so a long test can repeat texts. We never generate a quote or a fact, because a made-up one would be false. <em>Code</em> shows short code in JavaScript, Python, SQL, CSS or HTML, made fresh each time from templates by the same code generator as practice. <em>Mixed</em> joins pieces of sentences, quotes, facts and code, never the same kind twice in a row. Every test is built only from its code, type, length and difficulty, never from your own typing history, so the same settings give the same text to everyone and your results stay comparable (the texts that adapt to you are on the <a href="/typing-practice">practice</a> and <a href="/typing-lessons">lessons</a> pages). The five level buttons on the right run from 1 (Beginner: short words and short sentences) to 5 (Expert: long words, commas, longer clauses, numbers and quotation marks). For quotes and facts the level picks easier or harder texts by our own difficulty rating, and for code it picks simpler or more advanced snippets. Standard (3) is the default, and your choice is saved on this device.</li>
 <li><strong>Type.</strong> The clock starts on your first keystroke, not when the page loads. Every character has to match exactly: letter case, punctuation and spaces all count.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and the cursor moves on. Backspace steps back if you want to fix it.</li>
 <li><strong>Keep going.</strong> When the time runs out, a small box over the text shows your net WPM, accuracy and how this run compares with your last one, with three buttons: Test again, Challenge a friend and See details. Nothing starts again until you choose, so you can look at your result first. Enter also starts the next test, and Esc closes the box. Your run is in the performances list under the keyboard: click it to open the full result.</li>
@@ -215,7 +215,7 @@ ${faqHtml}
 export const howToSteps: { name: string; text: string }[] = [
   {
     name: 'Choose a length and a text type',
-    text: 'Pick a duration from 15 seconds to 30 minutes, or enter a custom time, then choose words, sentences or code.',
+    text: 'Pick a duration from 15 seconds to 30 minutes, or enter a custom time, then choose a text type (words, sentences, quotes, facts, code or mixed) and a difficulty level.',
   },
   {
     name: 'Start typing',

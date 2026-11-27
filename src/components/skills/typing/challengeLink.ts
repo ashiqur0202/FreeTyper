@@ -1,4 +1,4 @@
-import type { TextMode } from './testText';
+import type { TestTextVersion, TextMode } from './testText';
 import { DEFAULT_TEXT_LEVEL, normalizeLevel, type TextLevel } from './textGenerator';
 
 const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
@@ -7,7 +7,9 @@ const MAX_WPM = 400;
 
 /** Run lengths a challenge link can carry, in seconds. A custom length is not shareable. */
 export const CHALLENGE_SECONDS: readonly number[] = [15, 30, 60, 120, 180, 300];
-const MODES: readonly TextMode[] = ['words', 'sentences', 'code'];
+/** The text types a version 1 link can carry; version 2 (`g=2`) adds quotes, facts and mixed. */
+const MODES_V1: readonly TextMode[] = ['words', 'sentences', 'code'];
+const MODES_V2: readonly TextMode[] = ['words', 'sentences', 'quotes', 'facts', 'code', 'mixed'];
 
 export interface Challenge {
   /** Picks the passage; the same seed gives the same text for everyone. */
@@ -24,6 +26,8 @@ export interface Challenge {
    * with the standard level, so this default must never change.
    */
   level: TextLevel;
+  /** How the text is built (see TEST_TEXT_VERSION): a link without `g` is version 1, always, so older links keep giving the same text. */
+  gen: TestTextVersion;
   /** The sender's net WPM and accuracy, or null when the link carries no score. */
   wpm: number | null;
   accuracy: number | null;
@@ -61,17 +65,18 @@ export function parseSeconds(search: string): number {
 }
 
 /**
- * Read `?c=<seed>&w=<wpm>&a=<accuracy>` and, for links made from a speed test, `&m=<mode>&d=<seconds>&l=<level>`.
+ * Read `?c=<seed>&w=<wpm>&a=<accuracy>` and, for links made from a speed test, `&m=<mode>&d=<seconds>&l=<level>` and, for version 2 texts, `&g=2`.
  * Anything out of range is dropped rather than trusted; `m` and `d` count only together; a missing or odd `l` is 3.
  */
 export function parseChallenge(search: string): Challenge | null {
   const params = new URLSearchParams(search);
   const seed = params.get('c');
   if (!seed || !SEED_RE.test(seed)) return null;
-  const mode = MODES.find((x) => x === params.get('m')) ?? null;
+  const gen: TestTextVersion = params.get('g') === '2' ? 2 : 1;
+  const mode = (gen === 2 ? MODES_V2 : MODES_V1).find((x) => x === params.get('m')) ?? null;
   const d = allowedSeconds(params.get('d'));
   const typed = mode !== null && d !== null;
-  return { seed, mode: typed ? mode : null, seconds: typed ? d : 60, level: typed ? normalizeLevel(params.get('l')) : DEFAULT_TEXT_LEVEL, ...parseScore(search) };
+  return { seed, mode: typed ? mode : null, seconds: typed ? d : 60, level: typed ? normalizeLevel(params.get('l')) : DEFAULT_TEXT_LEVEL, gen: typed ? gen : 1, ...parseScore(search) };
 }
 
 export function buildChallengeUrl(
@@ -82,9 +87,10 @@ export function buildChallengeUrl(
   mode: TextMode | null = null,
   seconds = 60,
   level: TextLevel = DEFAULT_TEXT_LEVEL,
+  gen: TestTextVersion = 1,
 ): string {
   const base = `${origin}/typing-challenge?c=${seed}&w=${Math.round(wpm)}&a=${Math.round(accuracy)}`;
-  return mode ? `${base}&m=${mode}&d=${seconds}&l=${level}` : base;
+  return mode ? `${base}&m=${mode}&d=${seconds}&l=${level}${gen === 2 ? '&g=2' : ''}` : base;
 }
 
 export function compareScores(mine: number, theirs: number): { delta: number; verdict: 'win' | 'tie' | 'behind' } {
