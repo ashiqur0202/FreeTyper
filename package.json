@@ -10,6 +10,9 @@
     "check:text": "node scripts/text-engine/check.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
+    "test:sync": "node --import ./scripts/register-ts.mjs scripts/test-sync-merge.mjs",
+    "test:sync-store": "node --import ./scripts/register-ts.mjs scripts/test-sync-store.mjs",
+    "test:sync-client": "node --import ./scripts/register-ts.mjs scripts/test-sync-client.mjs",
     "test:accounts": "node --import ./scripts/register-ts.mjs scripts/test-accounts-db.mjs"
   },
   "dependencies": {
