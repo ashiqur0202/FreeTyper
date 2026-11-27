@@ -1,7 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
-import { databaseConfigured, getDb } from './db';
+import { getDb } from './db';
 import * as schema from './db/schema';
 
 /**
@@ -13,16 +13,7 @@ import * as schema from './db/schema';
  * No password login.
  */
 
-/** True when every setting login needs is present. */
-export function authConfigured(): boolean {
-  return (
-    databaseConfigured() &&
-    !!process.env.BETTER_AUTH_SECRET &&
-    !!process.env.BETTER_AUTH_URL &&
-    !!process.env.GOOGLE_CLIENT_ID &&
-    !!process.env.GOOGLE_CLIENT_SECRET
-  );
-}
+export { authConfigured } from './auth-config';
 
 /** The database handed to the auth adapter: the real one in the app, an in-memory Postgres in tests/test-accounts-db.mjs. */
 type AuthDb = Parameters<typeof drizzleAdapter>[0];
@@ -47,6 +38,8 @@ export function createAuth(db: AuthDb) {
       useSecureCookies: process.env.NODE_ENV === 'production',
       defaultCookieAttributes: { httpOnly: true, sameSite: 'lax' },
     },
+    // Delete account: removes the user and, through the database, their sessions and saved progress.
+    user: { deleteUser: { enabled: true } },
     // Must stay last: it lets server actions set cookies.
     plugins: [nextCookies()],
   });

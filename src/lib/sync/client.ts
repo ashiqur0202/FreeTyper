@@ -1,6 +1,6 @@
 import { notifyProgressUpdated, PROGRESS_UPDATED_EVENT } from '@/lib/progress-events';
 import { readLocal, writeLocal } from './local';
-import { parseSyncData } from './merge';
+import { hasProgress, parseSyncData, summarize, type Summary } from './merge';
 
 /**
  * Keeps a signed-in browser and the account in step. Local first: the site always
@@ -40,6 +40,34 @@ async function run(): Promise<SyncResult> {
 export function syncNow(): Promise<SyncResult> {
   if (!inFlight) inFlight = run().finally(() => { inFlight = null; });
   return inFlight;
+}
+
+export interface MergeChoice {
+  needed: boolean;
+  /** What this browser holds, and what the account holds, as the few numbers the question shows. */
+  local: Summary;
+  server: Summary;
+}
+
+/**
+ * Before the first sync of a browser with an account: does the person have to be
+ * asked? Only when both sides already hold progress. When one side is empty the
+ * other simply fills it, and nothing is ever lost either way.
+ */
+export async function checkMergeChoice(): Promise<MergeChoice | 'signed-out' | 'unavailable' | 'error'> {
+  try {
+    const res = await fetch('/api/progress', { credentials: 'same-origin', cache: 'no-store' });
+    if (res.status === 401) return 'signed-out';
+    if (res.status === 503) return 'unavailable';
+    if (!res.ok) return 'error';
+    const body = (await res.json().catch(() => null)) as { data?: unknown } | null;
+    const server = parseSyncData(body?.data);
+    if (!server) return 'error';
+    const local = readLocal();
+    return { needed: hasProgress(local) && hasProgress(server), local: summarize(local), server: summarize(server) };
+  } catch {
+    return 'error';
+  }
 }
 
 const QUIET_MS = 4000; // wait for typing to settle before sending

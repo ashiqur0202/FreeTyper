@@ -12,7 +12,7 @@ let calls = [];
 let handler = async () => new Response('{}', { status: 500 });
 globalThis.fetch = async (url, init) => { calls.push({ url, init }); return handler(url, init); };
 
-const { syncNow } = await import('../src/lib/sync/client.ts');
+const { syncNow, checkMergeChoice } = await import('../src/lib/sync/client.ts');
 const { readLocal, LOCAL_KEYS } = await import('../src/lib/sync/local.ts');
 const { emptySyncData, mergeSyncData, parseSyncData } = await import('../src/lib/sync/merge.ts');
 const { saveMerged } = await import('../src/lib/sync/store.ts').catch(() => ({}));
@@ -110,4 +110,32 @@ await t('broken or hostile storage content does not stop the sync', async () => 
   assert.equal(await syncNow(), 'synced');
 });
 
+await t('first login question: asked only when this browser AND the account both hold progress', async () => {
+  const withProgress = { ...emptySyncData(), progress: progress([session('s', 1, 50)]) };
+  // both have progress: ask
+  store.set(LOCAL_KEYS.progress, JSON.stringify(progress([session('mine', 1, 40)])));
+  handler = async () => Response.json({ data: withProgress, version: 3 });
+  const r = await checkMergeChoice();
+  assert.equal(r.needed, true);
+  assert.equal(r.local.totalTests, 1);
+  assert.equal(r.server.bestWpm, 50);
+  // the account is empty: just fill it, no question
+  handler = async () => Response.json({ data: emptySyncData(), version: 0 });
+  assert.equal((await checkMergeChoice()).needed, false);
+  // this browser is empty (cleared data): just restore, no question
+  store.clear();
+  handler = async () => Response.json({ data: withProgress, version: 3 });
+  assert.equal((await checkMergeChoice()).needed, false);
+  assert.equal(sets, 0, 'asking never writes anything');
+});
+await t('first login question: signed out, accounts off, offline and garbled answers are told apart and never throw', async () => {
+  handler = async () => new Response('{}', { status: 401 });
+  assert.equal(await checkMergeChoice(), 'signed-out');
+  handler = async () => new Response('{}', { status: 503 });
+  assert.equal(await checkMergeChoice(), 'unavailable');
+  handler = async () => { throw new TypeError('Failed to fetch'); };
+  assert.equal(await checkMergeChoice(), 'error');
+  handler = async () => new Response('nope', { status: 200 });
+  assert.equal(await checkMergeChoice(), 'error');
+});
 console.log(`\n${n} passed`);

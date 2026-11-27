@@ -351,6 +351,17 @@ export interface Summary {
   lastActiveDate: string | null;
 }
 
+/** True when a copy holds anything worth keeping (used to decide whether a first login has to ask which progress to keep). */
+export function hasProgress(data: SyncData): boolean {
+  return (
+    (data.progress?.sessions.length ?? 0) > 0 ||
+    (data.course?.completed.length ?? 0) > 0 ||
+    (data.course?.skipped.length ?? 0) > 0 ||
+    (data.smart?.rounds ?? 0) > 0 ||
+    Object.keys(data.daily ?? {}).length > 0
+  );
+}
+
 export function summarize(data: SyncData): Summary {
   const p = data.progress;
   const c = data.course;

@@ -1,6 +1,6 @@
 // Run: npm run test:sync
 import assert from 'node:assert/strict';
-import { mergeSyncData, parseSyncData, summarize, emptySyncData, LIMITS } from '../src/lib/sync/merge.ts';
+import { mergeSyncData, parseSyncData, summarize, hasProgress, emptySyncData, LIMITS } from '../src/lib/sync/merge.ts';
 import { courseLessons } from '../src/components/skills/typing/courseData.ts';
 
 let n = 0;
@@ -173,4 +173,13 @@ t('summary: the few numbers kept as columns', () => {
   assert.deepEqual(summarize(emptySyncData()), { bestWpm: 0, totalTests: 0, lessonsCompleted: 0, currentLesson: 1, dailyStreak: 0, lastActiveDate: null });
 });
 
+t('hasProgress: an untouched copy has none; any session, lesson, smart round or daily day counts', () => {
+  assert.equal(hasProgress(emptySyncData()), false);
+  assert.equal(hasProgress(data({ progress: progress() })), false, 'an empty progress object is not progress');
+  assert.equal(hasProgress(data({ progress: progress({ sessions: [session('a', 1, 40)] }) })), true);
+  assert.equal(hasProgress(data({ course: { completed: [], skipped: [L(2)], attempts: {} } })), true);
+  assert.equal(hasProgress(data({ smart: { version: 1, unlocked: 1, difficulty: 2, rounds: 0, keys: {}, history: [] } })), false);
+  assert.equal(hasProgress(data({ smart: { version: 1, unlocked: 3, difficulty: 2, rounds: 4, keys: {}, history: [] } })), true);
+  assert.equal(hasProgress(data({ daily: { '2026-11-01': { wpm: 50, accuracy: 95, runs: 1 } } })), true);
+});
 console.log(`\n${n} passed`);

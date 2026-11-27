@@ -8,6 +8,8 @@ import Sidebar from '@/components/layout/Sidebar';
 import RightSidebar from '@/components/layout/RightSidebar';
 import { SidebarProvider } from '@/components/layout/SidebarProvider';
 import { SettingsProvider } from '@/components/layout/SettingsProvider';
+import AccountSync from '@/components/layout/AccountSync';
+import { authConfigured } from '@/lib/auth-config';
 import JsonLd, { organizationSchema, webSiteSchema } from '@/components/seo/JsonLd';
 import { siteConfig } from '@/config/site';
 
@@ -83,6 +85,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Login is shown only when the server has it set up (decided when the site is built).
+  const accountsEnabled = authConfigured();
   return (
     <html lang="en" className="h-full dark" data-theme="dark" data-font-size="default" data-scroll-behavior="smooth" suppressHydrationWarning>
       <head>
@@ -101,12 +105,13 @@ export default function RootLayout({
         <SidebarProvider>
           <SettingsProvider>
             <main className="flex flex-1">
-              <Sidebar />
+              <Sidebar accountsEnabled={accountsEnabled} />
               <div className="flex-1 min-w-0">{children}</div>
               <RightSidebar />
             </main>
             <Footer />
             <FaviconBlink />
+            {accountsEnabled && <AccountSync />}
           </SettingsProvider>
         </SidebarProvider>
 

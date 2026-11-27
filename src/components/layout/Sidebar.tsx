@@ -23,6 +23,7 @@ import {
 import { useSidebar } from './SidebarProvider';
 import LogoMark from './LogoMark';
 import AppearanceControls from './AppearanceControls';
+import AccountEntry from './AccountEntry';
 
 const navGroups = [
   {
@@ -73,7 +74,8 @@ const navGroups = [
 
 const version = '1.0.0';
 
-export default function Sidebar() {
+/** `accountsEnabled`: the server has login set up. When it does not, the entry is not shown at all. */
+export default function Sidebar({ accountsEnabled = false }: { accountsEnabled?: boolean }) {
   const pathname = usePathname();
   const { isOpen, toggle, close } = useSidebar();
 
@@ -185,6 +187,8 @@ export default function Sidebar() {
             <Settings className="h-4 w-4 shrink-0" />
             <span>settings</span>
           </Link>
+
+          {accountsEnabled && <AccountEntry onNavigate={close} />}
 
           <AppearanceControls />
 
