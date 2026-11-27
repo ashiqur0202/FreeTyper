@@ -9,7 +9,7 @@ import { recordPair } from './pairStats';
 import type { Achievement, TypingSession } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
-import TypingPassage from './TypingPassage';
+import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 import PracticeFeedback, { type CoachTone, type PracticeLogEntry } from './PracticeFeedback';
 import { useKeySound } from './useKeySound';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
@@ -106,6 +106,8 @@ export default function AdaptivePractice({
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [todaySeconds, setTodaySeconds] = useState(0);
+  const [scrollOffset, setScrollOffset] = useState(0);
+  const [lineHeight, setLineHeight] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const firstCharRef = useRef<HTMLSpanElement>(null);
@@ -346,6 +348,26 @@ export default function AdaptivePractice({
     return () => window.removeEventListener('keydown', handler);
   }, [processChar, handleBackspace]);
 
+  // The text shows three lines. Once you are on the third line the text scrolls up, so you stay on the second one (long Custom texts too).
+  useLayoutEffect(() => {
+    const current = currentCharRef.current;
+    const first = firstCharRef.current;
+    if (!current || !first || !chars.length) {
+      setScrollOffset(0);
+      return;
+    }
+    let lh = lineHeight;
+    if (lh === 0) {
+      const container = textBoxRef.current?.querySelector('.typing-text');
+      if (!container) return;
+      lh = measureTypingLineHeight(container as HTMLElement);
+      if (lh === 0) return;
+      setLineHeight(lh);
+    }
+    const line = Math.round((current.offsetTop - first.offsetTop) / lh);
+    setScrollOffset(line >= 2 ? (line - 1) * lh : 0);
+  }, [currentIndex, lineHeight, chars.length]);
+
   /** Click an open key to make it the focus of the next segments; click it again to let the plan choose. */
   const pickKey = (k: string) => {
     if (isRunning) return;
@@ -542,10 +564,12 @@ export default function AdaptivePractice({
         {customPrompt}
         <div
           ref={textBoxRef}
-          className={`relative mt-2 min-h-[6.5rem] cursor-text py-3 ${customPrompt ? 'hidden' : ''}`}
+          className={`relative my-5 cursor-text overflow-hidden ${customPrompt ? 'hidden' : ''}`}
+          // exactly three lines tall (no padding inside, so the line scrolled out of view never peeks in)
+          style={{ height: typingWindowHeight(lineHeight) - 24 }}
           onClick={() => inputRef.current?.focus({ preventScroll: true })}
         >
-          <TypingPassage chars={chars} currentIndex={currentIndex} firstCharRef={firstCharRef} currentCharRef={currentCharRef} className="transition-transform duration-150 ease-out" />
+          <TypingPassage chars={chars} currentIndex={currentIndex} firstCharRef={firstCharRef} currentCharRef={currentCharRef} className={`transition-transform duration-150 ease-out ${kind === 'code' ? '' : 'typing-justify'}`} style={{ transform: `translateY(-${scrollOffset}px)` }} />
         </div>
         <input
           ref={inputRef}

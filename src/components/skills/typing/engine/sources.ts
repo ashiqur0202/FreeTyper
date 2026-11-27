@@ -21,7 +21,7 @@ export const SOURCE_TABS: { id: PracticeSource; label: string }[] = [
   { id: 'custom', label: 'Custom' },
 ];
 
-export const CUSTOM_MAX = 1000;
+export const CUSTOM_MAX = 5000;
 
 const SOURCE_IDS = SOURCE_TABS.map((t) => t.id as string);
 const LANGUAGES = ['any', 'js', 'python', 'sql', 'css', 'html'];

@@ -172,6 +172,11 @@ html[data-font-size="large"] { --box-scale: 1.2; }
   display: inline-block;
   white-space: pre;
 }
+/* Justified text (opt in with .typing-justify): the space between words is an inline space, so each full line is stretched to the box width and the last line stays left. */
+.typing-text.typing-justify .char.space {
+  display: inline;
+  white-space: pre-wrap;
+}
 .char.correct { color: var(--color-correct); }
 .char.incorrect { color: var(--color-error); background: var(--color-error-bg); border-radius: 2px; }
 .char.current { color: var(--color-text-bright); border-bottom-color: var(--color-accent); }
