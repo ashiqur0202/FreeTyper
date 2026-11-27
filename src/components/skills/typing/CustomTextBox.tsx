@@ -23,14 +23,13 @@ export default function CustomTextBox({ initial, onUse }: { initial: string; onU
       />
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-sm text-text-dim">
         <span>
-          {value.length} / {CUSTOM_MAX.toLocaleString('en-US')} · Your own text, we do not check it. Curly quotes become plain, line breaks become spaces, and
-          characters the keyboard cannot type are dropped.
+          {value.length} / {CUSTOM_MAX.toLocaleString('en-US')} · Your own text, we do not check it. Curly quotes become plain, line breaks become spaces.
         </span>
         <button
           type="button"
           disabled={!cleaned}
           onClick={() => onUse(cleaned)}
-          className="rounded-lg bg-accent px-3.5 py-1.5 text-sm font-semibold text-bg transition-opacity disabled:cursor-default disabled:opacity-40"
+          className="rounded-lg border border-accent bg-accent-bg px-3.5 py-1.5 text-sm font-semibold text-accent transition-opacity disabled:cursor-default disabled:opacity-40"
         >
           Practise this text
         </button>

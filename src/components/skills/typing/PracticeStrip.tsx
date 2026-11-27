@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 
 interface PracticeStripProps {
-  /** The tab buttons (adaptive, quotes, facts, code). */
+  /** The tab buttons (the kinds of text: mixed, sentences, quotes, facts, code, custom). */
   tabs: ReactNode;
   isRunning: boolean;
   wpm: number;
