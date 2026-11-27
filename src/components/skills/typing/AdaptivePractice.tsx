@@ -18,6 +18,9 @@ import { readPracticeSummary } from './practiceSummary';
 import { unlockRequirement } from './engine/levels';
 import { TUNING } from './engine/tuning';
 import PracticeStrip from './PracticeStrip';
+import { factItems, loadRecentPassages, pickPassage, quoteItems, rememberPassage } from './engine/library';
+import { CODE_LANGUAGE_NAMES, generateCode } from './engine/code';
+import { nextMixedKind, type CodeChoice, type PracticeSource, type TextKind } from './engine/sources';
 import {
   KEY_ORDER,
   START_KEYS,
@@ -32,6 +35,7 @@ import {
   mastery,
   openKeys,
   planOf,
+  planWeight,
   previewKeys,
   saveState,
   segmentLines,
@@ -44,6 +48,7 @@ const LOG_KEY = 'freetyper-adaptive-log';
 /** The level line is as wide as the keys it spans: Beginner 1 to 12, Intermediate 12 to 20, Advanced 20 to 26. */
 const TRACK_COLUMNS = `${LEVELS[1].from - LEVELS[0].from}fr ${LEVELS[2].from - LEVELS[1].from}fr ${KEY_ORDER.length - LEVELS[2].from}fr`;
 const LOG_MAX = 5;
+const KIND_TAG: Record<TextKind, string> = { sentences: 'Sentences', quotes: 'Quote', facts: 'Fact', code: 'Code', custom: 'Your text' };
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
 /** The same four colors the letter row used before (good, okay, weak, weakest). */
 const LEVEL_COLORS = { good: '#6b7c3a', ok: '#e2b714', weak: '#d97706', bad: '#c44250' } as const;
@@ -68,7 +73,25 @@ function loadLog(): PracticeLogEntry[] {
  * are recalculated after EVERY finished text, and the next key can open right then. The rules live in smartEngine.ts;
  * the Lessons guide describes them.
  */
-export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactNode; pinKey?: string | null }) {
+export default function AdaptivePractice({
+  tabs,
+  subRow,
+  customPrompt,
+  source,
+  language,
+  customText,
+}: {
+  /** The tab buttons; they get whether a text is being typed, because they are off then. */
+  tabs: (running: boolean) => ReactNode;
+  /** A thin row under the strip inside the box (code language, Mixed hint). */
+  subRow?: (running: boolean) => ReactNode;
+  /** Shown instead of the text while Custom has no text yet; typing is off while it is there. */
+  customPrompt?: ReactNode;
+  source: PracticeSource;
+  language: CodeChoice;
+  /** The cleaned text typed on the Custom tab ('' when none is set yet). */
+  customText: string;
+}) {
   const [state, setState] = useState<SmartState>(emptyState);
   const [plan, setPlan] = useState<PracticePlan>(() => planOf(emptyState()));
   const [text, setText] = useState('');
@@ -77,7 +100,8 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
   const [log, setLog] = useState<PracticeLogEntry[]>([]);
   const [reasons, setReasons] = useState<string[]>([]);
   const [note, setNote] = useState('');
-  const [pinned, setPinned] = useState<string | null>(pinKey);
+  const [kind, setKind] = useState<TextKind>('sentences');
+  const [pinned, setPinned] = useState<string | null>(null);
   const [startScores, setStartScores] = useState<Record<string, number>>({});
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
@@ -87,11 +111,24 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
   const firstCharRef = useRef<HTMLSpanElement>(null);
   const currentCharRef = useRef<HTMLSpanElement>(null);
   const stateRef = useRef(state);
-  const pinnedRef = useRef<string | null>(pinKey);
+  const pinnedRef = useRef<string | null>(null);
   const samplesRef = useRef<KeySample[]>([]);
   const startScoresRef = useRef<Record<string, number>>({});
   const lastCompleteIdRef = useRef<string | null>(null);
   const textBoxRef = useRef<HTMLDivElement>(null);
+  const sourceRef = useRef(source);
+  const languageRef = useRef(language);
+  const customRef = useRef(customText);
+  const kindRef = useRef<TextKind>('sentences');
+  const promptShownRef = useRef(false);
+  /** What the engine said about the text just finished (new key, easier next); shown with the next text once. */
+  const endNoteRef = useRef('');
+  useLayoutEffect(() => {
+    sourceRef.current = source;
+    languageRef.current = language;
+    customRef.current = customText;
+    promptShownRef.current = Boolean(customPrompt);
+  });
 
   const { addSession, updateKeyStats, checkAchievements } = useTypingProgress();
 
@@ -116,7 +153,38 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
       const sample = box?.querySelector('.char')?.getBoundingClientRect().width;
       const perLine = box ? Math.floor(box.clientWidth / (sample && sample > 4 ? sample : 11.3)) : 80;
       const target = Math.round(Math.max(60, perLine * segmentLines(stateRef.current) * 0.9));
-      const round = generatePracticeSegment(stateRef.current, nextPlan, Math.min(target, 320));
+      const goal = Math.min(target, 320);
+      // Which kind of text: the tab, or for Mixed one of the others (never the same twice in a row). Custom with no text yet shows sentences behind the prompt.
+      let next: TextKind = sourceRef.current === 'mixed' ? nextMixedKind(kindRef.current) : sourceRef.current;
+      if (next === 'custom' && !customRef.current) next = 'sentences';
+      let chosen = '';
+      let chosenNote = '';
+      if (next === 'quotes' || next === 'facts') {
+        const choice = pickPassage(next === 'quotes' ? quoteItems() : factItems(), stateRef.current, goal, loadRecentPassages());
+        for (const id of choice.ids) rememberPassage(id);
+        chosen = choice.text;
+        chosenNote = choice.note;
+      } else if (next === 'code') {
+        const lang = languageRef.current === 'any' ? undefined : languageRef.current;
+        const made = generateCode({
+          level: levelIndex(stateRef.current.unlocked) as 0 | 1 | 2,
+          weight: planWeight(nextPlan),
+          targetChars: goal,
+          rand: Math.random,
+          language: lang,
+        });
+        chosen = made.text;
+        chosenNote = `${CODE_LANGUAGE_NAMES[made.language]} code, made for your level.`;
+      } else if (next === 'custom') {
+        chosen = customRef.current;
+        chosenNote = 'Your own text. We do not check it. Your keys still count toward your level.';
+      }
+      const round = chosen ? { text: chosen } : generatePracticeSegment(stateRef.current, nextPlan, goal);
+      if (!chosen) next = 'sentences';
+      kindRef.current = next;
+      setKind(next);
+      setNote([endNoteRef.current, chosenNote].filter(Boolean).join(' '));
+      endNoteRef.current = '';
       samplesRef.current = [];
       setPlan(nextPlan);
       setText(round.text);
@@ -140,9 +208,12 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
       );
       const end = finishSession(outcome.state, startScoresRef.current, pinnedRef.current);
       stateRef.current = end.state;
-      addSession(withoutRun({ ...session, mode: 'practice' as const, modeDetail: 'adaptive' }));
+      const label = kindRef.current === 'sentences' ? 'adaptive' : kindRef.current;
+      addSession(withoutRun({ ...session, mode: 'practice' as const, modeDetail: label }));
       trackEvent('practice_complete', {
         category: 'adaptive',
+        source: sourceRef.current,
+        kind: kindRef.current,
         wpm: session.wpm,
         accuracy: session.accuracy,
         keys: end.state.unlocked,
@@ -153,7 +224,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
       const entry: PracticeLogEntry = {
         ...session,
         mode: 'practice',
-        modeDetail: `adaptive · ${end.state.unlocked} keys`,
+        modeDetail: `${label} · ${end.state.unlocked} keys`,
         headline: end.unlockedKey ? `New key: ${end.unlockedKey.toUpperCase()}` : session.accuracy >= 95 ? 'Clean text' : session.accuracy < 88 ? 'Easier next' : 'Keep going',
         tip: end.note,
         tone,
@@ -168,7 +239,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
         return next;
       });
       setReasons(outcome.reasons);
-      setNote(end.note);
+      endNoteRef.current = end.note;
       setState(end.state);
       saveState(end.state);
       setResult(session);
@@ -179,7 +250,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
   const { chars, currentIndex, wpm, accuracy, isRunning, isComplete, restart, handleInput, handleBackspace } = useTypingEngine({
     text,
     onStart: () => {
-      trackEvent('practice_start', { category: 'adaptive' });
+      trackEvent('practice_start', { category: 'adaptive', source: sourceRef.current });
     },
     onComplete: handleComplete,
     onKeyStats: (key, correct, ctx) => {
@@ -211,6 +282,19 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // A new type, code language or custom text starts a new text (the tabs are off while a text is running).
+  const firstSourceRun = useRef(true);
+  useEffect(() => {
+    if (firstSourceRun.current) {
+      firstSourceRun.current = false;
+      return;
+    }
+    if (!mounted) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- a changed tab, language or custom text asks for a new text
+    startText(restart);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [source, language, customText]);
+
   // After a finished text the next one starts at once.
   useEffect(() => {
     if (!isComplete || !result) return;
@@ -239,6 +323,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.ctrlKey || e.altKey || e.metaKey) return;
+      if (promptShownRef.current) return;
       if (isCompleteRef.current) {
         e.preventDefault();
         return;
@@ -273,7 +358,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
   if (!mounted || !text) {
     return (
       <div className="w-full">
-        {tabs}
+        {tabs(false)}
         <div className="h-48" aria-hidden="true" />
       </div>
     );
@@ -295,7 +380,8 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
       <div className="w-full @container">
         {/* Daily practice and the keys */}
         <section className="mb-3 overflow-hidden rounded-2xl border border-surface-border bg-surface" aria-label="Practice tabs, daily practice and keys">
-          <PracticeStrip tabs={tabs} isRunning={isRunning} wpm={wpm} accuracy={accuracy} />
+          <PracticeStrip tabs={tabs(isRunning)} isRunning={isRunning} wpm={wpm} accuracy={accuracy} />
+          {subRow?.(isRunning)}
           <div className="grid items-center gap-x-6 gap-y-3 px-4 py-3 @2xl:grid-cols-[auto_minmax(0,1fr)]">
           <div className="flex items-center gap-3.5">
             <div className="relative h-[62px] w-[62px] flex-none" role="img" aria-label={`Daily practice ${Math.round(goalPct * 100)} percent of ${SMART_GOAL_MINUTES} minutes`}>
@@ -453,7 +539,12 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
         </section>
 
         {/* The text */}
-        <div ref={textBoxRef} className="relative mt-2 min-h-[6.5rem] cursor-text py-3" onClick={() => inputRef.current?.focus({ preventScroll: true })}>
+        {customPrompt}
+        <div
+          ref={textBoxRef}
+          className={`relative mt-2 min-h-[6.5rem] cursor-text py-3 ${customPrompt ? 'hidden' : ''}`}
+          onClick={() => inputRef.current?.focus({ preventScroll: true })}
+        >
           <TypingPassage chars={chars} currentIndex={currentIndex} firstCharRef={firstCharRef} currentCharRef={currentCharRef} className="transition-transform duration-150 ease-out" />
         </div>
         <input
@@ -471,9 +562,12 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
         />
 
         <div className="mt-3 flex min-h-8 items-center justify-center text-center">
-          {!isRunning && note && (
-            <p role="status" className="max-w-2xl text-sm text-text-dim">
-              {note}
+          {!isRunning && note && !customPrompt && (
+            <p role="status" className="flex max-w-2xl flex-wrap items-center justify-center gap-2 text-sm text-text-dim">
+              <span className="rounded border border-accent px-1.5 py-px text-[11px] font-semibold uppercase tracking-wider text-accent">
+                {KIND_TAG[kind]}
+              </span>
+              <span>{note}</span>
             </p>
           )}
         </div>
