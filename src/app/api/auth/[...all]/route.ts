@@ -1,5 +1,6 @@
 import { toNextJsHandler } from 'better-auth/next-js';
 import { authConfigured, getAuth } from '@/lib/auth';
+import { dbReady } from '@/lib/db';
 
 // Needs Node (database driver, crypto); answers per request, never cached.
 export const runtime = 'nodejs';
@@ -12,10 +13,12 @@ function unavailable() {
 
 export async function GET(request: Request) {
   if (!authConfigured()) return unavailable();
+  await dbReady();
   return toNextJsHandler(getAuth()).GET(request);
 }
 
 export async function POST(request: Request) {
   if (!authConfigured()) return unavailable();
+  await dbReady();
   return toNextJsHandler(getAuth()).POST(request);
 }

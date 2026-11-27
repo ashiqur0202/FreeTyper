@@ -25,6 +25,8 @@ const removedPages: Record<string, string> = {
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // The standalone bundle only copies the files it can trace; the account database's migrations are read at run time.
+  outputFileTracingIncludes: { "/api/**": ["./drizzle/**/*"] },
   trailingSlash: false,
   images: {
     unoptimized: true,

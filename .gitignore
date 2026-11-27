@@ -42,3 +42,6 @@ next-env.d.ts
 
 # local analytics exports (not for the repo)
 /analytics/
+
+# accounts QA rig (throwaway tokens for an in-memory database)
+.qa-rig.json

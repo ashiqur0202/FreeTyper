@@ -1,5 +1,5 @@
 import { authConfigured, getAuth } from '@/lib/auth';
-import { getDb } from '@/lib/db';
+import { dbReady, getDb } from '@/lib/db';
 import { parseSyncData } from '@/lib/sync/merge';
 import { deleteProgress, loadProgress, saveMerged } from '@/lib/sync/store';
 
@@ -15,8 +15,14 @@ const json = (body: unknown, status = 200) => Response.json(body, { status, head
 /** Who is asking: the signed-in user's id, or the response to send back instead. */
 async function userIdOf(request: Request): Promise<string | Response> {
   if (!authConfigured()) return json({ error: 'accounts_unavailable' }, 503);
-  const session = await getAuth().api.getSession({ headers: request.headers });
-  return session?.user.id ?? json({ error: 'signed_out' }, 401);
+  await dbReady();
+  try {
+    const session = await getAuth().api.getSession({ headers: request.headers });
+    return session?.user.id ?? json({ error: 'signed_out' }, 401);
+  } catch {
+    // The database is not answering. Nothing from the request is logged.
+    return json({ error: 'server_error' }, 500);
+  }
 }
 
 export async function GET(request: Request) {
