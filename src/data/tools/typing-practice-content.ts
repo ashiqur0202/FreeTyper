@@ -37,7 +37,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Which kind of text should I start with?',
     answer:
-      'Start on Mixed, which is the default. Every kind of text on this page is adaptive: the plan starts with one key, opens the next key when you are good at the ones you have, and spends most of each session on the keys that cost you the most errors. The tabs only change what the text looks like. Pick Sentences for plain practice text, Quotes for real sentences from classic books, Facts for short true statements, Code if you program, or Custom to type text you paste yourself.',
+      'Start on Sentences, which is the default: they are built from the keys you have open, while quotes, facts and code use the whole alphabet and are harder at first. Every kind of text on this page is adaptive: the plan starts with one key, opens the next key when you are good at the ones you have, and spends most of each session on the keys that cost you the most errors. The tabs only change what the text looks like. Pick Sentences for plain practice text, Quotes for real sentences from classic books, Facts for short true statements, Code if you program, or Custom to type text you paste yourself.',
   },
   {
     question: 'How does adaptive practice choose what to drill?',
@@ -94,7 +94,7 @@ export const previewHtml = `
 export const bodyHtml = `
 <h2 id="how-typing-practice-works">How typing practice works here</h2>
 <ul>
-<li><strong>Pick a kind of text</strong> with the tabs at the top of the box: Mixed (the default), Sentences, Quotes, Facts, Code or Custom. They are locked while a run is in progress, and your last choice is remembered in this browser.</li>
+<li><strong>Pick a kind of text</strong> with the tabs at the top of the box: Mixed, Sentences (the default), Quotes, Facts, Code or Custom. They are locked while a run is in progress, and your last choice is remembered in this browser.</li>
 <li><strong>Type the passage.</strong> Practice is not timed. The run ends when you reach the end of the passage, and your WPM is measured over the time you took.</li>
 <li><strong>Mistakes do not stop you.</strong> A wrong key is marked and you carry on, or press Backspace to step back. Scoring works exactly as in the <a href="/">typing speed test</a>: five characters make a word, and Backspace removes the character you step back over.</li>
 <li><strong>The next passage loads straight away</strong> so you can type again with no extra click. While a run is in progress, small buttons let you swap to a different passage or restart.</li>
@@ -197,7 +197,7 @@ ${faqHtml}
 export const howToSteps: { name: string; text: string }[] = [
   {
     name: 'Choose a kind of text',
-    text: 'Stay on Mixed, or pick Sentences, Quotes, Facts, Code or Custom with the tabs at the top of the practice box.',
+    text: 'Stay on Sentences, or pick Mixed, Quotes, Facts, Code or Custom with the tabs at the top of the practice box.',
   },
   {
     name: 'Type the passage',

@@ -54,7 +54,8 @@ export interface SourcePrefs {
   language: CodeChoice;
 }
 
-export const DEFAULT_PREFS: SourcePrefs = { source: 'mixed', language: 'any' };
+/** Sentences first: they are built from the keys a new typist has open, while quotes, facts and code use the whole alphabet. */
+export const DEFAULT_PREFS: SourcePrefs = { source: 'sentences', language: 'any' };
 
 export function loadSourcePrefs(): SourcePrefs {
   try {
