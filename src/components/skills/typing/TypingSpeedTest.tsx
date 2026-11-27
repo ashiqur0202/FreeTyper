@@ -45,6 +45,7 @@ import PracticeFeedback, {
   type PracticeLogEntry,
 } from './PracticeFeedback';
 import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
+import PracticeStrip from './PracticeStrip';
 
 const TEXT_MODES: { id: TextMode; label: string }[] = [
   { id: 'words', label: 'words' },
@@ -601,20 +602,31 @@ export default function TypingSpeedTest({
         <div className={focusMode ? undefined : 'min-h-[100svh]'} data-test-screen>
           {daily && dailyKey && <DailyPanel dateKey={dailyKey} store={dailyStore} />}
           {challenge && challengeInfo && <ChallengePanel challenge={challengeInfo} run={challengeRun} />}
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-            <div className="flex flex-wrap items-center gap-1">
+          {/* The test box: durations and live results in the strip, text type and difficulty under it, time left as the thin bar */}
+          <section className="mb-3 overflow-hidden rounded-2xl border border-surface-border bg-surface" aria-label="Test length, text type and live results">
+            <PracticeStrip
+              isRunning={isRunning || isComplete}
+              wpm={wpm}
+              accuracy={accuracy}
+              lead={
+                <span className={`tabular-nums ${isLowTime && isRunning ? 'text-error' : 'text-text-bright'}`}>
+                  {isComplete ? 0 : seconds}
+                </span>
+              }
+              tabs={
+                <div className="flex flex-wrap items-center gap-1">
               {fixedRun && (
-                <span className="rounded-md bg-accent-bg px-2 py-1 text-xs text-accent">{daily ? 'daily · 60s · sentences' : `challenge · ${challengeInfo?.seconds ?? 60}s · ${challengeInfo?.mode ?? 'sentences'}`}</span>
+                <span className="rounded-md bg-accent-bg px-2.5 py-1 text-sm text-accent">{daily ? 'daily · 60s · sentences' : `challenge · ${challengeInfo?.seconds ?? 60}s · ${challengeInfo?.mode ?? 'sentences'}`}</span>
               )}
               {!fixedRun && DURATION_OPTIONS.map((d) => (
                 <button
                   key={d.seconds}
                   onClick={() => { !isRunning && startNewTest(d.seconds); }}
                   disabled={isRunning}
-                  className={`rounded-md px-2 py-1 text-xs transition-all ${
+                  className={`rounded-md px-2.5 py-1 text-sm transition-all ${
                     activeDuration === d.seconds && !customDuration
                       ? 'bg-accent-bg text-accent'
-                      : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                      : 'text-text hover:bg-surface hover:text-text-bright'
                   } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   {d.label}
@@ -626,13 +638,26 @@ export default function TypingSpeedTest({
                 className={`flex items-center justify-center rounded-md p-1.5 transition-all ${
                   customDuration
                     ? 'bg-accent-bg text-accent'
-                    : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                    : 'text-text hover:bg-surface hover:text-text-bright'
                 } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
                 title="Custom time"
               >
                 <Settings2 className="h-3.5 w-3.5" />
               </button>}
-              {!fixedRun && <span className="mx-1 hidden h-3 w-px bg-surface-border sm:block" />}
+                  {fixedRun && (
+              <button
+                onClick={() => setFocusMode(!focusMode)}
+                className="flex items-center justify-center rounded-md p-1.5 text-text-dim transition-all hover:bg-surface-raised hover:text-text"
+                title={focusMode ? 'Exit focus mode (Esc)' : 'Focus mode'}
+              >
+                {focusMode ? <Minimize className="h-3.5 w-3.5" /> : <Maximize className="h-3.5 w-3.5" />}
+              </button>
+                  )}
+                </div>
+              }
+            />
+            {!fixedRun && (
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 px-3 py-1.5">
               {numberRow && NUMBER_ROW_MODES.map((m) => (
                 <button
                   key={m.id}
@@ -644,10 +669,10 @@ export default function TypingSpeedTest({
                     restart(next);
                   }}
                   disabled={isRunning}
-                  className={`rounded-md px-2 py-1 text-xs transition-all ${
+                  className={`rounded-full border px-2.5 py-0.5 text-xs transition-colors ${
                     rowMode === m.id
-                      ? 'bg-accent-bg text-accent'
-                      : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                      ? 'border-accent bg-accent-bg text-accent'
+                      : 'border-surface-border text-text hover:text-text-bright'
                   } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   {m.label}
@@ -664,10 +689,10 @@ export default function TypingSpeedTest({
                     restart(next);
                   }}
                   disabled={isRunning}
-                  className={`rounded-md px-2 py-1 text-xs transition-all ${
+                  className={`rounded-full border px-2.5 py-0.5 text-xs transition-colors ${
                     textMode === m.id
-                      ? 'bg-accent-bg text-accent'
-                      : 'text-text-dim hover:bg-surface-raised hover:text-text'
+                      ? 'border-accent bg-accent-bg text-accent'
+                      : 'border-surface-border text-text hover:text-text-bright'
                   } ${isRunning ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
                 >
                   {m.label}
@@ -697,6 +722,7 @@ export default function TypingSpeedTest({
                   ))}
                 </select>
               )}
+              <span className="flex-1" />
               <button
                 onClick={() => setFocusMode(!focusMode)}
                 className="flex items-center justify-center rounded-md p-1.5 text-text-dim transition-all hover:bg-surface-raised hover:text-text"
@@ -705,40 +731,23 @@ export default function TypingSpeedTest({
                 {focusMode ? <Minimize className="h-3.5 w-3.5" /> : <Maximize className="h-3.5 w-3.5" />}
               </button>
             </div>
-            <div className="flex items-center gap-3 font-mono text-sm text-text">
-              <span className={`tabular-nums ${isLowTime && isRunning ? 'text-error' : 'text-text-bright'}`}>
-                {isComplete ? 0 : seconds}
-              </span>
-              <span className="text-text-dim">·</span>
-              <span className="tabular-nums text-text-bright">
-                {isRunning || isComplete ? wpm : '--'}
-                <span className="text-text"> wpm</span>
-              </span>
-              <span className="text-text-dim">·</span>
-              <span className="tabular-nums text-text-bright">
-                {isRunning || isComplete ? accuracy : '--'}
-                <span className="text-text">%</span>
-              </span>
+            )}
+            <div className="h-[3px] w-full bg-surface-raised">
+              <div
+                className={`h-full transition-all duration-300 ease-linear ${isLowTime ? 'bg-error' : 'bg-accent'} ${isRunning && !isLowTime ? 'progress-glow' : ''}`}
+                style={{ width: `${progress}%` }}
+              />
             </div>
-          </div>
-
-          <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
-            <div
-              className={`h-full rounded-full transition-all duration-300 ease-linear ${
-                isLowTime ? 'bg-error' : 'bg-accent'
-              } ${isRunning && !isLowTime ? 'progress-glow' : ''}`}
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+          </section>
 
           {/* The finished box sits over the text area and the hint row below it, so nothing moves on a computer (a phone grows a little: the box is taller there). */}
           <div className={`relative ${showFinishedBox ? 'finished-room' : ''}`}>
             <div
               ref={typingAreaRef}
-              className={`relative mt-3 cursor-text overflow-hidden py-3 transition-[opacity,filter] duration-200 ${
+              className={`relative my-5 cursor-text overflow-hidden transition-[opacity,filter] duration-200 ${
                 showFinishedBox ? 'opacity-35 blur-[1.5px]' : ''
               }`}
-              style={{ height: typingWindowHeight(lineHeight) }}
+              style={{ height: typingWindowHeight(lineHeight) - 24 }}
               onClick={() => inputRef.current?.focus({ preventScroll: true })}
             >
               <TypingPassage
@@ -746,7 +755,7 @@ export default function TypingSpeedTest({
                 currentIndex={currentIndex}
                 firstCharRef={firstCharRef}
                 currentCharRef={currentCharRef}
-                className="transition-transform duration-150 ease-out"
+                className={`transition-transform duration-150 ease-out ${!numberRow && textMode === 'code' ? '' : 'typing-justify'}`}
                 style={{ transform: `translateY(-${scrollOffset}px)` }}
               />
             </div>
