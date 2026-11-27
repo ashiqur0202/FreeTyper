@@ -87,7 +87,7 @@ export const previewHtml = `
 <h2>Free Typing Lessons — Learn Touch Typing Step by Step</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-24">November 24, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
   <span>~7 min read</span>
 </p>
 <p>These free typing lessons are a course of 34 short lessons in six stages. You begin with two keys on the home row, add the rest of the home row, then the top and bottom rows, then Shift and punctuation, then numbers and symbols, and finish with speed and accuracy practice. A live keyboard above the text shows which key comes next, and your progress is saved in your browser without an account.</p>
@@ -110,7 +110,7 @@ export const bodyHtml = `
 <p>Every lesson shows the keys it introduces and a short note on which finger moves where. The order is our own design and follows the finger map in the <a href="/keyboard-guide">keyboard guide</a>. It is not a proven method.</p>
 
 <h2 id="smart-lessons">Smart lessons: a path that adapts to you</h2>
-<p>The lessons page has two modes, chosen with the tabs at the top: <strong>Smart lessons</strong> and the <strong>Course</strong> of 34 fixed lessons described below. Your choice is remembered in this browser. A first-time visitor lands on Smart lessons; someone who has already passed course lessons lands on the Course.</p>
+<p>The lessons page has two modes, chosen with the two tabs at the top of the lessons box: <strong>Smart lessons</strong> and the <strong>Course</strong> of 34 fixed lessons described below. Your choice is remembered in this browser. A first-time visitor lands on Smart lessons; someone who has already passed course lessons lands on the Course.</p>
 <ul>
 <li><strong>No fixed list.</strong> You start with one key (F), and every key after it is earned. Every round is 12 words of new text (6 words for the first three keys) built from the keys that are open. While five or fewer keys are open, the next two keys in the order are previewed: they make up about a third of the letters so the text is not all one letter, they do not count toward unlocking, and they stop once six keys are open. With few keys open many of the words are made-up letter groups; as more keys open, more of them are real words from a word bank of about 1,200 common English words.</li>
 <li><strong>Keys unlock by skill.</strong> The keys open from easy to hard, one at a time, in this order: F J D A S L (the home row), E, K G H (the rest of the home row), then I R U T N O C M W, and last the far and rare keys B Y P V X Q Z. Each key gets a score from 0 to 1, where accuracy counts most and speed less (speed is judged against your own median time per key, not a fixed number). The next key unlocks when each open key has been typed enough times (5 presses for the first keys, up to 8 for the last) and the average score of your open keys is high enough (about 0.67 early, up to 0.77 late), with no single key more than 0.10 below the bar (about 0.50 early, up to 0.60 late). Easy keys ask for less and the far keys for more. Locked keys show a padlock in the key row. The same open keys are used by the adaptive tab on the <a href="/typing-practice">practice page</a>, so a key you open in one place is open in the other.</li>
@@ -127,7 +127,7 @@ export const bodyHtml = `
 <li><strong>A pass mark.</strong> You pass a lesson with 95% accuracy or better. The accuracy challenge (lesson 32) needs 98%.</li>
 <li><strong>If you miss it,</strong> the same lesson starts again with new text and a message tells you your score. After three misses a "move on anyway" button appears, so a hard lesson never blocks you.</li>
 <li><strong>If you pass,</strong> the next lesson loads straight away so you can keep typing.</li>
-<li><strong>Locked in order.</strong> Only lesson 1 is open at the start. Passing or skipping a lesson opens the next. Open lessons can be repeated at any time from the stage tabs and numbered buttons at the top, but not while a run is in progress.</li>
+<li><strong>Locked in order.</strong> Only lesson 1 is open at the start. Passing or skipping a lesson opens the next. Open lessons can be repeated at any time from the stage chips and the numbered steps in the lessons box, but not while a run is in progress.</li>
 <li><strong>Signs on the numbered buttons.</strong> A tick means passed, a skip icon means you moved on anyway, and a padlock means locked.</li>
 <li><strong>A live keyboard.</strong> The next key pulses (you can switch that off in Settings), the key you press flashes green when right and red when wrong, and keys outside the current lesson are dimmed. When a capital or a shifted symbol is next, the key and the Shift key on the opposite hand are both highlighted.</li>
 <li><strong>Same scoring as the speed test.</strong> WPM counts five characters as a word, accuracy is correct characters out of characters typed, and Backspace removes the character you step back over. The <a href="/">typing speed test guide</a> explains this in full.</li>

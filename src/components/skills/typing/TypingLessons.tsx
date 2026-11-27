@@ -383,7 +383,7 @@ export default function TypingLessons({ tabs }: { tabs: ReactNode }) {
         <section className="mb-3 overflow-hidden rounded-2xl border border-surface-border bg-surface" aria-label="Lesson tabs, stages and the current lesson">
           <PracticeStrip tabs={tabs} isRunning={isRunning} wpm={wpm} accuracy={accuracy} />
 
-          <div className="flex flex-wrap items-center gap-1 border-b border-surface-border px-3 py-2" role="tablist" aria-label="Course stages">
+          <div className="flex flex-wrap items-center gap-1 border-b border-surface-border px-3 py-1.5" role="tablist" aria-label="Course stages">
             {STAGES.map((s) => {
               const inStage = stageLessons(s.id);
               const done = countDone(progress, inStage);
@@ -405,65 +405,65 @@ export default function TypingLessons({ tabs }: { tabs: ReactNode }) {
             })}
           </div>
 
-          {/* Lessons in the chosen stage */}
-          <div className="flex flex-wrap items-center gap-1 px-3 pt-2">
-            {stageLessons(viewStage).map((l) => {
-              const unlocked = isUnlocked(progress, l.number);
-              const done = progress.completed.includes(l.id);
-              const skipped = progress.skipped.includes(l.id);
-              const isActive = l.number === activeNumber;
-              return (
-                <button
-                  key={l.id}
-                  type="button"
-                  onClick={() => goToLesson(l.number)}
-                  disabled={!unlocked || isRunning}
-                  aria-label={`Lesson ${l.number}: ${l.title}${done ? ', passed' : skipped ? ', skipped' : unlocked ? '' : ', locked'}`}
-                  title={unlocked ? `${l.number}. ${l.title}` : 'Finish the previous lesson to unlock'}
-                  className={`inline-flex min-w-[2rem] items-center justify-center gap-1 rounded-md px-2 py-1 text-xs tabular-nums transition-all ${
-                    isActive
-                      ? 'bg-accent-bg font-medium text-text-bright'
-                      : unlocked
-                        ? 'text-text hover:bg-surface-raised hover:text-text-bright'
-                        : 'cursor-not-allowed text-text-dim/40'
-                  } ${isRunning ? 'cursor-not-allowed opacity-30' : ''}`}
-                >
-                  {done ? <Check className="h-3 w-3 text-accent" /> : skipped ? <SkipForward className="h-3 w-3 text-text-dim" /> : !unlocked ? <Lock className="h-3 w-3" /> : null}
-                  <span>{l.number}</span>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Current lesson */}
-          <div className="grid items-center gap-x-6 gap-y-2 px-4 pb-2 pt-3 @2xl:grid-cols-[minmax(0,1fr)_auto]">
-            <div className="min-w-0">
-              <p className="text-xs text-text-dim">
-                Lesson {lesson.number} of {courseLessons.length} · {STAGES.find((s) => s.id === lesson.stage)?.label}
-              </p>
-              <h2 className="text-base font-semibold text-text-bright">{lesson.title}</h2>
-              <p className="mt-1 max-w-3xl text-xs leading-relaxed text-text-dim">{lesson.tip}</p>
+          {/* The lesson: new keys as keycaps, title and tip, and the lessons of this stage as a stepper */}
+          <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2 px-3.5 py-2.5">
+            {lesson.newKeys.length > 0 && (
+              <div className="flex flex-none gap-1" aria-label="New keys in this lesson">
+                {lesson.newKeys.map((k) => (
+                  <kbd key={k} className="grid h-[38px] w-[38px] place-items-center rounded-lg border border-accent bg-accent-bg font-mono text-lg font-bold uppercase text-accent">
+                    {k}
+                  </kbd>
+                ))}
+              </div>
+            )}
+            <div className="min-w-0 flex-[1_1_16rem]">
+              <h2 className="flex flex-wrap items-baseline gap-x-2.5 text-base font-semibold text-text-bright">
+                {lesson.title}
+                <span className="text-xs font-normal text-text-dim">
+                  Lesson {lesson.number} of {courseLessons.length} · {STAGES.find((st) => st.id === lesson.stage)?.label} · {doneCount} of {courseLessons.length} passed
+                </span>
+              </h2>
+              <p className="mt-0.5 max-w-3xl text-[0.8rem] leading-snug text-text">{lesson.tip}</p>
             </div>
-            <div className="flex items-center gap-2 text-xs text-text-dim">
-              {lesson.newKeys.length > 0 && (
-                <>
-                  <span>New keys</span>
-                  {lesson.newKeys.map((k) => (
-                    <kbd key={k} className="rounded-md border border-accent bg-accent-bg px-2.5 py-1 font-mono text-sm font-bold uppercase text-accent">
-                      {k}
-                    </kbd>
-                  ))}
-                </>
-              )}
-              <span className="ml-1 tabular-nums">{doneCount}/{courseLessons.length} done</span>
-            </div>
+            <ol className="flex flex-none flex-wrap items-center gap-1" aria-label="Lessons in this stage">
+              {stageLessons(viewStage).map((l, i) => {
+                const unlocked = isUnlocked(progress, l.number);
+                const done = progress.completed.includes(l.id);
+                const skipped = progress.skipped.includes(l.id);
+                const isActive = l.number === activeNumber;
+                return (
+                  <li key={l.id} className="flex items-center gap-1">
+                    {i > 0 && <span className={`h-0.5 w-3 rounded-sm ${done || isActive ? 'bg-accent' : 'bg-surface-raised'}`} aria-hidden="true" />}
+                    <button
+                      type="button"
+                      onClick={() => goToLesson(l.number)}
+                      disabled={!unlocked || isRunning}
+                      aria-current={isActive ? 'step' : undefined}
+                      aria-label={`Lesson ${l.number}: ${l.title}${done ? ', passed' : skipped ? ', skipped' : unlocked ? '' : ', locked'}`}
+                      title={unlocked ? `${l.number}. ${l.title}` : 'Finish the previous lesson to unlock'}
+                      className={`grid h-[26px] w-[26px] place-items-center rounded-full border text-xs tabular-nums transition-colors ${
+                        isActive
+                          ? 'border-accent bg-accent font-bold text-surface'
+                          : done
+                            ? 'border-accent bg-accent-bg text-accent'
+                            : unlocked
+                              ? 'border-surface-border text-text hover:text-text-bright'
+                              : 'cursor-not-allowed border-surface-border text-text-dim/40'
+                      } ${isRunning && !isActive ? 'cursor-not-allowed opacity-30' : ''}`}
+                    >
+                      {done && !isActive ? <Check className="h-3 w-3" /> : skipped && !isActive ? <SkipForward className="h-3 w-3" /> : !unlocked ? <Lock className="h-3 w-3" /> : l.number}
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
           </div>
           {/* Where you are in all the lessons */}
-          <div className="grid gap-0.5 px-4 pb-3" style={{ gridTemplateColumns: `repeat(${courseLessons.length}, minmax(0, 1fr))` }} aria-hidden="true">
+          <div className="grid gap-0.5 px-3.5 pb-2" style={{ gridTemplateColumns: `repeat(${courseLessons.length}, minmax(0, 1fr))` }} aria-hidden="true">
             {courseLessons.map((l) => (
               <span
                 key={l.id}
-                className={`h-1.5 rounded-sm ${
+                className={`h-1 rounded-sm ${
                   l.number === activeNumber ? 'bg-accent outline outline-1 outline-offset-1 outline-accent' : progress.completed.includes(l.id) ? 'bg-accent' : 'bg-surface-raised'
                 }`}
               />
