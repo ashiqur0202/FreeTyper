@@ -5,11 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "node scripts/migrate.mjs && next start",
     "lint": "eslint",
     "check:text": "node scripts/text-engine/check.js",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
+    "db:migrate": "node scripts/migrate.mjs",
     "test:sync": "node --import ./scripts/register-ts.mjs scripts/test-sync-merge.mjs",
     "test:sync-store": "node --import ./scripts/register-ts.mjs scripts/test-sync-store.mjs",
     "test:sync-client": "node --import ./scripts/register-ts.mjs scripts/test-sync-client.mjs",

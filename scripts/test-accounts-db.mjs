@@ -26,6 +26,22 @@ for (const f of readdirSync('drizzle').filter((x) => x.endsWith('.sql')).sort())
 }
 ok('migrations apply to an empty database');
 
+// The same migrator the deploy runs (scripts/migrate.mjs) applies the real folder, and running it again on every start is harmless.
+{
+  const { migrate } = await import('drizzle-orm/pglite/migrator');
+  const fresh = new PGlite();
+  const fdb = drizzle(fresh, { schema });
+  await migrate(fdb, { migrationsFolder: 'drizzle' });
+  await migrate(fdb, { migrationsFolder: 'drizzle' });
+  await migrate(fdb, { migrationsFolder: 'drizzle' });
+  const tables = (await fresh.query("select table_name from information_schema.tables where table_schema = 'public' order by table_name")).rows.map((r) => r.table_name);
+  assert.deepEqual(tables, ['account', 'session', 'user', 'user_progress', 'verification']);
+  const applied = (await fresh.query('select count(*)::int as n from drizzle.__drizzle_migrations')).rows[0].n;
+  assert.equal(applied, readdirSync('drizzle').filter((x) => x.endsWith('.sql')).length, 'each migration is recorded once, however many times it runs');
+  await fresh.close();
+  ok('the deploy migrator creates the five tables and re-running it changes nothing');
+}
+
 const db = drizzle(client, { schema });
 const auth = createAuth(db);
 const ctx = await auth.$context;
