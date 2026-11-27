@@ -11,7 +11,17 @@ export async function resolve(specifier, context, nextResolve) {
   try {
     return await nextResolve(specifier, context);
   } catch (e) {
-    if (e.code === 'ERR_MODULE_NOT_FOUND' && (specifier.startsWith('.') || specifier.startsWith('file:'))) return nextResolve(`${specifier}.ts`, context);
+    const local = specifier.startsWith('.') || specifier.startsWith('file:');
+    if (e.code === 'ERR_MODULE_NOT_FOUND' && local) return nextResolve(`${specifier}.ts`, context);
+    // A folder import: ./library means ./library.ts when that exists (like TypeScript), else ./library/index.ts
+    if (e.code === 'ERR_UNSUPPORTED_DIR_IMPORT' && local) {
+      const base = specifier.replace(/\/$/, '');
+      try {
+        return await nextResolve(`${base}.ts`, context);
+      } catch {
+        return nextResolve(`${base}/index.ts`, context);
+      }
+    }
     throw e;
   }
 }

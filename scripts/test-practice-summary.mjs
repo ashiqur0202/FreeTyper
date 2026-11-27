@@ -52,7 +52,7 @@ t('challenge run: the newest log entry that kept a seed and text level; older ru
     { wpm: 66, accuracy: 97, share: { seed: 'k3x9aq', mode: 'words', seconds: 30, level: 4 } },
     { wpm: 60, accuracy: 96, share: { seed: 'zzzzzz', mode: 'sentences', seconds: 60, level: 3 } },
   ]);
-  assert.deepEqual(readPracticeSummary(NOW).challengeRun, { seed: 'k3x9aq', mode: 'words', seconds: 30, level: 4, wpm: 66, accuracy: 97 });
+  assert.deepEqual(readPracticeSummary(NOW).challengeRun, { seed: 'k3x9aq', mode: 'words', gen: 1, language: 'any', seconds: 30, level: 4, wpm: 66, accuracy: 97 });
   put('freetyper-speed-log', [{ wpm: 70, accuracy: 98, share: { seed: 'abc123', mode: 'sentences', seconds: 60 } }]);
   assert.equal(readPracticeSummary(NOW).challengeRun, null, 'a run without a text level cannot be rebuilt');
   localStorage.setItem('freetyper-speed-log', '{not json');
