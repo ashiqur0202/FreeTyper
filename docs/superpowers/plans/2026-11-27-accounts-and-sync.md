@@ -111,6 +111,12 @@ Same release routine as Phase 8. Magic link: single use, 5 minutes, "Prefer a li
 - [ ] Security pass: origins, rate limits, email abuse, session handling.
 - [ ] First week: Postgres size, mail bounces, error log; add a short entry in `analytics.md` if numbers were read.
 
+## Release A is LIVE (2026-11-27, master cc09d0a)
+Deploy took about 7 minutes. Live log: `[migrate] database is up to date.` (production starts through `npm start`). Live Google flow starts correctly (redirect to accounts.google.com with the registered redirect_uri, scopes email profile openid, state and PKCE; this also proves the live database answers). Waiting for Ashiqur's first real Google login.
+
+## Database access from DBeaver (2026-11-27, Ashiqur asked)
+`freetyper-db` now publishes its port ONLY on the server's loopback: Coolify, database General, **Ports Mappings = `127.0.0.1:5433:5432`** (Save in the General section, then Restart; "Make it publicly available" stays OFF). Checked from outside after the restart: ports 5432 and 5433 are closed; live accounts worked after the restart. DBeaver connects through an SSH tunnel: SSH tab host 178.104.135.111, port 22, user root, public-key authentication with the PRIVATE key file (not the .pub); Main tab host `localhost`, port 5433, database freetyper, user freetyper, password from Coolify (the database page). SSL off. Suggested: connection type Production and Read-only. To undo: clear the Ports Mappings field, Save, Restart. Do not use "Make it publicly available".
+
 ## Open questions
 - Does Ashiqur accept `data jsonb` (full progress) in place of the summary-only table? (recommended, asked 2026-11-27)
 - Which date to ship Phase 0.
