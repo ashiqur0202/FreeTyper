@@ -15,7 +15,6 @@ globalThis.fetch = async (url, init) => { calls.push({ url, init }); return hand
 const { syncNow, checkMergeChoice, resetAccountProgress } = await import('../src/lib/sync/client.ts');
 const { readLocal, LOCAL_KEYS } = await import('../src/lib/sync/local.ts');
 const { emptySyncData, mergeSyncData, parseSyncData } = await import('../src/lib/sync/merge.ts');
-const { saveMerged } = await import('../src/lib/sync/store.ts').catch(() => ({}));
 
 let n = 0;
 const t = async (name, fn) => { store.clear(); sets = 0; events.length = 0; calls = []; await fn(); n++; console.log('ok -', name); };
