@@ -707,3 +707,27 @@ a:hover { color: var(--color-accent); }
 .mt-bests ul { margin: 0.4rem 0 0; padding: 0; list-style: none; display: grid; gap: 0.2rem; font-size: 0.85rem; }
 .mt-bests li { display: flex; justify-content: space-between; gap: 1rem; max-width: 18rem; }
 .mt-foot-note { margin-top: 1.2rem; text-align: center; font-size: 0.78rem; color: var(--color-text-dim); }
+
+/* Login page: the heading types itself once (each letter appears in turn, so it works on wrapped lines too and
+   is never visible before it starts), the cursor keeps blinking, and the page has a soft glow and key-gap dots. */
+.login-stage {
+  background:
+    radial-gradient(520px 260px at 50% 0%, var(--color-accent-bg), transparent 70%),
+    radial-gradient(var(--color-surface-border) 1px, transparent 1.4px) 0 0 / 22px 22px;
+}
+.login-stage::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to bottom, transparent 55%, var(--color-surface)); }
+.login-type .ch { opacity: 0; animation: login-in 0.01s forwards; animation-delay: calc(var(--i) * 38ms + 250ms); }
+@keyframes login-in { to { opacity: 1; } }
+.login-type .cur { display: inline-block; width: 3px; height: 0.95em; margin-left: 3px; vertical-align: -0.1em; background: var(--color-accent); opacity: 0; animation: login-in 0.01s forwards, login-blink 1s steps(1) infinite; animation-delay: 150ms, 0s; }
+@keyframes login-blink { 50% { opacity: 0; } }
+.login-key { border-bottom-width: 3px; transition: filter 0.15s, transform 0.06s, border-bottom-width 0.06s; }
+.login-key:hover:not(:disabled) { filter: brightness(1.14); }
+.login-key:active:not(:disabled) { transform: translateY(2px); border-bottom-width: 1px; }
+.login-spin { width: 17px; height: 17px; border: 2px solid var(--color-surface-border); border-top-color: var(--color-accent); border-radius: 50%; animation: login-spin 0.8s linear infinite; }
+@keyframes login-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .login-type .ch { opacity: 1; animation: none; }
+  .login-type .cur { opacity: 1; animation: none; }
+  .login-key { transition: none; }
+  .login-spin { animation: none; }
+}
