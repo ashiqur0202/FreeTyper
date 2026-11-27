@@ -11,7 +11,7 @@
  * counting days with a run at 90 % accuracy or better, data kept only in
  * localStorage. No outside figures are used.
  *
- * Last real edit: 2026-11-21 (added: when the text changes in each time zone, three worked streak examples, comparing with a friend; two FAQs). Earlier: 2026-11-20 (the daily text is generated from the date, no fixed passages)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-21) (added: when the text changes in each time zone, three worked streak examples, comparing with a friend; two FAQs). Earlier: 2026-11-20 (the daily text is generated from the date, no fixed passages)
  */
 
 export const dailyMeta = {
@@ -23,7 +23,7 @@ export const dailyMeta = {
 const byline = `
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-21">November 21, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
 </p>`;
 
 export const dailyPreviewHtml = `
@@ -49,7 +49,7 @@ export const dailyBodyHtml = `
 </ul>
 
 <h2 id="what-is-stored">What is stored, and what is not</h2>
-<p>The streak, your best score for each of the last 60 days and the number of runs are kept in your browser's local storage on this device. There are no accounts and no leaderboard: nothing is uploaded and no one else can see your score, unless you use the share button to turn a result into a picture and send it yourself. Clearing your site data, or opening the page in another browser or on another device, starts the streak from zero. The result card for a daily run is labelled "daily" with the date, and the share picture says "Daily challenge" with the day.</p>
+<p>The streak, your best score for each of the last 60 days and the number of runs are kept in your browser's local storage on this device. There is no leaderboard, and no one else can see your score unless you use the share button to turn a result into a picture and send it yourself. Without an account nothing is uploaded. If you choose to log in, your daily results (the best score and the number of runs for each day) are also saved to your account, so the streak follows you to other devices. Clearing your site data, or opening the page in another browser or on another device without logging in, starts the streak from zero. The result card for a daily run is labelled "daily" with the date, and the share picture says "Daily challenge" with the day.</p>
 
 <h2 id="using-it-well">Using it well</h2>
 <p>These are suggestions, not measured results. Because the text is the same for everyone each day, it is a fair way to compare yourself with a friend: send them the share picture and ask them to type the same day's passage. For your own progress, look at the trend over several days instead of one score, since one run swings with how awake you are. If you are still learning the keys, the <a href="/typing-lessons">typing lessons</a> and <a href="/typing-practice">adaptive practice</a> will move your speed more than repeating this test.</p>
@@ -105,7 +105,7 @@ export const dailyFaqs = [
   {
     question: 'Is there a leaderboard or an account?',
     answer:
-      'No. Your streak and best scores are stored only in your browser on this device, and nothing is uploaded. Use the share button to send a result as a picture.',
+      'No. Your streak and best scores are stored in your browser on this device, and nothing is uploaded unless you choose to log in, which also saves them to your account so the streak follows you. There is no leaderboard. Use the share button to send a result as a picture.',
   },
   {
     question: 'When does the daily text change in my time zone?',

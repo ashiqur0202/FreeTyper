@@ -14,7 +14,7 @@
  * SD 20.2, 168,960 volunteers; top 10 % above about 78, bottom 10 % below
  * about 26), checked against the paper's results table on 2026-11-08.
  *
- * Last real edit: 2026-11-21 (3 and 5 minute pages got their own sections: 30-second pacing blocks, text level and the challenge link for 3 minutes; minute checkpoints, three phases and comparable runs for 5 minutes; their visible dates are 2026-11-21 and the 1 minute page keeps 2026-11-20). Earlier: 2026-11-20 (text is generated; the FAQ on repeats) (study figures, limits and the Backspace rule are said once, on the 1 minute page and the home guide)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-21) (3 and 5 minute pages got their own sections: 30-second pacing blocks, text level and the challenge link for 3 minutes; minute checkpoints, three phases and comparable runs for 5 minutes; their visible dates are 2026-11-21 and the 1 minute page keeps 2026-11-20). Earlier: 2026-11-20 (text is generated; the FAQ on repeats) (study figures, limits and the Backspace rule are said once, on the 1 minute page and the home guide)
  */
 
 export type DurationPage = {
@@ -78,7 +78,7 @@ const oneMinute: DurationPage = {
     {
       question: 'Is my 1 minute score saved?',
       answer:
-        'Only in your own browser. The latest five test results are kept on this device, and the totals feed your progress page. There is no account, and clearing your site data erases them.',
+        'In your own browser. The latest five test results are kept on this device, and the totals feed your progress page. You do not need an account; if you choose to log in, the progress totals (never what you typed) are also saved to your account. Clearing your site data erases what is kept on this device.',
     },
   ],
   howToSteps: [
@@ -100,7 +100,7 @@ const oneMinute: DurationPage = {
     },
   ],
   previewHtml: `
-<h2>1 Minute Typing Test — Check Your WPM in 60 Seconds</h2>${byline('2026-11-20', 'November 20, 2026')}
+<h2>1 Minute Typing Test — Check Your WPM in 60 Seconds</h2>${byline('2026-11-27', 'November 27, 2026')}
 <p>This is a free 1 minute typing test. Press a key to start the 60 seconds, type the text, and you get your net words per minute, your accuracy and a graph of your speed through the minute. It is the fastest way to see roughly where you stand.</p>
 <p>Below: what a single minute can and cannot tell you, what typical scores look like, and when a longer test gives a better answer.</p>
 `,
@@ -222,7 +222,7 @@ const threeMinute: DurationPage = {
     },
   ],
   previewHtml: `
-<h2>3 Minute Typing Test — A Steadier WPM Check</h2>${byline('2026-11-21', 'November 21, 2026')}
+<h2>3 Minute Typing Test — A Steadier WPM Check</h2>${byline('2026-11-27', 'November 27, 2026')}
 <p>This is a free 3 minute typing test. The timer starts on your first key. When it ends you get net WPM, accuracy, a speed graph and a consistency score, which show whether you kept your pace or slowed down.</p>
 <p>Below: why three minutes tells you more than one, how to read the graph, and what the study numbers can and cannot say about a run this long.</p>
 `,
@@ -268,7 +268,7 @@ const threeMinute: DurationPage = {
 <p>For sentences and words, the test has a difficulty menu with five text levels, from 1 (Beginner) to 5 (Expert). Standard, level 3, is the default. Higher levels bring longer words and more punctuation, digits and quotation marks, so the same typist should expect a lower score on a harder level. That is the effect of harder text, not a figure we measured. For a series of 3 minute runs, pick one level and keep it, because a score on level 4 cannot be compared with one on level 2. Code snippets and the number row test have their own text and ignore this menu.</p>
 
 <h2 id="challenge-a-friend-over-three-minutes">Challenge a friend over 3 minutes</h2>
-<p>After a finished 3 minute run on sentences, words or code, the Challenge a friend button makes a link. The link holds a short code that rebuilds the same text, the text type, the 3 minute length, the text level, and your net WPM and accuracy. When your friend opens it, they type the same text for the same three minutes, and the page shows your score as the target. Nothing is uploaded and there is no account. The number row test and the daily challenge cannot be shared this way, because they have their own rules. A longer run averages out lucky stretches, so a 3 minute result is a steadier target to chase than a 15 second one; that is reasoning, not something we measured.</p>
+<p>After a finished 3 minute run on sentences, words or code, the Challenge a friend button makes a link. The link holds a short code that rebuilds the same text, the text type, the 3 minute length, the text level, and your net WPM and accuracy. When your friend opens it, they type the same text for the same three minutes, and the page shows your score as the target. The link carries only the code and your score, nothing you typed is uploaded, and your friend does not need an account. The number row test and the daily challenge cannot be shared this way, because they have their own rules. A longer run averages out lucky stretches, so a 3 minute result is a steadier target to chase than a 15 second one; that is reasoning, not something we measured.</p>
 
 <h2 id="limits-of-the-3-minute-test">Limits of this test</h2>
 <ul>

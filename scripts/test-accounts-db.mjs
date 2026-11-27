@@ -45,6 +45,23 @@ assert.equal(found.user.id, u.id);
 assert.equal(found.accounts.length, 1);
 ok('finding the user by email returns the one account with its Google link');
 
+// Google's sign-in tokens are never stored, only who the person is.
+const [link] = await db.select().from(schema.account).where(eq(schema.account.userId, u.id));
+assert.equal(link.providerId, 'google');
+assert.equal(link.accountId, 'g-123');
+const tokened = await a.createAccount({ userId: u.id, providerId: 'google', accountId: 'g-456', accessToken: 'SECRET-ACCESS', refreshToken: 'SECRET-REFRESH', idToken: 'SECRET-ID', accessTokenExpiresAt: new Date(), scope: 'email profile' });
+const [stored] = await db.select().from(schema.account).where(eq(schema.account.id, tokened.id));
+assert.equal(stored.accessToken, null);
+assert.equal(stored.refreshToken, null);
+assert.equal(stored.idToken, null);
+assert.equal(stored.accessTokenExpiresAt, null);
+await a.updateAccount(tokened.id, { accessToken: 'NEW-SECRET', refreshToken: 'NEW-REFRESH' });
+const [again] = await db.select().from(schema.account).where(eq(schema.account.id, tokened.id));
+assert.equal(again.accessToken, null);
+assert.equal(again.refreshToken, null);
+await db.delete(schema.account).where(eq(schema.account.id, tokened.id));
+ok('Google sign-in tokens are dropped on create and on update');
+
 // A second user with the same email is refused by the database itself.
 await assert.rejects(() => a.createUser({ email: 'sam@example.com', name: 'Other', emailVerified: true }));
 ok('a second account with the same email is refused');

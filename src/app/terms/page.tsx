@@ -11,7 +11,7 @@ export default function TermsPage() {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       <h1 className="text-3xl font-bold text-text-bright">Terms of Service</h1>
-      <p className="mt-2 text-sm text-text-dim">Last updated: September 2026</p>
+      <p className="mt-2 text-sm text-text-dim">Last updated: November 2026</p>
 
       <div className="mt-8 space-y-8 text-text leading-relaxed">
         <section>
@@ -26,8 +26,8 @@ export default function TermsPage() {
         </section>
 
         <section>
-          <h2 className="text-xl font-bold text-text-bright">No Account Required</h2>
-          <p className="mt-2">{siteConfig.name} does not require registration or accounts. Typing progress stays in your browser. We use Google Analytics to measure traffic, as described in the privacy policy. We do not sell user profiles or require you to create a login.</p>
+          <h2 className="text-xl font-bold text-text-bright">Accounts Are Optional</h2>
+          <p className="mt-2">{siteConfig.name} does not require registration. You can use every tool as a guest, and your typing progress then stays in your browser. If you choose to log in with Google, a copy of your progress numbers is saved to your account so it follows you to other devices; the privacy policy explains exactly what is stored. You are responsible for what happens under your login. You can delete your account at any time on the Account page. We use Google Analytics to measure traffic, as described in the privacy policy. We do not sell user profiles.</p>
         </section>
 
         <section>

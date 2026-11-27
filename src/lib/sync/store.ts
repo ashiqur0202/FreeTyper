@@ -20,6 +20,11 @@ export async function loadProgress(db: SyncDb, userId: string): Promise<Saved> {
   return { data: readRow(row), version: row?.version ?? 0 };
 }
 
+/** Removes everything saved for this account (the account itself stays). Used by the reset buttons. */
+export async function deleteProgress(db: SyncDb, userId: string): Promise<void> {
+  await db.delete(userProgress).where(eq(userProgress.userId, userId));
+}
+
 /**
  * Adds what a device sends to what the account already holds, and returns the
  * result. The device never overwrites the account: both are merged, inside one

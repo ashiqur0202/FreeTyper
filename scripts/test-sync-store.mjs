@@ -6,7 +6,7 @@ import { drizzle } from 'drizzle-orm/pglite';
 import { eq } from 'drizzle-orm';
 
 const schema = await import('../src/lib/db/schema.ts');
-const { loadProgress, saveMerged } = await import('../src/lib/sync/store.ts');
+const { loadProgress, saveMerged, deleteProgress } = await import('../src/lib/sync/store.ts');
 const { emptySyncData } = await import('../src/lib/sync/merge.ts');
 
 let n = 0;
@@ -79,6 +79,16 @@ await t('unreadable stored data is treated as empty and the next save repairs it
   assert.deepEqual((await loadProgress(db, 'u2')).data, emptySyncData());
   const r = await saveMerged(db, 'u2', device('z2', 9500, 33));
   assert.equal(r.data.progress.sessions.length, 1);
+});
+await t('reset: removes only this account\'s saved progress, the account stays, and a later save starts clean', async () => {
+  await deleteProgress(db, 'u2');
+  assert.equal((await db.select().from(schema.userProgress).where(eq(schema.userProgress.userId, 'u2'))).length, 0);
+  assert.equal((await db.select().from(schema.user).where(eq(schema.user.id, 'u2'))).length, 1);
+  assert.equal((await db.select().from(schema.userProgress).where(eq(schema.userProgress.userId, 'u1'))).length, 1, 'another account is untouched');
+  assert.deepEqual((await loadProgress(db, 'u2')).data, emptySyncData());
+  const r = await saveMerged(db, 'u2', device('z3', 9800, 36));
+  assert.deepEqual(r.data.progress.sessions.map((s) => s.id), ['z3']);
+  await deleteProgress(db, 'nobody'); // a missing row is not an error
 });
 await t('deleting the account removes its progress', async () => {
   await db.delete(schema.user).where(eq(schema.user.id, 'u1'));

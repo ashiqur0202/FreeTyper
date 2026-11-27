@@ -42,6 +42,21 @@ export function syncNow(): Promise<SyncResult> {
   return inFlight;
 }
 
+/**
+ * Before a reset button clears this device: also remove the account's copy, so the
+ * next sync does not bring it all back. True when it is fine to clear this device
+ * (the account copy is gone, or there is no login or no accounts); false when the
+ * account could not be reached, in which case nothing should be cleared.
+ */
+export async function resetAccountProgress(): Promise<boolean> {
+  try {
+    const res = await fetch('/api/progress', { method: 'DELETE', credentials: 'same-origin', cache: 'no-store' });
+    return res.ok || res.status === 401 || res.status === 503;
+  } catch {
+    return false;
+  }
+}
+
 export interface MergeChoice {
   needed: boolean;
   /** What this browser holds, and what the account holds, as the few numbers the question shows. */

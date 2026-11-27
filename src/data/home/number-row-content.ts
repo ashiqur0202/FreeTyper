@@ -10,7 +10,7 @@
  * progress. No outside statistics are used: we have no checked source for typical number-row speeds, and the
  * page says so. If the text, scoring, finger hints or saving change, update this file in the same commit.
  *
- * Last real edit: 2026-11-19 (the FAQ and the body no longer repeat each other)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-19) (the FAQ and the body no longer repeat each other)
  */
 
 export const numberRowPage = {
@@ -30,7 +30,7 @@ export const numberRowPage = {
     {
       question: 'Why do my number row results not show in my progress?',
       answer:
-        'On purpose. Digits are typed at a different speed from sentences, so mixing them in would move your best WPM, your averages and your streak in a misleading way. The latest five number row results are kept in their own list in your browser, on this device only. There is no account, clearing your site data erases them, and there is no level ladder or certificate for these runs.',
+        'On purpose. Digits are typed at a different speed from sentences, so mixing them in would move your best WPM, your averages and your streak in a misleading way. The latest five number row results are kept in their own list in your browser, on this device only. They are not saved to an account, clearing your site data erases them, and there is no level ladder or certificate for these runs.',
     },
     {
       question: 'Do the symbols need Shift?',
@@ -75,7 +75,7 @@ export const numberRowPage = {
 <h2>Number Row Typing Test — Practice Digits and Symbols</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-19">November 19, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
 </p>
 <p>This free number row typing test has you type digits, in groups of two to six, on the row above your letters. Switch on "with symbols" to add the shifted keys, such as $, %, # and &amp;. When the time ends you get your net WPM, your accuracy and a strip that shows how long each digit from 0 to 9 took, with your slowest digit marked.</p>
 <p>Below: how the text is built, which finger belongs to each number key, how the score works, and what this test does not measure.</p>

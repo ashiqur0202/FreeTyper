@@ -9,7 +9,7 @@
  * The FAQ list below is the single source for both the visible FAQ and the
  * FAQPage JSON-LD, so they cannot drift apart.
  *
- * Last real edit: 2026-11-27 (text types: quotes, facts and mixed added, code made by the code generator; the five difficulty levels are visible pills; challenge links carry a text version)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-27) (text types: quotes, facts and mixed added, code made by the code generator; the five difficulty levels are visible pills; challenge links carry a text version)
  */
 
 export const meta = {
@@ -62,7 +62,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Are my typing test results saved or shared?',
     answer:
-      'Your latest results and your progress history are saved in your own browser using local storage. FreeTyper has no accounts and does not upload what you type or your scores. Clearing your site data deletes the history, and a different browser or device starts empty. Visits to the site are measured with Google Analytics, as described in the privacy policy.',
+      'Your latest results and your progress history are saved in your own browser using local storage. You do not need an account, and what you type is never uploaded. If you choose to log in with Google, a copy of your progress numbers (never what you type) is also saved to your account, so it follows you to other devices; without an account, a different browser or device starts empty. Clearing your site data deletes the history on this device. Visits to the site are measured with Google Analytics, as described in the privacy policy.',
   },
   {
     question: 'Can I take the typing test on my phone?',
@@ -87,7 +87,7 @@ export const previewHtml = `
   <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
   <span>~9 min read</span>
 </p>
-<p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. There is no account to create, nothing to install, and your results stay in your browser.</p>
+<p>This free typing speed test measures how fast and how accurately you type on your own keyboard. The timer starts on your first keystroke. When it ends you get your <strong>net WPM</strong>, <strong>accuracy</strong>, <strong>gross WPM</strong>, a count of correct and incorrect characters, a plain-language rank, and, for runs of 5 seconds or longer, a graph of your speed, a consistency score and your weak spots. You do not need an account, there is nothing to install, and your results stay in your browser unless you choose to log in to keep a copy in your account.</p>
 <p>This page explains exactly how those numbers are calculated, so you can judge whether to trust them, what counts as a good typing speed, and how to get a reading that is repeatable instead of a lucky or unlucky single run.</p>
 `;
 
@@ -190,7 +190,7 @@ export const bodyHtml = `
 <p>Speed follows control, so if you are under 95% accuracy, slow down until your runs are clean (this is our suggestion, and faster typists do make fewer errors). Then learn where each finger belongs with the <a href="/keyboard-guide">keyboard guide</a> and the <a href="/typing-lessons">typing lessons</a>, and train the keys you miss: the <a href="/typing-progress">progress page</a> shows them and <a href="/typing-practice">typing practice</a> builds a drill around them. The practice page has our suggested routine and the reasons behind it. Re-test every week or two under the same conditions, and compare the middle of three runs with the previous week's.</p>
 
 <h2 id="privacy-and-your-results">Your results and privacy</h2>
-<p>Your latest results, the speed graph of your latest five runs, and your progress history are stored in your browser's local storage on this device. FreeTyper has no accounts and does not upload what you type or your scores. Clearing your site data erases the history, and a different browser or device starts from zero. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</p>
+<p>Your latest results, the speed graph of your latest five runs, and your progress history are stored in your browser's local storage on this device. You do not need an account, and what you type is never uploaded. If you choose to log in with Google, a copy of your progress numbers (not what you type) is also saved to your account, so it follows you to other devices. Without an account, clearing your site data erases the history, and a different browser or device starts from zero. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</p>
 
 <h2 id="limits-of-this-test">Limits of this test</h2>
 <ul>

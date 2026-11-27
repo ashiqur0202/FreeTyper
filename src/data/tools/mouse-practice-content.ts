@@ -10,7 +10,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-21 (new page)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-21) (new page)
  */
 
 export const faqs: { question: string; answer: string }[] = [
@@ -62,7 +62,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'What is saved, and is anything uploaded?',
     answer:
-      'Your level for each skill, your practice minutes for today and your latest 12 rounds are saved in your own browser, on this device only, and clearing your site data erases them. There is no account. Google Analytics also receives the skill, level, hits and accuracy of a round; the privacy section on this page and the privacy policy list what.',
+      'Your level for each skill, your practice minutes for today and your latest 12 rounds are saved in your own browser, on this device only, and clearing your site data erases them. It is not saved to an account. Google Analytics also receives the skill, level, hits and accuracy of a round; the privacy section on this page and the privacy policy list what.',
   },
 ];
 
@@ -80,7 +80,7 @@ export const previewHtml = `
 <h2>Mouse Practice Trainer: Non-Stop Drills</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-21">November 21, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
   <span>~4 min read</span>
 </p>
 <p>This page is for repeating mouse skills until your hand is fast and steady. Pick one of eight skills, such as clicking circles, double-clicking, scrolling a list to find an item, dragging, or following a moving dot, and press Start. Rounds last 30 seconds and keep coming until you stop. The levels run from 1 (easy) to 10 (hard) and open one at a time as you do well, and a map of nine squares shows where on the screen you miss or are slow. It is free, needs no signup, and your progress stays in your browser.</p>
@@ -133,7 +133,7 @@ export const bodyHtml = `
 </ul>
 
 <h2 id="your-data-and-privacy">Your data and privacy</h2>
-<p>Your level for each skill, today's practice time and your latest 12 rounds are stored in your browser's local storage on this device. There is no FreeTyper account, and clearing your site data erases them. Visits to the site are measured with Google Analytics, which also receives, for each round, the skill, the level and, when it ends, the hits and accuracy: numbers and short labels only. The <a href="/privacy">privacy policy</a> has the details.</p>
+<p>Your level for each skill, today's practice time and your latest 12 rounds are stored in your browser's local storage on this device. This is not saved to a FreeTyper account (logging in, which is optional, does not include mouse progress), and clearing your site data erases them. Visits to the site are measured with Google Analytics, which also receives, for each round, the skill, the level and, when it ends, the hits and accuracy: numbers and short labels only. The <a href="/privacy">privacy policy</a> has the details.</p>
 
 <h2 id="mouse-practice-faq">Mouse practice FAQ</h2>
 ${faqHtml}

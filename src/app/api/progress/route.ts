@@ -1,7 +1,7 @@
 import { authConfigured, getAuth } from '@/lib/auth';
 import { getDb } from '@/lib/db';
 import { parseSyncData } from '@/lib/sync/merge';
-import { loadProgress, saveMerged } from '@/lib/sync/store';
+import { deleteProgress, loadProgress, saveMerged } from '@/lib/sync/store';
 
 // Needs Node (database driver); answers per request for one signed-in person, never cached.
 export const runtime = 'nodejs';
@@ -30,13 +30,29 @@ export async function GET(request: Request) {
   }
 }
 
+/** Only our own pages may change data (the cookie is also SameSite=Lax; this is a second lock). */
+function ownOrigin(request: Request): boolean {
+  const origin = request.headers.get('origin');
+  return !!origin && origin === new URL(process.env.BETTER_AUTH_URL as string).origin;
+}
+
+/** The "reset progress" buttons: removes what the account has saved, so a reset on one device is not undone by the next sync. */
+export async function DELETE(request: Request) {
+  const who = await userIdOf(request);
+  if (typeof who !== 'string') return who;
+  if (!ownOrigin(request)) return json({ error: 'bad_origin' }, 403);
+  try {
+    await deleteProgress(getDb(), who);
+    return json({ ok: true });
+  } catch {
+    return json({ error: 'server_error' }, 500);
+  }
+}
+
 export async function PUT(request: Request) {
   const who = await userIdOf(request);
   if (typeof who !== 'string') return who;
-
-  // Only our own pages may save (the cookie is also SameSite=Lax; this is a second lock).
-  const origin = request.headers.get('origin');
-  if (!origin || origin !== new URL(process.env.BETTER_AUTH_URL as string).origin) return json({ error: 'bad_origin' }, 403);
+  if (!ownOrigin(request)) return json({ error: 'bad_origin' }, 403);
 
   const text = await request.text();
   if (text.length > MAX_BODY_BYTES) return json({ error: 'too_large' }, 413);

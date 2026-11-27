@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-18 (de-duplicated against the Word Attack guide)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-18) (de-duplicated against the Word Attack guide)
  */
 
 export const meta = {
@@ -66,7 +66,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Is my high score saved?',
     answer:
-      'Yes, in your own browser using local storage, along with your last five runs. There is no account, nothing is uploaded, and clearing your site data erases them.',
+      'Yes, in your own browser using local storage, along with your last five runs. Nothing is uploaded, high scores are not saved to an account, and clearing your site data erases them.',
   },
 ];
 
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Falling Words Typing Game — Type Each Word Before It Lands</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>Falling Words is a free typing game. Words drop from the top of the play area and you type each one in the box below before it reaches the bottom. You have three lives, and the game gets faster and busier across ten tiers. It scores you by word length, tracks your WPM and personal best, and keeps your last five runs.</p>

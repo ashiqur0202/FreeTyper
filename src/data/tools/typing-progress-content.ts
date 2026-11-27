@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-18 (the pair score formula now lives in the practice guide only)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-18) (the pair score formula now lives in the practice guide only)
  */
 
 export const meta = {
@@ -21,12 +21,12 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'How do I track my typing progress?',
     answer:
-      'Take typing tests, lessons or practice runs on FreeTyper and each finished run is saved automatically. The progress page then shows your best WPM and accuracy, a chart of your recent sessions, your streak, your weakest keys, an error heatmap and your achievements. There is nothing to set up and no account to create.',
+      'Take typing tests, lessons or practice runs on FreeTyper and each finished run is saved automatically. The progress page then shows your best WPM and accuracy, a chart of your recent sessions, your streak, your weakest keys, an error heatmap and your achievements. There is nothing to set up, and no account is needed.',
   },
   {
     question: 'Where is my typing progress stored?',
     answer:
-      'In your own browser, using local storage on the device you are using. FreeTyper has no accounts and does not upload your results. It also means your history does not follow you to another browser or device, and clearing your site data deletes it.',
+      'In your own browser, using local storage on the device you are using. You do not need an account, and what you type is never uploaded. Without an account your history does not follow you to another browser or device, and clearing your site data deletes it. If you choose to log in with Google, a copy of your progress numbers is saved to your account, so it can come back on another device or after you clear your data.',
   },
   {
     question: 'What does the WPM history chart show?',
@@ -61,7 +61,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Can I delete my progress?',
     answer:
-      'Yes. Use the reset button at the bottom of the progress page and confirm. It clears your sessions, best scores, streak, key statistics and achievements. Your unlocked lessons and the latest-five lists under each tool are stored separately and are not cleared by it.',
+      'Yes. Use the reset button at the bottom of the progress page and confirm. It clears your sessions, best scores, streak, key statistics and achievements. Your unlocked lessons and the latest-five lists under each tool are stored separately and are not cleared by it. If you are logged in, it first removes the progress saved in your account too, so it cannot come back at the next sync.',
   },
   {
     question: 'Can I move my progress to another device?',
@@ -78,10 +78,10 @@ export const previewHtml = `
 <h2>Typing Progress Tracker — WPM History, Streaks and Achievements</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
   <span>~6 min read</span>
 </p>
-<p>This typing progress tracker turns the runs you finish on FreeTyper into a picture of how you are improving: your best WPM and accuracy, a chart of recent sessions, your practice streak, the keys you get wrong most often, and 14 achievements. It works with no account, and everything is stored privately in your browser.</p>
+<p>This typing progress tracker turns the runs you finish on FreeTyper into a picture of how you are improving: your best WPM and accuracy, a chart of recent sessions, your practice streak, the keys you get wrong most often, and 14 achievements. It works with no account, and everything is stored in your browser; logging in with Google is optional and saves a copy of these numbers to your account.</p>
 <p>Below is what each part of the page measures, how it is calculated, where its limits are, and how to use the numbers to improve instead of just collecting them.</p>
 `;
 
@@ -175,7 +175,7 @@ export const bodyHtml = `
 </ul>
 
 <h2 id="your-data-and-privacy">Your data and privacy</h2>
-<p>Everything on this page is computed in your browser from data kept in local storage under the name <code>freetyper-progress</code>. There is no FreeTyper account and nothing you type is uploaded. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details. The reset button at the bottom of the page deletes the progress data after you confirm.</p>
+<p>Everything on this page is computed in your browser from data kept in local storage under the name <code>freetyper-progress</code>. An account is optional (if you log in, a copy of this data is saved to your account), and nothing you type is uploaded. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details. The reset button at the bottom of the page deletes the progress data after you confirm; if you are logged in, it also removes the copy saved in your account.</p>
 
 <h2 id="typing-progress-faq">Typing progress FAQ</h2>
 ${faqHtml}

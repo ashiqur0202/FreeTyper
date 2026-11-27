@@ -4,7 +4,7 @@ import { siteConfig } from '@/config/site';
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description:
-    'How FreeTyper handles data: local progress in your browser, Google Analytics, and (when enabled) Google ads.',
+    'How FreeTyper handles data: progress in your browser, the optional account that saves it to our server, Google Analytics, and (when enabled) Google ads.',
   alternates: { canonical: `${siteConfig.url}/privacy` },
 };
 
@@ -12,17 +12,19 @@ export default function PrivacyPage() {
   return (
     <div className="px-8 py-12 sm:px-10 lg:px-12">
       <h1 className="text-3xl font-bold text-text-bright">Privacy Policy</h1>
-      <p className="mt-2 text-sm text-text-dim">Last updated: October 2026</p>
+      <p className="mt-2 text-sm text-text-dim">Last updated: November 2026</p>
 
       <div className="mt-8 space-y-8 text-text leading-relaxed">
         <section>
           <h2 className="text-xl font-bold text-text-bright">Overview</h2>
           <p className="mt-2">
-            {siteConfig.name} ({siteConfig.url}) is a no-account typing site operated by Ashiqur
-            Rahman. Your WPM history, settings, and achievements stay in this browser
-            (localStorage). We do not run user accounts or sell profiles. We do use Google Analytics
-            to see which pages are used, and we may show Google ads after AdSense approval. Those
-            Google services use cookies as described below.
+            {siteConfig.name} ({siteConfig.url}) is a typing site operated by Ashiqur Rahman. You do
+            not need an account. By default your WPM history, settings, and achievements stay in this
+            browser (localStorage). You can choose to log in with Google, and then a copy of your
+            progress numbers is also saved on our server so it follows you to other devices. We
+            never sell profiles or data. We do use Google Analytics to see which pages are used, and
+            we may show Google ads after AdSense approval. Those Google services use cookies as
+            described below.
           </p>
         </section>
 
@@ -32,8 +34,62 @@ export default function PrivacyPage() {
             Progress, achievements, settings (including the text difficulty you chose), game high scores, the speed graph of your latest
             runs, and short fingerprints of the sentences you saw lately (so a new test can avoid them; they hold no text) are stored only in your browser&apos;s localStorage. So are your letter-pair statistics: which letters you type
             one after the other, how often a pair goes wrong and how long it takes, used to build
-            weak-key drills. That data does not go to our servers. Clearing site data deletes it,
-            and resetting progress on the progress page clears the pair statistics too.
+            weak-key drills. If you do not log in, none of this goes to our servers. Clearing site
+            data deletes it, and resetting progress on the progress page clears the pair statistics
+            too. If you log in, only the progress part is copied to your account, as described in
+            the next section; settings, game high scores, sentence fingerprints and letter-pair
+            statistics always stay on the device.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="text-xl font-bold text-text-bright">Optional account (log in)</h2>
+          <p className="mt-2">
+            Logging in is optional and every tool works without it. At the moment the only way to
+            log in is with a Google account. There is no password on FreeTyper.
+          </p>
+          <p className="mt-2 font-medium text-text-bright">What we store when you log in</p>
+          <ul className="list-disc list-inside mt-1 space-y-1 text-text-dim">
+            <li>Your email address, name and profile picture link, as Google gives them to us.</li>
+            <li>The identifier Google uses for your account, so we can recognise you next time.</li>
+            <li>
+              A record of each login session: a random session token, when it was made and when it
+              expires, and the IP address and browser description of the device. This keeps you
+              logged in and lets us sign you out.
+            </li>
+            <li>
+              The progress numbers described below. We do not store your Google password (we never
+              see it) or the sign-in tokens Google issues.
+            </li>
+          </ul>
+          <p className="mt-3 font-medium text-text-bright">What progress is saved to your account</p>
+          <p className="mt-1">
+            The same progress numbers the site keeps in your browser: the date, speed, accuracy,
+            length and type of each test, lesson and practice run (with the speed graph of your
+            latest five runs), how often and how accurately you typed each key, your streak and best
+            scores, which course lessons you passed or skipped, your daily challenge results, and
+            the progress of Smart lessons and adaptive practice. It never includes what you typed:
+            no text and no keystrokes. At most the newest 1,000 runs are kept.
+          </p>
+          <p className="mt-3 font-medium text-text-bright">Why, and who sees it</p>
+          <p className="mt-1">
+            Only to log you in and to keep your progress in step across your devices. We do not use
+            it for advertising or profiles, we do not sell it, and we do not send your email address
+            or account to Google Analytics. It is kept in a database on our own server, which is
+            rented from Hetzner and located in Nuremberg, Germany. Google handles the sign-in
+            itself under its own privacy policy.
+          </p>
+          <p className="mt-3 font-medium text-text-bright">Deleting it</p>
+          <p className="mt-1">
+            Open the Account page and choose &quot;Delete account&quot;. That removes your account,
+            your login sessions and the progress saved on our server straight away. Progress in
+            your browser stays. A login session ends after 30 days at the latest, or when you log
+            out (&quot;Log out everywhere&quot; ends all of them). To ask for a copy of what we hold
+            about you, or for help deleting it, email{' '}
+            <a href="mailto:contact@freetyper.com" className="text-accent hover:underline">
+              contact@freetyper.com
+            </a>
+            .
           </p>
         </section>
 
@@ -41,8 +97,8 @@ export default function PrivacyPage() {
           <h2 className="text-xl font-bold text-text-bright">Google Analytics</h2>
           <p className="mt-2">
             We use Google Analytics 4 to measure visits (pages, approximate country, device type,
-            session length). Google processes this on our behalf. It is not tied to a FreeTyper
-            login because we do not have logins.
+            session length). Google processes this on our behalf. We do not send your email
+            address or account to Analytics, so these visits are not tied to a FreeTyper account.
           </p>
           <p className="mt-2">
             We also send a few anonymous usage events to Analytics so we can see which tools are
@@ -104,11 +160,15 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-xl font-bold text-text-bright">Cookies</h2>
           <p className="mt-2">
-            We do not set first-party tracking cookies. Third parties, including Google, may place
-            and read cookies on your browser, or use web beacons or IP addresses to collect
-            information as a result of ad serving and analytics on this website.
+            We do not set first-party tracking cookies. The one first-party cookie we use appears
+            only if you log in: it keeps you logged in (a random token that lasts up to 30 days, is
+            sent only over HTTPS and cannot be read by scripts on the page). Third parties,
+            including Google, may place and read cookies on your browser, or use web beacons or IP
+            addresses to collect information as a result of ad serving and analytics on this
+            website.
           </p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-text-dim">
+            <li>FreeTyper login cookie (only after you log in)</li>
             <li>Google Analytics cookies (traffic measurement)</li>
             <li>Google AdSense cookies (ads), once ads are live</li>
           </ul>

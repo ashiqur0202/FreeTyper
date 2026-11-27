@@ -8,6 +8,8 @@ import {
   type FontSize,
 } from '@/components/layout/SettingsProvider';
 import { useState } from 'react';
+import { useAccount } from '@/lib/sync/useAccount';
+import { resetAccountProgress } from '@/lib/sync/client';
 
 const fontSizes: { value: FontSize; label: string; px: string }[] = [
   { value: 'small', label: 'Small', px: '14px' },
@@ -18,9 +20,18 @@ const fontSizes: { value: FontSize; label: string; px: string }[] = [
 export default function SettingsPage() {
   const { settings, updateSetting } = useSettings();
   const [confirmClear, setConfirmClear] = useState(false);
+  const [clearError, setClearError] = useState('');
+  const account = useAccount();
 
-  const clearProgress = () => {
+  const clearProgress = async () => {
     if (confirmClear) {
+      setClearError('');
+      // Logged in: the account's copy goes first, or the next sync would bring everything back.
+      if (account && !(await resetAccountProgress())) {
+        setClearError('Could not reach your account, so nothing was deleted. Try again in a moment.');
+        setConfirmClear(false);
+        return;
+      }
       localStorage.removeItem('freetyper-progress');
       localStorage.removeItem('freetyper-completed-lessons');
       localStorage.removeItem('freetyper-fw-highscore');
@@ -229,7 +240,10 @@ export default function SettingsPage() {
               <Trash2 className="h-4 w-4 text-text-dim" />
               <div>
                 <p className="text-sm text-text">Clear progress</p>
-                <p className="text-xs text-text-dim">Delete all typing history, scores, and achievements</p>
+                <p className="text-xs text-text-dim">
+                  {account ? 'Delete all typing history, scores, and achievements, on this device and in your account' : 'Delete all typing history, scores, and achievements'}
+                </p>
+                {clearError && <p role="alert" className="mt-1 text-xs text-error">{clearError}</p>}
               </div>
             </div>
             <button

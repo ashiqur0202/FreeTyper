@@ -12,7 +12,7 @@ let calls = [];
 let handler = async () => new Response('{}', { status: 500 });
 globalThis.fetch = async (url, init) => { calls.push({ url, init }); return handler(url, init); };
 
-const { syncNow, checkMergeChoice } = await import('../src/lib/sync/client.ts');
+const { syncNow, checkMergeChoice, resetAccountProgress } = await import('../src/lib/sync/client.ts');
 const { readLocal, LOCAL_KEYS } = await import('../src/lib/sync/local.ts');
 const { emptySyncData, mergeSyncData, parseSyncData } = await import('../src/lib/sync/merge.ts');
 const { saveMerged } = await import('../src/lib/sync/store.ts').catch(() => ({}));
@@ -137,5 +137,18 @@ await t('first login question: signed out, accounts off, offline and garbled ans
   assert.equal(await checkMergeChoice(), 'error');
   handler = async () => new Response('nope', { status: 200 });
   assert.equal(await checkMergeChoice(), 'error');
+});
+await t('reset: asks the account to forget first; clearing this device is allowed only when that worked or there is no login', async () => {
+  handler = async (u, i) => { assert.equal(i.method, 'DELETE'); return Response.json({ ok: true }); };
+  assert.equal(await resetAccountProgress(), true);
+  handler = async () => new Response('{}', { status: 401 });
+  assert.equal(await resetAccountProgress(), true, 'signed out: nothing to remove on the account');
+  handler = async () => new Response('{}', { status: 503 });
+  assert.equal(await resetAccountProgress(), true, 'accounts off: nothing to remove');
+  handler = async () => new Response('{}', { status: 500 });
+  assert.equal(await resetAccountProgress(), false, 'the account could not be reached: do not clear anything');
+  handler = async () => { throw new TypeError('Failed to fetch'); };
+  assert.equal(await resetAccountProgress(), false);
+  assert.equal(sets, 0);
 });
 console.log(`\n${n} passed`);

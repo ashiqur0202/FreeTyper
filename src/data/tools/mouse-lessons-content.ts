@@ -11,7 +11,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-21 (lessons became a step-by-step path; the Aim tab moved to the Mouse practice page)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-21) (lessons became a step-by-step path; the Aim tab moved to the Mouse practice page)
  */
 
 export const faqs: { question: string; answer: string }[] = [
@@ -58,7 +58,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'What is saved, and is anything uploaded?',
     answer:
-      'Your device choice, finished drills and best Aim scores are saved in your own browser, on this device only, and clearing your site data erases them. There is no account. Google Analytics also receives short labels and numbers about drills and Aim runs; the privacy section on this page and the privacy policy list what.',
+      'Your device choice, finished drills and best Aim scores are saved in your own browser, on this device only, and clearing your site data erases them. They are not saved to an account. Google Analytics also receives short labels and numbers about drills and Aim runs; the privacy section on this page and the privacy policy list what.',
   },
 ];
 
@@ -76,7 +76,7 @@ export const previewHtml = `
 <h2>Mouse and Trackpad Lessons for Beginners</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-21">November 21, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
   <span>~4 min read</span>
 </p>
 <p>This page teaches you to use a mouse or a laptop trackpad, from your first click to timed challenges. It is a path of four levels, Beginner, Comfortable, Skilled and Mastery, with wording for the device you pick. You work through one drill at a time: finishing a drill opens the next, each level opens when you pass the one before it, and passing gives you a rank. It is free, needs no signup, and your progress stays in your browser. When you want non-stop practice instead of lessons, the <a href="/mouse-practice">Mouse practice</a> page has rounds you can repeat for as long as you like.</p>
@@ -125,7 +125,7 @@ export const bodyHtml = `
 <p>The page does not claim that using it will make you faster or more accurate. The scores are only a way to see your own results change over time on this device.</p>
 
 <h2 id="your-data-and-privacy">Your data and privacy</h2>
-<p>Your device choice, the drills you have finished and your best Aim scores are stored in your browser's local storage on this device. There is no FreeTyper account. Clearing your site data erases them. Visits to the site are measured with Google Analytics, which also receives the name of a drill you finished, your device choice and the level, when you pass a level, and after an Aim run the mode, size, hits, accuracy and score: numbers and short labels only. The <a href="/privacy">privacy policy</a> has the details.</p>
+<p>Your device choice, the drills you have finished and your best Aim scores are stored in your browser's local storage on this device. This data is not saved to a FreeTyper account (logging in, which is optional, does not include mouse progress). Clearing your site data erases them. Visits to the site are measured with Google Analytics, which also receives the name of a drill you finished, your device choice and the level, when you pass a level, and after an Aim run the mode, size, hits, accuracy and score: numbers and short labels only. The <a href="/privacy">privacy policy</a> has the details.</p>
 
 <h2 id="mouse-lessons-faq">Mouse lessons FAQ</h2>
 ${faqHtml}

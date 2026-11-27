@@ -14,7 +14,7 @@
  * Also describes the text engine (`engine/`): the checked quotes and facts libraries (`engine/library/`), the code generator
  * (`engine/code.ts`) and the sentence and word generators. If the library size or a rule changes, change it here in the same commit.
  *
- * Last real edit: 2026-11-27 (the tabs became text types: Mixed, Sentences, Quotes, Facts, Code, Custom; all adaptive)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-27) (the tabs became text types: Mixed, Sentences, Quotes, Facts, Code, Custom; all adaptive)
  */
 
 export const meta = {
@@ -180,7 +180,7 @@ export const bodyHtml = `
 </ul>
 
 <h2 id="your-progress-and-privacy">Your progress and privacy</h2>
-<p>Your last five practice runs, your session history and your key statistics are stored in your browser's local storage on this device. There is no FreeTyper account, and your typing is not uploaded. Clearing your site data erases the history, and a different browser or device starts empty. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</p>
+<p>Your last five practice runs, your session history and your key statistics are stored in your browser's local storage on this device. You do not need an account, and your typing is never uploaded. If you choose to log in with Google, your session history, key statistics and adaptive progress (numbers only) are also saved to your account. Without an account, clearing your site data erases the history, and a different browser or device starts empty. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</p>
 
 <h2 id="typing-practice-faq">Typing practice FAQ</h2>
 ${faqHtml}

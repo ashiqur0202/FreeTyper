@@ -12,7 +12,7 @@
  * Also describes Smart lessons as coded in `smartEngine.ts` and `SmartLessons.tsx` (the page shows both modes through `LessonsHub.tsx`).
  * If a number in the Smart lessons section changes in `smartEngine.ts`, change it here in the same commit.
  *
- * Last real edit: 2026-11-24 (Smart lessons added beside the course)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-24) (Smart lessons added beside the course)
  */
 
 export const meta = {
@@ -30,7 +30,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Are these typing lessons really free?',
     answer:
-      'Yes. All 34 lessons are free to use with no account and no email address. Your progress is stored in your own browser, not on a FreeTyper account.',
+      'Yes. All 34 lessons are free to use with no account and no email address. Your progress is stored in your own browser; if you choose to log in with Google, it is also saved to your account so it follows you to other devices.',
   },
   {
     question: 'How long does it take to learn touch typing?',
@@ -176,7 +176,7 @@ export const bodyHtml = `
 </ul>
 
 <h2 id="your-progress-and-privacy">Your progress and privacy</h2>
-<p>Your Smart lessons progress (how often and how accurately you typed each key) and, for the Course, which lessons you have passed or skipped and your latest five lesson results, are stored in your browser's local storage on this device. There is no FreeTyper account, and your typing is not uploaded. Clearing your site data resets the course to lesson 1. Visits to the site are measured with Google Analytics, along with anonymous usage counts such as that a lesson was attempted and whether it was passed; the <a href="/privacy">privacy policy</a> has the details.</p>
+<p>Your Smart lessons progress (how often and how accurately you typed each key) and, for the Course, which lessons you have passed or skipped and your latest five lesson results, are stored in your browser's local storage on this device. You do not need an account, and your typing is never uploaded. If you choose to log in with Google, your progress numbers (including Smart lessons and which course lessons you passed) are also saved to your account. Without an account, clearing your site data resets the course to lesson 1. Visits to the site are measured with Google Analytics, along with anonymous usage counts such as that a lesson was attempted and whether it was passed; the <a href="/privacy">privacy policy</a> has the details.</p>
 
 <h2 id="typing-lessons-faq">Typing lessons FAQ</h2>
 ${faqHtml}

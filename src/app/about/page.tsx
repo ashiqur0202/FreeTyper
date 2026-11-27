@@ -17,14 +17,15 @@ export default function AboutPage() {
         <Keyboard className="h-8 w-8 text-accent" />
         <h1 className="text-3xl font-bold text-text-bright">About {siteConfig.name}</h1>
       </div>
-      <p className="text-sm text-text-dim">Last updated: October 2026</p>
+      <p className="text-sm text-text-dim">Last updated: November 2026</p>
 
       <div className="mt-8 max-w-3xl space-y-8 text-text leading-relaxed">
         <section>
           <p>
             {siteConfig.name} is a free typing site. Open the home page, type, and get a words-per-minute
-            score and an accuracy percentage. There is no account. Lessons, practice, a keyboard
-            guide, and two short games sit next to the test. Progress stays in this browser.
+            score and an accuracy percentage. You do not need an account. Lessons, practice, a keyboard
+            guide, and two short games sit next to the test. Progress stays in this browser unless you
+            choose to log in, which saves a copy to your account.
           </p>
           <p className="mt-4">
             I built it because the tests I actually used either interrupted the first keystroke with

@@ -8,7 +8,7 @@
  *
  * The FAQ list is the single source for the visible FAQ and the FAQPage JSON-LD.
  *
- * Last real edit: 2026-11-18 (learning routine now lives in the lessons guide)
+ * Last real edit: 2026-11-27 (optional account: wording about where progress is stored; earlier edit 2026-11-18) (learning routine now lives in the lessons guide)
  */
 
 export const meta = {
@@ -66,7 +66,7 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: 'Is my key data saved or shared?',
     answer:
-      'Your key statistics are stored in your own browser using local storage, on this device only. FreeTyper has no accounts and does not upload what you type. Clearing your site data erases them.',
+      'Your key statistics are stored in your own browser using local storage on this device. You do not need an account, and what you type is never uploaded. If you choose to log in with Google, your key statistics (counts only) are also saved to your account, so they follow you to other devices. Clearing your site data erases the copy on this device.',
   },
 ];
 
@@ -78,7 +78,7 @@ export const previewHtml = `
 <h2>Keyboard Guide — Color-Coded Finger Placement for Touch Typing</h2>
 <p class="article-byline">
   <span>By <a href="/about#author"><strong>Ashiqur Rahman</strong></a></span>
-  <span>Last updated <time datetime="2026-11-18">November 18, 2026</time></span>
+  <span>Last updated <time datetime="2026-11-27">November 27, 2026</time></span>
   <span>~6 min read</span>
 </p>
 <p>This keyboard guide shows the correct finger placement for each key on a standard US laptop keyboard (QWERTY). Every key is coloured by the finger that owns it, the eight home-row keys carry a small underline, and two drawn hands show which finger to use. Click or hover over any key, or press a key on your own keyboard, to see its finger, how to reach it and your own accuracy on it. It is a reference for learning touch typing and for working out why certain keys keep going wrong.</p>
@@ -146,7 +146,7 @@ export const bodyHtml = `
 </ul>
 
 <h2 id="your-data-and-privacy">Your data and privacy</h2>
-<p>Your key statistics are stored in your browser's local storage on this device. There is no FreeTyper account, and what you type is not uploaded. Clearing your site data erases them. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</p>
+<p>Your key statistics are stored in your browser's local storage on this device. You do not need an account, and what you type is never uploaded. If you choose to log in with Google, your key statistics (counts only) are also saved to your account. Clearing your site data erases the copy on this device. Visits to the site are measured with Google Analytics; the <a href="/privacy">privacy policy</a> has the details.</p>
 
 <h2 id="keyboard-guide-faq">Keyboard guide FAQ</h2>
 ${faqHtml}

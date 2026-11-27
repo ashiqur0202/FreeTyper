@@ -16,6 +16,8 @@ import {
   Timer,
 } from 'lucide-react';
 import { useTypingProgress } from './useTypingProgress';
+import { useAccount } from '@/lib/sync/useAccount';
+import { resetAccountProgress } from '@/lib/sync/client';
 import KeyboardHeatmap from './KeyboardHeatmap';
 
 const achievementIcons: Record<string, string> = {
@@ -45,6 +47,8 @@ export default function TypingProgress() {
   const { progress, getWeakKeys, getWpmHistory, getAccuracyHistory, resetProgress } =
     useTypingProgress();
   const [showReset, setShowReset] = useState(false);
+  const [resetError, setResetError] = useState('');
+  const account = useAccount();
   const [mounted, setMounted] = useState(false);
 
   const [pairs, setPairs] = useState<PairScore[]>([]);
@@ -403,10 +407,18 @@ export default function TypingProgress() {
           </button>
         ) : (
           <div className="flex flex-wrap items-center gap-2 rounded-lg border border-error/30 bg-error-bg px-3 py-2">
-            <p className="text-xs text-error">Delete all local progress?</p>
+            <p className="text-xs text-error">
+              {account ? 'Delete all progress, on this device and in your account?' : 'Delete all local progress?'}
+            </p>
             <button
               type="button"
-              onClick={() => {
+              onClick={async () => {
+                setResetError('');
+                // Logged in: the account's copy goes first, or the next sync would bring everything back.
+                if (account && !(await resetAccountProgress())) {
+                  setResetError('Could not reach your account, so nothing was deleted. Try again in a moment.');
+                  return;
+                }
                 resetProgress();
                 clearPairs();
                 setPairs([]);
@@ -424,6 +436,7 @@ export default function TypingProgress() {
             >
               Cancel
             </button>
+            {resetError && <p role="alert" className="basis-full text-xs text-error">{resetError}</p>}
           </div>
         )}
       </div>

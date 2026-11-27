@@ -18,6 +18,9 @@ export { authConfigured } from './auth-config';
 /** The database handed to the auth adapter: the real one in the app, an in-memory Postgres in tests/test-accounts-db.mjs. */
 type AuthDb = Parameters<typeof drizzleAdapter>[0];
 
+/** Google's sign-in tokens are only needed to learn who you are, so they are never kept (the privacy page says so). */
+const NO_TOKENS = { accessToken: null, refreshToken: null, idToken: null, accessTokenExpiresAt: null, refreshTokenExpiresAt: null };
+
 export function createAuth(db: AuthDb) {
   const baseURL = process.env.BETTER_AUTH_URL as string;
   return betterAuth({
@@ -37,6 +40,12 @@ export function createAuth(db: AuthDb) {
     advanced: {
       useSecureCookies: process.env.NODE_ENV === 'production',
       defaultCookieAttributes: { httpOnly: true, sameSite: 'lax' },
+    },
+    databaseHooks: {
+      account: {
+        create: { before: async (account) => ({ data: { ...account, ...NO_TOKENS } }) },
+        update: { before: async (account) => ({ data: { ...account, ...NO_TOKENS } }) },
+      },
     },
     // Delete account: removes the user and, through the database, their sessions and saved progress.
     user: { deleteUser: { enabled: true } },
