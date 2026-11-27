@@ -17,6 +17,7 @@ import { trackEvent } from '@/lib/analytics';
 import { readPracticeSummary } from './practiceSummary';
 import { unlockRequirement } from './engine/levels';
 import { TUNING } from './engine/tuning';
+import PracticeStrip from './PracticeStrip';
 import {
   KEY_ORDER,
   START_KEYS,
@@ -292,26 +293,10 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
       ))}
 
       <div className="w-full @container">
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-          {tabs}
-          <div className="flex items-center gap-3 font-mono text-sm text-text">
-            <span className="tabular-nums text-text-bright">
-              {isRunning ? wpm : '--'}
-              <span className="text-text"> wpm</span>
-            </span>
-            <span className="text-text-dim">·</span>
-            <span className="tabular-nums text-text-bright">
-              {isRunning ? accuracy : '--'}
-              <span className="text-text">%</span>
-            </span>
-          </div>
-        </div>
-
         {/* Daily practice and the keys */}
-        <section
-          className="mb-3 grid items-center gap-x-6 gap-y-3 rounded-2xl border border-surface-border bg-surface px-4 py-3 @2xl:grid-cols-[auto_minmax(0,1fr)]"
-          aria-label="Daily practice and keys"
-        >
+        <section className="mb-3 overflow-hidden rounded-2xl border border-surface-border bg-surface" aria-label="Practice tabs, daily practice and keys">
+          <PracticeStrip tabs={tabs} isRunning={isRunning} wpm={wpm} accuracy={accuracy} />
+          <div className="grid items-center gap-x-6 gap-y-3 px-4 py-3 @2xl:grid-cols-[auto_minmax(0,1fr)]">
           <div className="flex items-center gap-3.5">
             <div className="relative h-[62px] w-[62px] flex-none" role="img" aria-label={`Daily practice ${Math.round(goalPct * 100)} percent of ${SMART_GOAL_MINUTES} minutes`}>
               <svg viewBox="0 0 64 64" className="h-full w-full -rotate-90" aria-hidden="true">
@@ -463,6 +448,7 @@ export default function AdaptivePractice({ tabs, pinKey = null }: { tabs: ReactN
                 );
               })}
             </div>
+          </div>
           </div>
         </section>
 

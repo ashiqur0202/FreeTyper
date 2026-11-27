@@ -14,6 +14,7 @@ import type { TypingSession, Achievement } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
 import AdaptivePractice from './AdaptivePractice';
+import PracticeStrip from './PracticeStrip';
 import { loadState, planOf, planWeight, segmentLines, levelIndex } from './smartEngine';
 import { factItems, loadRecentPassages, pickPassage, quoteItems, rememberPassage } from './engine/library';
 import { CODE_LANGUAGE_NAMES, generateCode } from './engine/code';
@@ -403,10 +404,10 @@ export default function TypingPractice() {
                   type="button"
                   onClick={() => changeCategory(cat.id)}
                   disabled={isRunning}
-                  className={`rounded-md px-2.5 py-1 text-xs transition-all ${
+                  className={`rounded-md px-2.5 py-1 text-sm transition-all ${
                     category === cat.id
                       ? 'bg-accent-bg font-medium text-text-bright'
-                      : 'text-text hover:bg-surface-raised hover:text-text-bright'
+                      : 'text-text hover:bg-surface hover:text-text-bright'
                   } ${isRunning ? 'cursor-not-allowed opacity-30' : 'cursor-pointer'}`}
                 >
                   {cat.label}
@@ -443,29 +444,19 @@ export default function TypingPractice() {
       ))}
 
       <div className="w-full">
-          <div className="mb-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-            {tabRow}
-            <div className="flex items-center gap-3 font-mono text-sm text-text">
-              <span className="tabular-nums text-text-bright">
-                {isRunning ? wpm : '--'}
-                <span className="text-text"> wpm</span>
-              </span>
-              <span className="text-text-dim">·</span>
-              <span className="tabular-nums text-text-bright">
-                {isRunning ? accuracy : '--'}
-                <span className="text-text">%</span>
-              </span>
+          <div className="mb-3 overflow-hidden rounded-2xl border border-surface-border bg-surface">
+            <PracticeStrip tabs={tabRow} isRunning={isRunning} wpm={wpm} accuracy={accuracy} />
+            <div className="px-4 pb-1 pt-1">
+              <LetterRow
+                scores={letterScores}
+                focusKey={null}
+                manual={false}
+                disabled={isRunning}
+                onPick={pickKey}
+                onBack={() => changeCategory('adaptive')}
+              />
             </div>
           </div>
-
-          <LetterRow
-            scores={letterScores}
-            focusKey={null}
-            manual={false}
-            disabled={isRunning}
-            onPick={pickKey}
-            onBack={() => changeCategory('adaptive')}
-          />
 
           <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
             <div
