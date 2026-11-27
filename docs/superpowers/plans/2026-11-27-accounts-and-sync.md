@@ -1,0 +1,109 @@
+# Optional accounts and progress sync: workflow and tracker
+
+Started 2026-11-27. Plan only: nothing is built, no site code changed. Update the status column at the end of every session.
+
+## Goal
+Optional login. Guest mode stays the default and keeps working. Login adds two things only: sync across devices, and recover progress after clearing browser data.
+
+## Decisions (locked unless Ashiqur changes them)
+- **Server:** Hetzner CX23 (2 CPU, 4 GB, 40 GB), deployed with Coolify. The site already runs there.
+- **Database:** PostgreSQL in Coolify (not MongoDB, not Firebase). JSON stored as `jsonb`; the API sends plain JSON (BSON is MongoDB-only).
+- **ORM and auth:** Drizzle, Better Auth. No Clerk, Firebase, Resend or Postal. No password login, ever.
+- **Email:** Nodemailer to Stalwart SMTP (`auth@freetyper.com`). Never log codes or links.
+- **Login methods:** Google (1 click), email OTP (6 digits, 5 min, 5 wrong tries then 15 min lock, 60 s resend wait), magic link as backup (5 min, single use). Same verified email = one account.
+- **Data model:** one row per user in `user_progress`: summary columns (`bestWpm`, `totalTests`, `lessonsCompleted`, `currentLesson`, `dailyStreak`, `lastActiveDate`) plus `data jsonb` (the localStorage progress: sessions, course progress, smart state, key stats, daily results, preferences), `schemaVersion` inside the JSON, `version`, `updatedAt`. History capped (about the latest 1,000 sessions). Never typed text or keystrokes.
+- **Local-first:** the site works with no server. After login the browser still saves locally and syncs when it can.
+- **Do not touch** `src/components/skills/typing/engine/`.
+- **Rules from AGENTS.md:** feature branch, never commit to master, tsc + build + check:text, no new lint errors, update privacy page and guides in the same branch, no secrets in the repo.
+
+## Status board
+| # | Phase | Owner | Status | Evidence |
+|---|-------|-------|--------|----------|
+| 0 | Ship the current release (`feat/text-types`) | Claude, Ashiqur says go | not started | |
+| 1 | Verify tools and prepare (docs, DNS, local setup) | both | not started | |
+| 2 | Demo of login, account page, merge prompt | Claude | not started | |
+| 3 | Foundation: schema, migration, Google login | Claude | not started | |
+| 4 | Progress model and sync (merge, offline, tests) | Claude | not started | |
+| 5 | UI: header button, /login, /account, merge prompt | Claude | not started | |
+| 6 | Privacy page, cookie notice, guides, freetyper.md | Claude | not started | |
+| 7 | Server setup in Coolify (env, backups, redirects) | Ashiqur + Claude | not started | |
+| 8 | Release A: Google + sync | Claude, Ashiqur says go | not started | |
+| 9 | Email OTP (after mail checks pass) | both | not started | |
+| 10 | Release B: OTP | Claude, Ashiqur says go | not started | |
+| 11 | Magic link, then Release C | Claude | not started | |
+| 12 | Hardening and first-week watch | both | not started | |
+
+Status values: not started, in progress, blocked (say why), done (with evidence).
+
+## Phase 0: ship the current release
+- [ ] `npx tsc --noEmit`, `npm run build`, `npm run check:text`, lint compare, browser run on `next start`
+- [ ] Fast-forward master, push, check live pages and a challenge link
+Done when: live site shows the new boxes. Keeps the accounts work from piling onto an unshipped stack.
+
+## Phase 1: verify and prepare
+Claude:
+- [ ] Read `node_modules/next/dist/docs/` for the Next.js 16 parts used (route handlers, proxy/middleware, cookies, runtime).
+- [ ] Read the Better Auth docs for the version we install: emailOTP options (`otpLength`, `expiresIn`, `allowedAttempts`), magic link, account linking (`trustedProviders`), rate-limit storage. Write down which of the OTP rules are built in and which need custom code (the 15 min lock and the 60 s resend wait probably do).
+- [ ] Confirm Drizzle + Better Auth schema generation and the migration command.
+Ashiqur:
+- [ ] Mail records on freetyper.com: SPF, DKIM, DMARC, and reverse DNS (PTR) of the server IP set to `mail.freetyper.com`.
+- [ ] Send test mails from Stalwart to a Gmail, a Yahoo and an Outlook address and to a spam checker; record where they land. This gates Phase 9.
+- [ ] Local dev: a local Postgres (Docker) and a `.env.local` (never committed). The Coolify database is probably not reachable from the laptop.
+- [ ] Google Cloud: OAuth client with redirect `https://freetyper.com/api/auth/callback/google` and the localhost one.
+Done when: each OTP rule is marked built-in or custom, and the mail test result is written here.
+
+## Phase 2: demo (no site code)
+- [ ] Private clickable demo: header "Log in", `/login` (Google, email, OTP boxes with countdown and resend, "Prefer a link instead?"), `/account` (email, linked methods, log out everywhere, delete account), the "Keep your local progress?" prompt, and a phone-width check of the OTP boxes.
+Done when: Ashiqur approves or lists changes.
+
+## Phase 3: foundation (branch `feat/accounts`, from master after Phase 0)
+- [ ] Packages, Drizzle config, schema (Better Auth tables + `user_progress`), first migration.
+- [ ] Lazy DB client (the build must not need the database), env check with clear errors.
+- [ ] `src/lib/auth.ts` with Google only, 30 day session, secure httpOnly sameSite lax cookie, trusted origins; `src/app/api/auth/[...all]/route.ts` on the Node runtime.
+Done when: tsc and build pass without a database; Google login works locally against the local Postgres.
+
+## Phase 4: progress model and sync
+- [ ] Pure merge function with a field-by-field rule table (max for best speed, union of lessons, no double counting of tests, defined streak rule, session list merged by id and capped) and `schemaVersion` upgrade path.
+- [ ] Node test script for the merge (same style as the other `scripts/test-*.mjs`): same data twice changes nothing, two devices merge both ways, old schema versions upgrade.
+- [ ] `GET` and `PUT /api/progress` with `version` check, size limit, session required, input validation.
+- [ ] Client sync module: local-first, sends after a finished test or lesson, retries later, silent when the server is down; guest flow untouched.
+Done when: tests pass; logout, clear data, login restores progress; server stopped = site still works.
+
+## Phase 5: UI
+- [ ] Header "Log in" button (account link when logged in), `/login`, `/account`, merge prompt on first login.
+- [ ] `/login` and `/account` noindex, no ads, no analytics ids or emails sent to GA.
+- [ ] Phone width check of every new screen.
+
+## Phase 6: documents
+- [ ] Privacy page and cookie notice: what an account stores, where (own server), how to delete.
+- [ ] Every "no login / nothing is sent" line in guides, tool text and code comments; bump visible dates.
+- [ ] `freetyper.md` sections 0 and 1.
+
+## Phase 7: server (Coolify)
+- [ ] Env vars present (already set), `BETTER_AUTH_URL` is the live URL.
+- [ ] Migration runs at deploy, not at build.
+- [ ] Scheduled Postgres backups to somewhere off the server, and one tested restore.
+- [ ] Cookies correct behind the proxy (secure, forwarded protocol); memory check with Postgres, site and mail all running.
+
+## Phase 8: Release A (Google + sync)
+- [ ] tsc, build, check:text, lint compare, merge tests.
+- [ ] Browser: guest works, Google works, merge prompt, logout and clear then login restores, delete account removes the data, mobile widths.
+- [ ] Fast-forward master, push, check live, watch the Coolify deploy.
+
+## Phase 9: email OTP (only after the Phase 1 mail test shows inbox delivery for Gmail, Yahoo and Outlook)
+- [ ] `src/lib/email.ts` (Nodemailer), subjects "Your FreeTyper code is 123456" and "Sign in to FreeTyper", nothing logged.
+- [ ] emailOTP plugin, custom lock and resend wait, rate limits per email and per IP stored in the database, same response whether or not the email exists.
+- [ ] OTP boxes with countdown and resend; account linking with Google by verified email.
+Ashiqur: test real inboxes (I cannot read them).
+
+## Phase 10 and 11: Release B (OTP), then magic link and Release C
+Same release routine as Phase 8. Magic link: single use, 5 minutes, "Prefer a link instead?".
+
+## Phase 12: hardening
+- [ ] Delete account removes all rows; log out everywhere ends all sessions.
+- [ ] Security pass: origins, rate limits, email abuse, session handling.
+- [ ] First week: Postgres size, mail bounces, error log; add a short entry in `analytics.md` if numbers were read.
+
+## Open questions
+- Does Ashiqur accept `data jsonb` (full progress) in place of the summary-only table? (recommended, asked 2026-11-27)
+- Which date to ship Phase 0.
