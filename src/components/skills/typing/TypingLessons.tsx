@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useLayoutEffect, useRef, useCallback, type ReactNode } from 'react';
 import { Check, Lock, RotateCcw, SkipForward } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
@@ -37,6 +37,7 @@ import PracticeFeedback, {
   type PracticeLogEntry,
 } from './PracticeFeedback';
 import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
+import PracticeStrip from './PracticeStrip';
 
 const LOG_KEY = 'freetyper-lessons-log';
 const LOG_MAX = 5;
@@ -69,7 +70,7 @@ function loadLessonLog(): PracticeLogEntry[] {
   }
 }
 
-export default function TypingLessons() {
+export default function TypingLessons({ tabs }: { tabs: ReactNode }) {
   const [activeNumber, setActiveNumber] = useState(1);
   const [viewStage, setViewStage] = useState<StageId>('home');
   const [text, setText] = useState('');
@@ -356,14 +357,8 @@ export default function TypingLessons() {
   if (!mounted) {
     return (
       <div className="w-full">
-        <div className="flex flex-wrap items-center gap-1">
-          {STAGES.map((s) => (
-            <span key={s.id} className="px-2.5 py-1 text-xs text-text-dim">
-              {s.label}
-            </span>
-          ))}
-        </div>
-        <div className="h-20" />
+        {tabs}
+        <div className="h-48" aria-hidden="true" />
       </div>
     );
   }
@@ -383,124 +378,103 @@ export default function TypingLessons() {
         />
       ))}
 
-      <div className="w-full">
-        {/* Stages */}
-        <div className="mb-2 flex flex-wrap items-center gap-1" role="tablist" aria-label="Course stages">
-          {STAGES.map((s) => {
-            const inStage = stageLessons(s.id);
-            const done = countDone(progress, inStage);
-            const isView = viewStage === s.id;
-            return (
-              <button
-                key={s.id}
-                type="button"
-                role="tab"
-                aria-selected={isView}
-                onClick={() => setViewStage(s.id)}
-                className={`rounded-md px-2.5 py-1 text-xs transition-all ${
-                  isView
-                    ? 'bg-accent-bg font-medium text-text-bright'
-                    : 'text-text-dim hover:bg-surface-raised hover:text-text'
-                }`}
-              >
-                {s.label}{' '}
-                <span className="ml-1 tabular-nums text-text-dim">
-                  {done}/{inStage.length}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+      <div className="w-full @container">
+        {/* The course box: tabs and live speed in the strip, then stages, lessons and the lesson itself */}
+        <section className="mb-3 overflow-hidden rounded-2xl border border-surface-border bg-surface" aria-label="Lesson tabs, stages and the current lesson">
+          <PracticeStrip tabs={tabs} isRunning={isRunning} wpm={wpm} accuracy={accuracy} />
 
-        {/* Lessons in the chosen stage */}
-        <div className="mb-3 flex flex-wrap items-center gap-1">
-          {stageLessons(viewStage).map((l) => {
-            const unlocked = isUnlocked(progress, l.number);
-            const done = progress.completed.includes(l.id);
-            const skipped = progress.skipped.includes(l.id);
-            const isActive = l.number === activeNumber;
-            return (
-              <button
-                key={l.id}
-                type="button"
-                onClick={() => goToLesson(l.number)}
-                disabled={!unlocked || isRunning}
-                aria-label={`Lesson ${l.number}: ${l.title}${done ? ', passed' : skipped ? ', skipped' : unlocked ? '' : ', locked'}`}
-                title={unlocked ? `${l.number}. ${l.title}` : 'Finish the previous lesson to unlock'}
-                className={`inline-flex min-w-[2rem] items-center justify-center gap-1 rounded-md px-2 py-1 text-xs tabular-nums transition-all ${
-                  isActive
-                    ? 'bg-accent-bg font-medium text-text-bright'
-                    : unlocked
-                      ? 'text-text hover:bg-surface-raised hover:text-text-bright'
-                      : 'cursor-not-allowed text-text-dim/40'
-                } ${isRunning ? 'cursor-not-allowed opacity-30' : ''}`}
-              >
-                {done ? (
-                  <Check className="h-3 w-3 text-accent" />
-                ) : skipped ? (
-                  <SkipForward className="h-3 w-3 text-text-dim" />
-                ) : !unlocked ? (
-                  <Lock className="h-3 w-3" />
-                ) : null}
-                <span>{l.number}</span>
-              </button>
-            );
-          })}
-        </div>
+          <div className="flex flex-wrap items-center gap-1 border-b border-surface-border px-3 py-2" role="tablist" aria-label="Course stages">
+            {STAGES.map((s) => {
+              const inStage = stageLessons(s.id);
+              const done = countDone(progress, inStage);
+              const isView = viewStage === s.id;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isView}
+                  onClick={() => setViewStage(s.id)}
+                  className={`rounded-full border px-2.5 py-0.5 text-xs transition-colors ${
+                    isView ? 'border-accent bg-accent-bg text-accent' : 'border-surface-border text-text hover:text-text-bright'
+                  }`}
+                >
+                  {s.label} <span className="ml-0.5 tabular-nums text-text-dim">{done}/{inStage.length}</span>
+                </button>
+              );
+            })}
+          </div>
 
-        {/* Current lesson */}
-        <div className="mb-4 flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
-          <div className="min-w-0 flex-1">
-            <p className="text-sm text-text-bright">
-              <span className="text-text-dim">Lesson {lesson.number} of {courseLessons.length} · </span>
-              {lesson.title}
+          {/* Lessons in the chosen stage */}
+          <div className="flex flex-wrap items-center gap-1 px-3 pt-2">
+            {stageLessons(viewStage).map((l) => {
+              const unlocked = isUnlocked(progress, l.number);
+              const done = progress.completed.includes(l.id);
+              const skipped = progress.skipped.includes(l.id);
+              const isActive = l.number === activeNumber;
+              return (
+                <button
+                  key={l.id}
+                  type="button"
+                  onClick={() => goToLesson(l.number)}
+                  disabled={!unlocked || isRunning}
+                  aria-label={`Lesson ${l.number}: ${l.title}${done ? ', passed' : skipped ? ', skipped' : unlocked ? '' : ', locked'}`}
+                  title={unlocked ? `${l.number}. ${l.title}` : 'Finish the previous lesson to unlock'}
+                  className={`inline-flex min-w-[2rem] items-center justify-center gap-1 rounded-md px-2 py-1 text-xs tabular-nums transition-all ${
+                    isActive
+                      ? 'bg-accent-bg font-medium text-text-bright'
+                      : unlocked
+                        ? 'text-text hover:bg-surface-raised hover:text-text-bright'
+                        : 'cursor-not-allowed text-text-dim/40'
+                  } ${isRunning ? 'cursor-not-allowed opacity-30' : ''}`}
+                >
+                  {done ? <Check className="h-3 w-3 text-accent" /> : skipped ? <SkipForward className="h-3 w-3 text-text-dim" /> : !unlocked ? <Lock className="h-3 w-3" /> : null}
+                  <span>{l.number}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Current lesson */}
+          <div className="grid items-center gap-x-6 gap-y-2 px-4 pb-2 pt-3 @2xl:grid-cols-[minmax(0,1fr)_auto]">
+            <div className="min-w-0">
+              <p className="text-xs text-text-dim">
+                Lesson {lesson.number} of {courseLessons.length} · {STAGES.find((s) => s.id === lesson.stage)?.label}
+              </p>
+              <h2 className="text-base font-semibold text-text-bright">{lesson.title}</h2>
+              <p className="mt-1 max-w-3xl text-xs leading-relaxed text-text-dim">{lesson.tip}</p>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-text-dim">
               {lesson.newKeys.length > 0 && (
-                <span className="ml-2 inline-flex flex-wrap gap-1 align-middle">
+                <>
+                  <span>New keys</span>
                   {lesson.newKeys.map((k) => (
-                    <kbd
-                      key={k}
-                      className="rounded border border-surface-border bg-surface-raised px-1.5 py-0.5 font-mono text-[10px] uppercase text-accent"
-                    >
+                    <kbd key={k} className="rounded-md border border-accent bg-accent-bg px-2.5 py-1 font-mono text-sm font-bold uppercase text-accent">
                       {k}
                     </kbd>
                   ))}
-                </span>
+                </>
               )}
-            </p>
-            <p className="mt-1 max-w-3xl text-xs leading-relaxed text-text-dim">{lesson.tip}</p>
+              <span className="ml-1 tabular-nums">{doneCount}/{courseLessons.length} done</span>
+            </div>
           </div>
-          <div className="flex items-center gap-3 font-mono text-sm text-text">
-            <span className="text-[11px] text-text-dim">{doneCount}/{courseLessons.length} done</span>
-            <span className="text-text-dim">·</span>
-            <span className="tabular-nums text-text-bright">
-              {isRunning ? wpm : '--'}
-              <span className="text-text"> wpm</span>
-            </span>
-            <span className="text-text-dim">·</span>
-            <span className="tabular-nums text-text-bright">
-              {isRunning ? accuracy : '--'}
-              <span className="text-text">%</span>
-            </span>
+          {/* Where you are in all the lessons */}
+          <div className="grid gap-0.5 px-4 pb-3" style={{ gridTemplateColumns: `repeat(${courseLessons.length}, minmax(0, 1fr))` }} aria-hidden="true">
+            {courseLessons.map((l) => (
+              <span
+                key={l.id}
+                className={`h-1.5 rounded-sm ${
+                  l.number === activeNumber ? 'bg-accent outline outline-1 outline-offset-1 outline-accent' : progress.completed.includes(l.id) ? 'bg-accent' : 'bg-surface-raised'
+                }`}
+              />
+            ))}
           </div>
-        </div>
-
-        <div className="h-0.5 w-full overflow-hidden rounded-full bg-surface-raised">
-          <div
-            className={`h-full rounded-full bg-accent transition-all duration-150 ${
-              isRunning ? 'progress-glow' : ''
-            }`}
-            style={{
-              width: chars.length
-                ? `${Math.min(100, (currentIndex / chars.length) * 100)}%`
-                : '0%',
-            }}
-          />
-        </div>
+        </section>
 
         <div
           ref={typingAreaRef}
-          className="relative mt-3 cursor-text overflow-hidden py-3"
-          style={{ height: typingWindowHeight(lineHeight) }}
+          className="relative my-5 cursor-text overflow-hidden"
+          style={{ height: typingWindowHeight(lineHeight) - 24 }}
           onClick={() => inputRef.current?.focus({ preventScroll: true })}
         >
           <TypingPassage
@@ -508,7 +482,7 @@ export default function TypingLessons() {
             currentIndex={currentIndex}
             firstCharRef={firstCharRef}
             currentCharRef={currentCharRef}
-            className="transition-transform duration-150 ease-out"
+            className="typing-justify transition-transform duration-150 ease-out"
             style={{ transform: `translateY(-${scrollOffset}px)` }}
           />
         </div>

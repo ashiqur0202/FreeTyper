@@ -9,7 +9,10 @@ import { recordPair } from './pairStats';
 import type { Achievement, TypingSession } from './types';
 import AchievementToast from './AchievementToast';
 import LiveKeyboard from './LiveKeyboard';
-import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
+import TypingPassage from './TypingPassage';
+import DailyRing from './DailyRing';
+import LevelTrack from './LevelTrack';
+import { useTypingWindow } from './useTypingWindow';
 import PracticeFeedback, { type CoachTone, type PracticeLogEntry } from './PracticeFeedback';
 import { useKeySound } from './useKeySound';
 import { INPUT_SENTINEL, handleMobileInput, resetMobileInput } from './mobileInput';
@@ -23,9 +26,6 @@ import { CODE_LANGUAGE_NAMES, generateCode } from './engine/code';
 import { nextMixedKind, type CodeChoice, type PracticeSource, type TextKind } from './engine/sources';
 import {
   KEY_ORDER,
-  START_KEYS,
-  LEVELS,
-  SMART_GOAL_MINUTES,
   applySegment,
   emptyState,
   finishSession,
@@ -45,8 +45,6 @@ import {
 } from './smartEngine';
 
 const LOG_KEY = 'freetyper-adaptive-log';
-/** The level line is as wide as the keys it spans: Beginner 1 to 12, Intermediate 12 to 20, Advanced 20 to 26. */
-const TRACK_COLUMNS = `${LEVELS[1].from - LEVELS[0].from}fr ${LEVELS[2].from - LEVELS[1].from}fr ${KEY_ORDER.length - LEVELS[2].from}fr`;
 const LOG_MAX = 5;
 const KIND_TAG: Record<TextKind, string> = { sentences: 'Sentences', quotes: 'Quote', facts: 'Fact', code: 'Code', custom: 'Your text' };
 const ALPHABET = 'abcdefghijklmnopqrstuvwxyz'.split('');
@@ -106,8 +104,6 @@ export default function AdaptivePractice({
   const [toasts, setToasts] = useState<Achievement[]>([]);
   const [lastKeyFlash, setLastKeyFlash] = useState<{ key: string; correct: boolean } | null>(null);
   const [todaySeconds, setTodaySeconds] = useState(0);
-  const [scrollOffset, setScrollOffset] = useState(0);
-  const [lineHeight, setLineHeight] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const firstCharRef = useRef<HTMLSpanElement>(null);
@@ -348,25 +344,13 @@ export default function AdaptivePractice({
     return () => window.removeEventListener('keydown', handler);
   }, [processChar, handleBackspace]);
 
-  // The text shows three lines. Once you are on the third line the text scrolls up, so you stay on the second one (long Custom texts too).
-  useLayoutEffect(() => {
-    const current = currentCharRef.current;
-    const first = firstCharRef.current;
-    if (!current || !first || !chars.length) {
-      setScrollOffset(0);
-      return;
-    }
-    let lh = lineHeight;
-    if (lh === 0) {
-      const container = textBoxRef.current?.querySelector('.typing-text');
-      if (!container) return;
-      lh = measureTypingLineHeight(container as HTMLElement);
-      if (lh === 0) return;
-      setLineHeight(lh);
-    }
-    const line = Math.round((current.offsetTop - first.offsetTop) / lh);
-    setScrollOffset(line >= 2 ? (line - 1) * lh : 0);
-  }, [currentIndex, lineHeight, chars.length]);
+  const { scrollOffset, height: windowHeight } = useTypingWindow({
+    charCount: chars.length,
+    currentIndex,
+    firstCharRef,
+    currentCharRef,
+    boxRef: textBoxRef,
+  });
 
   /** Click an open key to make it the focus of the next segments; click it again to let the plan choose. */
   const pickKey = (k: string) => {
@@ -387,11 +371,6 @@ export default function AdaptivePractice({
   }
 
   const preview = previewKeys(state.unlocked);
-  const goalSeconds = SMART_GOAL_MINUTES * 60;
-  const goalPct = Math.min(1, todaySeconds / goalSeconds);
-  const goalDone = todaySeconds >= goalSeconds;
-  const mins = Math.floor(todaySeconds / 60);
-  const RING = 169.6;
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -405,73 +384,11 @@ export default function AdaptivePractice({
           <PracticeStrip tabs={tabs(isRunning)} isRunning={isRunning} wpm={wpm} accuracy={accuracy} />
           {subRow?.(isRunning)}
           <div className="grid items-center gap-x-6 gap-y-3 px-4 py-3 @2xl:grid-cols-[auto_minmax(0,1fr)]">
-          <div className="flex items-center gap-3.5">
-            <div className="relative h-[62px] w-[62px] flex-none" role="img" aria-label={`Daily practice ${Math.round(goalPct * 100)} percent of ${SMART_GOAL_MINUTES} minutes`}>
-              <svg viewBox="0 0 64 64" className="h-full w-full -rotate-90" aria-hidden="true">
-                <circle cx="32" cy="32" r="27" fill="none" strokeWidth="6" stroke="var(--color-surface-raised)" />
-                <circle
-                  cx="32"
-                  cy="32"
-                  r="27"
-                  fill="none"
-                  strokeWidth="6"
-                  strokeLinecap="round"
-                  stroke={goalDone ? 'var(--color-correct)' : 'var(--color-accent)'}
-                  strokeDasharray={RING}
-                  strokeDashoffset={RING * (1 - goalPct)}
-                  style={{ transition: 'stroke-dashoffset 0.6s ease' }}
-                />
-              </svg>
-              <span className="absolute inset-0 grid place-items-center font-mono text-[0.95rem] font-bold tabular-nums text-text-bright">
-                {goalDone ? '✓' : `${Math.round(goalPct * 100)}%`}
-              </span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-text-dim">Daily practice</span>
-              <b className="text-base font-semibold text-text-bright">
-                {goalDone ? `Goal done, ${mins} min` : `${mins} of ${SMART_GOAL_MINUTES} min`}
-              </b>
-              <span className="text-xs font-semibold text-accent">{goalDone ? 'Nice work today' : `${SMART_GOAL_MINUTES - mins} min to go`}</span>
-            </div>
-          </div>
+          <DailyRing todaySeconds={todaySeconds} />
 
           <div className="flex min-w-0 flex-col gap-2">
             <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 text-xs text-text-dim">
-              <div
-                className="w-full max-w-[21rem]"
-                role="img"
-                aria-label={`Level: ${LEVELS[levelIndex(state.unlocked)].name}. ${state.unlocked} of 26 keys open.`}
-                title={`You are here: ${LEVELS[levelIndex(state.unlocked)].name} (${state.unlocked} of 26 keys open)`}
-              >
-                <div className="relative">
-                  <div className="grid gap-[3px]" style={{ gridTemplateColumns: TRACK_COLUMNS }}>
-                    {LEVELS.map((l, i) => {
-                      const to = i < 2 ? LEVELS[i + 1].from : 26;
-                      const fill = Math.max(0, Math.min(1, (state.unlocked - l.from) / (to - l.from)));
-                      return (
-                        <span key={l.name} className="block h-1 overflow-hidden rounded-full bg-surface-raised">
-                          <span className="block h-full rounded-full bg-accent" style={{ width: `${fill * 100}%` }} />
-                        </span>
-                      );
-                    })}
-                  </div>
-                  <span
-                    className="absolute top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-accent bg-surface shadow-[0_0_0_3px_var(--color-accent-bg)]"
-                    style={{ left: `${Math.min(100, Math.max(0, ((state.unlocked - START_KEYS) / (KEY_ORDER.length - START_KEYS)) * 100))}%` }}
-                    aria-hidden="true"
-                  />
-                </div>
-                <div className="mt-1.5 grid text-[11px]" style={{ gridTemplateColumns: TRACK_COLUMNS }} aria-hidden="true">
-                  {LEVELS.map((l, i) => (
-                    <span
-                      key={l.name}
-                      className={`text-center ${i === levelIndex(state.unlocked) ? 'font-semibold text-accent' : i < levelIndex(state.unlocked) ? 'text-text' : 'text-text-dim/60'}`}
-                    >
-                      {l.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <LevelTrack unlocked={state.unlocked} />
               <span className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1">
                 {plan.focus.length > 0 && (
                   <span className="inline-flex items-center gap-1">
@@ -566,7 +483,7 @@ export default function AdaptivePractice({
           ref={textBoxRef}
           className={`relative my-5 cursor-text overflow-hidden ${customPrompt ? 'hidden' : ''}`}
           // exactly three lines tall (no padding inside, so the line scrolled out of view never peeks in)
-          style={{ height: typingWindowHeight(lineHeight) - 24 }}
+          style={{ height: windowHeight }}
           onClick={() => inputRef.current?.focus({ preventScroll: true })}
         >
           <TypingPassage chars={chars} currentIndex={currentIndex} firstCharRef={firstCharRef} currentCharRef={currentCharRef} className={`transition-transform duration-150 ease-out ${kind === 'code' ? '' : 'typing-justify'}`} style={{ transform: `translateY(-${scrollOffset}px)` }} />

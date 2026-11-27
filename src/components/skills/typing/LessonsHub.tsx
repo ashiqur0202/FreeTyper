@@ -55,23 +55,25 @@ export default function LessonsHub() {
       aria-selected={mode === m}
       onClick={() => choose(m)}
       className={`rounded-md px-2.5 py-1 text-sm transition-all ${
-        mode === m ? 'bg-accent-bg font-medium text-text-bright' : 'text-text-dim hover:bg-surface-raised hover:text-text'
+        mode === m ? 'bg-accent-bg font-medium text-text-bright' : 'text-text hover:bg-surface hover:text-text-bright'
       }`}
     >
       {label}
     </button>
   );
 
+  // The two modes are the tabs in the strip at the top of each lessons box.
+  const tabs = (
+    <div role="tablist" aria-label="Lesson mode" className="flex flex-wrap items-center gap-1">
+      {tab('smart', 'Smart lessons')}
+      {tab('course', 'Course · 34 lessons')}
+    </div>
+  );
+
   return (
     <div className="w-full">
-      <div className="mb-3 flex">
-        <div role="tablist" aria-label="Lesson mode" className="flex gap-1">
-          {tab('smart', 'Smart lessons')}
-          {tab('course', 'Course · 34 lessons')}
-        </div>
-      </div>
-      {mode === 'smart' && <SmartLessons />}
-      {mode === 'course' && <TypingLessons />}
+      {mode === 'smart' && <SmartLessons tabs={tabs} />}
+      {mode === 'course' && <TypingLessons tabs={tabs} />}
       {mode === null && <div className="h-48" aria-hidden="true" />}
     </div>
   );
