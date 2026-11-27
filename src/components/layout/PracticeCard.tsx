@@ -241,7 +241,7 @@ export default function PracticeCard() {
                 source="sidebar"
                 hint={`Same text, ${run.wpm} WPM to beat`}
                 buildUrl={() =>
-                  buildUrl(window.location.origin, run.seed, run.wpm, run.accuracy, run.mode, run.seconds, run.level as TextLevel, run.gen)
+                  buildUrl(window.location.origin, run.seed, run.wpm, run.accuracy, run.mode, run.seconds, run.level as TextLevel, run.gen, run.language)
                 }
               >
                 Challenge a friend

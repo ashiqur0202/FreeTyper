@@ -46,6 +46,8 @@ import PracticeFeedback, {
 } from './PracticeFeedback';
 import TypingPassage, { measureTypingLineHeight, typingWindowHeight } from './TypingPassage';
 import PracticeStrip from './PracticeStrip';
+import { saveSourcePrefs, loadSourcePrefs, type CodeChoice } from './engine/sources';
+import { CODE_LANGUAGE_NAMES, type CodeLanguage } from './engine/code';
 
 const TEXT_MODES: { id: TextMode; label: string }[] = [
   { id: 'words', label: 'words' },
@@ -96,8 +98,8 @@ function storedTextLevel(): TextLevel {
  * A new text with a fresh seed, remembered in `seedRef` so the finished run can be sent as a challenge link. The seed is
  * chosen so the opening sentences are ones the person has not seen lately; the text of a seed itself never changes.
  */
-function freshTest(seedRef: { current: string | null }, mode: TextMode, seconds: number, level: TextLevel): string {
-  const { seed, text } = pickFreshSeed(newSeed, (s) => seededTestText(mode, seconds, s, level), loadRecent());
+function freshTest(language: CodeChoice, seedRef: { current: string | null }, mode: TextMode, seconds: number, level: TextLevel): string {
+  const { seed, text } = pickFreshSeed(newSeed, (s) => seededTestText(mode, seconds, s, level, TEST_TEXT_VERSION, language), loadRecent());
   seedRef.current = seed;
   rememberText(text);
   return text;
@@ -157,6 +159,15 @@ export default function TypingSpeedTest({
   const challengeRef = useRef<Challenge | null>(null);
   // Seed of the passage on screen; each finished speed test keeps it (`share`), so "challenge a friend" can turn any listed run into a link.
   const textSeedRef = useRef<string | null>(null);
+  // The code language of a code test: part of the text's seed and of a challenge link. Remembered with the one Practice uses.
+  const [codeLanguage, setCodeLanguageState] = useState<CodeChoice>('any');
+  const codeLanguageRef = useRef<CodeChoice>('any');
+  useEffect(() => {
+    const saved = loadSourcePrefs().language;
+    codeLanguageRef.current = saved;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- reads localStorage, so it must run after hydration
+    setCodeLanguageState(saved);
+  }, []);
   const [dailyKey, setDailyKey] = useState<string | null>(null);
   const [dailyStore, setDailyStore] = useState<DailyStore>({});
   const dailyRef = useRef<string | null>(null);
@@ -231,7 +242,7 @@ export default function TypingSpeedTest({
     if (friendRun) setChallengeRun({ wpm: session.wpm, accuracy: session.accuracy });
     const seed = textSeedRef.current;
     const shareable = !numberRow && !day && !friendRun && seed !== null && CHALLENGE_SECONDS.includes(secs);
-    const share = shareable ? { seed, mode, seconds: secs, level, gen: TEST_TEXT_VERSION } : undefined;
+    const share = shareable ? { seed, mode, seconds: secs, level, gen: TEST_TEXT_VERSION, ...(mode === 'code' && codeLanguageRef.current !== 'any' ? { language: codeLanguageRef.current } : {}) } : undefined;
     // Number row runs stay out of progress: digit speeds would shift best WPM, averages and the streak.
     if (numberRow) setDigitStats(digitSpeeds(digitTimesRef.current));
     else addSession(withoutRun(updated));
@@ -306,17 +317,17 @@ export default function TypingSpeedTest({
     } else if (challenge) {
       // No usable link (or none at all): start a fresh challenge the person can send on.
       const parsed = parseChallenge(window.location.search);
-      const info: Challenge = parsed ?? { seed: newSeed(), mode: 'sentences', seconds: 60, level: DEFAULT_TEXT_LEVEL, gen: TEST_TEXT_VERSION, wpm: null, accuracy: null };
+      const info: Challenge = parsed ?? { seed: newSeed(), mode: 'sentences', seconds: 60, level: DEFAULT_TEXT_LEVEL, gen: TEST_TEXT_VERSION, language: 'any', wpm: null, accuracy: null };
       challengeRef.current = info;
       setChallengeInfo(info);
       setDuration(info.seconds);
       if (info.mode) setTextMode(info.mode);
-      setText(info.mode ? seededTestText(info.mode, info.seconds, info.seed, info.level, info.gen) : challengeText(info.seed));
+      setText(info.mode ? seededTestText(info.mode, info.seconds, info.seed, info.level, info.gen, info.language) : challengeText(info.seed));
       if (parsed?.wpm != null) trackEvent('challenge_link_open');
     } else if (numberRow) {
       setText(numberRowText('digits', initialDuration));
     } else {
-      setText(freshTest(textSeedRef, 'sentences', initialDuration, storedTextLevel()));
+      setText(freshTest(codeLanguageRef.current, textSeedRef, 'sentences', initialDuration, storedTextLevel()));
     }
     setLog(challenge ? [] : loadSpeedLog(numberRow ? NUMBER_ROW_LOG_KEY : daily ? DAILY_LOG_KEY : LOG_KEY));
   }, [initialDuration, daily, challenge, numberRow]);
@@ -460,11 +471,11 @@ export default function TypingSpeedTest({
       next = dailyText(key);
     } else if (challengeRef.current) {
       const c = challengeRef.current;
-      next = c.mode ? seededTestText(c.mode, c.seconds, c.seed, c.level, c.gen) : challengeText(c.seed);
+      next = c.mode ? seededTestText(c.mode, c.seconds, c.seed, c.level, c.gen, c.language) : challengeText(c.seed);
     } else if (numberRow) {
       next = numberRowText(rowMode, dur ?? customDuration ?? duration);
     } else {
-      next = freshTest(textSeedRef, textMode, dur ?? customDuration ?? duration, settings.textLevel);
+      next = freshTest(codeLanguageRef.current, textSeedRef, textMode, dur ?? customDuration ?? duration, settings.textLevel);
     }
     setText(next);
     restart(next);
@@ -553,41 +564,41 @@ export default function TypingSpeedTest({
       case 'w':
         setTextMode('words');
         setResult(null);
-        setText(freshTest(textSeedRef, 'words', customDuration ?? duration, settings.textLevel));
+        setText(freshTest(codeLanguageRef.current, textSeedRef, 'words', customDuration ?? duration, settings.textLevel));
         restart();
         break;
       case 'sentences':
       case 's':
         setTextMode('sentences');
         setResult(null);
-        setText(freshTest(textSeedRef, 'sentences', customDuration ?? duration, settings.textLevel));
+        setText(freshTest(codeLanguageRef.current, textSeedRef, 'sentences', customDuration ?? duration, settings.textLevel));
         restart();
         break;
       case 'quotes':
       case 'q':
         setTextMode('quotes');
         setResult(null);
-        setText(freshTest(textSeedRef, 'quotes', customDuration ?? duration, settings.textLevel));
+        setText(freshTest(codeLanguageRef.current, textSeedRef, 'quotes', customDuration ?? duration, settings.textLevel));
         restart();
         break;
       case 'facts':
         setTextMode('facts');
         setResult(null);
-        setText(freshTest(textSeedRef, 'facts', customDuration ?? duration, settings.textLevel));
+        setText(freshTest(codeLanguageRef.current, textSeedRef, 'facts', customDuration ?? duration, settings.textLevel));
         restart();
         break;
       case 'mixed':
       case 'm':
         setTextMode('mixed');
         setResult(null);
-        setText(freshTest(textSeedRef, 'mixed', customDuration ?? duration, settings.textLevel));
+        setText(freshTest(codeLanguageRef.current, textSeedRef, 'mixed', customDuration ?? duration, settings.textLevel));
         restart();
         break;
       case 'code':
       case 'c':
         setTextMode('code');
         setResult(null);
-        setText(freshTest(textSeedRef, 'code', customDuration ?? duration, settings.textLevel));
+        setText(freshTest(codeLanguageRef.current, textSeedRef, 'code', customDuration ?? duration, settings.textLevel));
         restart();
         break;
     }
@@ -718,7 +729,7 @@ export default function TypingSpeedTest({
                   onClick={() => {
                     if (isRunning) return;
                     setTextMode(m.id);
-                    const next = freshTest(textSeedRef, m.id, customDuration ?? duration, settings.textLevel);
+                    const next = freshTest(codeLanguageRef.current, textSeedRef, m.id, customDuration ?? duration, settings.textLevel);
                     setText(next);
                     restart(next);
                   }}
@@ -750,7 +761,7 @@ export default function TypingSpeedTest({
                             if (isRunning) return;
                             const lv = normalizeLevel(l.level);
                             updateSetting('textLevel', lv);
-                            const next = freshTest(textSeedRef, textMode, customDuration ?? duration, lv);
+                            const next = freshTest(codeLanguageRef.current, textSeedRef, textMode, customDuration ?? duration, lv);
                             setText(next);
                             restart(next);
                           }}
@@ -773,6 +784,33 @@ export default function TypingSpeedTest({
               </button>
               </div>
             </div>
+            )}
+            {!fixedRun && !numberRow && textMode === 'code' && (
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1 border-t border-surface-border px-3 py-1.5 text-xs text-text-dim" role="group" aria-label="Code language">
+                <span>Language</span>
+                {(['any', ...(Object.keys(CODE_LANGUAGE_NAMES) as CodeLanguage[])] as CodeChoice[]).map((id) => (
+                  <button
+                    key={id}
+                    type="button"
+                    aria-pressed={codeLanguage === id}
+                    disabled={isRunning}
+                    onClick={() => {
+                      if (isRunning) return;
+                      codeLanguageRef.current = id;
+                      setCodeLanguageState(id);
+                      saveSourcePrefs({ ...loadSourcePrefs(), language: id });
+                      const next = freshTest(id, textSeedRef, 'code', customDuration ?? duration, settings.textLevel);
+                      setText(next);
+                      restart(next);
+                    }}
+                    className={`rounded-full border px-2.5 py-0.5 text-xs transition-colors ${
+                      codeLanguage === id ? 'border-accent bg-accent-bg text-accent' : 'border-surface-border text-text hover:text-text-bright'
+                    } ${isRunning ? 'cursor-not-allowed opacity-30' : 'cursor-pointer'}`}
+                  >
+                    {id === 'any' ? 'Any' : CODE_LANGUAGE_NAMES[id]}
+                  </button>
+                ))}
+              </div>
             )}
             <div className="h-[3px] w-full bg-surface-raised">
               <div
@@ -862,7 +900,7 @@ export default function TypingSpeedTest({
                       source="finished_box"
                       emphasis
                       buildUrl={() =>
-                        buildChallengeUrl(window.location.origin, finishedShare.seed, finishedRun.wpm, finishedRun.accuracy, finishedShare.mode, finishedShare.seconds, finishedShare.level, finishedShare.gen ?? 1)
+                        buildChallengeUrl(window.location.origin, finishedShare.seed, finishedRun.wpm, finishedRun.accuracy, finishedShare.mode, finishedShare.seconds, finishedShare.level, finishedShare.gen ?? 1, finishedShare.language ?? 'any')
                       }
                     >
                       Challenge a friend
@@ -911,7 +949,7 @@ export default function TypingSpeedTest({
                   source="history_row"
                   emphasis={false}
                   buildUrl={() =>
-                    buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds, entry.share!.level, entry.share!.gen ?? 1)
+                    buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds, entry.share!.level, entry.share!.gen ?? 1, entry.share!.language ?? 'any')
                   }
                 >
                   challenge
@@ -933,7 +971,7 @@ export default function TypingSpeedTest({
                     source="result_card"
                     emphasis={i === 0 && newBest}
                     buildUrl={() =>
-                      buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds, entry.share!.level, entry.share!.gen ?? 1)
+                      buildChallengeUrl(window.location.origin, entry.share!.seed, entry.wpm, entry.accuracy, entry.share!.mode, entry.share!.seconds, entry.share!.level, entry.share!.gen ?? 1, entry.share!.language ?? 'any')
                     }
                   >
                     {i === 0 && newBest ? 'new best: challenge a friend' : 'challenge a friend'}

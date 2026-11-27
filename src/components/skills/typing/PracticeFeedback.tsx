@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ChevronDown } from 'lucide-react';
 import type { TypingSession } from './types';
 import type { TextMode } from './testText';
+import type { CodeChoice } from './engine/sources';
 import type { TextLevel } from './textGenerator';
 import RunGraph from './RunGraph';
 import ShareResultButton from './ShareResultButton';
@@ -21,7 +22,7 @@ export type PracticeLogEntry = TypingSession & {
   headline?: string;
   tone?: CoachTone;
   /** Speed test only: what is needed to send this run as a challenge link (the text's seed, type and length). */
-  share?: { seed: string; mode: TextMode; seconds: number; level: TextLevel; gen?: 1 | 2 };
+  share?: { seed: string; mode: TextMode; seconds: number; level: TextLevel; gen?: 1 | 2; language?: CodeChoice };
   /** Lessons only: whether this attempt reached the accuracy the lesson asks for. */
   passed?: boolean;
 };

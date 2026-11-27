@@ -5,6 +5,7 @@ import { generateCode } from './engine/code';
 import { factItems, quoteItems, type LibraryItem } from './engine/library';
 import { rateDifficulty } from './engine/rating';
 import { seeded, type Rand } from './engine/rng';
+import type { CodeChoice } from './engine/sources';
 
 export type TextMode = 'words' | 'sentences' | 'quotes' | 'facts' | 'code' | 'mixed';
 
@@ -61,13 +62,20 @@ function codeLevel(level: TextLevel): 0 | 1 | 2 {
 }
 
 /** Version 2 code: made fresh by the code generator, one language at a time, until the length is reached. */
-function codeText(seconds: number, seed: string, level: TextLevel): string {
-  const rand = seeded(`freetyper-test-code2|${seed}|${seconds}|${level}`);
+function codeText(seconds: number, seed: string, level: TextLevel, language: CodeChoice): string {
+  // "any" keeps the seed as it was, so it gives the text it always gave; a chosen language is part of the seed
+  const rand = seeded(`freetyper-test-code2|${seed}|${seconds}|${level}${language === 'any' ? '' : `|${language}`}`);
   const goal = charBudget(seconds, 800);
   const parts: string[] = [];
   let total = 0;
   for (let guard = 0; total < goal && guard < 60; guard++) {
-    const made = generateCode({ level: codeLevel(level), weight: () => 1, targetChars: Math.min(700, goal - total), rand });
+    const made = generateCode({
+      level: codeLevel(level),
+      weight: () => 1,
+      targetChars: Math.min(700, goal - total),
+      rand,
+      language: language === 'any' ? undefined : language,
+    });
     parts.push(made.text);
     total += made.text.length + 1;
   }
@@ -153,10 +161,11 @@ export function seededTestText(
   seed: string,
   level: TextLevel = DEFAULT_TEXT_LEVEL,
   version: TestTextVersion = TEST_TEXT_VERSION,
+  language: CodeChoice = 'any',
 ): string {
   if (mode === 'sentences') return generateSentences(`${seed}|${seconds}`, level, wordBudget(seconds, 1500));
   if (mode === 'words') return generateWords(`${seed}|${seconds}`, level, wordBudget(seconds, 2000));
-  if (mode === 'code') return version === 1 ? codeTextV1(seconds, seededRandom(`freetyper-test-code-${seconds}-${seed}`)) : codeText(seconds, seed, level);
+  if (mode === 'code') return version === 1 ? codeTextV1(seconds, seededRandom(`freetyper-test-code-${seconds}-${seed}`)) : codeText(seconds, seed, level, language);
   if (mode === 'quotes') return libraryText(quoteItems(), seconds, seed, level, 'quotes');
   if (mode === 'facts') return libraryText(factItems(), seconds, seed, level, 'facts');
   return mixedText(seconds, seed, level);

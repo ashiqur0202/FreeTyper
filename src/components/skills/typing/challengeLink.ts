@@ -1,5 +1,6 @@
 import type { TestTextVersion, TextMode } from './testText';
 import { DEFAULT_TEXT_LEVEL, normalizeLevel, type TextLevel } from './textGenerator';
+import type { CodeChoice } from './engine/sources';
 
 const ALPHABET = '0123456789abcdefghijklmnopqrstuvwxyz';
 const SEED_RE = /^[a-z0-9]{4,12}$/;
@@ -9,6 +10,8 @@ const MAX_WPM = 400;
 export const CHALLENGE_SECONDS: readonly number[] = [15, 30, 60, 120, 180, 300];
 /** The text types a version 1 link can carry; version 2 (`g=2`) adds quotes, facts and mixed. */
 const MODES_V1: readonly TextMode[] = ['words', 'sentences', 'code'];
+/** The code languages a version 2 code link can name with `k` (no `k` means any). */
+const CODE_LANGUAGES: readonly CodeChoice[] = ['js', 'python', 'sql', 'css', 'html'];
 const MODES_V2: readonly TextMode[] = ['words', 'sentences', 'quotes', 'facts', 'code', 'mixed'];
 
 export interface Challenge {
@@ -28,6 +31,8 @@ export interface Challenge {
   level: TextLevel;
   /** How the text is built (see TEST_TEXT_VERSION): a link without `g` is version 1, always, so older links keep giving the same text. */
   gen: TestTextVersion;
+  /** The code language of a version 2 code test ('any' for every other text). */
+  language: CodeChoice;
   /** The sender's net WPM and accuracy, or null when the link carries no score. */
   wpm: number | null;
   accuracy: number | null;
@@ -76,7 +81,7 @@ export function parseChallenge(search: string): Challenge | null {
   const mode = (gen === 2 ? MODES_V2 : MODES_V1).find((x) => x === params.get('m')) ?? null;
   const d = allowedSeconds(params.get('d'));
   const typed = mode !== null && d !== null;
-  return { seed, mode: typed ? mode : null, seconds: typed ? d : 60, level: typed ? normalizeLevel(params.get('l')) : DEFAULT_TEXT_LEVEL, gen: typed ? gen : 1, ...parseScore(search) };
+  return { seed, mode: typed ? mode : null, seconds: typed ? d : 60, level: typed ? normalizeLevel(params.get('l')) : DEFAULT_TEXT_LEVEL, gen: typed ? gen : 1, language: typed && gen === 2 && mode === 'code' ? (CODE_LANGUAGES.find((x) => x === params.get('k')) ?? 'any') : 'any', ...parseScore(search) };
 }
 
 export function buildChallengeUrl(
@@ -88,9 +93,10 @@ export function buildChallengeUrl(
   seconds = 60,
   level: TextLevel = DEFAULT_TEXT_LEVEL,
   gen: TestTextVersion = 1,
+  language: CodeChoice = 'any',
 ): string {
   const base = `${origin}/typing-challenge?c=${seed}&w=${Math.round(wpm)}&a=${Math.round(accuracy)}`;
-  return mode ? `${base}&m=${mode}&d=${seconds}&l=${level}${gen === 2 ? '&g=2' : ''}` : base;
+  return mode ? `${base}&m=${mode}&d=${seconds}&l=${level}${gen === 2 ? '&g=2' : ''}${gen === 2 && mode === 'code' && language !== 'any' ? `&k=${language}` : ''}` : base;
 }
 
 export function compareScores(mine: number, theirs: number): { delta: number; verdict: 'win' | 'tie' | 'behind' } {

@@ -32,6 +32,7 @@ export interface ChallengeRun {
   mode: 'words' | 'sentences' | 'quotes' | 'facts' | 'code' | 'mixed';
   /** How the text is built (1 or 2, see TEST_TEXT_VERSION): needed to rebuild the same text for a challenge link. */
   gen: 1 | 2;
+  language: 'any' | 'js' | 'python' | 'sql' | 'css' | 'html';
   seconds: number;
   level: number;
   wpm: number;
@@ -129,7 +130,7 @@ function readChallengeRun(): ChallengeRun | null {
         (sh.mode === 'words' || sh.mode === 'sentences' || sh.mode === 'code' || sh.mode === 'quotes' || sh.mode === 'facts' || sh.mode === 'mixed') &&
         typeof e.wpm === 'number' && typeof e.accuracy === 'number'
       ) {
-        return { seed: sh.seed, mode: sh.mode, seconds: sh.seconds, level: sh.level, gen: sh.gen === 2 ? 2 : 1, wpm: e.wpm, accuracy: e.accuracy };
+        return { seed: sh.seed, mode: sh.mode, seconds: sh.seconds, level: sh.level, gen: sh.gen === 2 ? 2 : 1, language: ['js', 'python', 'sql', 'css', 'html'].includes(sh.language) ? sh.language : 'any', wpm: e.wpm, accuracy: e.accuracy };
       }
     }
   } catch {
