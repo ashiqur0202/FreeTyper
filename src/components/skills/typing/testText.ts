@@ -7,7 +7,7 @@ import { rateDifficulty } from './engine/rating';
 import { seeded, type Rand } from './engine/rng';
 import type { CodeChoice } from './engine/sources';
 
-export type TextMode = 'words' | 'sentences' | 'quotes' | 'facts' | 'code' | 'mixed';
+export type TextMode = 'standard' | 'words' | 'sentences' | 'quotes' | 'facts' | 'code' | 'mixed';
 
 /**
  * The version of the way test texts are built, kept in challenge links (`g=2`; a link without `g` is version 1).
@@ -112,13 +112,19 @@ function libraryText(items: LibraryItem[], seconds: number, seed: string, level:
   return parts.join(' ');
 }
 
-/** Mixed: short pieces of sentences, quotes, facts and code, never the same kind twice in a row (code less often). */
-function mixedText(seconds: number, seed: string, level: TextLevel): string {
-  const rand = seeded(`freetyper-test-mixed|${seed}|${seconds}|${level}`);
+type PieceWeights = [kind: 'sentences' | 'quotes' | 'facts' | 'code', weight: number][];
+
+/** Standard: plain everyday English for everyone, with no code (about half sentences, the rest real quotes and facts). */
+const STANDARD_WEIGHTS: PieceWeights = [['sentences', 4], ['quotes', 2], ['facts', 2]];
+/** Mixed: the same and code too, which comes up less often. */
+const MIXED_WEIGHTS: PieceWeights = [['sentences', 3], ['quotes', 3], ['facts', 3], ['code', 1]];
+
+/** Short pieces of different kinds one after another, never the same kind twice in a row. */
+function piecesText(name: string, weights: PieceWeights, seconds: number, seed: string, level: TextLevel): string {
+  const rand = seeded(`freetyper-test-${name}|${seed}|${seconds}|${level}`);
   const quotes = libraryOrder(quoteItems(), level, rand);
   const facts = libraryOrder(factItems(), level, rand);
   const goal = charBudget(seconds, 2000);
-  const weights: [string, number][] = [['sentences', 3], ['quotes', 3], ['facts', 3], ['code', 1]];
   const parts: string[] = [];
   let total = 0;
   let prev = '';
@@ -141,7 +147,7 @@ function mixedText(seconds: number, seed: string, level: TextLevel): string {
     if (kind === 'quotes' && quotes.length) piece = quotes[qi++ % quotes.length].text;
     else if (kind === 'facts' && facts.length) piece = facts[fi++ % facts.length].text;
     else if (kind === 'code') piece = generateCode({ level: codeLevel(level), weight: () => 1, targetChars: 110, rand }).text;
-    else piece = generateSentences(`${seed}|mix|${i}`, level, 14);
+    else piece = generateSentences(`${seed}|${name}|${i}`, level, 14);
     parts.push(piece);
     total += piece.length + 1;
   }
@@ -168,7 +174,8 @@ export function seededTestText(
   if (mode === 'code') return version === 1 ? codeTextV1(seconds, seededRandom(`freetyper-test-code-${seconds}-${seed}`)) : codeText(seconds, seed, level, language);
   if (mode === 'quotes') return libraryText(quoteItems(), seconds, seed, level, 'quotes');
   if (mode === 'facts') return libraryText(factItems(), seconds, seed, level, 'facts');
-  return mixedText(seconds, seed, level);
+  if (mode === 'standard') return piecesText('standard', STANDARD_WEIGHTS, seconds, seed, level);
+  return piecesText('mixed', MIXED_WEIGHTS, seconds, seed, level);
 }
 
 /** A text from a random source, without a seed to send (the generator needs a seed, so it is drawn from `rand`). */

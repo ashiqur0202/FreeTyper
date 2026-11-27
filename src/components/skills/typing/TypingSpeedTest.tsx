@@ -50,6 +50,7 @@ import { saveSourcePrefs, loadSourcePrefs, type CodeChoice } from './engine/sour
 import { CODE_LANGUAGE_NAMES, type CodeLanguage } from './engine/code';
 
 const TEXT_MODES: { id: TextMode; label: string }[] = [
+  { id: 'standard', label: 'standard' },
   { id: 'words', label: 'words' },
   { id: 'sentences', label: 'sentences' },
   { id: 'quotes', label: 'quotes' },
@@ -60,6 +61,7 @@ const TEXT_MODES: { id: TextMode; label: string }[] = [
 
 /** One line under the text before a test starts: what this kind of text is. */
 const TEXT_MODE_NOTES: Record<TextMode, string> = {
+  standard: 'Everyday English: sentences, quotes and facts. No code.',
   words: 'Common English words in random order.',
   sentences: 'Made-up everyday sentences.',
   quotes: 'Checked quotes from public-domain books. A long test can repeat them.',
@@ -186,7 +188,7 @@ export default function TypingSpeedTest({
   const [customDuration, setCustomDuration] = useState<number | null>(null);
   const [showCustomInput, setShowCustomInput] = useState(false);
   const [customValue, setCustomValue] = useState('');
-  const [textMode, setTextMode] = useState<TextMode>('sentences');
+  const [textMode, setTextMode] = useState<TextMode>('standard');
   const [rowMode, setRowMode] = useState<NumberRowMode>('digits');
   const [digitStats, setDigitStats] = useState<ReturnType<typeof digitSpeeds> | null>(null);
   // Gaps (ms) before each correct press of a number key, for the run in progress.
@@ -327,7 +329,7 @@ export default function TypingSpeedTest({
     } else if (numberRow) {
       setText(numberRowText('digits', initialDuration));
     } else {
-      setText(freshTest(codeLanguageRef.current, textSeedRef, 'sentences', initialDuration, storedTextLevel()));
+      setText(freshTest(codeLanguageRef.current, textSeedRef, 'standard', initialDuration, storedTextLevel()));
     }
     setLog(challenge ? [] : loadSpeedLog(numberRow ? NUMBER_ROW_LOG_KEY : daily ? DAILY_LOG_KEY : LOG_KEY));
   }, [initialDuration, daily, challenge, numberRow]);
@@ -565,6 +567,12 @@ export default function TypingSpeedTest({
         setTextMode('words');
         setResult(null);
         setText(freshTest(codeLanguageRef.current, textSeedRef, 'words', customDuration ?? duration, settings.textLevel));
+        restart();
+        break;
+      case 'standard':
+        setTextMode('standard');
+        setResult(null);
+        setText(freshTest(codeLanguageRef.current, textSeedRef, 'standard', customDuration ?? duration, settings.textLevel));
         restart();
         break;
       case 'sentences':

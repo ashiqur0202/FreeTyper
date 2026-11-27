@@ -12,7 +12,7 @@ export const CHALLENGE_SECONDS: readonly number[] = [15, 30, 60, 120, 180, 300];
 const MODES_V1: readonly TextMode[] = ['words', 'sentences', 'code'];
 /** The code languages a version 2 code link can name with `k` (no `k` means any). */
 const CODE_LANGUAGES: readonly CodeChoice[] = ['js', 'python', 'sql', 'css', 'html'];
-const MODES_V2: readonly TextMode[] = ['words', 'sentences', 'quotes', 'facts', 'code', 'mixed'];
+const MODES_V2: readonly TextMode[] = ['standard', 'words', 'sentences', 'quotes', 'facts', 'code', 'mixed'];
 
 export interface Challenge {
   /** Picks the passage; the same seed gives the same text for everyone. */
