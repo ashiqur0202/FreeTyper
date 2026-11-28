@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Gift, History, Lock, MonitorSmartphone, type LucideIcon } from 'lucide-react';
+import { Gift, History, MonitorSmartphone, type LucideIcon } from 'lucide-react';
 import LogoMark from '@/components/layout/LogoMark';
 import { authClient } from '@/lib/auth-client';
 import { useAccount } from '@/lib/sync/useAccount';
@@ -124,15 +124,8 @@ export default function LoginCard({ enabled }: { enabled: boolean }) {
               Login is not available right now. Everything else on FreeTyper works as usual.
             </p>
           )}
-          <p className="mt-3.5 text-left text-[12.5px] text-text-dim">
-            Your speed tests appear on the public <Link href="/leaderboard" className="text-accent underline">leaderboard</Link> with your username and your name from Google. If you delete your account later, we keep the data we hold about you in private records, and your username and scores stay on the leaderboard, marked &quot;account deleted&quot;.
-          </p>
-          <p className="mt-2.5 flex items-start justify-center gap-2 text-left text-[12.5px] text-text-dim">
-            <Lock className="mt-0.5 h-[15px] w-[15px] shrink-0 text-accent" aria-hidden="true" />
-            <span>
-              No password, ever. Only your numbers are saved, never what you type.{' '}
-              <Link href="/privacy" className="text-accent underline">See exactly what an account stores</Link>.
-            </span>
+          <p className="mt-3.5 text-center text-[12.5px] text-text-dim">
+            By continuing you agree to the <Link href="/terms" className="text-accent underline">Terms</Link> and <Link href="/privacy" className="text-accent underline">Privacy Policy</Link>.
           </p>
         </div>
 
