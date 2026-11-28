@@ -58,6 +58,13 @@ Daily dump on the server disk (Coolify, `freetyper-db`, Backups: list, Download)
 - No paid off-server backup for now (Ashiqur, 2026-11-27: "i don't want to spend money now"); revisit before many people sign up (Cloudflare R2 needs a subscription on the card on file, $0 due, billed only above free limits).
 - Demo first, build after approval; all QA done by Claude with the tools.
 
+## 7b. Leaderboard (added 2026-11-28)
+- Tables: `typist` (public identity: username, status active/deleted, `archive` jsonb kept on deletion), `score` (one row per counted run, `hidden` flag), `score_report`. Look at them in DBeaver like the others.
+- **Moderation by hand:** reports are in `score_report` (join to `score`). To remove a score from every board: `update score set hidden = true where id = '...'`. To change an offensive username: `update typist set username = '...' where id = '...'` (unique, lower case, 3 to 20 characters).
+- **Deleted accounts:** the `typist` row stays with `status = 'deleted'`, `user_id` null and the person's data in `archive`. To erase on request: `update typist set archive = null where id = '...'` (the username and scores can stay or be removed too, as agreed with the person).
+- Rules and numbers live in `src/lib/leaderboard/rules.ts`. The boards are computed on request from `score` (cached 30 s at the edge); nothing is stored per board.
+- Release: the two migrations run by themselves at start (additive only). Rollback: the old image still works because it never reads the new tables; leave the tables in place.
+
 ## 8. Ideas and open items (for betterment)
 
 - Email code (OTP) and magic link: needs a way to send mail (install Stalwart on the server or use an outside sending service); add a `rate_limit` table for the 15 minute lock and 60 second resend wait; mail DNS is already prepared; test inbox placement for Gmail, Yahoo and Outlook first.
