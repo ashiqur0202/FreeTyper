@@ -205,7 +205,7 @@ await t('an active entry shows the Google name; the typist row is the public ide
   assert.equal(ada.name, 'Ada Weber');
   assert.equal(ada.deleted, false);
 });
-await t('DELETING AN ACCOUNT: the scores and the username stay, marked deleted; name, email, link, sessions and saved progress are gone', async () => {
+await t('DELETING AN ACCOUNT: scores and username stay (marked deleted) and the data of that person is archived, sessions go, the public board shows none of it', async () => {
   const typistId = cast.b1.id;
   await db.insert(schema.account).values({ id: 'ac1', accountId: 'g-b1', providerId: 'google', userId: 'b1' });
   await db.insert(schema.session).values({ id: 'se1', token: 'tok-b1', expiresAt: new Date(NOW.getTime() + 1e9), userId: 'b1' });
@@ -222,8 +222,13 @@ await t('DELETING AN ACCOUNT: the scores and the username stay, marked deleted; 
   assert.equal(row.deletedAt.toISOString(), NOW.toISOString());
   assert.equal((await db.select().from(schema.score).where(eq(schema.score.typistId, typistId))).length, 2, 'scores kept');
   for (const [table, col] of [[schema.account, schema.account.userId], [schema.session, schema.session.userId], [schema.userProgress, schema.userProgress.userId]]) {
-    assert.equal((await db.select().from(table).where(eq(col, 'b1'))).length, 0, 'personal rows removed');
+    assert.equal((await db.select().from(table).where(eq(col, 'b1'))).length, 0, 'live rows removed');
   }
+  assert.equal(row.archive.email, 'b1@example.com', 'email archived');
+  assert.equal(row.archive.name, 'Ada Weber', 'name archived');
+  assert.deepEqual(row.archive.logins, [{ providerId: 'google', accountId: 'g-b1' }], 'Google link archived');
+  assert.equal(row.archive.progress.bestWpm, 140, 'saved progress archived');
+  assert.ok(!JSON.stringify(row.archive).includes('tok-b1'), 'no session token kept');
   assert.equal((await db.select().from(schema.user).where(eq(schema.user.id, 'b1'))).length, 0);
 
   const b = await board({ period: 'lifetime' });

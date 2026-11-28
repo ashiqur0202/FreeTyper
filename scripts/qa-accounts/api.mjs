@@ -265,7 +265,10 @@ console.log('--- the leaderboard after an account is deleted');
   check('the board still shows Dave, ranked #1, marked deleted', !!dave && dave.deleted === true && dave.rank === 1 && dave.wpm === 90, JSON.stringify(dave));
   check('with no name, no email and nothing personal', dave && dave.name === null && !board2.text.includes('dave@example.com') && !board2.text.includes(U.dave.id) && !/"name":"Dave"/.test(board2.text));
   const [left] = await q('select (select count(*)::int from "user" where id = $1) u, (select count(*)::int from account where user_id = $1) a, (select count(*)::int from user_progress where user_id = $1) p', [U.dave.id]);
-  check('and the personal rows (user, Google link, saved progress) are all gone', left.u === 0 && left.a === 0 && left.p === 0);
+  check('the live rows (user, Google link, saved progress, sessions) are gone: the login is ended', left.u === 0 && left.a === 0 && left.p === 0);
+  const [arch] = await q('select archive from typist where username = $1', ['dave']);
+  check('but the data is archived on the typist row: email, name, Google id, progress', arch.archive?.email === 'dave@example.com' && arch.archive?.name === 'Dave' && Array.isArray(arch.archive?.logins) && arch.archive.logins.length === 1 && 'progress' in arch.archive, JSON.stringify(Object.keys(arch.archive ?? {})));
+  check('no login credentials are in the archive (tokens, password)', !/accessToken|refreshToken|idToken|"password"|"token"/.test(JSON.stringify(arch.archive)));
   r = await call('PUT', '/api/typist', { user: 'alex', body: { username: 'dave' } });
   check('a deleted person\'s username stays reserved: 409', r.status === 409);
 }

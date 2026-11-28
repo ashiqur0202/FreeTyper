@@ -96,13 +96,13 @@ export default function PrivacyPage() {
           </p>
           <p className="mt-3 font-medium text-text-bright">Deleting it</p>
           <p className="mt-1">
-            Open the Account page and choose &quot;Delete account&quot;. That deletes your email
-            address, your name from Google, your Google login link, your login sessions and your saved
-            progress straight away. <strong className="text-text">Your username and your speed test scores are kept</strong>:
-            they stay on the leaderboard and in its history, marked &quot;account deleted&quot;, with
-            no name, email or other personal detail attached. Progress in your browser stays. A login
-            session ends after 30 days at the latest, or when you log out (&quot;Log out everywhere&quot;
-            ends all of them). To ask for a copy of what we hold about you, to change a username, or if
+            Open the Account page and choose &quot;Delete account&quot;. That ends your login: your login
+            sessions are removed straight away and you can no longer sign in. <strong className="text-text">We
+            keep the data we held about you</strong> in private records: your email address, your name and picture
+            from Google, your Google account identifier, when you joined, and the progress saved on our
+            server. It is not shown to anyone and not used for ads or sold. Your username and speed test
+            scores stay public on the leaderboard and in its history, marked &quot;account deleted&quot;,
+            without your name. Progress in your browser stays. To ask for a copy of what we hold about you, to have it erased, to change a username, or if
             you want a score or username removed from the leaderboard, email{' '}
             <a href="mailto:contact@freetyper.com" className="text-accent hover:underline">
               contact@freetyper.com

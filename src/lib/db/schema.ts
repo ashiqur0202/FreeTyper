@@ -110,6 +110,8 @@ export const typist = pgTable(
     status: text('status').notNull().default('active'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     deletedAt: timestamp('deleted_at', { withTimezone: true }),
+    // Kept when the account is deleted: email, name, picture, Google id, join date, saved progress. Never shown publicly.
+    archive: jsonb('archive'),
   },
   // Usernames are unique whatever the capital letters (the app stores them in lower case).
   (t) => [uniqueIndex('typist_username_lower_idx').on(sql`lower(${t.username})`)],

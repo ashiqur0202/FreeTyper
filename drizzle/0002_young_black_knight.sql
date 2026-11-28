@@ -1,0 +1,1 @@
+ALTER TABLE "typist" ADD COLUMN "archive" jsonb;

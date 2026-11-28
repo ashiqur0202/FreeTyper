@@ -15,6 +15,13 @@
       "when": 1795798398642,
       "tag": "0001_leaderboard",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1795835693985,
+      "tag": "0002_young_black_knight",
+      "breakpoints": true
     }
   ]
 }

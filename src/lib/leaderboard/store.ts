@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { and, eq, gte, sql } from 'drizzle-orm';
 import type { PgDatabase, PgQueryResultHKT } from 'drizzle-orm/pg-core';
-import { score, scoreReport, typist } from '@/lib/db/schema';
+import { account, score, scoreReport, typist, user, userProgress } from '@/lib/db/schema';
 import type * as schema from '@/lib/db/schema';
 import {
   checkScore, checkUsername, countsForBoard, MAX_REPORTS_PER_DAY, MAX_SCORES_PER_HOUR, periodStart, suggestUsername, timingPossible,
@@ -66,7 +66,13 @@ export async function setUsername(db: LbDb, user: { id: string; name: string }, 
 
 /** Called just before an account is deleted: the typist stays, marked deleted. (The database then clears user_id.) */
 export async function markTypistDeleted(db: LbDb, userId: string, now = new Date()): Promise<void> {
-  await db.update(typist).set({ status: 'deleted', deletedAt: now }).where(eq(typist.userId, userId));
+  // Keep the person's data in the archive column before the user row goes (decision: deleted accounts keep their data).
+  // Login sessions and Google tokens are credentials, not data, and are not kept.
+  const [u] = await db.select().from(user).where(eq(user.id, userId));
+  const links = await db.select({ providerId: account.providerId, accountId: account.accountId }).from(account).where(eq(account.userId, userId));
+  const [progress] = await db.select().from(userProgress).where(eq(userProgress.userId, userId));
+  const archive = u ? { email: u.email, emailVerified: u.emailVerified, name: u.name, image: u.image, joinedAt: u.createdAt, logins: links, progress: progress ?? null } : null;
+  await db.update(typist).set({ status: 'deleted', deletedAt: now, ...(archive ? { archive } : {}) }).where(eq(typist.userId, userId));
 }
 
 // ---------------------------------------------------------------- scores

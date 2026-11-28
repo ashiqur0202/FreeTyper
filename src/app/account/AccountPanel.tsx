@@ -108,8 +108,8 @@ export default function AccountPanel({ enabled }: { enabled: boolean }) {
         <div className="mt-4 rounded-lg border border-error/60 p-3">
           <p className="text-sm text-text">This is exactly what happens to your data:</p>
           <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-text">
-            <li><span className="text-error">Deleted for good:</span> your email, your name from Google, your Google login link, your login sessions and your saved progress.</li>
-            <li><span className="text-accent">Kept:</span> your username and your speed test scores. They stay on the leaderboard, marked &quot;account deleted&quot;.</li>
+            <li><span className="text-error">Ends:</span> your login and all your login sessions. You can no longer sign in or sync, and your saved progress no longer follows you to other devices.</li>
+            <li><span className="text-accent">Kept:</span> the data we hold about you (email, your name and picture from Google, your Google account id, your saved progress) stays in our private records and is never shown to anyone. Your username and speed test scores stay public on the leaderboard, marked &quot;account deleted&quot;, without your name.</li>
           </ul>
           <p className="mt-2 text-xs text-text-dim">Progress on this device stays.</p>
           <label htmlFor="delete-confirm" className="mt-3 block text-xs text-text-dim">Type DELETE to confirm</label>

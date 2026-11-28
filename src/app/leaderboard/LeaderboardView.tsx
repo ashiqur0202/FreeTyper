@@ -224,7 +224,7 @@ export default function LeaderboardView({ enabled }: { enabled: boolean }) {
           <li><strong className="text-text">One entry per person:</strong> each board shows your best counted score inside its window. Daily is the current UTC day, weekly runs Monday to Sunday (UTC), monthly is the calendar month, lifetime is everything.</li>
           <li><strong className="text-text">Fair comparison:</strong> all text types and levels count, so use the filters to compare like with like, for example the same length and text type.</li>
           <li><strong className="text-text">Honesty about cheating:</strong> scores are sent by your browser, so they cannot be fully proven. Impossible scores are refused, submissions are rate limited, and anyone logged in can report an entry.</li>
-          <li><strong className="text-text">What is public:</strong> your username and the name from your Google account, with your scores. If you delete your account, your name and everything else personal is deleted; your username and scores stay, marked &quot;account deleted&quot;. See the <Link href="/privacy" className="text-accent underline">privacy page</Link>.</li>
+          <li><strong className="text-text">What is public:</strong> your username and the name from your Google account, with your scores. If you delete your account, your entry stays, marked &quot;account deleted&quot; and without your name; the data we hold about you is kept in private records and never shown. See the <Link href="/privacy" className="text-accent underline">privacy page</Link>.</li>
         </ul>
       </div>
     </div>

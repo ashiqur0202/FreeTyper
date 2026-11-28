@@ -125,7 +125,7 @@ export default function LoginCard({ enabled }: { enabled: boolean }) {
             </p>
           )}
           <p className="mt-3.5 text-left text-[12.5px] text-text-dim">
-            Your speed tests appear on the public <Link href="/leaderboard" className="text-accent underline">leaderboard</Link> with your username and your name from Google. If you delete your account later, your username and scores stay there, marked &quot;account deleted&quot;.
+            Your speed tests appear on the public <Link href="/leaderboard" className="text-accent underline">leaderboard</Link> with your username and your name from Google. If you delete your account later, we keep the data we hold about you in private records, and your username and scores stay on the leaderboard, marked &quot;account deleted&quot;.
           </p>
           <p className="mt-2.5 flex items-start justify-center gap-2 text-left text-[12.5px] text-text-dim">
             <Lock className="mt-0.5 h-[15px] w-[15px] shrink-0 text-accent" aria-hidden="true" />
