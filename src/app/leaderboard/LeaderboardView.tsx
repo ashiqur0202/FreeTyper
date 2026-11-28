@@ -1,8 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { sampleRows } from '@/lib/leaderboard/samples';
+import { useEffect, useRef, useState } from 'react';
 import { useAccount } from '@/lib/sync/useAccount';
 
 type Period = 'daily' | 'weekly' | 'monthly' | 'lifetime';
@@ -106,15 +105,6 @@ export default function LeaderboardView({ enabled }: { enabled: boolean }) {
     }
   };
 
-  // Example rows for a board with fewer than ten real entries: browser only, labelled, never ranked, never counted.
-  const samples = useMemo(
-    () =>
-      !failed && entries
-        ? sampleRows({ realCount: entries.length, realNames: entries.map((e) => e.username), period, length, mode, now: new Date(now) })
-        : [],
-    [failed, entries, period, length, mode, now],
-  );
-
   const meNow = me && account ? me : null;
 
   return (
@@ -166,7 +156,7 @@ export default function LeaderboardView({ enabled }: { enabled: boolean }) {
             </div>
             <div className={`${top === 50 ? 'max-h-[560px] overflow-auto' : ''} ${entries ? '' : 'opacity-60'}`} aria-busy={!entries && !failed}>
               {failed && <p role="alert" className="px-4 py-6 text-sm text-error">Could not load the leaderboard. Check your connection and try again.</p>}
-              {!failed && entries && entries.length === 0 && samples.length === 0 && (
+              {!failed && entries && entries.length === 0 && (
                 <p className="px-4 py-8 text-center text-sm text-text-dim">No scores on this board yet. Take a speed test while logged in and be the first.</p>
               )}
               {!failed && !entries && <p className="px-4 py-6 text-sm text-text-dim">Loading…</p>}
@@ -206,32 +196,8 @@ export default function LeaderboardView({ enabled }: { enabled: boolean }) {
                   </div>
                 );
               })}
-              {!failed && samples.map((r) => (
-                <div key={r.key} className="border-t border-surface-border opacity-60 first:border-t-0" data-sample-row>
-                  <div className="grid grid-cols-[34px_minmax(0,1fr)_62px] items-center gap-2.5 px-3.5 py-2.5 sm:grid-cols-[44px_minmax(0,1fr)_76px_64px_120px]">
-                    <span aria-label="no rank" className="grid h-[30px] w-[30px] place-items-center rounded-lg border border-dashed border-surface-border font-mono text-[13px] text-text-dim">–</span>
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        <b className="font-semibold text-text-bright">{r.username}</b>
-                        <em className="rounded-full border border-surface-border bg-surface px-2 text-[10.5px] font-medium not-italic uppercase tracking-wide text-text-dim">Sample</em>
-                      </div>
-                      <span className="block truncate text-[12.5px] text-text-dim">example entry</span>
-                    </div>
-                    <span className="text-right font-mono text-[17px] font-bold text-text-dim">{r.wpm}</span>
-                    <span className="hidden text-right font-mono text-[13px] sm:block">{r.accuracy}%</span>
-                    <span className="hidden text-[12.5px] text-text-dim sm:block">{lengthLabel(r.seconds)} · {cap(r.textMode)}{r.textLevel ? ` ${r.textLevel}` : ''}</span>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
-
-          {samples.length > 0 && (
-            <p className="mt-3 rounded-xl border border-surface-border bg-surface-raised px-3.5 py-2.5 text-[13px] text-text-dim" data-sample-note>
-              <b className="text-text-bright">Example entries.</b> The rows marked Sample show how the board looks and are not real people. They never get a rank and
-              disappear as real typists join. Take a 1 minute speed test at 95% accuracy or better while logged in and you will be listed here with a real rank.
-            </p>
-          )}
 
           <div className="mt-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-xl border border-dashed border-accent px-3.5 py-2.5 text-sm">
             {account ? (
@@ -257,7 +223,6 @@ export default function LeaderboardView({ enabled }: { enabled: boolean }) {
           <li><strong className="text-text">What counts:</strong> any finished speed test of 1 minute or longer while you are logged in (the number row test is left out), at 95% accuracy or higher. Shorter tests still count for your own progress. The speed is net WPM, as on the test.</li>
           <li><strong className="text-text">One entry per person:</strong> each board shows your best counted score inside its window. Daily is the current UTC day, weekly runs Monday to Sunday (UTC), monthly is the calendar month, lifetime is everything.</li>
           <li><strong className="text-text">Fair comparison:</strong> all text types and levels count, so use the filters to compare like with like, for example the same length and text type.</li>
-          <li><strong className="text-text">Sample rows:</strong> while a board has fewer than ten real entries, a few example rows (marked Sample, 15 to 35 WPM) fill the empty places so you can see how it looks. They are not real people, have no rank, are not stored and change every day. They disappear as real typists join.</li>
           <li><strong className="text-text">Honesty about cheating:</strong> scores are sent by your browser, so they cannot be fully proven. Impossible scores are refused, submissions are rate limited, and anyone logged in can report an entry.</li>
           <li><strong className="text-text">What is public:</strong> your username and the name from your Google account, with your scores. If you delete your account, your entry stays, marked &quot;account deleted&quot; and without your name; the data we hold about you is kept in private records and never shown. See the <Link href="/privacy" className="text-accent underline">privacy page</Link>.</li>
         </ul>
