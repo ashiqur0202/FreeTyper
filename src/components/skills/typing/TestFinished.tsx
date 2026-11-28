@@ -111,8 +111,14 @@ function levelProgress(wpm: number) {
 const btnBase =
   'inline-flex items-center justify-center gap-[0.5em] rounded-[0.5em] border border-surface-border px-[1em] py-[0.6em] text-[0.875em] text-text transition-colors hover:border-text-dim';
 
+/** The speed your rank comes from (your best on that board) and whether it is this very run. */
+function rankSource(board: CardBoard | null, runWpm: number) {
+  const mine = board?.rows.find((r) => r.me)?.wpm ?? null;
+  return { mine, fromBest: mine !== null && mine !== runWpm };
+}
+
 /** The rank block: your place on the board, the typists next to you, and a period switch. */
-function RankBlock({ rank, newBest, onPeriodChange, period }: { rank: RunRank; newBest: boolean; period: Period; onPeriodChange: (p: Period) => void }) {
+function RankBlock({ rank, runWpm, onPeriodChange, period }: { rank: RunRank; runWpm: number; period: Period; onPeriodChange: (p: Period) => void }) {
   if (rank.kind === 'none') return null;
   const quiet = (children: ReactNode) => (
     <div className="rounded-[0.75em] border border-surface-border bg-surface px-[0.8em] py-[0.7em] text-[0.8em] text-text-dim">{children}</div>
@@ -168,9 +174,10 @@ function RankBlock({ rank, newBest, onPeriodChange, period }: { rank: RunRank; n
             <span>
               {(() => {
                 const above = board.rows.find((r) => r.rank === board.rank - 1);
-                if (board.rank === 1) return <><b className="text-text-bright">You are #1</b> {PERIOD_WORDS[period]}, out of {board.total}.</>;
-                if (!newBest && above) return <>Ranked by your best. Beat <b className="text-text-bright">{above.wpm} wpm</b> to take #{above.rank}.</>;
-                return above ? <>Beat <b className="text-text-bright">{above.wpm} wpm</b> to take #{above.rank}.</> : <>Out of {board.total} ranked {PERIOD_WORDS[period]}.</>;
+                const src = rankSource(board, runWpm);
+                const from = src.fromBest ? <>Ranked by your best, <b className="text-text-bright">{src.mine} wpm</b>. This run was slower. </> : null;
+                if (board.rank === 1) return <>{from}<b className="text-text-bright">You are #1</b> {PERIOD_WORDS[period]}, out of {board.total}.</>;
+                return above ? <>{from}Beat <b className="text-text-bright">{above.wpm} wpm</b> to take #{above.rank}.</> : <>{from}Out of {board.total} ranked {PERIOD_WORDS[period]}.</>;
               })()}
             </span>
             <Link href="/leaderboard" className="text-accent underline underline-offset-2">Full leaderboard</Link>
@@ -190,22 +197,25 @@ function ShareTray({ run, rank, period }: { run: TypingSession; rank: RunRank; p
   const ranked = rank.kind === 'ranked' ? rank : null;
   const board = ranked?.ranks[period] ?? null;
   const [mode, setMode] = useState<'image' | 'link'>('image');
-  const [showRank, setShowRank] = useState(true);
+  const [showRank, setShowRank] = useState<boolean | null>(null);
   const [done, setDone] = useState<ShareState>('');
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const canLink = !!ranked?.scoreId;
+  // A slower run than your best does not claim a rank in the picture unless you tick the box.
+  const fromBest = rankSource(board, run.wpm).fromBest;
+  const rankOn = showRank ?? !fromBest;
   const extra: ShareExtra = useMemo(
-    () => ({ ...(ranked ? { username: ranked.username } : {}), ...(ranked && showRank && board ? { rankText: `#${board.rank} ${PERIOD_WORDS[period]}` } : {}) }),
-    [ranked, showRank, board, period],
+    () => ({ ...(ranked ? { username: ranked.username } : {}), ...(ranked && rankOn && board ? { rankText: `#${board.rank} ${PERIOD_WORDS[period]}` } : {}) }),
+    [ranked, rankOn, board, period],
   );
   const linkUrl = () => {
-    const q = showRank && board ? `?p=${period}` : '';
+    const q = rankOn && board ? `?p=${period}` : '';
     return `${window.location.origin}/r/${ranked?.scoreId}${q}`;
   };
-  const message = `I typed ${run.wpm} WPM with ${run.accuracy}% accuracy in ${run.duration} s on FreeTyper.${showRank && board ? ` #${board.rank} ${PERIOD_WORDS[period]}.` : ''} Can you beat me?`;
+  const message = `I typed ${run.wpm} WPM with ${run.accuracy}% accuracy in ${run.duration} s on FreeTyper.${rankOn && board ? ` #${board.rank} ${PERIOD_WORDS[period]}.` : ''} Can you beat me?`;
 
   // The picture shown is the real one that would be saved (image) or the real preview card of the link.
-  const linkPreview = mode === 'link' && canLink ? `/r/${ranked?.scoreId}/og${showRank && board ? `?p=${period}` : ''}` : null;
+  const linkPreview = mode === 'link' && canLink ? `/r/${ranked?.scoreId}/og${rankOn && board ? `?p=${period}` : ''}` : null;
   const preview = linkPreview ?? imagePreview;
   useEffect(() => {
     if (linkPreview) return;
@@ -281,8 +291,8 @@ function ShareTray({ run, rank, period }: { run: TypingSession; rank: RunRank; p
       </div>
       {ranked && board && (
         <label className="flex items-center gap-[0.5em] text-[0.82em] text-text-dim">
-          <input type="checkbox" checked={showRank} onChange={(e) => setShowRank(e.target.checked)} className="size-[1.1em] accent-[var(--color-accent)]" />
-          Show my rank ({`#${board.rank} ${PERIOD_WORDS[period]}`})
+          <input type="checkbox" checked={rankOn} onChange={(e) => setShowRank(e.target.checked)} className="size-[1.1em] accent-[var(--color-accent)]" />
+          Show my rank ({`#${board.rank} ${PERIOD_WORDS[period]}`}{fromBest ? ', from your best run' : ''})
         </label>
       )}
       {mode === 'image' ? (
@@ -458,7 +468,7 @@ export default function TestFinished({
 
         {!plain && rank.kind !== 'none' && (
           <div className="mt-[0.8em]">
-            <RankBlock rank={rank} newBest={newBest} period={period} onPeriodChange={setPeriod} />
+            <RankBlock rank={rank} runWpm={wpm} period={period} onPeriodChange={setPeriod} />
           </div>
         )}
 

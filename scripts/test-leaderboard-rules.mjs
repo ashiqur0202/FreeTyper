@@ -1,5 +1,6 @@
 // Run: npm run test:leaderboard-rules
 import assert from 'node:assert/strict';
+import { rankVerdict } from '../src/lib/leaderboard/client.ts';
 import { BOARD_MIN_SECONDS, checkScore, countsForBoard, timingPossible, checkUsername, suggestUsername, periodStart, MAX_WPM } from '../src/lib/leaderboard/rules.ts';
 
 let n = 0;
@@ -49,6 +50,17 @@ t('only runs of at least 60 seconds count for the boards (shorter ones are valid
   assert.equal(countsForBoard({ ...good, seconds: 59 }), false);
   assert.equal(countsForBoard({ ...good, seconds: 30 }), false);
   assert.equal(checkScore({ ...good, seconds: 30 }).ok, true, 'still a valid run');
+});
+t('what the result popup says before anything is sent: guest, too short, too many mistakes, or send it', () => {
+  const run = { runId: 'r', wpm: 70, accuracy: 97, seconds: 60, textMode: 'standard', textLevel: 3 };
+  assert.deepEqual(rankVerdict(run, false), { kind: 'guest' }, 'a guest never sends anything');
+  assert.deepEqual(rankVerdict({ ...run, seconds: 30 }, true), { kind: 'short' });
+  assert.deepEqual(rankVerdict({ ...run, seconds: 59 }, true), { kind: 'short' });
+  assert.deepEqual(rankVerdict({ ...run, accuracy: 94.9 }, true), { kind: 'acc' });
+  assert.deepEqual(rankVerdict({ ...run, seconds: 30, accuracy: 80 }, true), { kind: 'short' }, 'too short is said first');
+  assert.equal(rankVerdict(run, true), null, 'a counting run is sent');
+  assert.equal(rankVerdict({ ...run, accuracy: 95 }, true), null);
+  assert.deepEqual(rankVerdict({ ...run, seconds: 30 }, false), { kind: 'guest' }, 'a guest sees the guest line even for a short run');
 });
 t('timing: a 60 s run cannot follow the previous submission within about 52 s', () => {
   assert.equal(timingPossible(null, 1000, 60), true);

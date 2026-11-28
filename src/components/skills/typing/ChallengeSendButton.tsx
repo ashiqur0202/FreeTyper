@@ -89,7 +89,11 @@ export default function ChallengeSendButton({
       type="button"
       onClick={send}
       className={`inline-flex items-center transition-colors hover:border-accent/40 hover:text-accent ${size} ${
-        emphasis ? 'border-accent/40 bg-accent-bg font-medium text-accent' : 'border-surface-border text-text-dim'
+        emphasis
+          ? large
+            ? 'border-accent/60 bg-accent-bg font-medium text-text-bright' // the popup button: bright text stays readable on a pale accent background in the light theme
+            : 'border-accent/40 bg-accent-bg font-medium text-accent'
+          : 'border-surface-border text-text-dim'
       }`}
     >
       {copied ? <Check className={`${icon} text-accent`} /> : <Link2 className={icon} />}
