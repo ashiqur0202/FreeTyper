@@ -18,6 +18,7 @@ import {
   Settings,
   Menu,
   Hash,
+  Trophy,
   X,
 } from 'lucide-react';
 import { useSidebar } from './SidebarProvider';
@@ -51,6 +52,7 @@ const navGroups = [
     items: [
       { href: '/daily-typing-challenge', label: 'daily', icon: CalendarDays },
       { href: '/typing-challenge', label: 'challenge', icon: Swords },
+      { href: '/leaderboard', label: 'leaderboard', icon: Trophy },
       { href: '/1-minute-typing-test', label: '1 minute', icon: Timer },
       { href: '/3-minute-typing-test', label: '3 minutes', icon: Timer },
       { href: '/5-minute-typing-test', label: '5 minutes', icon: Timer },
@@ -142,7 +144,7 @@ export default function Sidebar({ accountsEnabled = false }: { accountsEnabled?:
                 {group.label}
               </span>
             )}
-            {group.items.map((item) => {
+            {group.items.filter((item) => item.href !== '/leaderboard' || accountsEnabled).map((item) => {
               const isActive = pathname === item.href;
               const Icon = item.icon;
               return (

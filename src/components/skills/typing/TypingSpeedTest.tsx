@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { RotateCcw, Settings2, X, Maximize, Minimize, PenTool, Swords } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
+import { submitScoreIfLoggedIn } from '@/lib/leaderboard/client';
 import { withoutRun } from './runStats';
 import { recordPair } from './pairStats';
 import type { TypingSession, Achievement } from './types';
@@ -248,6 +249,11 @@ export default function TypingSpeedTest({
     // Number row runs stay out of progress: digit speeds would shift best WPM, averages and the streak.
     if (numberRow) setDigitStats(digitSpeeds(digitTimesRef.current));
     else addSession(withoutRun(updated));
+    // Logged in: the finished run goes to the leaderboard too (numbers and labels only; a guest sends nothing).
+    if (!numberRow) {
+      const labels = testLabels();
+      submitScoreIfLoggedIn({ runId: session.id, wpm: session.wpm, accuracy: session.accuracy, seconds: secs, textMode: labels.text_mode, textLevel: labels.text_level });
+    }
     trackEvent('test_complete', {
       ...testLabels(),
       wpm: session.wpm,

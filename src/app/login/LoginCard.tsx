@@ -124,7 +124,10 @@ export default function LoginCard({ enabled }: { enabled: boolean }) {
               Login is not available right now. Everything else on FreeTyper works as usual.
             </p>
           )}
-          <p className="mt-3.5 flex items-start justify-center gap-2 text-left text-[12.5px] text-text-dim">
+          <p className="mt-3.5 text-left text-[12.5px] text-text-dim">
+            Your speed tests appear on the public <Link href="/leaderboard" className="text-accent underline">leaderboard</Link> with your username and your name from Google. If you delete your account later, your username and scores stay there, marked &quot;account deleted&quot;.
+          </p>
+          <p className="mt-2.5 flex items-start justify-center gap-2 text-left text-[12.5px] text-text-dim">
             <Lock className="mt-0.5 h-[15px] w-[15px] shrink-0 text-accent" aria-hidden="true" />
             <span>
               No password, ever. Only your numbers are saved, never what you type.{' '}

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { authClient } from '@/lib/auth-client';
 import { clearAccount, saveAccount } from '@/lib/sync/account-state';
+import UsernameForm from './UsernameForm';
 
 /**
  * The account page: who is logged in, log out, and (small, at the bottom) log out
@@ -83,6 +84,8 @@ export default function AccountPanel({ enabled }: { enabled: boolean }) {
       <p className="mt-1 break-all font-mono text-sm text-text-bright">{user.email}</p>
       <p className="mt-1 text-xs text-text-dim">Your progress is saved to your account. It also stays on this device after you log out.</p>
 
+      <UsernameForm name={user.name} />
+
       <button
         type="button"
         disabled={busy}
@@ -103,7 +106,12 @@ export default function AccountPanel({ enabled }: { enabled: boolean }) {
 
       {deleteOpen && (
         <div className="mt-4 rounded-lg border border-error/60 p-3">
-          <p className="text-sm text-text">This removes your account and the progress saved on our server. Progress on this device stays.</p>
+          <p className="text-sm text-text">This is exactly what happens to your data:</p>
+          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-text">
+            <li><span className="text-error">Deleted for good:</span> your email, your name from Google, your Google login link, your login sessions and your saved progress.</li>
+            <li><span className="text-accent">Kept:</span> your username and your speed test scores. They stay on the leaderboard, marked &quot;account deleted&quot;.</li>
+          </ul>
+          <p className="mt-2 text-xs text-text-dim">Progress on this device stays.</p>
           <label htmlFor="delete-confirm" className="mt-3 block text-xs text-text-dim">Type DELETE to confirm</label>
           <input
             id="delete-confirm"

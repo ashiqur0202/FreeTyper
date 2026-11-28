@@ -33,6 +33,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   };
 
+  const leaderboardPage = {
+    url: `${siteConfig.url}/leaderboard`,
+    changeFrequency: 'hourly' as const,
+    priority: 0.7,
+  };
+
   const blogPages = blogPosts.map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}`,
     lastModified: new Date(post.updated ?? post.date),
@@ -50,5 +56,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteConfig.url}/disclaimer`, changeFrequency: 'yearly' as const, priority: 0.2 },
   ];
 
-  return [...staticPages, ...toolPages, ...durationTestPages, numberRowPage, dailyPage, ...blogPages];
+  return [...staticPages, ...toolPages, ...durationTestPages, numberRowPage, dailyPage, leaderboardPage, ...blogPages];
 }

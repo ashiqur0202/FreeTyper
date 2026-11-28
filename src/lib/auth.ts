@@ -2,6 +2,7 @@ import { betterAuth } from 'better-auth';
 import { drizzleAdapter } from 'better-auth/adapters/drizzle';
 import { nextCookies } from 'better-auth/next-js';
 import { getDb } from './db';
+import { markTypistDeleted, type LbDb } from './leaderboard/store';
 import * as schema from './db/schema';
 
 /**
@@ -42,6 +43,18 @@ export function createAuth(db: AuthDb) {
       defaultCookieAttributes: { httpOnly: true, sameSite: 'lax' },
     },
     databaseHooks: {
+      user: {
+        delete: {
+          // The leaderboard keeps the username and scores (marked deleted); everything else of theirs goes with the user row.
+          before: async (u) => {
+            try {
+              await markTypistDeleted(db as unknown as LbDb, u.id);
+            } catch {
+              // Not fatal: with no user link left the entry reads as deleted anyway.
+            }
+          },
+        },
+      },
       account: {
         create: { before: async (account) => ({ data: { ...account, ...NO_TOKENS } }) },
         update: { before: async (account) => ({ data: { ...account, ...NO_TOKENS } }) },

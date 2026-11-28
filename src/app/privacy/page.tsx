@@ -4,7 +4,7 @@ import { siteConfig } from '@/config/site';
 export const metadata: Metadata = {
   title: 'Privacy Policy',
   description:
-    'How FreeTyper handles data: progress in your browser, the optional account that saves it to our server, Google Analytics, and (when enabled) Google ads.',
+    'How FreeTyper handles data: progress in your browser, the optional account that saves it to our server and ranks your speed tests on a public leaderboard, Google Analytics, and (when enabled) Google ads.',
   alternates: { canonical: `${siteConfig.url}/privacy` },
 };
 
@@ -20,9 +20,10 @@ export default function PrivacyPage() {
           <p className="mt-2">
             {siteConfig.name} ({siteConfig.url}) is a typing site operated by Ashiqur Rahman. You do
             not need an account. By default your WPM history, settings, and achievements stay in this
-            browser (localStorage). You can choose to log in with Google, and then a copy of your
-            progress numbers is also saved on our server so it follows you to other devices. We
-            never sell profiles or data. We do use Google Analytics to see which pages are used, and
+            browser (localStorage). You can choose to log in with Google. Then a copy of your
+            progress numbers is also saved on our server so it follows you to other devices, and your
+            speed tests are ranked on a public leaderboard with your username and your name from
+            Google. We never sell profiles or data. We do use Google Analytics to see which pages are used, and
             we may show Google ads after AdSense approval. Those Google services use cookies as
             described below.
           </p>
@@ -53,6 +54,11 @@ export default function PrivacyPage() {
             <li>Your email address, name and profile picture link, as Google gives them to us.</li>
             <li>The identifier Google uses for your account, so we can recognise you next time.</li>
             <li>
+              A leaderboard username (first made from your name in plain letters; you can change it on the
+              Account page), and each speed test that counts for the leaderboard: its speed, accuracy,
+              length, text type and level, and the time we received it.
+            </li>
+            <li>
               A record of each login session: a random session token, when it was made and when it
               expires, and the IP address and browser description of the device. This keeps you
               logged in and lets us sign you out.
@@ -71,21 +77,33 @@ export default function PrivacyPage() {
             the progress of Smart lessons and adaptive practice. It never includes what you typed:
             no text and no keystrokes. At most the newest 1,000 runs are kept.
           </p>
+          <p className="mt-3 font-medium text-text-bright">The public leaderboard</p>
+          <p className="mt-1">
+            Everyone who logs in is on the leaderboard automatically; there is no separate sign-up and no
+            switch to turn it off (you can choose not to log in, or delete your account). Anyone, logged in
+            or not, can see: your username, the name from your Google account (only while your account is
+            active), your best counted score on each board, the length and text type of those tests, and
+            when they were taken. We do not show your email address, your picture or your saved progress.
+            Only tests with at least 95% accuracy count, and each person appears once per board.
+          </p>
           <p className="mt-3 font-medium text-text-bright">Why, and who sees it</p>
           <p className="mt-1">
-            Only to log you in and to keep your progress in step across your devices. We do not use
-            it for advertising or profiles, we do not sell it, and we do not send your email address
+            To log you in, to keep your progress in step across your devices, and to run the public
+            leaderboard. We do not use it for advertising or profiles, we do not sell it, and we do not send your email address
             or account to Google Analytics. It is kept in a database on our own server, which is
             rented from Hetzner and located in Nuremberg, Germany. Google handles the sign-in
             itself under its own privacy policy.
           </p>
           <p className="mt-3 font-medium text-text-bright">Deleting it</p>
           <p className="mt-1">
-            Open the Account page and choose &quot;Delete account&quot;. That removes your account,
-            your login sessions and the progress saved on our server straight away. Progress in
-            your browser stays. A login session ends after 30 days at the latest, or when you log
-            out (&quot;Log out everywhere&quot; ends all of them). To ask for a copy of what we hold
-            about you, or for help deleting it, email{' '}
+            Open the Account page and choose &quot;Delete account&quot;. That deletes your email
+            address, your name from Google, your Google login link, your login sessions and your saved
+            progress straight away. <strong className="text-text">Your username and your speed test scores are kept</strong>:
+            they stay on the leaderboard and in its history, marked &quot;account deleted&quot;, with
+            no name, email or other personal detail attached. Progress in your browser stays. A login
+            session ends after 30 days at the latest, or when you log out (&quot;Log out everywhere&quot;
+            ends all of them). To ask for a copy of what we hold about you, to change a username, or if
+            you want a score or username removed from the leaderboard, email{' '}
             <a href="mailto:contact@freetyper.com" className="text-accent hover:underline">
               contact@freetyper.com
             </a>

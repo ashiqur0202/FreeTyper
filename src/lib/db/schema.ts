@@ -1,4 +1,5 @@
-import { boolean, index, integer, jsonb, pgTable, real, text, timestamp } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
+import { boolean, index, integer, jsonb, pgTable, real, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 
 /**
  * Tables for the optional account. The first four (user, session, account,
@@ -89,4 +90,68 @@ export const userProgress = pgTable('user_progress', {
   schemaVersion: integer('schema_version').notNull().default(1),
   version: integer('version').notNull().default(0),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+
+/**
+ * The public face of an account on the leaderboard: a username, and a status.
+ * It is NOT removed when the account is deleted: user_id goes to null (the
+ * database does that), status becomes 'deleted', and the leaderboard shows the
+ * username and scores marked "account deleted". The person's email, Google
+ * name, Google link, sessions and saved progress are deleted with the user row.
+ */
+export const typist = pgTable(
+  'typist',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .unique()
+      .references(() => user.id, { onDelete: 'set null' }),
+    username: text('username').notNull(),
+    status: text('status').notNull().default('active'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    deletedAt: timestamp('deleted_at', { withTimezone: true }),
+  },
+  // Usernames are unique whatever the capital letters (the app stores them in lower case).
+  (t) => [uniqueIndex('typist_username_lower_idx').on(sql`lower(${t.username})`)],
+);
+
+/**
+ * One row per counted speed test (at least 95 % accuracy, plausible speed). Numbers and labels
+ * only: never typed text. The time is the server's own clock. Scores stay when the account is
+ * deleted (they belong to the typist row, which stays).
+ */
+export const score = pgTable(
+  'score',
+  {
+    id: text('id').primaryKey(),
+    typistId: text('typist_id')
+      .notNull()
+      .references(() => typist.id),
+    /** The run's id in the browser, so the same run sent twice counts once. */
+    runId: text('run_id').notNull(),
+    wpm: real('wpm').notNull(),
+    accuracy: real('accuracy').notNull(),
+    seconds: integer('seconds').notNull(),
+    textMode: text('text_mode').notNull(),
+    textLevel: integer('text_level').notNull().default(0),
+    /** Set by hand (DBeaver) to take an entry off every board without deleting it. */
+    hidden: boolean('hidden').notNull().default(false),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex('score_run_idx').on(t.typistId, t.runId),
+    index('score_created_idx').on(t.createdAt),
+    index('score_wpm_idx').on(t.wpm),
+  ],
+);
+
+/** "Report this entry" from a logged-in typist. Looked at by hand. */
+export const scoreReport = pgTable('score_report', {
+  id: text('id').primaryKey(),
+  scoreId: text('score_id')
+    .notNull()
+    .references(() => score.id, { onDelete: 'cascade' }),
+  reporterTypistId: text('reporter_typist_id').references(() => typist.id, { onDelete: 'set null' }),
+  reason: text('reason').notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });

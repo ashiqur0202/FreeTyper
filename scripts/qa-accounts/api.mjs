@@ -118,6 +118,117 @@ check('the account itself stays after a reset', acct.n === 1);
 r = await call('PUT', '/api/progress', { user: 'sam', body: { data: data([session('n1', 7000, 33)]) } });
 check('saving after a reset starts clean', r.status === 200 && ids(r).join() === 'n1');
 
+console.log('--- leaderboard');
+const run = (id, wpm, over = {}) => ({ runId: id, wpm, accuracy: 97, seconds: 60, textMode: 'standard', textLevel: 3, ...over });
+const entries = (x) => x.json?.entries ?? [];
+r = await call('GET', '/api/leaderboard');
+check('the public board needs no login, and may be cached for a short time', r.status === 200 && Array.isArray(r.json?.entries) && /s-maxage=30/.test(r.headers.get('cache-control') ?? ''), r.headers.get('cache-control') ?? '');
+check('an empty board is empty (not an error)', r.json.entries.length === 0);
+r = await call('GET', "/api/leaderboard?period=%27%3Bdrop%20table%20score%3B--&top=1000&mode=x%27&length=-5");
+check('hostile query parameters fall back to safe defaults and break nothing', r.status === 200 && r.json.period === 'daily' && r.json.top === 10 && r.json.mode === null && r.json.length === null);
+r = await call('POST', '/api/scores', { body: run('x1', 70) });
+check('submitting a score without a login: 401', r.status === 401);
+r = await call('POST', '/api/scores', { user: 'sam', body: run('x1', 70), origin: 'https://evil.example' });
+check('submitting from another website: 403', r.status === 403);
+r = await call('POST', '/api/scores', { user: 'sam', raw: '{nope' });
+check('a garbled body: 400', r.status === 400);
+r = await call('POST', '/api/scores', { user: 'sam', body: run('big', 70, { pad: 'x'.repeat(5000) }) });
+check('an oversized body: 413', r.status === 413);
+r = await call('POST', '/api/scores', { user: 'sam', body: run('imp', 400) });
+check('an impossible speed (400 WPM): 422 implausible, nothing stored', r.status === 422 && r.json?.reason === 'implausible');
+r = await call('POST', '/api/scores', { user: 'sam', body: run('nr', 70, { textMode: 'number_row_digits' }) });
+check('the number row test does not count: 422', r.status === 422);
+r = await call('POST', '/api/scores', { user: 'sam', body: 'a string' });
+check('a body that is not an object: refused, no crash', r.status === 422 || r.status === 400);
+r = await call('POST', '/api/scores', { user: 'sam', body: run('low', 80, { accuracy: 94 }) });
+check('below 95 percent accuracy: accepted but ignored (it still counts for progress, not the board)', r.status === 200 && r.json?.status === 'ignored');
+r = await call('GET', '/api/leaderboard');
+check('so far nothing is on the board', r.json.entries.length === 0);
+
+const first = { sam: run('s1', 72), alex: run('a1', 85, { seconds: 180, textMode: 'sentences', textLevel: 4 }), carol: run('c1', 64, { seconds: 15, textMode: 'words', textLevel: 2 }), dave: run('d1', 90, { textMode: 'quotes', textLevel: 3 }) };
+for (const who of Object.keys(first)) {
+  r = await call('POST', '/api/scores', { user: who, body: first[who] });
+  check('a real score from ' + who + ' counts', r.status === 200 && r.json?.status === 'counted', r.text.slice(0, 80));
+}
+r = await call('POST', '/api/scores', { user: 'sam', body: first.sam });
+check('the same run sent again is a duplicate, not a second entry', r.status === 200 && r.json?.status === 'duplicate');
+r = await call('POST', '/api/scores', { user: 'sam', body: run('s2', 73) });
+check('a second 60 s test right away is impossible: 422 too_fast', r.status === 422 && r.json?.reason === 'too_fast');
+// Parallel bursts are covered by the in-process store test. The QA rig serves every connection from ONE PGlite session, so truly parallel transactions interleave there (not like real Postgres); send them back to back instead.
+const burst2 = [];
+for (let i = 0; i < 6; i++) burst2.push(await call('POST', '/api/scores', { user: 'alex', body: run('burst' + i, 80, { seconds: 15 }) }));
+check('rapid repeated submissions: no server errors, none counted this soon after the last test', burst2.every((x) => x.status !== 500) && burst2.every((x) => x.json?.status !== 'counted'), burst2.map((x) => x.status).join());
+
+r = await call('GET', '/api/leaderboard');
+let rows = entries(r);
+check('the board is ranked fastest first: dave 90, alex 85, sam 72, carol 64', rows.map((e) => e.wpm).join() === '90,85,72,64' && rows.map((e) => e.rank).join() === '1,2,3,4', rows.map((e) => e.wpm).join());
+check('each entry shows the username and the Google name of an active account', rows[0].username === 'dave' && rows[0].name === 'Dave' && rows[0].deleted === false, JSON.stringify(rows[0]));
+check('an entry carries exactly the public fields (no email, no user id, no tokens)', Object.keys(rows[0]).sort().join() === 'accuracy,at,deleted,name,rank,scoreId,seconds,textLevel,textMode,username,wpm' && !r.text.includes('@example.com') && !r.text.includes(U.sam.id) && !r.text.includes(U.dave.id), Object.keys(rows[0]).join());
+for (const [q, want, label] of [['length=180', 'alex', 'a test length (3 min)'], ['mode=quotes', 'dave', 'a text type (quotes)'], ['length=15', 'carol', 'a test length (15 s)'], ['length=60&mode=standard', 'sam', 'length and type together']]) {
+  r = await call('GET', '/api/leaderboard?' + q);
+  check('filter by ' + label, entries(r).length === 1 && entries(r)[0].username === want, JSON.stringify(entries(r).map((e) => e.username)));
+}
+r = await call('GET', '/api/leaderboard?mode=daily');
+check('a filter nobody fits gives an empty board', entries(r).length === 0);
+for (const period of ['daily', 'weekly', 'monthly', 'lifetime']) {
+  r = await call('GET', '/api/leaderboard?period=' + period + '&top=50');
+  check(period + ' board (top 50) shows all four typists', r.status === 200 && entries(r).length === 4);
+}
+r = await call('GET', '/api/leaderboard?top=10');
+check('top 10 never returns more than 10', entries(r).length <= 10);
+
+console.log('--- leaderboard username');
+r = await call('GET', '/api/typist');
+check('username: needs a login (401)', r.status === 401);
+r = await call('GET', '/api/typist', { user: 'sam' });
+check('username starts as the Google name in plain letters', r.status === 200 && r.json?.username === 'sam' && r.json?.name === 'Sam', r.text);
+r = await call('PUT', '/api/typist', { user: 'sam', body: { username: 'Sam_Speed' }, origin: null });
+check('changing it from outside our site: 403', r.status === 403);
+r = await call('PUT', '/api/typist', { user: 'sam', body: { username: 'Sam_Speed' } });
+check('changing it works and is stored in lower case', r.status === 200 && r.json?.username === 'sam_speed');
+r = await call('PUT', '/api/typist', { user: 'alex', body: { username: 'SAM_SPEED' } });
+check('taking someone else\'s username, whatever the capital letters: 409', r.status === 409);
+for (const bad of ['a', 'admin', 'bad name', '<script>', 'x'.repeat(21), 123]) {
+  r = await call('PUT', '/api/typist', { user: 'alex', body: { username: bad } });
+  check('invalid or reserved username refused (400): ' + String(bad).slice(0, 12), r.status === 400, String(r.status));
+}
+r = await call('GET', '/api/leaderboard');
+check('the board shows the new username straight away', entries(r).some((e) => e.username === 'sam_speed' && e.wpm === 72));
+
+console.log('--- my position and reports');
+r = await call('GET', '/api/leaderboard/me');
+check('my position needs a login (401)', r.status === 401);
+r = await call('GET', '/api/leaderboard/me?period=lifetime', { user: 'sam' });
+check('my position: #3 with 72 WPM, never cached', r.status === 200 && r.json?.position?.rank === 3 && r.json?.position?.wpm === 72 && /no-store/.test(r.headers.get('cache-control') ?? ''), r.text.slice(0, 120));
+r = await call('GET', '/api/leaderboard/me?length=180', { user: 'carol' });
+check('no counted score on that board: position null', r.status === 200 && r.json?.position === null);
+const target = entries(await call('GET', '/api/leaderboard')).find((e) => e.username === 'alex');
+r = await call('POST', '/api/scores/report', { body: { scoreId: target.scoreId, reason: 'x' } });
+check('reporting needs a login (401)', r.status === 401);
+r = await call('POST', '/api/scores/report', { user: 'carol', body: { scoreId: target.scoreId, reason: 'looks impossible' }, origin: 'https://evil.example' });
+check('reporting from another website: 403', r.status === 403);
+r = await call('POST', '/api/scores/report', { user: 'carol', body: { scoreId: 'no-such-score', reason: 'x' } });
+check('reporting an unknown score: 404', r.status === 404);
+r = await call('POST', '/api/scores/report', { user: 'carol', body: { scoreId: target.scoreId, reason: '   ' } });
+check('reporting with no reason: 400', r.status === 400);
+r = await call('POST', '/api/scores/report', { user: 'carol', body: { scoreId: target.scoreId, reason: 'Impossible score' } });
+check('a real report is stored', r.status === 200 && r.json?.ok === true);
+let lastReport = r;
+for (let i = 0; i < 9; i++) lastReport = await call('POST', '/api/scores/report', { user: 'carol', body: { scoreId: target.scoreId, reason: 'again ' + i } });
+check('ten reports a day are allowed', lastReport.status === 200);
+r = await call('POST', '/api/scores/report', { user: 'carol', body: { scoreId: target.scoreId, reason: 'one too many' } });
+check('the eleventh report in a day: 429', r.status === 429);
+const [rep] = await q('select count(*)::int n from score_report');
+check('reports are in the database', rep.n === 10);
+
+console.log('--- hiding a score (moderation by hand)');
+await q('update score set hidden = true where id = $1', [target.scoreId]);
+rows = entries(await call('GET', '/api/leaderboard'));
+check('a hidden score is on no board', !rows.some((e) => e.username === 'alex'));
+await q('update score set hidden = false where id = $1', [target.scoreId]);
+rows = entries(await call('GET', '/api/leaderboard'));
+check('and it comes back when unhidden', rows.some((e) => e.username === 'alex'));
+
 console.log('--- log out and delete account');
 r = await call('POST', '/api/auth/sign-out', { user: 'carol', body: {} });
 check('sign-out: ok', r.status === 200, r.text.slice(0, 80));
@@ -143,6 +254,21 @@ r = await call('GET', '/api/progress', { user: 'dave' });
 check('deleted account: old cookie is refused', r.status === 401);
 r = await call('GET', '/api/progress', { user: 'alex' });
 check("other accounts keep their data after Dave's deletion", ids(r).includes('a1') && ids(r).includes('a2'));
+console.log('--- the leaderboard after an account is deleted');
+{
+  const [tp] = await q('select status, user_id, deleted_at from typist where username = $1', ['dave']);
+  check('Dave\'s typist row is marked deleted, with no user link and a deletion time', tp && tp.status === 'deleted' && tp.user_id === null && tp.deleted_at !== null, JSON.stringify(tp));
+  const [sc] = await q('select count(*)::int n from score s join typist t on t.id = s.typist_id where t.username = $1', ['dave']);
+  check('Dave\'s scores are kept', sc.n === 1);
+  const board2 = await call('GET', '/api/leaderboard');
+  const dave = entries(board2).find((e) => e.username === 'dave');
+  check('the board still shows Dave, ranked #1, marked deleted', !!dave && dave.deleted === true && dave.rank === 1 && dave.wpm === 90, JSON.stringify(dave));
+  check('with no name, no email and nothing personal', dave && dave.name === null && !board2.text.includes('dave@example.com') && !board2.text.includes(U.dave.id) && !/"name":"Dave"/.test(board2.text));
+  const [left] = await q('select (select count(*)::int from "user" where id = $1) u, (select count(*)::int from account where user_id = $1) a, (select count(*)::int from user_progress where user_id = $1) p', [U.dave.id]);
+  check('and the personal rows (user, Google link, saved progress) are all gone', left.u === 0 && left.a === 0 && left.p === 0);
+  r = await call('PUT', '/api/typist', { user: 'alex', body: { username: 'dave' } });
+  check('a deleted person\'s username stays reserved: 409', r.status === 409);
+}
 const [tokens] = await q('select count(*)::int n from account where access_token is not null or refresh_token is not null or id_token is not null');
 check('no Google sign-in tokens are stored anywhere', tokens.n === 0);
 

@@ -1,5 +1,6 @@
 import { authConfigured, getAuth } from '@/lib/auth';
 import { dbReady, getDb } from '@/lib/db';
+import { databaseAnswers } from '@/lib/leaderboard/http';
 import { parseSyncData } from '@/lib/sync/merge';
 import { deleteProgress, loadProgress, saveMerged } from '@/lib/sync/store';
 
@@ -18,7 +19,8 @@ async function userIdOf(request: Request): Promise<string | Response> {
   await dbReady();
   try {
     const session = await getAuth().api.getSession({ headers: request.headers });
-    return session?.user.id ?? json({ error: 'signed_out' }, 401);
+    if (session) return session.user.id;
+    return (await databaseAnswers(request)) ? json({ error: 'signed_out' }, 401) : json({ error: 'server_error' }, 500);
   } catch {
     // The database is not answering. Nothing from the request is logged.
     return json({ error: 'server_error' }, 500);

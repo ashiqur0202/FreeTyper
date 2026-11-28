@@ -35,11 +35,11 @@ ok('migrations apply to an empty database');
   await migrate(fdb, { migrationsFolder: 'drizzle' });
   await migrate(fdb, { migrationsFolder: 'drizzle' });
   const tables = (await fresh.query("select table_name from information_schema.tables where table_schema = 'public' order by table_name")).rows.map((r) => r.table_name);
-  assert.deepEqual(tables, ['account', 'session', 'user', 'user_progress', 'verification']);
+  assert.deepEqual(tables, ['account', 'score', 'score_report', 'session', 'typist', 'user', 'user_progress', 'verification']);
   const applied = (await fresh.query('select count(*)::int as n from drizzle.__drizzle_migrations')).rows[0].n;
   assert.equal(applied, readdirSync('drizzle').filter((x) => x.endsWith('.sql')).length, 'each migration is recorded once, however many times it runs');
   await fresh.close();
-  ok('the deploy migrator creates the five tables and re-running it changes nothing');
+  ok('the deploy migrator creates the eight tables and re-running it changes nothing');
 }
 
 const db = drizzle(client, { schema });
@@ -78,6 +78,20 @@ assert.equal(again.refreshToken, null);
 await db.delete(schema.account).where(eq(schema.account.id, tokened.id));
 ok('Google sign-in tokens are dropped on create and on update');
 
+// Deleting an account marks the leaderboard identity deleted (through the hook) and keeps its scores.
+{
+  const v = await a.createUser({ email: 'lee@example.com', name: 'Lee Leaver', emailVerified: true });
+  const [tp] = await db.insert(schema.typist).values({ id: 'ty-lee', userId: v.id, username: 'leeleaver' }).returning();
+  await db.insert(schema.score).values({ id: 'sc-lee', typistId: tp.id, runId: 'r-lee', wpm: 77, accuracy: 97, seconds: 60, textMode: 'standard', textLevel: 3 });
+  await a.deleteUser(v.id);
+  const [after] = await db.select().from(schema.typist).where(eq(schema.typist.id, 'ty-lee'));
+  assert.equal(after.status, 'deleted');
+  assert.equal(after.userId, null);
+  assert.ok(after.deletedAt instanceof Date);
+  assert.equal((await db.select().from(schema.score).where(eq(schema.score.typistId, 'ty-lee'))).length, 1);
+  ok('deleting an account marks the typist deleted and keeps the username and scores');
+}
+
 // A second user with the same email is refused by the database itself.
 await assert.rejects(() => a.createUser({ email: 'sam@example.com', name: 'Other', emailVerified: true }));
 ok('a second account with the same email is refused');
@@ -93,10 +107,11 @@ ok('user_progress keeps the JSON and allows one row per user');
 
 // Deleting the user removes everything that belongs to it.
 await a.deleteUser(u.id);
-for (const t of ['session', 'account', 'userProgress', 'user']) {
+for (const t of ['session', 'account', 'userProgress']) {
   const rows = await db.select().from(schema[t]);
   assert.equal(rows.length, 0, t + ' should be empty after the user is deleted');
 }
+assert.equal((await db.select().from(schema.user).where(eq(schema.user.id, u.id))).length, 0);
 ok('deleting a user removes its sessions, links and progress');
 
 console.log(`\n${passed} account database checks passed`);
