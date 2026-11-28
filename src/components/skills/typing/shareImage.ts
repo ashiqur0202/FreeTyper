@@ -92,7 +92,15 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
  * Draw a 1200x630 picture of one finished run. Only numbers are used: the
  * typed text never goes into the image. Nothing is uploaded.
  */
-export async function renderResultImage(run: TypingSession): Promise<Blob> {
+/** Optional extras for the picture of a logged-in, ranked run. */
+export interface ShareExtra {
+  /** For example "#2 today", drawn as a pill next to the level. */
+  rankText?: string;
+  /** The leaderboard username, drawn in the footer. */
+  username?: string;
+}
+
+export async function renderResultImage(run: TypingSession, extra: ShareExtra = {}): Promise<Blob> {
   const p = readPalette();
   try {
     await Promise.all([
@@ -178,6 +186,26 @@ export async function renderResultImage(run: TypingSession): Promise<Blob> {
     ctx.textAlign = 'left';
   }
 
+  // Rank pill (logged in and ranked): to the left of the level pill
+  if (extra.rankText) {
+    ctx.font = `600 22px ${p.sans}`;
+    const rw = ctx.measureText(extra.rankText).width + 40;
+    let levelW = 0;
+    if (detailed && !isNumberRowDetail(run.modeDetail)) levelW = ctx.measureText(rankLabel(run.wpm).toUpperCase()).width + 40 + 14;
+    const rx = SHARE_W - 72 - levelW - rw;
+    ctx.fillStyle = p.panel;
+    roundRect(ctx, rx, 150, rw, 44, 22);
+    ctx.fill();
+    ctx.strokeStyle = p.accent;
+    ctx.lineWidth = 2;
+    roundRect(ctx, rx, 150, rw, 44, 22);
+    ctx.stroke();
+    ctx.fillStyle = p.bright;
+    ctx.textAlign = 'center';
+    ctx.fillText(extra.rankText, rx + rw / 2, 181);
+    ctx.textAlign = 'left';
+  }
+
   // Speed graph
   const gx = left;
   const gy = 456;
@@ -227,7 +255,7 @@ export async function renderResultImage(run: TypingSession): Promise<Blob> {
   });
   ctx.font = `500 24px ${p.sans}`;
   ctx.fillStyle = p.dim;
-  ctx.fillText(date, left, 590);
+  ctx.fillText(extra.username ? `${extra.username} · ${date}` : date, left, 590);
   ctx.textAlign = 'right';
   ctx.fillStyle = p.accent;
   ctx.font = `600 28px ${p.sans}`;
@@ -244,10 +272,10 @@ export async function renderResultImage(run: TypingSession): Promise<Blob> {
  * Phones: system share sheet with the picture attached. Desktop: copy the
  * picture. If that is blocked: download it and copy the old text line.
  */
-export async function shareResult(run: TypingSession): Promise<ShareOutcome> {
+export async function shareResult(run: TypingSession, extra: ShareExtra = {}, mode: 'auto' | 'save' | 'copy' = 'auto'): Promise<ShareOutcome> {
   let blob: Blob;
   try {
-    blob = await renderResultImage(run);
+    blob = await renderResultImage(run, extra);
   } catch {
     return (await copyText(run)) ? 'text-copied' : 'failed';
   }
@@ -255,7 +283,7 @@ export async function shareResult(run: TypingSession): Promise<ShareOutcome> {
   const file = new File([blob], `freetyper-${run.wpm}wpm.png`, { type: 'image/png' });
   const coarse = typeof window.matchMedia === 'function' && window.matchMedia('(pointer: coarse)').matches;
 
-  if (coarse && navigator.canShare?.({ files: [file] })) {
+  if (mode === 'auto' && coarse && navigator.canShare?.({ files: [file] })) {
     try {
       await navigator.share({ files: [file], text: shareText(run), url: 'https://freetyper.com' });
       return 'shared';
@@ -265,7 +293,7 @@ export async function shareResult(run: TypingSession): Promise<ShareOutcome> {
   }
 
   try {
-    if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
+    if (mode !== 'save' && typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
       await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
       return 'image-copied';
     }
@@ -282,7 +310,7 @@ export async function shareResult(run: TypingSession): Promise<ShareOutcome> {
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 2000);
-    void copyText(run);
+    if (mode === 'auto') void copyText(run);
     return 'downloaded';
   } catch {
     return (await copyText(run)) ? 'text-copied' : 'failed';

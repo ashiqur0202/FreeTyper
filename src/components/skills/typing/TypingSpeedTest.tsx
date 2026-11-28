@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { RotateCcw, Settings2, X, Maximize, Minimize, PenTool, Swords } from 'lucide-react';
 import { useTypingEngine } from './useTypingEngine';
 import { useTypingProgress } from './useTypingProgress';
-import { submitScoreIfLoggedIn } from '@/lib/leaderboard/client';
+import { isLoggedIn, rankVerdict, submitRun, type RunRank } from '@/lib/leaderboard/client';
 import { withoutRun } from './runStats';
 import { recordPair } from './pairStats';
 import type { TypingSession, Achievement } from './types';
@@ -183,8 +183,11 @@ export default function TypingSpeedTest({
   const [toasts, setToasts] = useState<Achievement[]>([]);
   // The box over the text when a test ends; closing it leaves a one-line "Test again" instead.
   const [popupClosed, setPopupClosed] = useState(false);
+  // What the leaderboard says about the run that just finished (shown in the result popup).
+  const [runRank, setRunRank] = useState<RunRank>({ kind: 'none' });
   // Which run row is open in the list ("See details" opens the newest).
   const [openRunId, setOpenRunId] = useState<string | null>(null);
+  const completedRunRef = useRef<string | null>(null);
   const completedAtRef = useRef(0);
   const [customDuration, setCustomDuration] = useState<number | null>(null);
   const [showCustomInput, setShowCustomInput] = useState(false);
@@ -249,10 +252,24 @@ export default function TypingSpeedTest({
     // Number row runs stay out of progress: digit speeds would shift best WPM, averages and the streak.
     if (numberRow) setDigitStats(digitSpeeds(digitTimesRef.current));
     else addSession(withoutRun(updated));
-    // Logged in: the finished run goes to the leaderboard too (numbers and labels only; a guest sends nothing).
-    if (!numberRow) {
+    // Logged in: the finished run goes to the leaderboard too (numbers and labels only; a guest sends nothing),
+    // and the result popup shows where it ranks.
+    if (numberRow) {
+      setRunRank({ kind: 'none' });
+    } else {
       const labels = testLabels();
-      submitScoreIfLoggedIn({ runId: session.id, wpm: session.wpm, accuracy: session.accuracy, seconds: secs, textMode: labels.text_mode, textLevel: labels.text_level });
+      const mine = session.id;
+      const finished = { runId: mine, wpm: session.wpm, accuracy: session.accuracy, seconds: secs, textMode: labels.text_mode, textLevel: labels.text_level };
+      completedRunRef.current = mine;
+      const early = rankVerdict(finished, isLoggedIn());
+      if (early) {
+        setRunRank(early);
+      } else {
+        setRunRank({ kind: 'loading' });
+        void submitRun(finished).then((r) => {
+          if (completedRunRef.current === mine) setRunRank(r);
+        });
+      }
     }
     trackEvent('test_complete', {
       ...testLabels(),
@@ -624,14 +641,6 @@ export default function TypingSpeedTest({
   const finishedRun = isComplete ? log[0] : undefined;
   const showFinishedBox = !!finishedRun && !popupClosed;
   const finishedShare = finishedRun?.share;
-  const openNewestRun = () => {
-    if (!finishedRun) return;
-    setOpenRunId(finishedRun.id);
-    setPopupClosed(true);
-    requestAnimationFrame(() => {
-      document.querySelector('[data-performances] > li')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  };
   const isLowTime = isRunning && timeLeft < 10 && timeLeft < activeDuration * 0.1;
 
   if (!mounted || !text) {
@@ -835,7 +844,7 @@ export default function TypingSpeedTest({
           </section>
 
           {/* The finished box sits over the text area and the hint row below it, so nothing moves on a computer (a phone grows a little: the box is taller there). */}
-          <div className={`relative ${showFinishedBox ? 'finished-room' : ''}`}>
+          <div className="relative">
             <div
               ref={typingAreaRef}
               className={`relative my-5 cursor-text overflow-hidden transition-[opacity,filter] duration-200 ${
@@ -904,7 +913,8 @@ export default function TypingSpeedTest({
                 newBest={newBest}
                 plain={numberRow}
                 onAgain={() => startNewTest()}
-                onDetails={openNewestRun}
+                run={finishedRun}
+                rank={runRank}
                 onClose={() => setPopupClosed(true)}
                 challenge={
                   finishedShare ? (

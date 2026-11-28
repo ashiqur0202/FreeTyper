@@ -68,17 +68,67 @@ await t('changing a username: valid ones work, bad and reserved ones are refused
 await t('submitting a score: counted, then the same run again is a duplicate, then a different run counts', async () => {
   const u = await user('s1', 'Score One');
   const first = input({ runId: 'same-run' });
-  assert.deepEqual(await S.submitScore(db, u, first, at(0, 1)), { status: 'counted' });
-  assert.deepEqual(await S.submitScore(db, u, first, at(0, 0.5)), { status: 'duplicate' });
-  assert.deepEqual(await S.submitScore(db, u, input({ wpm: 70 }), at(0, 0.2)), { status: 'counted' });
+  const one = await S.submitScore(db, u, first, at(0, 1));
+  assert.equal(one.status, 'counted');
+  assert.ok(typeof one.scoreId === 'string' && one.scoreId.length > 10, 'a counted run returns its score id (the result link uses it)');
+  const again = await S.submitScore(db, u, first, at(0, 0.5));
+  assert.deepEqual(again, { status: 'duplicate', scoreId: one.scoreId }, 'the same run again returns the same id');
+  assert.equal((await S.submitScore(db, u, input({ wpm: 70 }), at(0, 0.2))).status, 'counted');
   assert.equal((await db.select().from(schema.score)).filter((r) => r.runId === 'same-run').length, 1);
 });
 await t('the same run sent again straight away is a duplicate (not "too fast")', async () => {
   const u = await user('s5', 'Retry Typist');
   const run = input({ runId: 'retry-me' });
-  assert.deepEqual(await S.submitScore(db, u, run, at(0, 4)), { status: 'counted' });
-  assert.deepEqual(await S.submitScore(db, u, run, new Date(at(0, 4).getTime() + 500)), { status: 'duplicate' });
-  assert.deepEqual(await S.submitScore(db, u, { ...run, wpm: 150 }, new Date(at(0, 4).getTime() + 900)), { status: 'duplicate' }, 'a retry with a different speed cannot replace the first');
+  assert.equal((await S.submitScore(db, u, run, at(0, 4))).status, 'counted');
+  assert.equal((await S.submitScore(db, u, run, new Date(at(0, 4).getTime() + 500))).status, 'duplicate');
+  assert.equal((await S.submitScore(db, u, { ...run, wpm: 150 }, new Date(at(0, 4).getTime() + 900))).status, 'duplicate', 'a retry with a different speed cannot replace the first');
+});
+await t('result popup ranks: place, total and the typists just above and below, for today, this week and all time', async () => {
+  const mk = async (id, name, wpm, when) => { const u = await user(id, name); const m = await S.ensureTypist(db, u); await put(m.id, { wpm, seconds: 100, createdAt: when }); return u; };
+  await mk('cr1', 'Card One', 28, at(0, 3));
+  await mk('cr2', 'Card Two', 27, at(0, 2));
+  const me = await mk('cr3', 'Card Three', 26, at(0, 1));
+  await mk('cr4', 'Card Four', 25, at(0, 1));
+  const old = await user('cr5', 'Card Five'); await put((await S.ensureTypist(db, old)).id, { wpm: 26.5, seconds: 100, createdAt: new Date(NOW.getTime() - 3 * 86400000) });
+  await S.markTypistDeleted(db, 'cr4', NOW);
+  await db.delete(schema.user).where(eq(schema.user.id, 'cr4')); // a deleted person right below me
+  const c = await S.cardRanks(db, 'cr3', NOW);
+  assert.ok(c.today.rows.every((r) => typeof r.me === 'boolean'), 'the me flag is always true or false, also next to a deleted typist');
+  assert.ok(c.today && c.week && c.all, 'ranked on all three boards');
+  assert.ok(c.today.total >= 4, 'total counts everyone ranked in the window');
+  const names = (b) => b.rows.map((r) => r.username);
+  assert.equal(c.today.rows.filter((r) => r.me).length, 1, 'exactly one row is you');
+  assert.ok(c.today.rows.length <= 3 && c.today.rows.length >= 2, 'at most three rows: above, you, below');
+  const ids = c.today.rows.map((r) => r.rank);
+  assert.deepEqual(ids, [...ids].sort((x, y) => x - y));
+  assert.ok(c.today.rows.find((r) => r.me).rank === c.today.rank);
+  assert.ok(names(c.all).includes('cardfive') || c.all.rank >= 1, 'all time includes older scores');
+  const none = await S.cardRanks(db, 'nobody-here', NOW);
+  assert.deepEqual(none, { today: null, week: null, all: null }, 'no counted score: no rank anywhere');
+  assert.ok(!JSON.stringify(c).includes('@'), 'no email in the card data');
+});
+await t('shared result: public fields only, current rank for a board, hidden and unknown ids are gone', async () => {
+  const u = await user('sh9', 'Share Nine');
+  const first = await S.submitScore(db, u, input({ wpm: 29, runId: 'share-run-1' }), at(0, 6));
+  assert.equal(first.status, 'counted');
+  const r = await S.sharedResult(db, first.scoreId, 'today', NOW);
+  assert.ok(r, 'found');
+  assert.deepEqual(Object.keys(r).sort(), ['accuracy', 'at', 'deleted', 'rank', 'seconds', 'textLevel', 'textMode', 'username', 'wpm']);
+  assert.equal(r.wpm, 29);
+  assert.equal(r.deleted, false);
+  assert.ok(Number.isInteger(r.rank) && r.rank >= 1, 'rank on today');
+  assert.equal((await S.sharedResult(db, first.scoreId, null, NOW)).rank, null, 'no rank unless asked');
+  assert.ok(!JSON.stringify(r).includes('@') && !JSON.stringify(r).includes('Share Nine'), 'no email, no Google name');
+  assert.equal(await S.sharedResult(db, 'not-an-id', null, NOW), null);
+  assert.equal(await S.sharedResult(db, '00000000-0000-0000-0000-000000000000', null, NOW), null);
+  await db.update(schema.score).set({ hidden: true }).where(eq(schema.score.id, first.scoreId));
+  assert.equal(await S.sharedResult(db, first.scoreId, null, NOW), null, 'a hidden score has no public page');
+  await db.update(schema.score).set({ hidden: false }).where(eq(schema.score.id, first.scoreId));
+  await S.markTypistDeleted(db, 'sh9', NOW);
+  await db.delete(schema.user).where(eq(schema.user.id, 'sh9'));
+  const gone = await S.sharedResult(db, first.scoreId, 'all', NOW);
+  assert.equal(gone.deleted, true, 'marked deleted after the account is deleted');
+  assert.ok(!JSON.stringify(gone).includes('sh9@'), 'still no email');
 });
 await t('a run shorter than 60 seconds is valid but ignored (not stored for the board), and an old short row never shows on a board', async () => {
   const u = await user('sh1', 'Short Runner');

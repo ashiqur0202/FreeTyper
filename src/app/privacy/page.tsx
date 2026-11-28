@@ -86,6 +86,13 @@ export default function PrivacyPage() {
             when they were taken. We do not show your email address, your picture or your saved progress.
             Only tests of 1 minute or longer with at least 95% accuracy count, and each person appears once per board.
           </p>
+          <p className="mt-3">
+            If you choose Share and then Link card after a test, we make a public page for that one result at
+            freetyper.com/r/ followed by a long random code. Anyone who has the link can open it; it shows only the speed,
+            accuracy, length and level of that test, your username and (if you chose to show it) your rank, and never
+            what you typed. Search engines are told not to list it. It is the same data that is already public on the
+            leaderboard, and it disappears if that score is removed from the leaderboard.
+          </p>
           <p className="mt-3 font-medium text-text-bright">Why, and who sees it</p>
           <p className="mt-1">
             To log you in, to keep your progress in step across your devices, and to run the public

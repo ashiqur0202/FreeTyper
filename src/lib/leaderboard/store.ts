@@ -78,8 +78,8 @@ export async function markTypistDeleted(db: LbDb, userId: string, now = new Date
 // ---------------------------------------------------------------- scores
 
 export type SubmitResult =
-  | { status: 'counted' }
-  | { status: 'duplicate' }
+  | { status: 'counted'; scoreId: string }
+  | { status: 'duplicate'; scoreId?: string }
   | { status: 'ignored'; reason: 'below_accuracy' | 'too_short' }
   | { status: 'rejected'; reason: string };
 
@@ -101,7 +101,7 @@ export async function submitScore(db: LbDb, user: { id: string; name: string }, 
     if (!free) return { status: 'rejected', reason: 'busy' } as SubmitResult;
     // The same run sent again (a retry, a double send) is simply a duplicate, whatever the timing.
     const [again] = await tx.select({ id: score.id }).from(score).where(and(eq(score.typistId, me.id), eq(score.runId, s.runId))).limit(1);
-    if (again) return { status: 'duplicate' } as SubmitResult;
+    if (again) return { status: 'duplicate', scoreId: again.id } as SubmitResult;
     const [last] = await tx.select({ at: score.createdAt }).from(score).where(eq(score.typistId, me.id)).orderBy(sql`${score.createdAt} desc`).limit(1);
     if (!timingPossible(last ? last.at.getTime() : null, now.getTime(), s.seconds)) return { status: 'rejected', reason: 'too_fast' } as SubmitResult;
     const [{ n }] = await tx
@@ -115,7 +115,7 @@ export async function submitScore(db: LbDb, user: { id: string; name: string }, 
       .values({ id: randomUUID(), typistId: me.id, runId: s.runId, wpm: s.wpm, accuracy: s.accuracy, seconds: s.seconds, textMode: s.textMode, textLevel: s.textLevel, createdAt: now })
       .onConflictDoNothing()
       .returning({ id: score.id });
-    return (inserted.length ? { status: 'counted' } : { status: 'duplicate' }) as SubmitResult;
+    return (inserted.length ? { status: 'counted', scoreId: inserted[0].id } : { status: 'duplicate' }) as SubmitResult;
   });
 }
 
@@ -198,6 +198,77 @@ export async function myPosition(db: LbDb, userId: string, f: BoardFilters): Pro
     where t.user_id = ${userId}`);
   const [row] = rowsOf(res);
   return row ? toEntry(row) : null;
+}
+
+/** One board as the result popup shows it: your rank, how many are ranked, and the typists just above and below you. */
+export interface CardBoard {
+  rank: number;
+  total: number;
+  rows: { rank: number; username: string; wpm: number; me: boolean }[];
+}
+export type CardRanks = Record<'today' | 'week' | 'all', CardBoard | null>;
+
+const CARD_PERIODS: [keyof CardRanks, Period][] = [['today', 'daily'], ['week', 'weekly'], ['all', 'lifetime']];
+
+/** Your place on the Daily, Weekly and Lifetime boards (all test lengths and text types), with the neighbours. Null where you have no counted score. */
+export async function cardRanks(db: LbDb, userId: string, now = new Date()): Promise<CardRanks> {
+  const out: CardRanks = { today: null, week: null, all: null };
+  for (const [key, period] of CARD_PERIODS) {
+    const res = await db.execute(sql`${rankedSql({ period, top: 1, length: null, mode: null, now })},
+      me as (select r.rank from ranked r join typist t on t.id = r.typist_id where t.user_id = ${userId})
+      select r.rank::int as rank, r.wpm, t.username, coalesce(t.user_id = ${userId}, false) as is_me, (select count(*) from ranked)::int as total
+      from ranked r join typist t on t.id = r.typist_id
+      where r.rank between (select rank from me) - 1 and (select rank from me) + 1
+      order by r.rank`);
+    const rows = rowsOf(res) as unknown as { rank: number; wpm: number; username: string; is_me: boolean; total: number }[];
+    const mine = rows.find((r) => r.is_me);
+    if (!mine) continue;
+    out[key] = {
+      rank: Number(mine.rank),
+      total: Number(mine.total),
+      rows: rows.map((r) => ({ rank: Number(r.rank), username: r.username, wpm: r.wpm, me: r.is_me })),
+    };
+  }
+  return out;
+}
+
+/** What the public result page and its picture show about one counted score. Only public fields. */
+export interface SharedResult {
+  wpm: number;
+  accuracy: number;
+  seconds: number;
+  textMode: string;
+  textLevel: number;
+  username: string;
+  deleted: boolean;
+  at: string;
+  /** Where that person stands now on the asked board (their best there), or null. */
+  rank: number | null;
+}
+
+const SHARE_ID = /^[0-9a-f-]{36}$/;
+
+/** A counted, visible score by id (hidden ones are gone), with the person's current rank on a board when asked. */
+export async function sharedResult(db: LbDb, scoreId: string, rankPeriod: 'today' | 'week' | 'all' | null, now = new Date()): Promise<SharedResult | null> {
+  if (!SHARE_ID.test(scoreId)) return null;
+  const [row] = await db
+    .select({ wpm: score.wpm, accuracy: score.accuracy, seconds: score.seconds, textMode: score.textMode, textLevel: score.textLevel, at: score.createdAt, hidden: score.hidden, typistId: score.typistId, username: typist.username, status: typist.status, userId: typist.userId })
+    .from(score)
+    .innerJoin(typist, eq(typist.id, score.typistId))
+    .where(eq(score.id, scoreId));
+  if (!row || row.hidden) return null;
+  let rank: number | null = null;
+  if (rankPeriod) {
+    const period: Period = rankPeriod === 'today' ? 'daily' : rankPeriod === 'week' ? 'weekly' : 'lifetime';
+    const res = await db.execute(sql`${rankedSql({ period, top: 1, length: null, mode: null, now })}
+      select r.rank::int as rank from ranked r where r.typist_id = ${row.typistId}`);
+    const [r] = rowsOf(res) as unknown as { rank: number }[];
+    rank = r ? Number(r.rank) : null;
+  }
+  return {
+    wpm: row.wpm, accuracy: row.accuracy, seconds: row.seconds, textMode: row.textMode, textLevel: row.textLevel,
+    username: row.username, deleted: row.status === 'deleted' || row.userId === null, at: row.at.toISOString(), rank,
+  };
 }
 
 // ---------------------------------------------------------------- reports

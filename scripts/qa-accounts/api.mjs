@@ -156,6 +156,7 @@ for (const who of Object.keys(first)) {
 }
 r = await call('POST', '/api/scores', { user: 'sam', body: first.sam });
 check('the same run sent again is a duplicate, not a second entry', r.status === 200 && r.json?.status === 'duplicate');
+check('and it returns the id of the first one (the result link uses it)', typeof r.json?.scoreId === 'string' && r.json.scoreId.length === 36, r.text);
 r = await call('POST', '/api/scores', { user: 'sam', body: run('s2', 73) });
 check('a second 60 s test right away is impossible: 422 too_fast', r.status === 422 && r.json?.reason === 'too_fast');
 // Parallel bursts are covered by the in-process store test. The QA rig serves every connection from ONE PGlite session, so truly parallel transactions interleave there (not like real Postgres); send them back to back instead.
@@ -180,6 +181,34 @@ for (const period of ['daily', 'weekly', 'monthly', 'lifetime']) {
 }
 r = await call('GET', '/api/leaderboard?top=10');
 check('top 10 never returns more than 10', entries(r).length <= 10);
+
+console.log('--- result popup: rank block and shared result');
+r = await call('GET', '/api/leaderboard/card');
+check('the rank block needs a login (401)', r.status === 401);
+r = await call('GET', '/api/leaderboard/card', { user: 'sam' });
+check('rank block for Sam: three boards, never cached, nothing private', r.status === 200 && /no-store/.test(r.headers.get('cache-control') ?? '') && r.json?.today && r.json?.week && r.json?.all && !r.text.includes('@example.com') && !r.text.includes(U.sam.id), r.text.slice(0, 160));
+check('he is ranked #3 today with a row for the typist above and below', r.json.today.rank === 3 && r.json.today.rows.length === 3 && r.json.today.rows.filter((x) => x.me).length === 1 && r.json.today.total === 4, JSON.stringify(r.json.today));
+check('the rows carry only rank, username and speed', Object.keys(r.json.today.rows[0]).sort().join() === 'me,rank,username,wpm');
+r = await call('GET', '/api/leaderboard/card', { user: 'carol' });
+check('Carol (last of four) has no row below her', r.json.today.rank === 4 && r.json.today.rows.length === 2, JSON.stringify(r.json.today));
+const sharedId = entries(await call('GET', '/api/leaderboard')).find((e) => e.username === 'sam').scoreId;
+r = await call('GET', '/r/' + sharedId);
+check('the public result page opens without a login and shows only public things', r.status === 200 && r.text.includes('72') && r.text.includes('sam') && !r.text.includes('@example.com') && !r.text.includes(U.sam.id), String(r.status));
+check('and it is kept out of search results', /noindex/.test(r.text));
+check('and it carries a preview picture for chat apps', r.text.includes('/r/' + sharedId + '/og') && /twitter:card" content="summary_large_image/.test(r.text));
+r = await call('GET', '/r/' + sharedId + '?p=today');
+check('with a period, the page shows the current rank', r.status === 200 && r.text.includes('#3'), String(r.status));
+const picture = await fetch(SITE + '/r/' + sharedId + '/og?p=today');
+const bytes = new Uint8Array(await picture.arrayBuffer());
+check('the preview picture is a real PNG', picture.status === 200 && picture.headers.get('content-type') === 'image/png' && bytes[0] === 0x89 && bytes[1] === 0x50 && bytes.length > 5000, picture.status + ' ' + bytes.length);
+r = await call('GET', '/r/not-a-real-id');
+check('an unknown result id: 404', r.status === 404);
+r = await call('GET', "/r/00000000-0000-0000-0000-000000000000?p='%3Bdrop");
+check('an unknown id with a hostile period: 404, no crash', r.status === 404);
+check('the picture of an unknown id: 404', (await fetch(SITE + '/r/00000000-0000-0000-0000-000000000000/og')).status === 404);
+await q('update score set hidden = true where id = $1', [sharedId]);
+check('a hidden score has no public page', (await call('GET', '/r/' + sharedId)).status === 404);
+await q('update score set hidden = false where id = $1', [sharedId]);
 
 console.log('--- leaderboard username');
 r = await call('GET', '/api/typist');
