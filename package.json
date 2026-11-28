@@ -14,6 +14,7 @@
     "test:sync-store": "node --import ./scripts/register-ts.mjs scripts/test-sync-store.mjs",
     "test:sync-client": "node --import ./scripts/register-ts.mjs scripts/test-sync-client.mjs",
     "test:leaderboard-rules": "node --import ./scripts/register-ts.mjs scripts/test-leaderboard-rules.mjs",
+    "test:leaderboard-samples": "node --import ./scripts/register-ts.mjs scripts/test-leaderboard-samples.mjs",
     "test:leaderboard-store": "node --import ./scripts/register-ts.mjs scripts/test-leaderboard-store.mjs",
     "test:accounts": "node --import ./scripts/register-ts.mjs scripts/test-accounts-db.mjs"
   },
