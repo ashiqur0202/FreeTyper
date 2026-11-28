@@ -26,7 +26,7 @@ const PERIODS: { id: Period; label: string; hint: string }[] = [
   { id: 'monthly', label: 'Monthly', hint: 'this month' },
   { id: 'lifetime', label: 'Lifetime', hint: 'all time' },
 ];
-const LENGTHS = [15, 30, 60, 120, 180, 300] as const;
+const LENGTHS = [60, 120, 180, 300] as const;
 const MODES = ['standard', 'words', 'sentences', 'quotes', 'facts', 'code', 'mixed', 'daily'] as const;
 
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
@@ -110,7 +110,7 @@ export default function LeaderboardView({ enabled }: { enabled: boolean }) {
   return (
     <div className="mx-auto w-full max-w-[780px]">
       <h1 className="text-2xl font-semibold tracking-tight text-text-bright">Leaderboard</h1>
-      <p className="mb-5 mt-1 text-sm text-text-dim">The fastest typists on FreeTyper. Every speed test counts, with at least 95% accuracy.</p>
+      <p className="mb-5 mt-1 text-sm text-text-dim">The fastest typists on FreeTyper. Speed tests of 1 minute or longer count, with at least 95% accuracy.</p>
 
       {!enabled ? (
         <p className="rounded-xl border border-surface-border bg-surface-raised px-4 py-3 text-sm text-text-dim">
@@ -220,7 +220,7 @@ export default function LeaderboardView({ enabled }: { enabled: boolean }) {
       <div className="mt-8 space-y-3 text-sm text-text-dim">
         <h2 className="text-base font-semibold text-text-bright">How the leaderboard works</h2>
         <ul className="list-disc space-y-1.5 pl-5">
-          <li><strong className="text-text">What counts:</strong> any finished speed test while you are logged in (the number row test is left out), at 95% accuracy or higher. The speed is net WPM, as on the test.</li>
+          <li><strong className="text-text">What counts:</strong> any finished speed test of 1 minute or longer while you are logged in (the number row test is left out), at 95% accuracy or higher. Shorter tests still count for your own progress. The speed is net WPM, as on the test.</li>
           <li><strong className="text-text">One entry per person:</strong> each board shows your best counted score inside its window. Daily is the current UTC day, weekly runs Monday to Sunday (UTC), monthly is the calendar month, lifetime is everything.</li>
           <li><strong className="text-text">Fair comparison:</strong> all text types and levels count, so use the filters to compare like with like, for example the same length and text type.</li>
           <li><strong className="text-text">Honesty about cheating:</strong> scores are sent by your browser, so they cannot be fully proven. Impossible scores are refused, submissions are rate limited, and anyone logged in can report an entry.</li>

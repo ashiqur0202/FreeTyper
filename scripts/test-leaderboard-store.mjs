@@ -80,6 +80,16 @@ await t('the same run sent again straight away is a duplicate (not "too fast")',
   assert.deepEqual(await S.submitScore(db, u, run, new Date(at(0, 4).getTime() + 500)), { status: 'duplicate' });
   assert.deepEqual(await S.submitScore(db, u, { ...run, wpm: 150 }, new Date(at(0, 4).getTime() + 900)), { status: 'duplicate' }, 'a retry with a different speed cannot replace the first');
 });
+await t('a run shorter than 60 seconds is valid but ignored (not stored for the board), and an old short row never shows on a board', async () => {
+  const u = await user('sh1', 'Short Runner');
+  assert.deepEqual(await S.submitScore(db, u, input({ seconds: 30 }), NOW), { status: 'ignored', reason: 'too_short' });
+  const me = await S.getTypist(db, 'sh1');
+  assert.equal(me, null === me ? null : me);
+  const m = await S.ensureTypist(db, u);
+  assert.equal((await db.select().from(schema.score).where(eq(schema.score.typistId, m.id))).length, 0);
+  await put(m.id, { wpm: 240, createdAt: at(0, 1), seconds: 30 });
+  assert.ok(!(await board({ period: 'lifetime' })).some((e) => e.username === m.username), 'a short row is on no board');
+});
 await t('below 95 percent accuracy is ignored; impossible input is rejected with a reason; neither is stored', async () => {
   const u = { id: 's1', name: 'Score One' };
   const before = (await db.select().from(schema.score)).length;
@@ -108,7 +118,7 @@ await t('rate limit: after 120 scores in an hour the next one is refused', async
   const u = await user('s3', 'Busy Typist');
   const me = await S.ensureTypist(db, u);
   for (let i = 0; i < 120; i++) await put(me.id, { wpm: 50, createdAt: new Date(NOW.getTime() - (3_000_000 - i * 1000) ) });
-  assert.equal((await S.submitScore(db, u, input({ seconds: 15 }), NOW)).reason, 'rate_limited');
+  assert.equal((await S.submitScore(db, u, input({ seconds: 60 }), new Date(NOW.getTime() + 60_000)) ).reason, 'rate_limited');
 });
 
 // ---- boards: a fixed cast with scores at chosen times
@@ -174,20 +184,20 @@ await t('filters: by test length and by text type', async () => {
 await t('top 10: never more than asked; ties go to whoever got there first', async () => {
   for (let i = 0; i < 12; i++) {
     const m = await S.ensureTypist(db, await user('t' + i, 'Tied Typist ' + i));
-    await put(m.id, { wpm: 50, createdAt: new Date(NOW.getTime() - (100 - i) * 1000), seconds: 30, textMode: 'words', textLevel: 2 });
+    await put(m.id, { wpm: 50, createdAt: new Date(NOW.getTime() - (100 - i) * 1000), seconds: 75, textMode: 'words', textLevel: 2 });
   }
-  const b = await board({ period: 'daily', top: 10, length: 30 });
+  const b = await board({ period: 'daily', top: 10, length: 75 });
   assert.equal(b.length, 10);
   assert.deepEqual(b.map((e) => e.username), Array.from({ length: 10 }, (_, i) => b[i].username));
   const order = b.map((e) => e.name);
   assert.equal(order[0], 'Tied Typist 0', 'the earliest of the tied scores is first');
-  assert.equal((await board({ period: 'daily', top: 50, length: 30 })).length, 12);
+  assert.equal((await board({ period: 'daily', top: 50, length: 75 })).length, 12);
 });
 await t('a hidden score is on no board; the next best of that person shows instead', async () => {
   const m = await S.ensureTypist(db, await user('h1', 'Hidden Hero'));
-  await put(m.id, { wpm: 200, hidden: true, createdAt: at(0, 1), seconds: 45 });
-  await put(m.id, { wpm: 61, createdAt: at(0, 2), seconds: 45 });
-  const b = await board({ period: 'daily', length: 45 });
+  await put(m.id, { wpm: 200, hidden: true, createdAt: at(0, 1), seconds: 90 });
+  await put(m.id, { wpm: 61, createdAt: at(0, 2), seconds: 90 });
+  const b = await board({ period: 'daily', length: 90 });
   assert.deepEqual(b.map((e) => [e.name, e.wpm]), [['Hidden Hero', 61]]);
 });
 await t('my position: my rank on a board, or nothing when I have no counted score there', async () => {

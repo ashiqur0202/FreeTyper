@@ -144,8 +144,12 @@ r = await call('POST', '/api/scores', { user: 'sam', body: run('low', 80, { accu
 check('below 95 percent accuracy: accepted but ignored (it still counts for progress, not the board)', r.status === 200 && r.json?.status === 'ignored');
 r = await call('GET', '/api/leaderboard');
 check('so far nothing is on the board', r.json.entries.length === 0);
+r = await call('POST', '/api/scores', { user: 'sam', body: run('short1', 120, { seconds: 30 }) });
+check('a 30 second run is valid but not ranked (ignored, too_short)', r.status === 200 && r.json?.status === 'ignored' && r.json?.reason === 'too_short', r.text);
+r = await call('GET', '/api/leaderboard?length=30');
+check('there is no 30 second board (an unknown length falls back to all, and the short run is on none)', r.status === 200 && r.json.length === null && entries(r).length === 0);
 
-const first = { sam: run('s1', 72), alex: run('a1', 85, { seconds: 180, textMode: 'sentences', textLevel: 4 }), carol: run('c1', 64, { seconds: 15, textMode: 'words', textLevel: 2 }), dave: run('d1', 90, { textMode: 'quotes', textLevel: 3 }) };
+const first = { sam: run('s1', 72), alex: run('a1', 85, { seconds: 180, textMode: 'sentences', textLevel: 4 }), carol: run('c1', 64, { seconds: 120, textMode: 'words', textLevel: 2 }), dave: run('d1', 90, { textMode: 'quotes', textLevel: 3 }) };
 for (const who of Object.keys(first)) {
   r = await call('POST', '/api/scores', { user: who, body: first[who] });
   check('a real score from ' + who + ' counts', r.status === 200 && r.json?.status === 'counted', r.text.slice(0, 80));
@@ -156,7 +160,7 @@ r = await call('POST', '/api/scores', { user: 'sam', body: run('s2', 73) });
 check('a second 60 s test right away is impossible: 422 too_fast', r.status === 422 && r.json?.reason === 'too_fast');
 // Parallel bursts are covered by the in-process store test. The QA rig serves every connection from ONE PGlite session, so truly parallel transactions interleave there (not like real Postgres); send them back to back instead.
 const burst2 = [];
-for (let i = 0; i < 6; i++) burst2.push(await call('POST', '/api/scores', { user: 'alex', body: run('burst' + i, 80, { seconds: 15 }) }));
+for (let i = 0; i < 6; i++) burst2.push(await call('POST', '/api/scores', { user: 'alex', body: run('burst' + i, 80, { seconds: 60 }) }));
 check('rapid repeated submissions: no server errors, none counted this soon after the last test', burst2.every((x) => x.status !== 500) && burst2.every((x) => x.json?.status !== 'counted'), burst2.map((x) => x.status).join());
 
 r = await call('GET', '/api/leaderboard');
@@ -164,7 +168,7 @@ let rows = entries(r);
 check('the board is ranked fastest first: dave 90, alex 85, sam 72, carol 64', rows.map((e) => e.wpm).join() === '90,85,72,64' && rows.map((e) => e.rank).join() === '1,2,3,4', rows.map((e) => e.wpm).join());
 check('each entry shows the username and the Google name of an active account', rows[0].username === 'dave' && rows[0].name === 'Dave' && rows[0].deleted === false, JSON.stringify(rows[0]));
 check('an entry carries exactly the public fields (no email, no user id, no tokens)', Object.keys(rows[0]).sort().join() === 'accuracy,at,deleted,name,rank,scoreId,seconds,textLevel,textMode,username,wpm' && !r.text.includes('@example.com') && !r.text.includes(U.sam.id) && !r.text.includes(U.dave.id), Object.keys(rows[0]).join());
-for (const [q, want, label] of [['length=180', 'alex', 'a test length (3 min)'], ['mode=quotes', 'dave', 'a text type (quotes)'], ['length=15', 'carol', 'a test length (15 s)'], ['length=60&mode=standard', 'sam', 'length and type together']]) {
+for (const [q, want, label] of [['length=180', 'alex', 'a test length (3 min)'], ['mode=quotes', 'dave', 'a text type (quotes)'], ['length=120', 'carol', 'a test length (2 min)'], ['length=60&mode=standard', 'sam', 'length and type together']]) {
   r = await call('GET', '/api/leaderboard?' + q);
   check('filter by ' + label, entries(r).length === 1 && entries(r)[0].username === want, JSON.stringify(entries(r).map((e) => e.username)));
 }

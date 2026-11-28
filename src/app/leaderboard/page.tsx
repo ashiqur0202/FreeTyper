@@ -6,7 +6,7 @@ import LeaderboardView from './LeaderboardView';
 export const metadata: Metadata = {
   title: 'Typing Speed Leaderboard — Daily, Weekly, Monthly & All-Time',
   description:
-    'The fastest typists on FreeTyper: daily, weekly, monthly and lifetime leaderboards from the speed test. Every test counts with at least 95% accuracy.',
+    'The fastest typists on FreeTyper: daily, weekly, monthly and lifetime leaderboards from the speed test. Tests of 1 minute or longer count, with at least 95% accuracy.',
   alternates: { canonical: `${siteConfig.url}/leaderboard` },
 };
 

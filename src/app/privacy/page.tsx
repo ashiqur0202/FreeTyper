@@ -84,7 +84,7 @@ export default function PrivacyPage() {
             or not, can see: your username, the name from your Google account (only while your account is
             active), your best counted score on each board, the length and text type of those tests, and
             when they were taken. We do not show your email address, your picture or your saved progress.
-            Only tests with at least 95% accuracy count, and each person appears once per board.
+            Only tests of 1 minute or longer with at least 95% accuracy count, and each person appears once per board.
           </p>
           <p className="mt-3 font-medium text-text-bright">Why, and who sees it</p>
           <p className="mt-1">

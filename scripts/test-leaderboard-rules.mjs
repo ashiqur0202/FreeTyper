@@ -1,6 +1,6 @@
 // Run: npm run test:leaderboard-rules
 import assert from 'node:assert/strict';
-import { checkScore, countsForBoard, timingPossible, checkUsername, suggestUsername, periodStart, MAX_WPM } from '../src/lib/leaderboard/rules.ts';
+import { BOARD_MIN_SECONDS, checkScore, countsForBoard, timingPossible, checkUsername, suggestUsername, periodStart, MAX_WPM } from '../src/lib/leaderboard/rules.ts';
 
 let n = 0;
 const t = (name, fn) => { fn(); n++; console.log('ok -', name); };
@@ -42,6 +42,13 @@ t('bad shapes never throw: null, arrays, missing fields, long ids, bad levels, a
 t('only runs with at least 95 percent accuracy count for the boards', () => {
   assert.equal(countsForBoard({ ...good, accuracy: 95 }), true);
   assert.equal(countsForBoard({ ...good, accuracy: 94.9 }), false);
+});
+t('only runs of at least 60 seconds count for the boards (shorter ones are valid but not ranked)', () => {
+  assert.equal(BOARD_MIN_SECONDS, 60);
+  assert.equal(countsForBoard({ ...good, seconds: 60 }), true);
+  assert.equal(countsForBoard({ ...good, seconds: 59 }), false);
+  assert.equal(countsForBoard({ ...good, seconds: 30 }), false);
+  assert.equal(checkScore({ ...good, seconds: 30 }).ok, true, 'still a valid run');
 });
 t('timing: a 60 s run cannot follow the previous submission within about 52 s', () => {
   assert.equal(timingPossible(null, 1000, 60), true);

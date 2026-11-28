@@ -4,7 +4,7 @@ import type { PgDatabase, PgQueryResultHKT } from 'drizzle-orm/pg-core';
 import { account, score, scoreReport, typist, user, userProgress } from '@/lib/db/schema';
 import type * as schema from '@/lib/db/schema';
 import {
-  checkScore, checkUsername, countsForBoard, MAX_REPORTS_PER_DAY, MAX_SCORES_PER_HOUR, periodStart, suggestUsername, timingPossible,
+  BOARD_MIN_SECONDS, checkScore, checkUsername, ignoredReason, MAX_REPORTS_PER_DAY, MAX_SCORES_PER_HOUR, periodStart, suggestUsername, timingPossible,
   type Period, type ScoreInput,
 } from './rules';
 
@@ -80,14 +80,15 @@ export async function markTypistDeleted(db: LbDb, userId: string, now = new Date
 export type SubmitResult =
   | { status: 'counted' }
   | { status: 'duplicate' }
-  | { status: 'ignored'; reason: 'below_accuracy' }
+  | { status: 'ignored'; reason: 'below_accuracy' | 'too_short' }
   | { status: 'rejected'; reason: string };
 
 export async function submitScore(db: LbDb, user: { id: string; name: string }, raw: unknown, now = new Date()): Promise<SubmitResult> {
   const checked = checkScore(raw);
   if (!checked.ok) return { status: 'rejected', reason: checked.reason };
   const s: ScoreInput = checked.value;
-  if (!countsForBoard(s)) return { status: 'ignored', reason: 'below_accuracy' };
+  const ignored = ignoredReason(s);
+  if (ignored) return { status: 'ignored', reason: ignored };
 
   const me = await ensureTypist(db, user);
   // One person's submissions go through one at a time, so a burst of requests at the same instant
@@ -153,6 +154,7 @@ function rankedSql(f: BoardFilters) {
       select distinct on (s.typist_id) s.id, s.typist_id, s.wpm, s.accuracy, s.seconds, s.text_mode, s.text_level, s.created_at
       from score s
       where s.hidden = false
+        and s.seconds >= ${BOARD_MIN_SECONDS}::int
         ${start ? sql`and s.created_at >= ${start.toISOString()}::timestamptz` : sql``}
         ${f.length ? sql`and s.seconds = ${f.length}::int` : sql``}
         ${f.mode ? sql`and s.text_mode = ${f.mode}::text` : sql``}

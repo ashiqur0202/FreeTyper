@@ -11,6 +11,8 @@ export const MIN_ACCURACY = 95;
 export const MAX_WPM = 250;
 export const MIN_SECONDS = 15;
 export const MAX_SECONDS = 1800;
+/** Only runs of at least this long are ranked: a 15 or 30 second burst says little about real typing speed. */
+export const BOARD_MIN_SECONDS = 60;
 /** A person cannot submit more than this many scores in an hour. */
 export const MAX_SCORES_PER_HOUR = 120;
 export const MAX_REPORTS_PER_DAY = 10;
@@ -52,7 +54,11 @@ export function checkScore(raw: unknown): Checked {
 }
 
 /** True when the run counts for the boards (the others are still the person's own progress). */
-export const countsForBoard = (s: ScoreInput) => s.accuracy >= MIN_ACCURACY;
+export const countsForBoard = (s: ScoreInput) => s.accuracy >= MIN_ACCURACY && s.seconds >= BOARD_MIN_SECONDS;
+
+/** Why a valid run is not ranked (null when it is). */
+export const ignoredReason = (s: ScoreInput): 'below_accuracy' | 'too_short' | null =>
+  s.seconds < BOARD_MIN_SECONDS ? 'too_short' : s.accuracy < MIN_ACCURACY ? 'below_accuracy' : null;
 
 /**
  * A run lasts \`seconds\`, so it cannot be submitted sooner than that after the previous one

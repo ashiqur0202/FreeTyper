@@ -56,7 +56,7 @@ export async function smallJson(request: Request, maxBytes = 4000): Promise<unkn
   }
 }
 
-const LENGTHS = [15, 30, 60, 120, 180, 300, 600] as const;
+const LENGTHS = [60, 120, 180, 300, 600] as const;
 
 /** Reads ?period=&top=&length=&mode= with safe defaults (daily, top 10, all lengths, all types). */
 export function boardFilters(url: URL): BoardFilters {
